@@ -24,6 +24,7 @@ import kotlin.math.min
 class MainActivity : Activity() {
 
     private lateinit var preview: PreviewView
+    private lateinit var diag: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +41,15 @@ class MainActivity : Activity() {
             typeface = Typeface.DEFAULT_BOLD
         }
         val sub = TextView(this).apply {
-            text = "테스트 버전 " + versionName() + " · 홈 화면을 옆으로 넘기면 바다와 항구가 나와요"
+            text = "테스트 버전 " + versionName() + "\n홈 화면 빈 곳을 톡 치면 섬 → 바다 → 항구로 이동해요"
             setTextColor(Color.parseColor("#93a7bf"))
             textSize = 13f
             setPadding(0, (4 * dp).toInt(), 0, (12 * dp).toInt())
+        }
+        diag = TextView(this).apply {
+            setTextColor(Color.parseColor("#5f7590"))
+            textSize = 11f
+            setPadding(0, 0, 0, (8 * dp).toInt())
         }
         preview = PreviewView(this)
         val set = Button(this).apply {
@@ -60,6 +66,7 @@ class MainActivity : Activity() {
         }
         root.addView(title)
         root.addView(sub)
+        root.addView(diag)
         root.addView(preview, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f))
         root.addView(times)
         root.addView(set)
@@ -85,7 +92,7 @@ class MainActivity : Activity() {
         }
     }
 
-    override fun onResume() { super.onResume(); preview.running = true; preview.invalidate() }
+    override fun onResume() { super.onResume(); diag.text = Diag.text(this); preview.running = true; preview.invalidate() }
     override fun onPause() { super.onPause(); preview.running = false }
 
     /** 앱 안에서 보는 섬 미리보기. 세 페이지를 천천히 번갈아 보여준다. */
