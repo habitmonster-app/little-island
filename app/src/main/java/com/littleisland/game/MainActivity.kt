@@ -43,7 +43,7 @@ class MainActivity : Activity() {
         l.addView(label, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
         l.addView(btn)
         btn.setOnClickListener {
-            if (act()) Toast.makeText(this, if (name == "알바 구하기") "배가 다른 마을로 떠났어요. 3분 뒤 돌아와요" else name + "을(를) 지었어요!", Toast.LENGTH_SHORT).show()
+            if (act()) Toast.makeText(this, if (name == "항해") "배가 짐을 싣고 떠났어요. 홈 화면 바다를 지켜보세요" else name + "을(를) 지었어요!", Toast.LENGTH_SHORT).show()
             refresh()
         }
         l.tag = Row(label, btn, l)
@@ -63,19 +63,26 @@ class MainActivity : Activity() {
 
     private fun refresh() {
         res.text = "나무 " + Game.wood + "/" + Game.cap() + "    돌 " + Game.stone + "/" + Game.cap() +
-            "    주민 " + Game.RESIDENTS + " + 알바 " + Game.workers.size + "/" + Game.beds()
+            "    금화 " + Game.gold + "\n주민 " + Game.RESIDENTS + " + 알바 " + Game.workers.size + "/" + Game.beds()
         val now = System.currentTimeMillis()
         fun mmss(ms: Long): String { val t = (ms / 1000).coerceAtLeast(0); return if (t >= 3600) (t / 3600).toString() + "시간 " + (t % 3600 / 60) + "분" else (t / 60).toString() + ":" + "%02d".format(t % 60) }
+        val t = Game.voyT(now)
         val hireState = when {
-            Game.tripEnd != 0L -> "배가 알바 구하러 가는 중 · " + mmss(Game.tripEnd - now)
-            !Game.dock -> "부두가 있어야 배를 보낼 수 있어요"
-            Game.workers.size >= Game.houses -> if (Game.houses == 0) "알바가 잘 집이 필요해요" else "숙소가 다 찼어요 (집을 더 지어요)"
-            else -> "나무 " + Game.HIRE_COST.first + " · 돌 " + Game.HIRE_COST.second
+            t >= 0f -> (when {
+                t < 60f -> "바다로 나가는 중"
+                t < Game.BATTLE_AT -> "해적과 싸우는 중!"
+                t < Game.PORT_AT -> "항구로 가는 중"
+                t < Game.LEAVE_AT -> "항구에서 짐 파는 중"
+                else -> "섬으로 돌아오는 중"
+            }) + " · 도착까지 " + mmss(((Game.HOME_AT - t) * 1000).toLong())
+            !Game.dock -> "부두가 있어야 큰 배를 띄울 수 있어요"
+            else -> "나무 " + Game.LOAD_W + "·돌 " + Game.LOAD_S + "까지 싣고 떠나요 (6분)"
         }
         val left = if (Game.workers.isEmpty()) "" else "\n일하는 알바: " + Game.workers.sorted().joinToString(", ") { "남은 " + mmss(it - now) }
-        rowHire.text.text = "알바 구하기 · 다른 마을에서 6시간" + "\n" + hireState + left
-        rowHire.btn.isEnabled = Game.canHire()
-        rowHire.btn.text = if (Game.tripEnd != 0L) "항해 중" else "배 보내기"
+        val log = if (Game.log.isEmpty()) "" else "\n· " + Game.log.joinToString("\n· ")
+        rowHire.text.text = "항해 · 해적은 자동 전투, 항구에서 알바 고용(금화 " + Game.WAGE + ")\n" + hireState + left + log
+        rowHire.btn.isEnabled = Game.canSail()
+        rowHire.btn.text = if (t >= 0f) "항해 중" else "출항"
         setRow(rowHouse, Game.houses.toString() + "/3", Game.houseCost())
         setRow(rowStore, Game.storage.toString() + "/2", Game.storeCost())
         setRow(rowDock, if (Game.dock) "1/1" else "0/1", Game.dockCost())
@@ -135,7 +142,7 @@ class MainActivity : Activity() {
         root.addView(buildRow("집", "알바 숙소 +1") { Game.buildHouse() }.withRow { rowHouse = it })
         root.addView(buildRow("창고", "더 많이 담기") { Game.buildStore() }.withRow { rowStore = it })
         root.addView(buildRow("부두", "짐배가 들러요") { Game.buildDock() }.withRow { rowDock = it })
-        root.addView(buildRow("알바 구하기", "다른 마을에서 6시간") { Game.hire() }.withRow { rowHire = it })
+        root.addView(buildRow("항해", "") { Game.sail() }.withRow { rowHire = it })
         root.addView(set)
         setContentView(root)
     }

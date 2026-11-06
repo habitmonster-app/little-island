@@ -32,8 +32,9 @@ class IslandWallpaperService : WallpaperService() {
         private var firstOff = -1f
         private var tapPage = 0       // 넘김을 안 알려주는 홈 화면(삼성 등): 빈 곳을 톡 치면 페이지 이동
         private var cam = -1f
+        private var lastPhase = -1
         private val frame = Runnable { drawFrame() }
-        private var card: Game.Report? = null   // 비운 동안 모인 자원 결과 카드
+        private var card: Triple<String, String, String>? = null   // 결과 카드 (제목, 내용, 작은 글씨)
         private var cardT = 0f
         private val cardBg = Paint().apply { isAntiAlias = true; color = Color.parseColor("#f3e6c4") }
         private val cardEdge = Paint().apply { isAntiAlias = true; color = Color.parseColor("#8a5a32"); style = Paint.Style.STROKE }
@@ -50,7 +51,11 @@ class IslandWallpaperService : WallpaperService() {
             visible = v
             if (v) {
                 Game.catchUp()
-                Game.report?.let { card = it; cardT = 8f; Game.report = null }
+                Game.report?.let { r ->
+                    val t = if (r.minutes >= 60) (r.minutes / 60).toString() + "시간" + (if (r.minutes % 60 > 0) " " + (r.minutes % 60) + "분" else "") else (r.minutes.coerceAtLeast(1)).toString() + "분"
+                    card = Triple(t + " 동안 섬 사람들이", "나무 +" + r.wood + "   돌 +" + r.stone, if (r.full) "창고가 가득 찼어요. 앱에서 창고를 넓혀요" else "")
+                    cardT = 7f; Game.report = null
+                }
                 lastMs = SystemClock.uptimeMillis(); drawFrame()
             } else { handler.removeCallbacks(frame); Game.save() }
         }
@@ -96,7 +101,15 @@ class IslandWallpaperService : WallpaperService() {
             val dt = min(0.1f, (now - lastMs) / 1000f).coerceAtLeast(0f)
             lastMs = now
             scene.update(dt)
+            // 배가 있는 곳으로 화면이 따라간다 (단계가 바뀔 때만, 그 뒤엔 톡으로 자유롭게)
+            val vt = Game.voyT()
+            val phase = when { vt < 0f -> 0; vt < Game.PORT_AT -> 1; vt < Game.LEAVE_AT -> 2; else -> 1 } + (if (vt >= Game.LEAVE_AT) 10 else 0)
+            if (phase != lastPhase) { if (lastPhase != -1) tapPage = phase % 10; lastPhase = phase }
             if (cardT > 0f) cardT -= dt
+            if (cardT <= 0f && Game.cards.isNotEmpty()) {   // 항해 결과 카드를 하나씩
+                val (t, m) = Game.cards.removeFirst()
+                card = Triple(t, m, ""); cardT = 6f
+            }
             scene.draw(now / 1000f)
 
             val holder = surfaceHolder
@@ -143,11 +156,10 @@ class IslandWallpaperService : WallpaperService() {
             val box = android.graphics.RectF(x, y, x + w, y + h)
             cv.drawRoundRect(box, 14 * d, 14 * d, cardBg)
             cv.drawRoundRect(box, 14 * d, 14 * d, cardEdge)
-            val t = if (r.minutes >= 60) (r.minutes / 60).toString() + "시간" + (if (r.minutes % 60 > 0) " " + (r.minutes % 60) + "분" else "") else (r.minutes.coerceAtLeast(1)).toString() + "분"
             cardTitle.textSize = 20 * d; cardText.textSize = 16 * d
-            cv.drawText(t + " 동안 섬 주민들이", x + w / 2, y + h * .36f, cardTitle)
-            cv.drawText("나무 +" + r.wood + "   돌 +" + r.stone, x + w / 2, y + h * .62f, cardTitle)
-            if (r.full) cv.drawText("창고가 가득 찼어요. 앱에서 창고를 넓혀요", x + w / 2, y + h * .85f, cardText)
+            cv.drawText(r.first, x + w / 2, y + h * .36f, cardTitle)
+            cv.drawText(r.second, x + w / 2, y + h * .62f, cardText)
+            if (r.third.isNotEmpty()) cv.drawText(r.third, x + w / 2, y + h * .85f, cardText)
         }
     }
 }

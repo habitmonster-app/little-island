@@ -183,10 +183,10 @@ class Scene {
         if (hasDock) {
             when (shipSt) {
                 0 -> { Game.shipT += dt; if (Game.shipT >= Game.SHIP_EVERY) { Game.shipT = 0f; shipSt = 1; shipX = 240f } }
-                1 -> { shipX -= dt * 9; if (shipX <= 188f) {
-                    shipX = 188f; shipSt = 2; shipWait = 9f
+                1 -> { shipX -= dt * 9; if (shipX <= 178f) {
+                    shipX = 178f; shipSt = 2; shipWait = 9f
                     val (gw, gs) = Game.add(10 + Random.nextInt(11), 5 + Random.nextInt(6))
-                    if (gw + gs > 0) pops.add(Pop(188f, 88f + OY, "+" + gw + " +" + gs, 3f))
+                    if (gw + gs > 0) pops.add(Pop(180f, 118f + OY, "+" + gw + " +" + gs, 3f))
                 } }
                 2 -> { shipWait -= dt; if (shipWait <= 0f) shipSt = 3 }
                 3 -> { shipX += dt * 9; if (shipX > 240f) shipSt = 0 }
@@ -234,9 +234,10 @@ class Scene {
         r(0f, HORIZON, W.toFloat(), H - HORIZON, sea)
         waves(time)
         island(time)
-        if (hasDock && shipSt != 0) smallShip(shipX, OY + 112, time, col("#c0463a"))
+        if (hasDock && shipSt != 0) smallShip(shipX, OY + 142, time, col("#c0463a"))
         seaPage(time)
         port(time)
+        voyageShips(time)
         if (dark > 0f) {
             p.color = Color.argb((dark * .68f * 255).roundToInt(), 8, 12, 40)
             c.drawRect(0f, 0f, W.toFloat(), H.toFloat(), p)
@@ -402,7 +403,60 @@ class Scene {
             r(gx - 2, gy - f, 2f, 1f, Color.WHITE); r(gx, gy, 1f, 1f, Color.WHITE); r(gx + 1, gy - f, 2f, 1f, Color.WHITE)
         }
         c.restore()
-        bigShip(300f, 300f, time, 1f)
+    }
+
+    // ----- 항해: 우리 배와 해적선 -----
+    private val SEA_Y = 300f
+
+    /** 우리 큰 배의 위치와 방향. 부두가 없으면 null */
+    private fun shipPos(): Triple<Float, Float, Boolean>? {
+        if (!hasDock) return null
+        val t = Game.voyT()
+        if (t < 0f) return Triple(192f, OY + 122, true)                     // 섬 부두에 정박
+        return when {
+            t < 70f -> Triple(215f + t / 70f * 80f, SEA_Y, true)               // 출발
+            t < 90f -> Triple(295f, SEA_Y, true)                               // 해적과 전투
+            t < Game.PORT_AT -> Triple(295f + (t - 90f) / (Game.PORT_AT - 90f) * 90f, SEA_Y, true)
+            t < Game.LEAVE_AT -> Triple(462f, OY + 138, true)                  // 항구에 정박
+            else -> Triple(385f - (t - Game.LEAVE_AT) / (Game.HOME_AT - Game.LEAVE_AT) * 170f, SEA_Y, false) // 귀항
+        }
+    }
+
+    private fun voyageShips(time: Float) {
+        val (x, y, right) = shipPos() ?: return
+        val t = Game.voyT()
+        // 해적선: 60~90초에 다가와 싸우고, 이기면 가라앉고 지면 떠난다
+        if (t in 60f..100f) {
+            val px = when {
+                t < 70f -> 400f - (t - 60f) / 10f * 65f
+                t < 86f -> 335f
+                Game.voyWin -> 335f
+                else -> 335f + (t - 86f) * 8f
+            }
+            val sink = if (Game.voyWin && t > 86f) (t - 86f) * 3f else 0f
+            c.save(); c.clipRect(200f, 0f, 400f, SEA_Y + 12)
+            pirateShip(px, SEA_Y + sink, time)
+            c.restore()
+            if (t in 70f..86f) {   // 대포 연기
+                val k = floor(time * 2).toInt() % 2
+                ga = .9f
+                if (k == 0) { ell(x + 20, y - 8, 4f, 3f, col("#f0f0f0")); r(x + 24, y - 9, 2f, 2f, col("#ffb347")) }
+                else { ell(px - 18, SEA_Y - 8, 4f, 3f, col("#f0f0f0")); r(px - 22, SEA_Y - 9, 2f, 2f, col("#ffb347")) }
+                ga = 1f
+            }
+        }
+        if (right) bigShip(x, y, time, 1f)
+        else { c.save(); c.scale(-1f, 1f, x, 0f); bigShip(x, y, time, 1f); c.restore() }
+    }
+
+    private fun pirateShip(x: Float, y0: Float, time: Float) {
+        val y = y0 + (sin(time * 2.1f) * 1.2f).roundToInt()
+        for (i in 0 until 6) r(x - 15 + i, y + i, 30f - i * 2, 1f, col("#2a1e18"))
+        r(x - 15, y - 1, 30f, 1f, col("#4a3a30"))
+        r(x, y - 30, 1f, 30f, col("#1e1410"))
+        r(x - 7, y - 27, 14f, 10f, col("#3a3a3a")); r(x - 6, y - 15, 12f, 9f, col("#3a3a3a"))
+        r(x - 2, y - 24, 4f, 3f, col("#e8e8e8")); r(x - 1, y - 21, 2f, 1f, col("#e8e8e8"))   // 해골 무늬
+        r(x, y - 35, 6f, 4f, col("#111111")); r(x + 2, y - 34, 2f, 1f, col("#e8e8e8"))
     }
 
     private fun bigShip(x: Float, y0: Float, time: Float, s: Float) {
@@ -481,6 +535,6 @@ class Scene {
         r(526f, 64f, 2f, 2f, col("#ffd36a")); r(446f, 88f, 2f, 2f, col("#ffd36a")); r(552f, 96f, 2f, 2f, col("#ffd36a"))
         c.restore()
         // 배 등불
-        r(283f, 296f, 2f, 2f, col("#ffd36a")); r(316f, 295f, 2f, 2f, col("#ffd36a"))
+        shipPos()?.let { (x, y) -> r(x - 17, y - 4, 2f, 2f, col("#ffd36a")); r(x + 16, y - 5, 2f, 2f, col("#ffd36a")) }
     }
 }
