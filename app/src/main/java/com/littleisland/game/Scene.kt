@@ -38,6 +38,7 @@ class Scene {
     private val p = Paint().apply { isAntiAlias = false }
     private val gp = Paint().apply { isAntiAlias = false }
     private var ga = 1f   // 전역 투명도
+    private val tp = Paint().apply { isAntiAlias = false; textSize = 8f; typeface = android.graphics.Typeface.DEFAULT_BOLD; textAlign = Paint.Align.CENTER }
 
     /** 테스트용: null이면 실제 시각을 씀 */
     var hourOverride: Float? = null
@@ -125,12 +126,31 @@ class Scene {
     private val fireX = 100f; private val fireY = 106f
     private val storeX = 114f; private val storeY = 96f
     private val bodyColors = listOf("#e0574a", "#4a8fe0", "#e0c04a", "#9a5ae0", "#4ac08a", "#e08a4a").map { col(it) }
-    private val villagers = (0 until 3).map { Villager(fireX + it * 4 - 4, fireY + 6, bodyColors[it]) }
+    private val villagers = ArrayList<Villager>()
 
-    // 1단계 시안: 집 3채, 창고, 부두가 있는 섬 (진행 저장은 2단계에서)
-    private val houses = 3
+    // 건물은 저장된 진행 상황(Game)을 따른다
+    private val houses get() = Game.houses
     private val hasStore = true
-    private val hasDock = true
+    private val hasDock get() = Game.dock
+
+    /** 주민 수를 집 수에 맞춘다. 새 주민은 부두 쪽에서 걸어 들어온다. */
+    private fun syncVillagers() {
+        while (villagers.size < Game.pop()) {
+            val i = villagers.size
+            val v = if (i < 3) Villager(fireX + i * 4 - 4, fireY + 6, bodyColors[i]) else Villager(170f, 102f, bodyColors[i % bodyColors.size])
+            villagers.add(v)
+        }
+        while (villagers.size > Game.pop()) villagers.removeAt(villagers.size - 1)
+    }
+
+    // 부두에 들르는 짐배 (0 멀리, 1 들어오는 중, 2 정박, 3 나가는 중)
+    private var shipSt = 0
+    private var shipX = 240f
+    private var shipWait = 0f
+
+    /** 짐이 들어왔을 때 잠깐 띄우는 글자 */
+    class Pop(val x: Float, var y: Float, val text: String, var t: Float)
+    val pops = ArrayList<Pop>()
 
     private fun pickTarget(): Target {
         if (Random.nextFloat() < .68f) {
@@ -154,6 +174,22 @@ class Scene {
     }
 
     fun update(dt: Float) {
+        Game.tick(dt)
+        syncVillagers()
+        for (pp in pops) { pp.t -= dt; pp.y -= dt * 6 }
+        pops.removeAll { it.t <= 0f }
+        if (hasDock) {
+            when (shipSt) {
+                0 -> { Game.shipT += dt; if (Game.shipT >= Game.SHIP_EVERY) { Game.shipT = 0f; shipSt = 1; shipX = 240f } }
+                1 -> { shipX -= dt * 9; if (shipX <= 188f) {
+                    shipX = 188f; shipSt = 2; shipWait = 9f
+                    val (gw, gs) = Game.add(10 + Random.nextInt(11), 5 + Random.nextInt(6))
+                    if (gw + gs > 0) pops.add(Pop(188f, 88f + OY, "+" + gw + " +" + gs, 3f))
+                } }
+                2 -> { shipWait -= dt; if (shipWait <= 0f) shipSt = 3 }
+                3 -> { shipX += dt * 9; if (shipX > 240f) shipSt = 0 }
+            }
+        }
         for (t in trees) if (t.hp <= 0) { t.regrow -= dt; if (t.regrow <= 0) t.hp = 3 }
         for (v in villagers) {
             when (v.st) {
@@ -177,7 +213,10 @@ class Scene {
                 3 -> {
                     val tx = if (hasStore) storeX - 2 else fireX
                     val ty = if (hasStore) storeY + 4 else fireY + 5
-                    if (moveTo(v, tx, ty, dt)) { v.carry = 0; v.st = 0; v.t = 0.2f + Random.nextFloat() * .8f }
+                    if (moveTo(v, tx, ty, dt)) {
+                        if (v.carry == 1) Game.add(1, 0) else if (v.carry == 2) Game.add(0, 1)
+                        v.carry = 0; v.st = 0; v.t = 0.2f + Random.nextFloat() * .8f
+                    }
                 }
             }
         }
@@ -193,6 +232,7 @@ class Scene {
         r(0f, HORIZON, W.toFloat(), H - HORIZON, sea)
         waves(time)
         island(time)
+        if (hasDock && shipSt != 0) smallShip(shipX, OY + 112, time, col("#c0463a"))
         seaPage(time)
         port(time)
         if (dark > 0f) {
@@ -203,6 +243,11 @@ class Scene {
             ga = min(1f, dark * 1.6f)
             lights(time)
             ga = 1f
+        }
+        for (pp in pops) {
+            tp.alpha = (min(1f, pp.t) * 255).roundToInt()
+            tp.color = Color.argb(tp.alpha, 40, 24, 10); c.drawText(pp.text, pp.x + 1, pp.y + 1, tp)
+            tp.color = Color.argb(tp.alpha, 255, 226, 140); c.drawText(pp.text, pp.x, pp.y, tp)
         }
     }
 
@@ -308,6 +353,8 @@ class Scene {
     }
 
     private fun drawStore(x: Float, y: Float) {
+        if (Game.storage >= 1) { r(x + 14, y - 3, 4f, 4f, col("#b07a44")); r(x + 14, y - 3, 4f, 1f, col("#7d4c28")) }
+        if (Game.storage >= 2) { r(x + 15, y - 7, 4f, 4f, col("#b07a44")); r(x - 5, y - 3, 4f, 4f, col("#b07a44")) }
         r(x, y - 7, 13f, 8f, col("#9a6236"))
         var i = 0; while (i < 13) { r(x + i, y - 7, 1f, 8f, col("#7d4c28")); i += 3 }
         r(x - 1, y - 9, 15f, 2f, col("#5d3a1f"))

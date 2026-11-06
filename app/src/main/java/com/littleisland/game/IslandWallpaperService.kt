@@ -1,6 +1,8 @@
 package com.littleisland.game
 
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.Paint
 import android.graphics.Rect
 import android.app.WallpaperManager
@@ -31,15 +33,26 @@ class IslandWallpaperService : WallpaperService() {
         private var tapPage = 0       // 넘김을 안 알려주는 홈 화면(삼성 등): 빈 곳을 톡 치면 페이지 이동
         private var cam = -1f
         private val frame = Runnable { drawFrame() }
+        private var card: Game.Report? = null   // 비운 동안 모인 자원 결과 카드
+        private var cardT = 0f
+        private val cardBg = Paint().apply { isAntiAlias = true; color = Color.parseColor("#f3e6c4") }
+        private val cardEdge = Paint().apply { isAntiAlias = true; color = Color.parseColor("#8a5a32"); style = Paint.Style.STROKE }
+        private val cardTitle = Paint().apply { isAntiAlias = true; color = Color.parseColor("#4a2c16"); typeface = Typeface.DEFAULT_BOLD; textAlign = Paint.Align.CENTER }
+        private val cardText = Paint().apply { isAntiAlias = true; color = Color.parseColor("#6b4a2a"); textAlign = Paint.Align.CENTER }
 
         override fun onCreate(surfaceHolder: SurfaceHolder) {
             super.onCreate(surfaceHolder)
             setOffsetNotificationsEnabled(true)
+            Game.init(this@IslandWallpaperService)
         }
 
         override fun onVisibilityChanged(v: Boolean) {
             visible = v
-            if (v) { lastMs = SystemClock.uptimeMillis(); drawFrame() } else handler.removeCallbacks(frame)
+            if (v) {
+                Game.catchUp()
+                Game.report?.let { card = it; cardT = 8f; Game.report = null }
+                lastMs = SystemClock.uptimeMillis(); drawFrame()
+            } else { handler.removeCallbacks(frame); Game.save() }
         }
 
         override fun onSurfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
@@ -70,6 +83,7 @@ class IslandWallpaperService : WallpaperService() {
         override fun onCommand(action: String?, x: Int, y: Int, z: Int, extras: Bundle?, resultRequested: Boolean): Bundle? {
             if (action == WallpaperManager.COMMAND_TAP && !paging) {
                 tapPage = (tapPage + 1) % 3
+                cardT = 0f
                 Diag.tap(this@IslandWallpaperService)
                 if (visible) drawFrame()
             }
@@ -82,6 +96,7 @@ class IslandWallpaperService : WallpaperService() {
             val dt = min(0.1f, (now - lastMs) / 1000f).coerceAtLeast(0f)
             lastMs = now
             scene.update(dt)
+            if (cardT > 0f) cardT -= dt
             scene.draw(now / 1000f)
 
             val holder = surfaceHolder
@@ -112,6 +127,27 @@ class IslandWallpaperService : WallpaperService() {
             src.set(sx.toInt(), 0, (sx + viewW).toInt(), Scene.H)
             dst.set(0, 0, sw, sh)
             cv.drawBitmap(scene.bitmap, src, dst, paint)
+            drawCard(cv)
+        }
+
+        /** 다시 화면을 켰을 때, 비운 동안 모인 자원을 양피지 카드로 몇 초 보여준다. */
+        private fun drawCard(cv: Canvas) {
+            val r = card ?: return
+            if (cardT <= 0f) { card = null; return }
+            val a = min(1f, cardT / 1.2f).coerceIn(0f, 1f)
+            val w = cv.width * .78f; val h = w * .36f
+            val x = (cv.width - w) / 2f; val y = cv.height * .64f
+            val d = cv.width / 400f
+            for (p in listOf(cardBg, cardEdge, cardTitle, cardText)) p.alpha = (255 * a).toInt()
+            cardEdge.strokeWidth = 3 * d
+            val box = android.graphics.RectF(x, y, x + w, y + h)
+            cv.drawRoundRect(box, 14 * d, 14 * d, cardBg)
+            cv.drawRoundRect(box, 14 * d, 14 * d, cardEdge)
+            val t = if (r.minutes >= 60) (r.minutes / 60).toString() + "시간" + (if (r.minutes % 60 > 0) " " + (r.minutes % 60) + "분" else "") else (r.minutes.coerceAtLeast(1)).toString() + "분"
+            cardTitle.textSize = 20 * d; cardText.textSize = 16 * d
+            cv.drawText(t + " 동안 섬 주민들이", x + w / 2, y + h * .36f, cardTitle)
+            cv.drawText("나무 +" + r.wood + "   돌 +" + r.stone, x + w / 2, y + h * .62f, cardTitle)
+            if (r.full) cv.drawText("창고가 가득 찼어요. 앱에서 창고를 넓혀요", x + w / 2, y + h * .85f, cardText)
         }
     }
 }
