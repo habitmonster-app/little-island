@@ -110,7 +110,7 @@ class Scene {
     private class Tree(val x: Float, val y: Float) { var hp = 3; var regrow = 0f }
     private class Rock(val x: Float, val y: Float)
     private class Target(val wood: Boolean, val tree: Tree?, val rock: Rock?, val x: Float, val y: Float)
-    private class Villager(var x: Float, var y: Float, val color: Int) {
+    private class Villager(var x: Float, var y: Float, val color: Int, val helper: Boolean = false) {
         var st = 0  // 0 쉼, 1 가는 중, 2 일하는 중, 3 돌아오는 중
         var t = Random.nextFloat() * 2f
         var tgt: Target? = null
@@ -137,7 +137,8 @@ class Scene {
     private fun syncVillagers() {
         while (villagers.size < Game.pop()) {
             val i = villagers.size
-            val v = if (i < 3) Villager(fireX + i * 4 - 4, fireY + 6, bodyColors[i]) else Villager(170f, 102f, bodyColors[i % bodyColors.size])
+            val v = if (i < Game.RESIDENTS) Villager(fireX + i * 4 - 4, fireY + 6, bodyColors[i])
+                else Villager(170f, 102f, bodyColors[i % bodyColors.size], true)  // 알바는 부두에서 내린다
             villagers.add(v)
         }
         while (villagers.size > Game.pop()) villagers.removeAt(villagers.size - 1)
@@ -176,6 +177,7 @@ class Scene {
     fun update(dt: Float) {
         Game.tick(dt)
         syncVillagers()
+        if (Game.arrived > 0) { pops.add(Pop(176f, 88f + OY, "알바 +" + Game.arrived, 3f)); Game.arrived = 0 }
         for (pp in pops) { pp.t -= dt; pp.y -= dt * 6 }
         pops.removeAll { it.t <= 0f }
         if (hasDock) {
@@ -365,6 +367,7 @@ class Scene {
         val bob = if (v.st == 2) floor(time * 6).toInt() % 2 else 0
         val lx = v.x - 1; val ly = v.y - 5 - bob
         r(lx, ly, 3f, 2f, col("#f2c79a")); r(lx, ly, 3f, 1f, col("#3a2a1a"))
+        if (v.helper) { r(lx - 1, ly - 1, 5f, 1f, col("#e8c060")); r(lx, ly - 2, 3f, 1f, col("#e8c060")) } // 밀짚모자
         r(lx, ly + 2, 3f, 2f, v.color)
         val walking = v.st == 1 || v.st == 3
         val st = if (walking) floor(v.step).toInt() % 2 else 0
