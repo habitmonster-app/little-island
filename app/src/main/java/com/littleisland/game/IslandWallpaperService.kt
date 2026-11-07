@@ -34,6 +34,7 @@ class IslandWallpaperService : WallpaperService() {
         private var cam = -1f
         private var lastPhase = -1
         private val frame = Runnable { drawFrame() }
+        private val labelCv by lazy { Canvas(scene.bitmap) }
         private var card: Triple<String, String, String>? = null   // 결과 카드 (제목, 내용, 작은 글씨)
         private var cardT = 0f
         private val cardBg = Paint().apply { isAntiAlias = true; color = Color.parseColor("#f3e6c4") }
@@ -44,7 +45,8 @@ class IslandWallpaperService : WallpaperService() {
         override fun onCreate(surfaceHolder: SurfaceHolder) {
             super.onCreate(surfaceHolder)
             setOffsetNotificationsEnabled(true)
-            Game.init(this@IslandWallpaperService)
+            Game.init(this@IslandWallpaperService); Pix.load(this@IslandWallpaperService)
+            for (pt in listOf(cardTitle, cardText, talkTx, talkName, popTx)) pt.typeface = Pix.big
         }
 
         override fun onVisibilityChanged(v: Boolean) {
@@ -107,6 +109,8 @@ class IslandWallpaperService : WallpaperService() {
                 card = Triple(t, m, ""); cardT = 6f
             }
             scene.draw(now / 1000f)
+            // 진행 한 줄: 도트 글꼴로 장면 그림 위에 바로 쓴다 (화면에서 함께 커진다)
+            Pix.text(labelCv, Hud.title(), 6f, Scene.HOR - 58f, 10, Pix.col("#ffe7a8"), android.graphics.Paint.Align.LEFT, true)
 
             val holder = surfaceHolder
             var canvas: Canvas? = null
@@ -136,7 +140,6 @@ class IslandWallpaperService : WallpaperService() {
             cv.drawBitmap(scene.bitmap, src, dst, paint)
             drawPops(cv)
             drawTalk(cv)
-            drawBoard(cv)
             drawCard(cv)
         }
         private fun sxOf(x: Float) = (x - ox) * scale
