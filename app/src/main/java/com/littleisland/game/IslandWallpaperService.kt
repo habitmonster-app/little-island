@@ -53,7 +53,8 @@ class IslandWallpaperService : WallpaperService() {
                 Game.catchUp()
                 Game.report?.let { r ->
                     val t = if (r.minutes >= 60) (r.minutes / 60).toString() + "시간" + (if (r.minutes % 60 > 0) " " + (r.minutes % 60) + "분" else "") else (r.minutes.coerceAtLeast(1)).toString() + "분"
-                    card = Triple(t + " 동안 섬 사람들이", "나무 +" + r.wood + "   돌 +" + r.stone, if (r.full) "창고가 가득 찼어요. 앱에서 창고를 넓혀요" else "")
+                    card = Triple(t + " 동안 섬에서", "나무 +" + r.wood + "  돌 +" + r.stone + "  금화 +" + r.gold,
+                        (if (r.voyages > 0) "항해 " + r.voyages + "번 다녀왔어요" else "") + (if (r.full) (if (r.voyages > 0) " · " else "") + "창고가 가득 찼어요" else ""))
                     cardT = 7f; Game.report = null
                 }
                 lastMs = SystemClock.uptimeMillis(); drawFrame()
@@ -102,8 +103,8 @@ class IslandWallpaperService : WallpaperService() {
             lastMs = now
             scene.update(dt)
             // 배가 있는 곳으로 화면이 따라간다 (단계가 바뀔 때만, 그 뒤엔 톡으로 자유롭게)
-            val vt = Game.voyT()
-            val phase = when { vt < 0f -> 0; vt < Game.PORT_AT -> 1; vt < Game.LEAVE_AT -> 2; else -> 1 } + (if (vt >= Game.LEAVE_AT) 10 else 0)
+            val vf = Game.voyFrac()
+            val phase = when { vf < 0f -> 0; vf < Data.fArrive -> 1; vf < Data.fLeave -> 2; else -> 11 }
             if (phase != lastPhase) { if (lastPhase != -1) tapPage = phase % 10; lastPhase = phase }
             if (cardT > 0f) cardT -= dt
             if (cardT <= 0f && Game.cards.isNotEmpty()) {   // 항해 결과 카드를 하나씩

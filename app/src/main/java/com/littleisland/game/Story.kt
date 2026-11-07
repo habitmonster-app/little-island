@@ -65,8 +65,9 @@ object Story {
      * 깃발을 보고 열 수 있는 본편·외전을 연다. 새로 열린 것들을 돌려준다.
      * 본편이 열리면 "main_NN" 깃발이 생겨 다음 화나 외전 조건이 된다.
      */
-    fun refresh(): List<Entry> {
+    fun refresh(later: Boolean): List<Entry> {
         val opened = ArrayList<Entry>()
+        var laterUsed = false
         var changed = true
         while (changed) {
             changed = false
@@ -74,6 +75,9 @@ object Story {
                 if (e.kind == VOYAGE || Game.isOpen(e.id)) continue
                 if (!Game.has(e.unlock)) continue
                 if (e.after != null && !Game.isOpen(e.after)) continue
+                // 11화부터는 귀항 때만, 한 번에 한 화씩
+                val no = if (e.kind == MAIN) e.id.removePrefix("main_").toIntOrNull() ?: 0 else 0
+                if (no > 10) { if (!later || laterUsed) continue; laterUsed = true }
                 Game.open(e.id)
                 if (e.kind == MAIN) Game.flag(e.id)
                 opened.add(e); changed = true
@@ -90,9 +94,16 @@ object Story {
         return (if (fresh.isNotEmpty()) fresh else ok).random()
     }
 
-    /** 홈 화면 말풍선 한 줄 */
+    private val recent = ArrayDeque<String>()
+
+    /** 홈 화면 말풍선 한 줄 (08_home_lines 192줄, 없으면 이야기 파일의 18줄) */
     fun pickLine(who: String, time: String): String? {
-        val ok = lines.filter { it.who == who && it.time == time && Game.has(it.unlock) }
-        return if (ok.isEmpty()) null else fill(ok.random().text)
+        val src = if (Data.lines.isNotEmpty()) Data.lines.map { Line(it.who, it.time, it.text, it.unlock) to it.id } else lines.map { it to it.text }
+        val ok = src.filter { it.first.who == who && it.first.time == time && Game.has(it.first.unlock) }
+        if (ok.isEmpty()) return null
+        val fresh = ok.filter { it.second !in recent }
+        val pick = (if (fresh.isNotEmpty()) fresh else ok).random()
+        recent.addLast(pick.second); while (recent.size > 8) recent.removeFirst()
+        return fill(pick.first.text)
     }
 }

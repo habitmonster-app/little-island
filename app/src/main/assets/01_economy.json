@@ -1,0 +1,1140 @@
+{
+  "schema_version": 1,
+  "design_status": "release_balance_proposal_v1",
+  "resources": [
+    {
+      "id": "wood",
+      "name": "나무",
+      "base": true,
+      "storage": "warehouse"
+    },
+    {
+      "id": "stone",
+      "name": "돌",
+      "base": true,
+      "storage": "warehouse"
+    },
+    {
+      "id": "gold",
+      "name": "금화",
+      "base": true,
+      "storage": "wallet"
+    },
+    {
+      "id": "salt",
+      "name": "소금",
+      "base": false,
+      "from_port": "port_saltflat",
+      "storage": "voyage_manifest_only",
+      "note": "항로 짐 선택에서만 다루며 기본 창고나 홈 화면 자원칸에 추가하지 않아요."
+    },
+    {
+      "id": "pottery",
+      "name": "도기",
+      "base": false,
+      "from_port": "port_pottery",
+      "storage": "voyage_manifest_only",
+      "note": "항로 짐 선택에서만 다루며 기본 창고나 홈 화면 자원칸에 추가하지 않아요."
+    },
+    {
+      "id": "sailcloth",
+      "name": "돛천",
+      "base": false,
+      "from_port": "port_windneck",
+      "storage": "voyage_manifest_only",
+      "note": "항로 짐 선택에서만 다루며 기본 창고나 홈 화면 자원칸에 추가하지 않아요."
+    },
+    {
+      "id": "lumber",
+      "name": "가공 목재",
+      "base": false,
+      "from_port": "port_pineshade",
+      "storage": "voyage_manifest_only",
+      "note": "항로 짐 선택에서만 다루며 기본 창고나 홈 화면 자원칸에 추가하지 않아요."
+    },
+    {
+      "id": "rope",
+      "name": "밧줄",
+      "base": false,
+      "from_port": "port_redanchor",
+      "storage": "voyage_manifest_only",
+      "note": "항로 짐 선택에서만 다루며 기본 창고나 홈 화면 자원칸에 추가하지 않아요."
+    },
+    {
+      "id": "dried_fish",
+      "name": "말린 생선",
+      "base": false,
+      "from_port": "port_fogferry",
+      "storage": "voyage_manifest_only",
+      "note": "항로 짐 선택에서만 다루며 기본 창고나 홈 화면 자원칸에 추가하지 않아요."
+    },
+    {
+      "id": "glass",
+      "name": "유리",
+      "base": false,
+      "from_port": "port_glasscape",
+      "storage": "voyage_manifest_only",
+      "note": "항로 짐 선택에서만 다루며 기본 창고나 홈 화면 자원칸에 추가하지 않아요."
+    },
+    {
+      "id": "grain",
+      "name": "곡물",
+      "base": false,
+      "from_port": "port_reedbay",
+      "storage": "voyage_manifest_only",
+      "note": "항로 짐 선택에서만 다루며 기본 창고나 홈 화면 자원칸에 추가하지 않아요."
+    },
+    {
+      "id": "paper",
+      "name": "종이",
+      "base": false,
+      "from_port": "port_paperwater",
+      "storage": "voyage_manifest_only",
+      "note": "항로 짐 선택에서만 다루며 기본 창고나 홈 화면 자원칸에 추가하지 않아요."
+    },
+    {
+      "id": "tools",
+      "name": "공구",
+      "base": false,
+      "from_port": "port_whitesail",
+      "storage": "voyage_manifest_only",
+      "note": "항로 짐 선택에서만 다루며 기본 창고나 홈 화면 자원칸에 추가하지 않아요."
+    }
+  ],
+  "progression": [
+    {
+      "unlock": "ship_2",
+      "requires": [
+        "main_10"
+      ],
+      "cost": {
+        "gold": 1800,
+        "wood": 120,
+        "stone": 60
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 16.75,
+      "expected_calendar_days": 0.7,
+      "expected_wall_hours": 16.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "port_saltflat",
+      "requires": [
+        "ship_2",
+        "main_12"
+      ],
+      "cost": {
+        "gold": 1800,
+        "wood": 80,
+        "stone": 40
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 24.75,
+      "expected_calendar_days": 1.03,
+      "expected_wall_hours": 24.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "port_pottery",
+      "requires": [
+        "port_saltflat",
+        "main_13"
+      ],
+      "cost": {
+        "gold": 3200,
+        "wood": 100,
+        "stone": 80
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 32.75,
+      "expected_calendar_days": 1.36,
+      "expected_wall_hours": 32.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "port_windneck",
+      "requires": [
+        "port_pottery",
+        "main_14"
+      ],
+      "cost": {
+        "gold": 4600,
+        "wood": 140,
+        "stone": 80
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 40.75,
+      "expected_calendar_days": 1.7,
+      "expected_wall_hours": 40.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "port_pineshade",
+      "requires": [
+        "ship_2",
+        "main_15"
+      ],
+      "cost": {
+        "gold": 4000,
+        "wood": 120,
+        "stone": 80
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 48.75,
+      "expected_calendar_days": 2.03,
+      "expected_wall_hours": 48.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "port_redanchor",
+      "requires": [
+        "ship_2",
+        "main_20"
+      ],
+      "cost": {
+        "gold": 8500,
+        "wood": 180,
+        "stone": 100
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 64.75,
+      "expected_calendar_days": 2.7,
+      "expected_wall_hours": 64.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "port_fogferry",
+      "requires": [
+        "port_redanchor",
+        "main_29"
+      ],
+      "cost": {
+        "gold": 16000,
+        "wood": 200,
+        "stone": 140
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 96.75,
+      "expected_calendar_days": 4.03,
+      "expected_wall_hours": 96.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "port_glasscape",
+      "requires": [
+        "port_fogferry",
+        "main_34"
+      ],
+      "cost": {
+        "gold": 22000,
+        "wood": 160,
+        "stone": 240
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 136.75,
+      "expected_calendar_days": 5.7,
+      "expected_wall_hours": 136.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "ship_3",
+      "requires": [
+        "ship_2",
+        "port_glasscape",
+        "port_pineshade",
+        "main_35"
+      ],
+      "cost": {
+        "gold": 30000,
+        "wood": 280,
+        "stone": 220
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 192.75,
+      "expected_calendar_days": 8.03,
+      "expected_wall_hours": 192.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "lighthouse",
+      "requires": [
+        "port_glasscape",
+        "main_36"
+      ],
+      "cost": {
+        "gold": 28000,
+        "wood": 200,
+        "stone": 260
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 216.75,
+      "expected_calendar_days": 9.03,
+      "expected_wall_hours": 216.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "port_reedbay",
+      "requires": [
+        "ship_3",
+        "main_37"
+      ],
+      "cost": {
+        "gold": 36000,
+        "wood": 220,
+        "stone": 160
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 248.75,
+      "expected_calendar_days": 10.36,
+      "expected_wall_hours": 248.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "port_paperwater",
+      "requires": [
+        "port_reedbay",
+        "main_38"
+      ],
+      "cost": {
+        "gold": 42000,
+        "wood": 160,
+        "stone": 140
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 280.75,
+      "expected_calendar_days": 11.7,
+      "expected_wall_hours": 280.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "market",
+      "requires": [
+        "main_41"
+      ],
+      "cost": {
+        "gold": 50000,
+        "wood": 280,
+        "stone": 240
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 320.75,
+      "expected_calendar_days": 13.36,
+      "expected_wall_hours": 320.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "port_whitesail",
+      "requires": [
+        "market",
+        "main_44"
+      ],
+      "cost": {
+        "gold": 65000,
+        "wood": 280,
+        "stone": 220
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 368.75,
+      "expected_calendar_days": 15.36,
+      "expected_wall_hours": 368.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "ship_4",
+      "requires": [
+        "ship_3",
+        "main_47"
+      ],
+      "cost": {
+        "gold": 100000,
+        "wood": 400,
+        "stone": 350
+      },
+      "requires_building_levels": {
+        "warehouse": 2
+      },
+      "purchase_mode": "app_one_time",
+      "required_for_main_ending": true,
+      "expected_play_hours": 448.75,
+      "expected_calendar_days": 18.7,
+      "expected_wall_hours": 448.75,
+      "estimate_basis_checkins_per_day": 3
+    },
+    {
+      "unlock": "ending",
+      "requires": [
+        "main_60"
+      ],
+      "cost": null,
+      "requires_building_levels": {},
+      "purchase_mode": "automatic_story_completion",
+      "required_for_main_ending": true,
+      "expected_play_hours": 452.4,
+      "expected_calendar_days": 18.85,
+      "expected_wall_hours": 452.4,
+      "estimate_basis_checkins_per_day": 3
+    }
+  ],
+  "fixed_rules": {
+    "permanent_residents": [
+      "단",
+      "보리",
+      "해온"
+    ],
+    "max_houses": 3,
+    "worker_slots_per_house": 1,
+    "away_reward_hours": 8,
+    "manual_combat": false,
+    "read_story_to_produce": false
+  },
+  "build5_reference": {
+    "house_costs": [
+      {
+        "gold": 0,
+        "wood": 20,
+        "stone": 0
+      },
+      {
+        "gold": 0,
+        "wood": 40,
+        "stone": 10
+      },
+      {
+        "gold": 0,
+        "wood": 80,
+        "stone": 30
+      }
+    ],
+    "warehouse_capacities": [
+      50,
+      150,
+      400
+    ],
+    "resident_gather_per_second": 0.055,
+    "wood_probability": 0.68,
+    "stone_probability": 0.32,
+    "voyage_minutes": 6,
+    "cargo_wood": 20,
+    "cargo_stone": 10,
+    "pirate_at_seconds": 85,
+    "port_arrival_seconds": 150,
+    "port_departure_seconds": 210,
+    "pirate_win": 0.7,
+    "pirate_win_gold": [
+      10,
+      20
+    ],
+    "pirate_loss_fraction": 0.4,
+    "worker_wage": 10,
+    "worker_work_hours": 6
+  },
+  "gathering": {
+    "resident_rate_per_second": 0.055,
+    "worker_base_rate_per_second": 0.055,
+    "wood_fraction": 0.68,
+    "stone_fraction": 0.32,
+    "fractional_units": "accumulate_remainder_then_emit_integer",
+    "production_with_full_storage": "cap_that_resource_only",
+    "pauses_for_unread_story": false
+  },
+  "voyage": {
+    "base_minutes": 12,
+    "base_seconds": 720,
+    "port_distance_source": "03_ports.json ports.distance",
+    "speed_source": "02_ships.json ships.speed",
+    "duration_formula": "ceil(base_seconds * port.distance / ship.speed)",
+    "event_fractions": {
+      "pirate_without_specialty": 0.2361111111111111,
+      "pirate_with_specialty": 0.75,
+      "port_arrive": 0.4166666666666667,
+      "port_leave": 0.5833333333333334,
+      "return": 1
+    },
+    "minimum_duration_seconds": 480,
+    "maximum_duration_seconds": 1800,
+    "clamp_after_formula": true,
+    "note": "출시안은 해솔항 왕복부터 시작하고 먼 항구와 큰 배에 따라 시간이 달라진다. 사용자 확인 없이 자동으로 왕복을 이어 간다.",
+    "auto_repeat": true,
+    "route_changes_apply": "next_departure",
+    "automatic_partial_load": true,
+    "empty_departure_allowed": false,
+    "no_materials": "wait_for_at_least_one_wood; retry_on_resource_change",
+    "manifest_snapshot": [
+      "ship_level",
+      "ship_speed",
+      "port_id",
+      "distance",
+      "cargo",
+      "pirate_stats",
+      "worker_bonuses",
+      "building_bonuses",
+      "sale_prices",
+      "specialty_cost",
+      "specialty_buyer_port"
+    ],
+    "base_cargo_payout": "at_port_sale_once",
+    "specialty_payout": "at_home_return_once",
+    "combat_reward_payout": "at_return_once; outcome recorded at encounter"
+  },
+  "specialty_trade": {
+    "enabled_after": "ship_2",
+    "quantity_max_source": "ships.cargo_special",
+    "source_port_must_equal_selected_voyage_port": true,
+    "buyer_port_must_be_unlocked": true,
+    "source_port_must_be_unlocked": true,
+    "source_and_buyer_must_differ": true,
+    "purchase_price_source": "ports[source].sells[resource]",
+    "resale_price_source": "ports[buyer].buys[resource]",
+    "purchase_payment": "prepaid_fixed_price_contract_at_departure",
+    "sale_payment": "surviving_special_cargo_on_return",
+    "quantity_is_integer": true,
+    "quantity_affordable": "floor(spendable_gold / unit_purchase_price)",
+    "logistics": "방문항에서 예약한 특산물을 싣고 돌아오면 작은 섬에 온 계약 수령선에 인도한다. buyer_port는 그 수령선의 소속 항구다. 수령선이 다음 운송을 맡으므로 플레이어 배의 추가 항해나 영구 재고가 생기지 않는다.",
+    "cost_paid_even_if_lost": true,
+    "loss_applies_only_to_current_onboard_cargo": true,
+    "outbound_non_specialty_loss_targets": [
+      "wood",
+      "stone"
+    ],
+    "inbound_specialty_loss_targets": [
+      "specialty_cargo"
+    ],
+    "sold_base_cargo_never_recomputed": true,
+    "no_free_specialty_from_supply": true,
+    "settlement_does_not_duplicate_gold": true,
+    "spendable_gold_formula": "max(0, min(wallet_gold - reserve_gold, wallet_gold * specialty_spend_limit_fraction))"
+  },
+  "money": {
+    "internal_unit": "gold_cent",
+    "units_per_gold": 100,
+    "price_rounding": "convert_table_price_to_integer_cents_once",
+    "settlement_rounding": "floor_to_cent_after_combining_additive_bonuses",
+    "display_rounding": "floor_to_whole_gold_with_hidden_remainder_preserved",
+    "building_and_upgrade_costs": "integer_gold",
+    "trade_effect_modifier": "1 + (market_multiplier - 1) + capped_worker_sale_bonus",
+    "worker_sale_bonus_cap": 0.06,
+    "worker_combat_bonus_cap": 0.02,
+    "minimum_wallet": 0
+  },
+  "gold_sinks": [
+    {
+      "id": "worker_hire",
+      "source": "05_workers.json",
+      "recurring": true,
+      "optional": "first_yeoul_contract_required_for_main_09_10; subsequent_contracts_optional"
+    },
+    {
+      "id": "ship_upgrades",
+      "source": "02_ships.json",
+      "recurring": false,
+      "optional": false
+    },
+    {
+      "id": "port_charters",
+      "source": "01_economy.json progression",
+      "recurring": false,
+      "optional": false
+    },
+    {
+      "id": "buildings",
+      "source": "04_buildings.json",
+      "recurring": false,
+      "optional": "house_1_warehouse_levels_1_2_dock_lighthouse_market_required; other_buildings_optional"
+    },
+    {
+      "id": "specialty_contracts",
+      "source": "03_ports.json sells",
+      "recurring": true,
+      "optional": true
+    },
+    {
+      "id": "cosmetics",
+      "source": "12_seasons_events.json / 13_postgame.json",
+      "recurring": false,
+      "optional": true
+    }
+  ],
+  "auto_hire_budget": {
+    "enabled_default": true,
+    "max_simultaneous_workers": 3,
+    "never_borrow": true,
+    "reserve_gold_default": 20,
+    "daily_limit_gold_default": 120,
+    "single_hire_limit_gold_default": 10,
+    "first_worker_reserve_exception": true,
+    "first_worker_requires_full_wage": true,
+    "expensive_workers_require_app_budget_change": true,
+    "first_worker_forced_id": "yeoul",
+    "pay_once": "at_port_hire",
+    "contract_starts": "home_arrival",
+    "expire_at": "arrival_wall_timestamp + work_hours*3600",
+    "early_dismissal_fee": 0,
+    "early_dismissal_available": false,
+    "existing_contract_extends_automatically": false,
+    "recruit_after_slot_free": true,
+    "new_building_purchase_priority": "manual_app_purchase_precedes_next_auto_contract",
+    "default_specialty_spend_limit_fraction": 0.25,
+    "budget_clock": "credited_simulation_time",
+    "budget_period_hours": 24,
+    "unused_budget_rolls_over": false,
+    "first_worker_must_finish_one_contract_for_main_story": true
+  },
+  "away_reward_hours": 8,
+  "offline_processing": {
+    "simulation_window": "chronological_first_min(elapsed_seconds,28800)_seconds_since_last_simulated_at",
+    "max_credited_seconds": 28800,
+    "process_all_departures_returns_supplies_hires_within_window": true,
+    "aggregate_after_simulation": true,
+    "overflow_time": "advance_last_simulated_at_to_now; no deferred_production_debt",
+    "worker_contracts_use_wall_clock": true,
+    "expired_in_uncredited_tail": "expire_contract_at_real_expiry_without_generating_production; no replacement_hire_in_uncredited_time",
+    "voyage_crossing_window_end": "carry_remaining_simulated_duration_into_next_window; do_not_fast_forward_for_free",
+    "story_archive_expiry": null,
+    "deduplicate_key": "save_id + voyage_sequence + effect_phase",
+    "do_not_pay_again_on_card_open": true,
+    "callbacks": "single_pure_simulation_engine_shared_by_foreground_and_offline; no_UI_animation_needed",
+    "time_reversal": "clamp_elapsed_to_zero; do_not_mint_resources",
+    "user_absence_penalty": false
+  },
+  "story_processing": {
+    "source_file": "little_island_story.json",
+    "requires_logic": "ALL",
+    "unlock_keys_are_latched_events": true,
+    "main_reference_means": "automatic_narrative_event_completed_not_read",
+    "after_means": "previous_narrative_event_completed_not_read",
+    "first_10": "process_saved_events_in_order_even_if_built_in_a_different_order",
+    "later_pacing": {
+      "trigger": "voyage_return",
+      "max_new_main_episodes_per_return": 1
+    },
+    "feature_gate": "do_not_emit_ship_or_port_or_building_keys_until_the_feature_exists_and_purchase_completes",
+    "main_11": "first_upgrade_recollection_after_ship_2",
+    "ending_emitted_after": "main_60",
+    "storm_main_range": [
+      51,
+      57
+    ],
+    "storm_resolution": "fixed_safe_narrative",
+    "storm_affects_economy": false,
+    "voyages_N_means": "lifetime_completed_voyages; never_relative_since_ending",
+    "postgame_pacing_source": "13_postgame.json"
+  },
+  "model": {
+    "type": "deterministic_expected_value_projection_not_player_test",
+    "checkins_per_day": 3,
+    "active_first_session_minutes": 45,
+    "checkin_spacing_hours": 8,
+    "credit_hours_per_day": 24,
+    "planned_first_sail_hours": 0.5,
+    "first_worker_leave_hours": 6.7,
+    "upgrade_purchase_only_on_checkin": true,
+    "auto_trade_between_checkins": true,
+    "optional_upgrade_spending_included": false,
+    "specialty_profit_included": false,
+    "random_event_bonus_included": false,
+    "planned_worker_daily_budget_gold": 120,
+    "estimated_variation_fraction": 0.3,
+    "validation": "런칭 전 실제 빌드에서 생산·창고·항해 저장과 함께 검증할 경제 제안이다.",
+    "simulation_step_seconds": 60,
+    "combat_parameters_source": "06_pirates.json weighted eligible roster, loss floors per resource",
+    "route_strategy": "highest_expected_net_gold_per_hour_among_unlocked_ports; no specialty or skilled-worker bonuses",
+    "worker_cost_model": "conservative flat 5 gold per credited hour after first worker; some distant ports cannot hire at default 10-gold cap",
+    "treasure_reward_gold": 1200,
+    "resource_capacity_assumption": "warehouse level 2 already built; autonomous supply/resident flows refill construction resources between visits",
+    "resource_caveat": "exact resource queues and paid optional upgrades are not simulated; test in Kotlin before treating durations as fixed",
+    "purchase_timing": "first45min active then evenly spaced app checks; only feature purchases happen on checks",
+    "scenario_results": [
+      {
+        "checkins_per_day": 3,
+        "credited_hours_per_day": 24,
+        "ending_calendar_days": 18.85,
+        "credited_hours_to_ending": 452.4,
+        "milestones": {
+          "ship_2": {
+            "wall_hours": 16.75,
+            "credited_hours": 16.75,
+            "days": 0.7
+          },
+          "port_saltflat": {
+            "wall_hours": 24.75,
+            "credited_hours": 24.75,
+            "days": 1.03
+          },
+          "port_pottery": {
+            "wall_hours": 32.75,
+            "credited_hours": 32.75,
+            "days": 1.36
+          },
+          "port_windneck": {
+            "wall_hours": 40.75,
+            "credited_hours": 40.75,
+            "days": 1.7
+          },
+          "port_pineshade": {
+            "wall_hours": 48.75,
+            "credited_hours": 48.75,
+            "days": 2.03
+          },
+          "port_redanchor": {
+            "wall_hours": 64.75,
+            "credited_hours": 64.75,
+            "days": 2.7
+          },
+          "port_fogferry": {
+            "wall_hours": 96.75,
+            "credited_hours": 96.75,
+            "days": 4.03
+          },
+          "port_glasscape": {
+            "wall_hours": 136.75,
+            "credited_hours": 136.75,
+            "days": 5.7
+          },
+          "ship_3": {
+            "wall_hours": 192.75,
+            "credited_hours": 192.75,
+            "days": 8.03
+          },
+          "lighthouse": {
+            "wall_hours": 216.75,
+            "credited_hours": 216.75,
+            "days": 9.03
+          },
+          "port_reedbay": {
+            "wall_hours": 248.75,
+            "credited_hours": 248.75,
+            "days": 10.36
+          },
+          "port_paperwater": {
+            "wall_hours": 280.75,
+            "credited_hours": 280.75,
+            "days": 11.7
+          },
+          "market": {
+            "wall_hours": 320.75,
+            "credited_hours": 320.75,
+            "days": 13.36
+          },
+          "port_whitesail": {
+            "wall_hours": 368.75,
+            "credited_hours": 368.75,
+            "days": 15.36
+          },
+          "ship_4": {
+            "wall_hours": 448.75,
+            "credited_hours": 448.75,
+            "days": 18.7
+          },
+          "ending": {
+            "wall_hours": 452.4,
+            "credited_hours": 452.4,
+            "days": 18.85
+          }
+        },
+        "route_rate_examples": {
+          "port_haesol": {
+            "gold_per_credited_hour": 444.02,
+            "ship_level": 2,
+            "minutes": 10.92
+          },
+          "port_saltflat": {
+            "gold_per_credited_hour": 469.69,
+            "ship_level": 2,
+            "minutes": 12.55
+          },
+          "port_pottery": {
+            "gold_per_credited_hour": 487.18,
+            "ship_level": 2,
+            "minutes": 13.65
+          },
+          "port_windneck": {
+            "gold_per_credited_hour": 490.47,
+            "ship_level": 2,
+            "minutes": 14.73
+          },
+          "port_redanchor": {
+            "gold_per_credited_hour": 521.82,
+            "ship_level": 2,
+            "minutes": 15.83
+          },
+          "port_fogferry": {
+            "gold_per_credited_hour": 532.23,
+            "ship_level": 2,
+            "minutes": 17.47
+          },
+          "port_glasscape": {
+            "gold_per_credited_hour": 1208.69,
+            "ship_level": 3,
+            "minutes": 15.85
+          },
+          "port_reedbay": {
+            "gold_per_credited_hour": 1261.25,
+            "ship_level": 3,
+            "minutes": 16.8
+          },
+          "port_paperwater": {
+            "gold_per_credited_hour": 1348.83,
+            "ship_level": 3,
+            "minutes": 17.28
+          },
+          "port_whitesail": {
+            "gold_per_credited_hour": 2533.12,
+            "ship_level": 4,
+            "minutes": 16.3
+          }
+        },
+        "voyages": 1614,
+        "gold_remaining": 19507.22
+      },
+      {
+        "checkins_per_day": 2,
+        "credited_hours_per_day": 16,
+        "ending_calendar_days": 28.18,
+        "credited_hours_to_ending": 452.4,
+        "milestones": {
+          "ship_2": {
+            "wall_hours": 24.75,
+            "credited_hours": 16.75,
+            "days": 1.03
+          },
+          "port_saltflat": {
+            "wall_hours": 36.75,
+            "credited_hours": 24.75,
+            "days": 1.53
+          },
+          "port_pottery": {
+            "wall_hours": 48.75,
+            "credited_hours": 32.75,
+            "days": 2.03
+          },
+          "port_windneck": {
+            "wall_hours": 60.75,
+            "credited_hours": 40.75,
+            "days": 2.53
+          },
+          "port_pineshade": {
+            "wall_hours": 72.75,
+            "credited_hours": 48.75,
+            "days": 3.03
+          },
+          "port_redanchor": {
+            "wall_hours": 96.75,
+            "credited_hours": 64.75,
+            "days": 4.03
+          },
+          "port_fogferry": {
+            "wall_hours": 144.75,
+            "credited_hours": 96.75,
+            "days": 6.03
+          },
+          "port_glasscape": {
+            "wall_hours": 204.75,
+            "credited_hours": 136.75,
+            "days": 8.53
+          },
+          "ship_3": {
+            "wall_hours": 288.75,
+            "credited_hours": 192.75,
+            "days": 12.03
+          },
+          "lighthouse": {
+            "wall_hours": 324.75,
+            "credited_hours": 216.75,
+            "days": 13.53
+          },
+          "port_reedbay": {
+            "wall_hours": 372.75,
+            "credited_hours": 248.75,
+            "days": 15.53
+          },
+          "port_paperwater": {
+            "wall_hours": 420.75,
+            "credited_hours": 280.75,
+            "days": 17.53
+          },
+          "market": {
+            "wall_hours": 480.75,
+            "credited_hours": 320.75,
+            "days": 20.03
+          },
+          "port_whitesail": {
+            "wall_hours": 552.75,
+            "credited_hours": 368.75,
+            "days": 23.03
+          },
+          "ship_4": {
+            "wall_hours": 672.75,
+            "credited_hours": 448.75,
+            "days": 28.03
+          },
+          "ending": {
+            "wall_hours": 676.4,
+            "credited_hours": 452.4,
+            "days": 28.18
+          }
+        },
+        "route_rate_examples": {
+          "port_haesol": {
+            "gold_per_credited_hour": 444.02,
+            "ship_level": 2,
+            "minutes": 10.92
+          },
+          "port_saltflat": {
+            "gold_per_credited_hour": 469.69,
+            "ship_level": 2,
+            "minutes": 12.55
+          },
+          "port_pottery": {
+            "gold_per_credited_hour": 487.18,
+            "ship_level": 2,
+            "minutes": 13.65
+          },
+          "port_windneck": {
+            "gold_per_credited_hour": 490.47,
+            "ship_level": 2,
+            "minutes": 14.73
+          },
+          "port_redanchor": {
+            "gold_per_credited_hour": 521.82,
+            "ship_level": 2,
+            "minutes": 15.83
+          },
+          "port_fogferry": {
+            "gold_per_credited_hour": 532.23,
+            "ship_level": 2,
+            "minutes": 17.47
+          },
+          "port_glasscape": {
+            "gold_per_credited_hour": 1208.69,
+            "ship_level": 3,
+            "minutes": 15.85
+          },
+          "port_reedbay": {
+            "gold_per_credited_hour": 1261.25,
+            "ship_level": 3,
+            "minutes": 16.8
+          },
+          "port_paperwater": {
+            "gold_per_credited_hour": 1348.83,
+            "ship_level": 3,
+            "minutes": 17.28
+          },
+          "port_whitesail": {
+            "gold_per_credited_hour": 2533.12,
+            "ship_level": 4,
+            "minutes": 16.3
+          }
+        },
+        "voyages": 1614,
+        "gold_remaining": 19507.22
+      },
+      {
+        "checkins_per_day": 1,
+        "credited_hours_per_day": 8,
+        "ending_calendar_days": 56.18,
+        "credited_hours_to_ending": 452.4,
+        "milestones": {
+          "ship_2": {
+            "wall_hours": 48.75,
+            "credited_hours": 16.75,
+            "days": 2.03
+          },
+          "port_saltflat": {
+            "wall_hours": 72.75,
+            "credited_hours": 24.75,
+            "days": 3.03
+          },
+          "port_pottery": {
+            "wall_hours": 96.75,
+            "credited_hours": 32.75,
+            "days": 4.03
+          },
+          "port_windneck": {
+            "wall_hours": 120.75,
+            "credited_hours": 40.75,
+            "days": 5.03
+          },
+          "port_pineshade": {
+            "wall_hours": 144.75,
+            "credited_hours": 48.75,
+            "days": 6.03
+          },
+          "port_redanchor": {
+            "wall_hours": 192.75,
+            "credited_hours": 64.75,
+            "days": 8.03
+          },
+          "port_fogferry": {
+            "wall_hours": 288.75,
+            "credited_hours": 96.75,
+            "days": 12.03
+          },
+          "port_glasscape": {
+            "wall_hours": 408.75,
+            "credited_hours": 136.75,
+            "days": 17.03
+          },
+          "ship_3": {
+            "wall_hours": 576.75,
+            "credited_hours": 192.75,
+            "days": 24.03
+          },
+          "lighthouse": {
+            "wall_hours": 648.75,
+            "credited_hours": 216.75,
+            "days": 27.03
+          },
+          "port_reedbay": {
+            "wall_hours": 744.75,
+            "credited_hours": 248.75,
+            "days": 31.03
+          },
+          "port_paperwater": {
+            "wall_hours": 840.75,
+            "credited_hours": 280.75,
+            "days": 35.03
+          },
+          "market": {
+            "wall_hours": 960.75,
+            "credited_hours": 320.75,
+            "days": 40.03
+          },
+          "port_whitesail": {
+            "wall_hours": 1104.75,
+            "credited_hours": 368.75,
+            "days": 46.03
+          },
+          "ship_4": {
+            "wall_hours": 1344.75,
+            "credited_hours": 448.75,
+            "days": 56.03
+          },
+          "ending": {
+            "wall_hours": 1348.4,
+            "credited_hours": 452.4,
+            "days": 56.18
+          }
+        },
+        "route_rate_examples": {
+          "port_haesol": {
+            "gold_per_credited_hour": 444.02,
+            "ship_level": 2,
+            "minutes": 10.92
+          },
+          "port_saltflat": {
+            "gold_per_credited_hour": 469.69,
+            "ship_level": 2,
+            "minutes": 12.55
+          },
+          "port_pottery": {
+            "gold_per_credited_hour": 487.18,
+            "ship_level": 2,
+            "minutes": 13.65
+          },
+          "port_windneck": {
+            "gold_per_credited_hour": 490.47,
+            "ship_level": 2,
+            "minutes": 14.73
+          },
+          "port_redanchor": {
+            "gold_per_credited_hour": 521.82,
+            "ship_level": 2,
+            "minutes": 15.83
+          },
+          "port_fogferry": {
+            "gold_per_credited_hour": 532.23,
+            "ship_level": 2,
+            "minutes": 17.47
+          },
+          "port_glasscape": {
+            "gold_per_credited_hour": 1208.69,
+            "ship_level": 3,
+            "minutes": 15.85
+          },
+          "port_reedbay": {
+            "gold_per_credited_hour": 1261.25,
+            "ship_level": 3,
+            "minutes": 16.8
+          },
+          "port_paperwater": {
+            "gold_per_credited_hour": 1348.83,
+            "ship_level": 3,
+            "minutes": 17.28
+          },
+          "port_whitesail": {
+            "gold_per_credited_hour": 2533.12,
+            "ship_level": 4,
+            "minutes": 16.3
+          }
+        },
+        "voyages": 1614,
+        "gold_remaining": 19507.22
+      }
+    ],
+    "ending_expected_days": 18.85,
+    "ending_reference_range_days": [
+      13.2,
+      24.5
+    ],
+    "expected_play_hours_semantics": "credited simulation hours, not screen-on/manual play hours",
+    "cashflow_timing_simplification": "model credits all voyage revenue at return; real base-cargo sale is at port, so budget availability may arrive earlier",
+    "rng_variance_measured": false
+  }
+}

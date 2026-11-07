@@ -2,59 +2,81 @@ package com.littleisland.game
 
 import android.content.Context
 import android.content.SharedPreferences
+import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.math.max
 import kotlin.math.min
+import kotlin.random.Random
 
 /**
- * 섬의 진행 상황. 배경화면과 앱이 같은 값을 함께 쓴다.
- * 휴대폰에 저장되어 껐다 켜도 남고, 안 보는 동안 모인 자원도 계산한다.
+ * 섬의 진행 상황과 시뮬레이션. 배경화면·앱·부재 정산이 모두 같은 advance()를 쓴다.
+ * 수치는 Data(아스트라 기획 데이터)에서 가져온다.
  */
 object Game {
-    val HOUSE_COST = listOf(20 to 0, 40 to 10, 80 to 30)
-    val STORE_COST = listOf(30 to 10, 80 to 40)
-    val DOCK_COST = 60 to 20
-    val CAPS = listOf(50, 150, 400)
-    const val SHIP_EVERY = 75f          // 부두가 있으면 이 초마다 배가 짐을 놓고 감
-    private const val OFFLINE_MAX = 8 * 3600f  // 최대 8시간까지 쌓임
-    const val RESIDENTS = 3                    // 섬 주민은 늘 3명
-    const val WORK_MS = 6 * 3600 * 1000L       // 알바가 일하는 시간
-    // 항해 일정 (출발 후 초)
-    const val BATTLE_AT = 85f                   // 해적 전투 결과
-    const val PORT_AT = 150f                    // 항구 도착, 짐 팔기, 알바 고용
-    const val LEAVE_AT = 210f                   // 항구 출발
-    const val HOME_AT = 360f                    // 섬 도착
-    const val WAGE = 10                         // 알바 한 명 고용비 (금화)
-    const val LOAD_W = 20                       // 한 번에 싣는 나무
-    const val LOAD_S = 10                       // 한 번에 싣는 돌
+    const val RESIDENTS = 3
+    private const val OFFLINE_MAX_MS = 8 * 3600 * 1000L
+    private const val STEP_MS = 10_000L
+    private const val HOUR = 3600_000L
 
+    // ---------- 자원·건물 ----------
     var wood = 12; private set
     var stone = 4; private set
+    private var goldC = 0L                     // 금화 1/100 단위
+    val gold get() = (goldC / 100).toInt()
+    private var fracW = 0.0; private var fracS = 0.0
     var houses = 0; private set
-    var storage = 0; private set
+    var warehouse = 0; private set
     var dock = false; private set
-    var shipT = 0f
-    private var last = 0L
-    /** 일하고 있는 알바들이 집에 돌아가는 시각 */
-    val workers = ArrayList<Long>()
-    var gold = 0; private set
-    // 항해 중인 배
-    var voyStart = 0L; private set        // 0이면 섬에 있음
-    var voyWin = true; private set        // 출발할 때 미리 정해 둔 해적 전투 결과
-    private var voyStep = 0               // 0 항해, 1 전투 끝, 2 항구 끝
-    private var cargoW = 0; private var cargoS = 0
-    private var voyGold = 0; private var voyHire = 0
+    var field = false; private set
+    var lighthouse = false; private set
+    var market = false; private set
+    var shipLevel = 1; private set
+    var route = "port_haesol"; private set
+    var autoSail = true
+    var autoHire = true
+    var hireAny = false                        // 비싼 알바도 자동 고용
+    var supplyT = 0f; private set              // 부두 짐배 주기
+    var supplies = 0                           // 짐배 도착 수 (화면 연출용, Scene이 0으로 돌림)
+    private var hireSpent = 0; private var hireDay = -1L
 
-    // ---------- 이야기 진행 ----------
-    private val flags = HashSet<String>()     // 일어난 사건 (house_1, sail_1, main_05 …)
-    private val opened = HashSet<String>()    // 열린 화
-    private val read = HashSet<String>()      // 읽은 화
+    fun cap() = Data.capacity(warehouse)
+    fun ship() = Data.ship(shipLevel)
+    fun port() = Data.port(route)
+
+    // ---------- 알바 ----------
+    class Contract(val id: String, val expire: Long)
+    val workers = ArrayList<Contract>()
+    private val completed = HashMap<String, Int>()
+    var arrived = 0
+    fun pop() = RESIDENTS + workers.size
+    fun beds() = houses
+    fun completedOf(id: String) = completed[id] ?: 0
+
+    // ---------- 항해 ----------
+    class Voyage(var start: Long, val dur: Float, val port: String, var cw: Int, var cs: Int, val encounter: Boolean,
+                 val pirate: String?, val win: Boolean, var step: Int, var rewardC: Long, var hire: String?, var saleC: Long)
+    var voy: Voyage? = null; private set
     var voyages = 0; private set
+    var lastBattle = ""; private set          // "pirate_win" / "pirate_lose" (말풍선용)
+    var lastBattleAt = 0L; private set
+    var lastReturnAt = 0L; private set
 
+    /** 출발 후 지난 초. 섬에 있으면 -1 */
+    fun voyT(now: Long = last): Float = voy?.let { (now - it.start) / 1000f } ?: -1f
+    fun voyFrac(now: Long = last): Float = voy?.let { ((now - it.start) / 1000f / it.dur).coerceIn(0f, 1f) } ?: -1f
+
+    // ---------- 이야기 ----------
+    private val flags = HashSet<String>()
+    private val opened = HashSet<String>()
+    private val read = HashSet<String>()
+    private val eventLast = HashMap<String, Int>()
+    private var lastEvent = ""
     fun has(f: String): Boolean = when {
         f.isEmpty() || f == "start" -> true
         f.startsWith("voyages_") -> voyages >= (f.removePrefix("voyages_").toIntOrNull() ?: Int.MAX_VALUE)
         else -> f in flags
     }
+    fun hasAll(l: List<String>) = l.all { has(it) }
     fun flag(f: String) { if (flags.add(f)) storyDirty = true }
     fun isOpen(id: String) = id in opened
     fun open(id: String) { opened.add(id) }
@@ -63,201 +85,411 @@ object Game {
     fun unread() = opened.count { it !in read }
     private var storyDirty = true
 
-    /** 새 사건이 생겼으면 이야기를 열고 카드로 알린다 */
+    // ---------- 카드 ----------
+    class Report(val minutes: Int, val wood: Int, val stone: Int, val gold: Int, val voyages: Int, val full: Boolean)
+    var report: Report? = null
+    val cards = ArrayDeque<Pair<String, String>>()
+    val log = ArrayList<String>()
+    private fun card(t: String, m: String) {
+        cards.addLast(t to m); while (cards.size > 8) cards.removeFirst()
+        log.add(0, t + " " + m); while (log.size > 6) log.removeAt(log.size - 1)
+    }
+
+    // 이야기 자리표시자용
+    val LOAD_W get() = ship().cargoW
+    val LOAD_S get() = ship().cargoS
+    val WAGE get() = Data.worker("yeoul")?.wage ?: 10
+    const val WORK_MS = 6 * HOUR
+
+    private var prefs: SharedPreferences? = null
+    private var last = 0L
+    private var saveT = 0f
+
+    // =====================================================================
+    fun init(c: Context) {
+        if (prefs != null) return
+        Data.load(c); Story.load(c)
+        val sp = c.applicationContext.getSharedPreferences("island", Context.MODE_PRIVATE)
+        prefs = sp
+        wood = sp.getInt("wood", 12); stone = sp.getInt("stone", 4)
+        houses = sp.getInt("houses", 0)
+        warehouse = if (sp.contains("warehouse")) sp.getInt("warehouse", 0) else sp.getInt("storage", 0)
+        dock = sp.getBoolean("dock", false); field = sp.getBoolean("field", false)
+        lighthouse = sp.getBoolean("lighthouse", false); market = sp.getBoolean("market", false)
+        shipLevel = sp.getInt("shipLevel", 1); route = sp.getString("route", "port_haesol")!!
+        autoSail = sp.getBoolean("autoSail", true); autoHire = sp.getBoolean("autoHire", true); hireAny = sp.getBoolean("hireAny", false)
+        supplyT = sp.getFloat("supplyT", sp.getFloat("shipT", 0f))
+        hireSpent = sp.getInt("hireSpent", 0); hireDay = sp.getLong("hireDay", -1L)
+        last = sp.getLong("last", System.currentTimeMillis())
+        voyages = sp.getInt("voyages", 0)
+        fun set(k: String, h: HashSet<String>) { h.clear(); sp.getString(k, "")!!.split(",").filter { it.isNotEmpty() }.forEach { h.add(it) } }
+        set("flags", flags); set("opened", opened); set("read", read)
+        sp.getString("completed", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); completed[k] = v.toIntOrNull() ?: 0 }
+        sp.getString("eventLast", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); eventLast[k] = v.toIntOrNull() ?: 0 }
+        lastEvent = sp.getString("lastEvent", "")!!
+
+        // 금화: 예전엔 정수, 이제 1/100 단위
+        goldC = if (sp.contains("goldC")) sp.getLong("goldC", 0L) else sp.getInt("gold", 0) * 100L
+        // 알바: 예전엔 만료 시각만, 이제 "id:만료"
+        workers.clear()
+        val raw = sp.getString("workers", "")!!.split(",").filter { it.isNotEmpty() }
+        val haesol = listOf("yeoul", "mungi")
+        for ((i, w) in raw.withIndex()) {
+            if (":" in w) { val (id, e) = w.split(":"); e.toLongOrNull()?.let { workers.add(Contract(id, it)) } }
+            else w.toLongOrNull()?.let { e -> haesol.getOrNull(i)?.let { workers.add(Contract(it, e)) } }
+        }
+        // 항해
+        voy = null
+        if (sp.contains("v_start")) {
+            val st = sp.getLong("v_start", 0L)
+            if (st != 0L) voy = Voyage(st, sp.getFloat("v_dur", 720f), sp.getString("v_port", route)!!, sp.getInt("v_cw", 0), sp.getInt("v_cs", 0),
+                sp.getBoolean("v_enc", false), sp.getString("v_pirate", null), sp.getBoolean("v_win", true), sp.getInt("v_step", 0),
+                sp.getLong("v_reward", 0L), sp.getString("v_hire", null), sp.getLong("v_sale", 0L))
+        } else if (sp.getLong("voyStart", 0L) != 0L) {
+            // 빌드 5~6의 진행 중 항해는 정산만 하고 마친다
+            goldC += sp.getInt("voyGold", 0) * 100L
+        }
+        // 이미 지은 것은 일어난 일로 인정
+        if (houses >= 1) flags.add("house_1")
+        if (warehouse >= 1) flags.add("store_1")
+        if (dock) flags.add("dock")
+        if (shipLevel >= 2) flags.add("ship_2")
+        if (shipLevel >= 3) flags.add("ship_3")
+        if (shipLevel >= 4) flags.add("ship_4")
+        storyDirty = true
+    }
+
+    fun save() {
+        saveT = 0f
+        val v = voy
+        prefs?.edit()?.apply {
+            putInt("wood", wood); putInt("stone", stone); putLong("goldC", goldC)
+            putInt("houses", houses); putInt("warehouse", warehouse); putInt("storage", min(warehouse, 2))
+            putBoolean("dock", dock); putBoolean("field", field); putBoolean("lighthouse", lighthouse); putBoolean("market", market)
+            putInt("shipLevel", shipLevel); putString("route", route)
+            putBoolean("autoSail", autoSail); putBoolean("autoHire", autoHire); putBoolean("hireAny", hireAny)
+            putFloat("supplyT", supplyT); putInt("hireSpent", hireSpent); putLong("hireDay", hireDay)
+            putLong("last", last); putInt("voyages", voyages)
+            putString("flags", flags.joinToString(",")); putString("opened", opened.joinToString(",")); putString("read", read.joinToString(","))
+            putString("completed", completed.entries.joinToString(",") { it.key + ":" + it.value })
+            putString("eventLast", eventLast.entries.joinToString(",") { it.key + ":" + it.value })
+            putString("lastEvent", lastEvent)
+            putString("workers", workers.joinToString(",") { it.id + ":" + it.expire })
+            putLong("voyStart", 0L)
+            if (v == null) putLong("v_start", 0L) else {
+                putLong("v_start", v.start); putFloat("v_dur", v.dur); putString("v_port", v.port); putInt("v_cw", v.cw); putInt("v_cs", v.cs)
+                putBoolean("v_enc", v.encounter); putString("v_pirate", v.pirate); putBoolean("v_win", v.win); putInt("v_step", v.step)
+                putLong("v_reward", v.rewardC); putString("v_hire", v.hire); putLong("v_sale", v.saleC)
+            }
+            apply()
+        }
+    }
+
+    // =====================================================================
+    // 시뮬레이션
+
+    /** 화면이 그려지는 동안 매 프레임 부른다. */
+    fun tick(dt: Float) {
+        advance(System.currentTimeMillis())
+        saveT += dt
+        if (saveT > 10f) save()
+    }
+
+    /** 다시 보이기 시작할 때. 안 보던 시간(최대 8시간)을 시간 순서대로 계산하고 결과 카드를 만든다. */
+    fun catchUp() {
+        val now = System.currentTimeMillis()
+        val gap = now - last
+        if (gap < 20_000L) { advance(now); return }
+        val w0 = wood; val s0 = stone; val g0 = gold; val v0 = voyages
+        val credited = min(gap, OFFLINE_MAX_MS)
+        advance(now)
+        val full = wood >= cap() || stone >= cap()
+        report = Report((credited / 60000L).toInt(), max(0, wood - w0), max(0, stone - s0), max(0, gold - g0), voyages - v0, full)
+        save()
+    }
+
+    fun advance(now: Long) {
+        if (now <= last) return
+        val gap = now - last
+        if (gap > OFFLINE_MAX_MS) {
+            // 8시간을 넘는 부분은 계산하지 않고 건너뛴다. 항해는 그동안 멈춰 있던 것으로 본다.
+            val skip = gap - OFFLINE_MAX_MS
+            voy?.let { it.start += skip }
+            last += skip
+        }
+        while (last < now) {
+            val step = min(STEP_MS, now - last)
+            step(last + step, step / 1000f)
+            last += step
+        }
+        checkStory()
+    }
+
+    private fun step(t: Long, dt: Float) {
+        // 알바 계약 종료
+        val it = workers.iterator()
+        while (it.hasNext()) {
+            val w = it.next()
+            if (w.expire <= t) {
+                it.remove()
+                completed[w.id] = completedOf(w.id) + 1
+                flag("worker_leave_1")
+                Data.worker(w.id)?.let { d -> card("알바가 떠났어요", d.name + "의 계약이 끝났어요") }
+            }
+        }
+        // 채집: 주민은 기본 속도, 알바는 각자 보너스 (밭이 있으면 알바만 조금 더)
+        var rw = RESIDENTS * Data.gatherRate * Data.woodFrac
+        var rs = RESIDENTS * Data.gatherRate * Data.stoneFrac
+        val fm = if (field) 1f + Data.fieldBonus else 1f
+        for (w in workers) {
+            val d = Data.worker(w.id) ?: continue
+            rw += Data.gatherRate * Data.woodFrac * (1 + d.woodBonus) * fm
+            rs += Data.gatherRate * Data.stoneFrac * (1 + d.stoneBonus) * fm
+        }
+        fracW += rw * dt; fracS += rs * dt
+        val gw = floor(fracW).toInt(); val gs = floor(fracS).toInt()
+        fracW -= gw; fracS -= gs
+        if (gw + gs > 0) { add(gw, gs); flag("first_gather") }
+
+        // 부두 짐배
+        if (dock) {
+            supplyT += dt
+            if (supplyT >= Data.supplyEvery) {
+                supplyT -= Data.supplyEvery
+                add(Random.nextInt(Data.supplyW[0], Data.supplyW[1] + 1), Random.nextInt(Data.supplyS[0], Data.supplyS[1] + 1))
+                supplies++
+            }
+        }
+
+        // 항해
+        val v = voy
+        if (v == null) { if (dock && autoSail && wood >= 1) depart(t) }
+        else voyageStep(v, t)
+    }
+
+    /** 창고 칸까지만 넣는다. 이미 넘게 가진 건 버리지 않는다. */
+    fun add(w: Int, s: Int): Pair<Int, Int> {
+        val bw = wood; val bs = stone
+        if (wood < cap()) wood = min(cap(), wood + w)
+        if (stone < cap()) stone = min(cap(), stone + s)
+        return (wood - bw) to (stone - bs)
+    }
+
+    // ---------- 항해 ----------
+    fun canSail() = dock && voy == null && wood >= 1
+
+    /** 앱의 출항 버튼 (자동 출항을 꺼 두었을 때) */
+    fun sail(): Boolean { if (!canSail()) return false; depart(max(last, System.currentTimeMillis())); save(); return true }
+
+    fun routeOk(p: Data.Port) = (p.id == "port_haesol" || has(p.id)) && shipLevel >= p.minShip
+    fun setRoute(id: String): Boolean { val p = Data.ports.firstOrNull { it.id == id } ?: return false; if (!routeOk(p)) return false; route = id; save(); return true }
+
+    private fun workerPirateBonus() = min(Data.pirateCap, workers.sumOf { (Data.worker(it.id)?.pirateBonus ?: 0f).toDouble() }.toFloat())
+    fun workerSaleBonus() = min(Data.saleCap, workers.sumOf { (Data.worker(it.id)?.saleBonus ?: 0f).toDouble() }.toFloat())
+
+    fun winChance(p: Data.Pirate): Float = (ship().pirateWin - Data.powerCoef * (p.power - 1f) +
+        (if (lighthouse) Data.lighthouseBonus else 0f) + workerPirateBonus()).coerceIn(Data.winMin, Data.winMax)
+
+    fun voyageSeconds(p: Data.Port = port()): Float =
+        ceil(Data.baseSeconds * p.distance / ship().speed).coerceIn(Data.minSeconds, Data.maxSeconds)
+
+    private fun depart(t: Long) {
+        var p = port()
+        if (!routeOk(p)) { route = "port_haesol"; p = port() }
+        val s = ship()
+        val cw = min(wood, s.cargoW); val cs = min(stone, s.cargoS)
+        wood -= cw; stone -= cs
+        flag("sail_1")
+        // 해적: 첫 조우는 반드시, 그 뒤는 항구 위험도만큼
+        val forced = !has("pirate_1") && !has("main_53")
+        val enc = forced || Random.nextFloat() < p.risk
+        var pirate: Data.Pirate? = null
+        if (enc) {
+            pirate = if (forced) Data.pirate("hook_minor") else {
+                val ok = Data.pirates.filter { it.normal && it.weight > 0 && has(it.unlock) && hasAll(it.requires) &&
+                    it.disabledBy.none { d -> has(d) } && (it.ports == null || p.id in it.ports) }
+                pickWeighted(ok) { it.weight }
+            }
+        }
+        val win = pirate?.let { Random.nextFloat() < winChance(it) } ?: true
+        voy = Voyage(t, voyageSeconds(p), p.id, cw, cs, pirate != null, pirate?.id, win, 0, 0L, null, 0L)
+        storyDirty = true
+        save()
+    }
+
+    private fun voyageStep(v: Voyage, t: Long) {
+        val f = (t - v.start) / 1000f / v.dur
+        val p = Data.port(v.port)
+        if (v.step == 0 && f >= Data.fPirate) {
+            v.step = 1
+            if (v.encounter) {
+                val pr = Data.pirate(v.pirate ?: "") ?: Data.pirates.firstOrNull()
+                flag("pirate_1")
+                lastBattle = if (v.win) "pirate_win" else "pirate_lose"; lastBattleAt = t
+                if (pr != null) {
+                    if (v.win) {
+                        val g = Random.nextInt(pr.winGold[0], max(pr.winGold[0], pr.winGold[1]) + 1)
+                        v.rewardC = g * 100L
+                        card(pr.name + "을 물리쳤어요!", "귀항하면 금화 +$g")
+                    } else {
+                        val lw = v.cw - floor(v.cw * (1 - pr.lose)).toInt(); val ls = v.cs - floor(v.cs * (1 - pr.lose)).toInt()
+                        v.cw -= lw; v.cs -= ls
+                        card(pr.name + "에게 당했어요", "짐을 빼앗겼어요 나무 -$lw 돌 -$ls")
+                    }
+                }
+            }
+        }
+        if (v.step == 1 && f >= Data.fArrive) {
+            v.step = 2
+            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus()
+            val sale = floor((v.cw * p.buyW + v.cs * p.buyS) * mul * 100).toLong()
+            goldC += sale; v.saleC = sale
+            flag("sale_1")
+            v.hire = tryHire(p, t)
+            v.hire?.let { goldC -= (Data.worker(it)?.wage ?: 0) * 100L }
+            card(p.name + "에 도착했어요", "짐을 팔아 금화 +" + sale / 100 + (v.hire?.let { ", " + (Data.worker(it)?.name ?: "") + " 고용" } ?: ""))
+        }
+        if (v.step == 2 && f >= Data.fLeave) v.step = 3
+        if (v.step >= 2 && f >= 1f) returnHome(v, v.start + (v.dur * 1000).toLong())
+    }
+
+    private fun tryHire(p: Data.Port, t: Long): String? {
+        if (workers.size >= houses) return null
+        val gold = goldC / 100
+        val busy = workers.map { it.id }.toSet()
+        val list = Data.workers.filter { it.port == p.id && has(it.unlock) && it.id !in busy }
+        // 첫 알바는 해솔항의 여울로 정해져 있다 (예비금 규칙 예외)
+        if (!has("worker_arrive_1")) {
+            val y = list.firstOrNull { it.id == "yeoul" } ?: return null
+            return if (gold >= y.wage) y.id else null
+        }
+        if (!autoHire) return null
+        val day = t / (24 * HOUR)
+        if (day != hireDay) { hireDay = day; hireSpent = 0 }
+        val limit = if (hireAny) Int.MAX_VALUE else Data.singleLimit
+        val daily = if (hireAny) Int.MAX_VALUE else Data.dailyLimit
+        val w = list.firstOrNull { it.wage <= limit && gold - it.wage >= Data.reserveGold && hireSpent + it.wage <= daily } ?: return null
+        hireSpent += w.wage
+        return w.id
+    }
+
+    private fun returnHome(v: Voyage, t: Long) {
+        goldC += v.rewardC
+        var line = "판매 금화 +" + v.saleC / 100 + (if (v.rewardC > 0) ", 보물 +" + v.rewardC / 100 else "")
+        v.hire?.let { id ->
+            val d = Data.worker(id)
+            workers.add(Contract(id, t + (d?.hours ?: 6) * HOUR))
+            arrived++
+            flag("worker_arrive_1")
+            line += ", " + (d?.name ?: "알바") + " 도착"
+        }
+        voyages++
+        voy = null
+        lastReturnAt = t
+        card("배가 돌아왔어요", line)
+        rollEvent(v)
+        // 11화부터는 귀항할 때마다 최대 한 화씩
+        Story.refresh(true).forEach { announce(it) }
+        if (isOpen("main_60")) flag("ending")
+        save()
+    }
+
+    private fun rollEvent(v: Voyage) {
+        if (Random.nextFloat() >= Data.eventChance) return
+        val ok = Data.events.filter { e ->
+            val story = Story.byId(e.id)
+            story != null && has(story.unlock) && has(e.unlock) && hasAll(e.requires) &&
+                (e.ports == null || v.port in e.ports) && (!e.needField || field) &&
+                (e.repeat || e.id !in eventLast) && voyages - (eventLast[e.id] ?: -999) >= e.cooldown && e.id != lastEvent
+        }
+        val e = pickWeighted(ok) { it.weight } ?: return
+        eventLast[e.id] = voyages; lastEvent = e.id
+        if (e.gold > 0) goldC += e.gold * 100L
+        if (e.wood > 0 || e.stone > 0) add(e.wood, e.stone)
+        val st = Story.byId(e.id) ?: return
+        open(st.id)
+        card("항해 기록 · " + st.title, Story.fill(st.news))
+    }
+
+    private fun <T> pickWeighted(l: List<T>, w: (T) -> Int): T? {
+        val sum = l.sumOf { w(it) }
+        if (sum <= 0) return null
+        var r = Random.nextInt(sum)
+        for (x in l) { r -= w(x); if (r < 0) return x }
+        return l.last()
+    }
+
+    // ---------- 이야기 ----------
+    private fun announce(e: Story.Entry) = card("새 일지 · " + e.label, Story.fill(e.news))
+
     fun checkStory() {
         if (!storyDirty) return
         storyDirty = false
-        val got = Story.refresh().filter { it.kind != Story.VOYAGE }
+        val got = Story.refresh(false).filter { it.kind != Story.VOYAGE }
         if (got.isEmpty()) return
-        val first = got.first()
-        if (got.size == 1) card("새 일지 · " + first.label, Story.fill(first.news))
+        if (got.size == 1) announce(got[0])
         else card("새 일지 " + got.size + "편", Story.fill(got.last().news))
         save()
     }
 
-    /** 결과 카드 (제목, 내용). 배경화면이 하나씩 보여준다 */
-    val cards = ArrayDeque<Pair<String, String>>()
-    /** 앱에 보여줄 최근 항해 일지 */
-    val log = ArrayList<String>()
-    private fun card(t: String, m: String) {
-        cards.addLast(t to m); while (cards.size > 6) cards.removeFirst()
-        log.add(0, t + " " + m); while (log.size > 4) log.removeAt(log.size - 1)
-    }
-    /** 새로 도착한 알바 수 (배경화면이 "+알바"를 띄우고 0으로 돌림) */
-    var arrived = 0
+    // =====================================================================
+    // 짓기·사기 (앱)
 
-    /** 비운 동안 모인 결과 (배경화면 카드/앱 안내에 한 번 보여주고 비움) */
-    class Report(val minutes: Int, val wood: Int, val stone: Int, val full: Boolean)
-    var report: Report? = null
-
-    private var prefs: SharedPreferences? = null
-    private var dirty = 0f
-
-    fun cap() = CAPS[storage]
-    fun pop() = RESIDENTS + workers.size
-    fun beds() = houses
-    /** 출발한 지 몇 초 지났는지. 섬에 있으면 -1 */
-    fun voyT(now: Long = System.currentTimeMillis()): Float = if (voyStart == 0L) -1f else (now - voyStart) / 1000f
-    fun canSail() = dock && voyStart == 0L && (wood > 0 || stone > 0)
-
-    /** 짐을 싣고 항구로 떠난다. 해적 전투는 자동이고 결과만 카드로 나온다 */
-    fun sail(): Boolean {
-        if (!canSail()) return false
-        cargoW = min(wood, LOAD_W); cargoS = min(stone, LOAD_S)
-        wood -= cargoW; stone -= cargoS
-        voyWin = Math.random() < 0.7
-        voyStep = 0; voyGold = 0; voyHire = 0
-        voyStart = System.currentTimeMillis()
-        flag("sail_1"); checkStory()
-        save(); return true
-    }
-
-    private fun updateVoyage(now: Long) {
-        if (voyStart == 0L) return
-        val t = voyT(now)
-        if (voyStep == 0 && t >= BATTLE_AT) {
-            voyStep = 1
-            flag("pirate_1")
-            if (voyWin) {
-                val g = 10 + (Math.random() * 11).toInt()
-                voyGold += g
-                card("해적을 물리쳤어요!", "해적선의 보물 금화 +" + g)
-            } else {
-                val lw = (cargoW * .4f).toInt(); val ls = (cargoS * .4f).toInt()
-                cargoW -= lw; cargoS -= ls
-                card("해적에게 당했어요", "짐을 빼앗겼어요 나무 -" + lw + " 돌 -" + ls)
-            }
-        }
-        if (voyStep == 1 && t >= PORT_AT) {
-            voyStep = 2
-            flag("sale_1")
-            val sale = cargoW + cargoS * 2
-            voyGold += sale
-            val free = houses - workers.size
-            if (free > 0 && gold + voyGold >= WAGE) { voyHire = 1; voyGold -= WAGE }
-            card("항구에 도착했어요", "짐을 팔아 금화 +" + sale + if (voyHire > 0) ", 알바 1명 고용" else if (free <= 0) " (알바 숙소 없음)" else "")
-        }
-        if (t >= HOME_AT) {
-            val homeAt = voyStart + (HOME_AT * 1000).toLong()
-            gold += voyGold
-            repeat(voyHire) { workers.add(homeAt + WORK_MS) }
-            arrived += voyHire
-            card("배가 돌아왔어요", "금화 +" + voyGold + if (voyHire > 0) ", 알바 +" + voyHire else "")
-            voyages++
-            if (voyHire > 0) flag("worker_arrive_1")
-            Story.pickVoyageEvent()?.let { ev -> open(ev.id); card("항해 기록 · " + ev.title, Story.fill(ev.news)) }
-            voyStart = 0L; voyStep = 0; cargoW = 0; cargoS = 0; voyGold = 0; voyHire = 0
-        }
-    }
-
-    private fun updateWorkers(now: Long) {
-        val before = voyStep to voyStart
-        updateVoyage(now)
-        val changed = workers.removeAll { it <= now }
-        if (changed) flag("worker_leave_1")
-        checkStory()
-        if (changed || before != (voyStep to voyStart)) save()
-    }
-
-    fun init(c: Context) {
-        if (prefs != null) return
-        val sp = c.applicationContext.getSharedPreferences("island", Context.MODE_PRIVATE)
-        prefs = sp
-        wood = sp.getInt("wood", 12); stone = sp.getInt("stone", 4)
-        houses = sp.getInt("houses", 0); storage = sp.getInt("storage", 0)
-        dock = sp.getBoolean("dock", false); shipT = sp.getFloat("shipT", 0f)
-        last = sp.getLong("last", System.currentTimeMillis())
-        gold = sp.getInt("gold", 0)
-        voyStart = sp.getLong("voyStart", 0L); voyWin = sp.getBoolean("voyWin", true)
-        voyStep = sp.getInt("voyStep", 0); cargoW = sp.getInt("cargoW", 0); cargoS = sp.getInt("cargoS", 0)
-        voyGold = sp.getInt("voyGold", 0); voyHire = sp.getInt("voyHire", 0)
-        voyages = sp.getInt("voyages", 0)
-        fun set(k: String, h: HashSet<String>) { h.clear(); sp.getString(k, "")!!.split(",").filter { it.isNotEmpty() }.forEach { h.add(it) } }
-        set("flags", flags); set("opened", opened); set("read", read)
-        // 이야기 이전부터 하던 사람: 이미 지은 것은 일어난 일로 인정
-        if (houses >= 1) flags.add("house_1")
-        if (storage >= 1) flags.add("store_1")
-        if (dock) flags.add("dock")
-        Story.load(c)
-        storyDirty = true
-        workers.clear()
-        sp.getString("workers", "")!!.split(",").mapNotNull { it.toLongOrNull() }.forEach { workers.add(it) }
-    }
-
-    fun save() {
-        dirty = 0f
-        last = System.currentTimeMillis()
-        prefs?.edit()?.putInt("wood", wood)?.putInt("stone", stone)?.putInt("houses", houses)
-            ?.putInt("storage", storage)?.putBoolean("dock", dock)?.putFloat("shipT", shipT)
-            ?.putLong("last", last)?.putInt("gold", gold)
-            ?.putLong("voyStart", voyStart)?.putBoolean("voyWin", voyWin)?.putInt("voyStep", voyStep)
-            ?.putInt("cargoW", cargoW)?.putInt("cargoS", cargoS)?.putInt("voyGold", voyGold)?.putInt("voyHire", voyHire)
-            ?.putInt("voyages", voyages)?.putString("flags", flags.joinToString(","))
-            ?.putString("opened", opened.joinToString(","))?.putString("read", read.joinToString(","))
-            ?.putString("workers", workers.joinToString(","))?.apply()
-    }
-
-    /** 자원을 넣는다. 창고가 차면 넘치는 건 버려진다. 실제로 들어간 양을 돌려준다. */
-    fun add(w: Int, s: Int): Pair<Int, Int> {
-        val bw = wood; val bs = stone
-        wood = min(cap(), wood + w); stone = min(cap(), stone + s)
-        return (wood - bw) to (stone - bs)
-    }
-
-    /** 화면이 그려지는 동안 매 프레임 부른다. 몇 초마다 저장. */
-    fun tick(dt: Float) {
-        last = System.currentTimeMillis()
-        updateWorkers(last)
-        dirty += dt
-        if (dirty > 10f) save()
-    }
-
-    /** 다시 보이기 시작할 때 부른다. 안 보던 시간만큼 자원을 쌓는다. */
-    fun catchUp() {
-        val now = System.currentTimeMillis()
-        val secs = min((now - last) / 1000f, OFFLINE_MAX)
-        last = now
-        if (secs < 20f) return
-        // 주민은 내내, 알바는 일한 시간만큼만 센다
-        val from = now - (secs * 1000).toLong()
-        var workSecs = RESIDENTS * secs
-        for (w in workers) workSecs += ((min(w, now) - from) / 1000f).coerceIn(0f, secs)
-        updateWorkers(now)
-        val per = workSecs / 11f * 0.6f
-        var w = floor(per * .68f).toInt(); var s = floor(per * .32f).toInt()
-        if (dock) {
-            val n = floor((shipT + secs) / SHIP_EVERY).toInt()
-            shipT = (shipT + secs) % SHIP_EVERY
-            w += n * 15; s += n * 7
-        }
-        val (gw, gs) = add(w, s)
-        val full = wood >= cap() || stone >= cap()
-        if (gw + gs > 0 || full) report = Report((secs / 60).toInt(), gw, gs, full)
-        save()
-    }
-
-    // ---------- 건물 ----------
-    fun houseCost() = HOUSE_COST.getOrNull(houses)
-    fun storeCost() = STORE_COST.getOrNull(storage)
-    fun dockCost() = if (dock) null else DOCK_COST
-
-    private fun pay(c: Pair<Int, Int>?): Boolean {
-        if (c == null || wood < c.first || stone < c.second) return false
-        wood -= c.first; stone -= c.second
+    fun canPay(c: Data.Cost?) = c != null && goldC >= c.gold * 100L && wood >= c.wood && stone >= c.stone
+    private fun pay(c: Data.Cost?): Boolean {
+        if (!canPay(c)) return false
+        goldC -= c!!.gold * 100L; wood -= c.wood; stone -= c.stone
         return true
     }
+    private fun done(f: String?) { if (f != null) flag(f); checkStory(); save() }
 
-    fun buildHouse(): Boolean { if (!pay(houseCost())) return false; houses++; flag("house_1"); checkStory(); save(); return true }
-    fun buildStore(): Boolean { if (!pay(storeCost())) return false; storage++; flag("store_1"); checkStory(); save(); return true }
-    fun buildDock(): Boolean { if (!pay(dockCost())) return false; dock = true; shipT = SHIP_EVERY - 8; flag("dock"); checkStory(); save(); return true }
+    fun nextHouse() = Data.houses.getOrNull(houses)
+    fun houseReady() = nextHouse()?.let { hasAll(it.requires) } ?: false
+    fun buildHouse(): Boolean {
+        val b = nextHouse() ?: return false
+        if (!houseReady() || !pay(b.cost)) return false
+        houses++; done(if (houses == 1) "house_1" else null); return true
+    }
 
-    /** 주민이 처음으로 나무나 돌을 창고에 넣었을 때 */
-    fun gathered() { if ("first_gather" !in flags) flag("first_gather") }
+    fun nextWarehouse() = Data.warehouse.getOrNull(warehouse + 1)
+    fun warehouseReady() = nextWarehouse()?.let { hasAll(it.second.requires) } ?: false
+    fun upgradeWarehouse(): Boolean {
+        val l = nextWarehouse() ?: return false
+        if (!warehouseReady() || !pay(l.second.cost)) return false
+        warehouse++; done(if (warehouse == 1) "store_1" else null); return true
+    }
+
+    fun dockReady() = !dock && (Data.dock?.let { hasAll(it.requires) } ?: true)
+    fun buildDock(): Boolean {
+        if (!dockReady() || !pay(Data.dock?.cost ?: Data.Cost(0, 60, 20))) return false
+        dock = true; supplyT = Data.supplyEvery - 8; done("dock"); return true
+    }
+
+    fun fieldReady() = !field && (Data.field?.let { hasAll(it.requires) } ?: false)
+    fun buildField(): Boolean {
+        if (!fieldReady() || !pay(Data.field?.cost)) return false
+        field = true; done(null); return true
+    }
+
+    /** 배 강화·항구 개방·등대·장터: 01 progression 항목 */
+    fun unlockReady(u: Data.Unlock) = !has(u.key) && hasAll(u.requires) && warehouse >= u.needWarehouse && u.cost != null
+    fun buyUnlock(key: String): Boolean {
+        val u = Data.unlock(key) ?: return false
+        if (!unlockReady(u) || !pay(u.cost)) return false
+        when {
+            key.startsWith("ship_") -> shipLevel = key.removePrefix("ship_").toIntOrNull() ?: shipLevel
+            key == "lighthouse" -> lighthouse = true
+            key == "market" -> market = true
+        }
+        if (key.startsWith("ship_")) card("배를 고쳤어요", ship().news)
+        done(key); return true
+    }
 
     fun reset() {
-        wood = 12; stone = 4; houses = 0; storage = 0; dock = false; shipT = 0f; report = null
-        workers.clear(); gold = 0; voyStart = 0L; voyStep = 0; cards.clear(); log.clear()
-        flags.clear(); opened.clear(); read.clear(); voyages = 0; storyDirty = true
+        wood = 12; stone = 4; goldC = 0; houses = 0; warehouse = 0; dock = false; field = false; lighthouse = false; market = false
+        shipLevel = 1; route = "port_haesol"; supplyT = 0f; voy = null; voyages = 0; workers.clear(); completed.clear()
+        flags.clear(); opened.clear(); read.clear(); eventLast.clear(); lastEvent = ""; cards.clear(); log.clear(); report = null
+        storyDirty = true
         save()
     }
 }

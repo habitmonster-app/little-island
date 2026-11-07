@@ -1,0 +1,2045 @@
+{
+  "schema_version": 1,
+  "ports": [
+    {
+      "id": "port_haesol",
+      "name": "해솔항",
+      "unlock": "start",
+      "progression_ref": null,
+      "min_ship_level": 1,
+      "distance": 1,
+      "buys": {
+        "wood": 1,
+        "stone": 2,
+        "salt": 4,
+        "pottery": 7,
+        "sailcloth": 6,
+        "lumber": 8,
+        "rope": 7,
+        "dried_fish": 9,
+        "glass": 8,
+        "grain": 10,
+        "paper": 9,
+        "tools": 12
+      },
+      "sells": {},
+      "special": null,
+      "workers": [
+        "yeoul",
+        "mungi"
+      ],
+      "pirate_risk": 0.3,
+      "look": "천막 상점 · 목조 창고 · 고용 게시판 · 짐 분류소 중심의 생활 항구.",
+      "npc": [
+        "모라"
+      ],
+      "npc_presence": [
+        {
+          "name": "모라",
+          "unlock": "start",
+          "until": null
+        }
+      ],
+      "scene": {
+        "size": [
+          200,
+          467
+        ],
+        "colors": [
+          "#D98F49",
+          "#77BCCC",
+          "#E8D9B5"
+        ],
+        "outline_color": "#293B3B",
+        "sea_color": "#568A9E",
+        "sky_color": "#B8D4D8",
+        "structures": [
+          {
+            "id": "port_haesol_structure_1",
+            "name": "천막 상점",
+            "rect": [
+              18,
+              218,
+              40,
+              36
+            ],
+            "type": "building",
+            "desc": "삼각 주황 차양 아래 작은 계산대",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_haesol_structure_2",
+            "name": "목조 창고",
+            "rect": [
+              76,
+              204,
+              42,
+              46
+            ],
+            "type": "building",
+            "desc": "낮은 박공지붕과 밖에 놓인 나무 상자",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_haesol_structure_3",
+            "name": "고용 게시판",
+            "rect": [
+              138,
+              226,
+              42,
+              34
+            ],
+            "type": "building",
+            "desc": "게시판을 품은 하늘색 얕은 지붕",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_haesol_structure_4",
+            "name": "짐 분류소",
+            "rect": [
+              28,
+              292,
+              46,
+              38
+            ],
+            "type": "building",
+            "desc": "분류 칸을 그린 낮은 목조 작업대",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "quay_rect": [
+          14,
+          358,
+          172,
+          28
+        ],
+        "dock_rect": [
+          90,
+          386,
+          20,
+          65
+        ],
+        "boat_berth": [
+          130,
+          429
+        ],
+        "representative_prop": "거래 영수증",
+        "ambient_motion": "천과 깃발이 천천히 흔들리고 물결이 부두 아래를 지난다.",
+        "character_standing_points": [
+          [
+            64,
+            277
+          ],
+          [
+            100,
+            279
+          ],
+          [
+            140,
+            342
+          ]
+        ],
+        "paint_order": [
+          "sky",
+          "sea",
+          "terrain_or_pontoons",
+          "structures",
+          "dock",
+          "props",
+          "visitors",
+          "boat",
+          "weather"
+        ],
+        "canvas_ui_note": "홈 화면 선택 항로의 목적지 한 곳을 표시. 가격과 고용 선택은 앱 안에서만 제공."
+      }
+    },
+    {
+      "id": "port_saltflat",
+      "name": "소금여울",
+      "unlock": "port_saltflat",
+      "progression_ref": "port_saltflat",
+      "min_ship_level": 2,
+      "distance": 1.15,
+      "buys": {
+        "wood": 1.25,
+        "stone": 2.4,
+        "salt": 2,
+        "pottery": 8,
+        "sailcloth": 7,
+        "lumber": 9,
+        "rope": 8,
+        "dried_fish": 10,
+        "glass": 9,
+        "grain": 11,
+        "paper": 10,
+        "tools": 13
+      },
+      "sells": {
+        "salt": 3
+      },
+      "special": "salt",
+      "workers": [
+        "sori"
+      ],
+      "pirate_risk": 0.32,
+      "look": "소금 창고 · 수문 관리집 · 낮은 제방 · 포대 검사소 · 염전 건조장 중심의 생활 항구.",
+      "npc": [
+        "연두"
+      ],
+      "npc_presence": [
+        {
+          "name": "연두",
+          "unlock": "port_saltflat",
+          "until": null
+        }
+      ],
+      "scene": {
+        "size": [
+          200,
+          467
+        ],
+        "colors": [
+          "#E9E3CF",
+          "#78B6B4",
+          "#C9A66A"
+        ],
+        "outline_color": "#293B3B",
+        "sea_color": "#568A9E",
+        "sky_color": "#B8D4D8",
+        "structures": [
+          {
+            "id": "port_saltflat_structure_1",
+            "name": "소금 창고",
+            "rect": [
+              18,
+              218,
+              40,
+              36
+            ],
+            "type": "building",
+            "desc": "소금 포대를 높게 쌓은 흰 창고",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_saltflat_structure_2",
+            "name": "수문 관리집",
+            "rect": [
+              76,
+              204,
+              42,
+              46
+            ],
+            "type": "building",
+            "desc": "작은 청록 지붕과 수문 손잡이",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_saltflat_structure_3",
+            "name": "낮은 제방",
+            "rect": [
+              138,
+              226,
+              42,
+              34
+            ],
+            "type": "facility",
+            "desc": "사각 돌기둥 사이를 잇는 낮은 제방",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_saltflat_structure_4",
+            "name": "포대 검사소",
+            "rect": [
+              28,
+              292,
+              46,
+              38
+            ],
+            "type": "facility",
+            "desc": "나무 저울과 접힌 포대",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_saltflat_structure_5",
+            "name": "염전 건조장",
+            "rect": [
+              120,
+              300,
+              48,
+              36
+            ],
+            "type": "facility",
+            "desc": "격자로 나뉜 얕은 흰 소금밭",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "quay_rect": [
+          14,
+          358,
+          172,
+          28
+        ],
+        "dock_rect": [
+          90,
+          386,
+          20,
+          65
+        ],
+        "boat_berth": [
+          130,
+          429
+        ],
+        "representative_prop": "흰 소금 포대",
+        "ambient_motion": "천과 깃발이 천천히 흔들리고 물결이 부두 아래를 지난다.",
+        "character_standing_points": [
+          [
+            64,
+            277
+          ],
+          [
+            100,
+            279
+          ],
+          [
+            140,
+            342
+          ]
+        ],
+        "paint_order": [
+          "sky",
+          "sea",
+          "terrain_or_pontoons",
+          "structures",
+          "dock",
+          "props",
+          "visitors",
+          "boat",
+          "weather"
+        ],
+        "canvas_ui_note": "홈 화면 선택 항로의 목적지 한 곳을 표시. 가격과 고용 선택은 앱 안에서만 제공."
+      }
+    },
+    {
+      "id": "port_pottery",
+      "name": "도기포",
+      "unlock": "port_pottery",
+      "progression_ref": "port_pottery",
+      "min_ship_level": 2,
+      "distance": 1.25,
+      "buys": {
+        "wood": 1.45,
+        "stone": 2.65,
+        "salt": 6,
+        "pottery": 3,
+        "sailcloth": 8,
+        "lumber": 6,
+        "rope": 9,
+        "dried_fish": 7,
+        "glass": 10,
+        "grain": 8,
+        "paper": 11,
+        "tools": 10
+      },
+      "sells": {
+        "pottery": 4
+      },
+      "special": "pottery",
+      "workers": [
+        "nuri"
+      ],
+      "pirate_risk": 0.34,
+      "look": "벽돌 가마 · 도기 작업장 · 포장 창고 · 컵 진열대 중심의 생활 항구.",
+      "npc": [
+        "태루"
+      ],
+      "npc_presence": [
+        {
+          "name": "태루",
+          "unlock": "port_pottery",
+          "until": null
+        }
+      ],
+      "scene": {
+        "size": [
+          200,
+          467
+        ],
+        "colors": [
+          "#B96C4E",
+          "#E4C695",
+          "#6D919A"
+        ],
+        "outline_color": "#293B3B",
+        "sea_color": "#568A9E",
+        "sky_color": "#B8D4D8",
+        "structures": [
+          {
+            "id": "port_pottery_structure_1",
+            "name": "벽돌 가마",
+            "rect": [
+              18,
+              218,
+              40,
+              36
+            ],
+            "type": "building",
+            "desc": "둥근 가마 몸체와 짧은 붉은 굴뚝",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_pottery_structure_2",
+            "name": "도기 작업장",
+            "rect": [
+              76,
+              204,
+              42,
+              46
+            ],
+            "type": "building",
+            "desc": "입구가 넓은 흙빛 공방",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_pottery_structure_3",
+            "name": "포장 창고",
+            "rect": [
+              138,
+              226,
+              42,
+              34
+            ],
+            "type": "building",
+            "desc": "천을 접어 놓은 낮은 창고",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_pottery_structure_4",
+            "name": "컵 진열대",
+            "rect": [
+              28,
+              292,
+              46,
+              38
+            ],
+            "type": "facility",
+            "desc": "비뚤어진 손잡이 컵이 놓인 선반",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "quay_rect": [
+          14,
+          358,
+          172,
+          28
+        ],
+        "dock_rect": [
+          90,
+          386,
+          20,
+          65
+        ],
+        "boat_berth": [
+          130,
+          429
+        ],
+        "representative_prop": "손잡이가 비뚤어진 컵",
+        "ambient_motion": "천과 깃발이 천천히 흔들리고 물결이 부두 아래를 지난다.",
+        "character_standing_points": [
+          [
+            64,
+            277
+          ],
+          [
+            100,
+            279
+          ],
+          [
+            140,
+            342
+          ]
+        ],
+        "paint_order": [
+          "sky",
+          "sea",
+          "terrain_or_pontoons",
+          "structures",
+          "dock",
+          "props",
+          "visitors",
+          "boat",
+          "weather"
+        ],
+        "canvas_ui_note": "홈 화면 선택 항로의 목적지 한 곳을 표시. 가격과 고용 선택은 앱 안에서만 제공."
+      }
+    },
+    {
+      "id": "port_windneck",
+      "name": "바람목",
+      "unlock": "port_windneck",
+      "progression_ref": "port_windneck",
+      "min_ship_level": 2,
+      "distance": 1.35,
+      "buys": {
+        "wood": 1.6,
+        "stone": 2.85,
+        "salt": 7,
+        "pottery": 6,
+        "sailcloth": 4,
+        "lumber": 7,
+        "rope": 10,
+        "dried_fish": 8,
+        "glass": 11,
+        "grain": 9,
+        "paper": 12,
+        "tools": 11
+      },
+      "sells": {
+        "sailcloth": 5
+      },
+      "special": "sailcloth",
+      "workers": [
+        "bada"
+      ],
+      "pirate_risk": 0.34,
+      "look": "돛 수선소 · 천 건조대 · 밧줄 작업장 · 휴식 정자 중심의 생활 항구.",
+      "npc": [
+        "새나"
+      ],
+      "npc_presence": [
+        {
+          "name": "새나",
+          "unlock": "port_windneck",
+          "until": null
+        }
+      ],
+      "scene": {
+        "size": [
+          200,
+          467
+        ],
+        "colors": [
+          "#6F9FB6",
+          "#E8D8AA",
+          "#B98B62"
+        ],
+        "outline_color": "#293B3B",
+        "sea_color": "#568A9E",
+        "sky_color": "#B8D4D8",
+        "structures": [
+          {
+            "id": "port_windneck_structure_1",
+            "name": "돛 수선소",
+            "rect": [
+              18,
+              218,
+              40,
+              36
+            ],
+            "type": "building",
+            "desc": "돛을 가로로 펼친 긴 작업대와 지붕",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_windneck_structure_2",
+            "name": "천 건조대",
+            "rect": [
+              76,
+              204,
+              42,
+              46
+            ],
+            "type": "facility",
+            "desc": "줄 사이에 크림색 천을 건 건조대",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_windneck_structure_3",
+            "name": "밧줄 작업장",
+            "rect": [
+              138,
+              226,
+              42,
+              34
+            ],
+            "type": "building",
+            "desc": "원형 밧줄 더미와 짧은 권취대",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_windneck_structure_4",
+            "name": "휴식 정자",
+            "rect": [
+              28,
+              292,
+              46,
+              38
+            ],
+            "type": "building",
+            "desc": "파란 지붕 아래 빈 의자",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "quay_rect": [
+          14,
+          358,
+          172,
+          28
+        ],
+        "dock_rect": [
+          90,
+          386,
+          20,
+          65
+        ],
+        "boat_berth": [
+          130,
+          429
+        ],
+        "representative_prop": "접힌 크림색 돛천",
+        "ambient_motion": "천과 깃발이 천천히 흔들리고 물결이 부두 아래를 지난다.",
+        "character_standing_points": [
+          [
+            64,
+            277
+          ],
+          [
+            100,
+            279
+          ],
+          [
+            140,
+            342
+          ]
+        ],
+        "paint_order": [
+          "sky",
+          "sea",
+          "terrain_or_pontoons",
+          "structures",
+          "dock",
+          "props",
+          "visitors",
+          "boat",
+          "weather"
+        ],
+        "canvas_ui_note": "홈 화면 선택 항로의 목적지 한 곳을 표시. 가격과 고용 선택은 앱 안에서만 제공."
+      }
+    },
+    {
+      "id": "port_pineshade",
+      "name": "솔그늘항",
+      "unlock": "port_pineshade",
+      "progression_ref": "port_pineshade",
+      "min_ship_level": 2,
+      "distance": 1.25,
+      "buys": {
+        "wood": 1.45,
+        "stone": 2.65,
+        "salt": 4,
+        "pottery": 7,
+        "sailcloth": 6,
+        "lumber": 4,
+        "rope": 7,
+        "dried_fish": 9,
+        "glass": 8,
+        "grain": 10,
+        "paper": 9,
+        "tools": 12
+      },
+      "sells": {
+        "lumber": 5
+      },
+      "special": "lumber",
+      "workers": [
+        "geonu"
+      ],
+      "pirate_risk": 0.33,
+      "look": "목공소 · 자재 창고 · 연장 수선대 · 재사용 목재 선반 중심의 생활 항구.",
+      "npc": [
+        "무진"
+      ],
+      "npc_presence": [
+        {
+          "name": "무진",
+          "unlock": "port_pineshade",
+          "until": null
+        }
+      ],
+      "scene": {
+        "size": [
+          200,
+          467
+        ],
+        "colors": [
+          "#456D4B",
+          "#A67C52",
+          "#D8D0A8"
+        ],
+        "outline_color": "#293B3B",
+        "sea_color": "#568A9E",
+        "sky_color": "#B8D4D8",
+        "structures": [
+          {
+            "id": "port_pineshade_structure_1",
+            "name": "목공소",
+            "rect": [
+              18,
+              218,
+              40,
+              36
+            ],
+            "type": "building",
+            "desc": "소나무빛 지붕과 넓은 목공 창문",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_pineshade_structure_2",
+            "name": "자재 창고",
+            "rect": [
+              76,
+              204,
+              42,
+              46
+            ],
+            "type": "building",
+            "desc": "판재 단면이 보이는 열린 창고",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_pineshade_structure_3",
+            "name": "연장 수선대",
+            "rect": [
+              138,
+              226,
+              42,
+              34
+            ],
+            "type": "facility",
+            "desc": "연장이 걸린 나무판과 모루 대신 숫돌",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_pineshade_structure_4",
+            "name": "재사용 목재 선반",
+            "rect": [
+              28,
+              292,
+              46,
+              38
+            ],
+            "type": "building",
+            "desc": "짧은 자재를 길이별로 넣은 선반",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "quay_rect": [
+          14,
+          358,
+          172,
+          28
+        ],
+        "dock_rect": [
+          90,
+          386,
+          20,
+          65
+        ],
+        "boat_berth": [
+          130,
+          429
+        ],
+        "representative_prop": "손잡이를 고친 대패",
+        "ambient_motion": "천과 깃발이 천천히 흔들리고 물결이 부두 아래를 지난다.",
+        "character_standing_points": [
+          [
+            64,
+            277
+          ],
+          [
+            100,
+            279
+          ],
+          [
+            140,
+            342
+          ]
+        ],
+        "paint_order": [
+          "sky",
+          "sea",
+          "terrain_or_pontoons",
+          "structures",
+          "dock",
+          "props",
+          "visitors",
+          "boat",
+          "weather"
+        ],
+        "canvas_ui_note": "홈 화면 선택 항로의 목적지 한 곳을 표시. 가격과 고용 선택은 앱 안에서만 제공."
+      }
+    },
+    {
+      "id": "port_redanchor",
+      "name": "붉은 닻",
+      "unlock": "port_redanchor",
+      "progression_ref": "port_redanchor",
+      "min_ship_level": 2,
+      "distance": 1.45,
+      "buys": {
+        "wood": 1.85,
+        "stone": 3.2,
+        "salt": 5,
+        "pottery": 8,
+        "sailcloth": 7,
+        "lumber": 9,
+        "rope": 5,
+        "dried_fish": 10,
+        "glass": 9,
+        "grain": 11,
+        "paper": 10,
+        "tools": 13
+      },
+      "sells": {
+        "rope": 6
+      },
+      "special": "rope",
+      "workers": [
+        "dori"
+      ],
+      "pirate_risk": 0.4,
+      "look": "배들이 밧줄로 이어진 이동 정박지. 육지 건물 없이 갑판 위에서 일하고 쉰다.",
+      "npc": [
+        "가람"
+      ],
+      "npc_presence": [
+        {
+          "name": "가람",
+          "unlock": "port_redanchor",
+          "until": null
+        }
+      ],
+      "scene": {
+        "size": [
+          200,
+          467
+        ],
+        "colors": [
+          "#A6534B",
+          "#7B5A43",
+          "#D9C899"
+        ],
+        "outline_color": "#293B3B",
+        "sea_color": "#568A9E",
+        "sky_color": "#B8D4D8",
+        "structures": [
+          {
+            "id": "port_redanchor_structure_1",
+            "name": "가람의 선박",
+            "rect": [
+              18,
+              224,
+              42,
+              28
+            ],
+            "type": "moored_vessel",
+            "desc": "닻 무늬 붉은 돛과 접은 지도판",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_redanchor_structure_2",
+            "name": "생활선",
+            "rect": [
+              76,
+              205,
+              42,
+              34
+            ],
+            "type": "moored_vessel",
+            "desc": "지붕 대신 천막을 단 배와 빨랫줄",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_redanchor_structure_3",
+            "name": "작업선",
+            "rect": [
+              138,
+              228,
+              42,
+              28
+            ],
+            "type": "moored_vessel",
+            "desc": "갑판 위 목공 작업대와 밧줄 고리",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_redanchor_structure_4",
+            "name": "부유 창고",
+            "rect": [
+              78,
+              296,
+              44,
+              30
+            ],
+            "type": "moored_vessel",
+            "desc": "상자들이 낮게 묶인 평평한 화물선",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "quay_rect": null,
+        "dock_rect": [
+          90,
+          346,
+          20,
+          105
+        ],
+        "boat_berth": [
+          130,
+          429
+        ],
+        "representative_prop": "끊어진 닻 무늬 깃발",
+        "ambient_motion": "붉은 돛과 빨랫줄이 천천히 흔들린다.",
+        "character_standing_points": [
+          [
+            64,
+            277
+          ],
+          [
+            100,
+            279
+          ],
+          [
+            140,
+            342
+          ]
+        ],
+        "paint_order": [
+          "sky",
+          "sea",
+          "terrain_or_pontoons",
+          "structures",
+          "dock",
+          "props",
+          "visitors",
+          "boat",
+          "weather"
+        ],
+        "canvas_ui_note": "홈 화면 선택 항로의 목적지 한 곳을 표시. 가격과 고용 선택은 앱 안에서만 제공."
+      },
+      "moving_anchorage": {
+        "changes_gameplay_distance": false,
+        "position_change": "seasonal_visual_only",
+        "requires_new_unlock": false
+      }
+    },
+    {
+      "id": "port_fogferry",
+      "name": "안개나루",
+      "unlock": "port_fogferry",
+      "progression_ref": "port_fogferry",
+      "min_ship_level": 2,
+      "distance": 1.6,
+      "buys": {
+        "wood": 2.1,
+        "stone": 3.6,
+        "salt": 6,
+        "pottery": 5,
+        "sailcloth": 8,
+        "lumber": 6,
+        "rope": 9,
+        "dried_fish": 5,
+        "glass": 10,
+        "grain": 8,
+        "paper": 11,
+        "tools": 10
+      },
+      "sells": {
+        "dried_fish": 6
+      },
+      "special": "dried_fish",
+      "workers": [
+        "haneul"
+      ],
+      "pirate_risk": 0.43,
+      "look": "편지집 · 생선 건조장 · 낮은 생활집 · 공동 우물집 중심의 생활 항구.",
+      "npc": [
+        "소아"
+      ],
+      "npc_presence": [
+        {
+          "name": "소아",
+          "unlock": "port_fogferry",
+          "until": null
+        }
+      ],
+      "scene": {
+        "size": [
+          200,
+          467
+        ],
+        "colors": [
+          "#739296",
+          "#C6C9BA",
+          "#AE8061"
+        ],
+        "outline_color": "#293B3B",
+        "sea_color": "#568A9E",
+        "sky_color": "#B8D4D8",
+        "structures": [
+          {
+            "id": "port_fogferry_structure_1",
+            "name": "편지집",
+            "rect": [
+              18,
+              218,
+              40,
+              36
+            ],
+            "type": "building",
+            "desc": "켜진 작은 창문과 편지 투입구",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_fogferry_structure_2",
+            "name": "생선 건조장",
+            "rect": [
+              76,
+              204,
+              42,
+              46
+            ],
+            "type": "building",
+            "desc": "물고기 줄을 건 낮은 바람막이",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_fogferry_structure_3",
+            "name": "낮은 생활집",
+            "rect": [
+              138,
+              226,
+              42,
+              34
+            ],
+            "type": "building",
+            "desc": "생활 흔적이 있는 낮은 청록 지붕집",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_fogferry_structure_4",
+            "name": "공동 우물집",
+            "rect": [
+              28,
+              292,
+              46,
+              38
+            ],
+            "type": "building",
+            "desc": "우물 지붕 옆 놓인 작은 통",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "quay_rect": [
+          14,
+          358,
+          172,
+          28
+        ],
+        "dock_rect": [
+          90,
+          386,
+          20,
+          65
+        ],
+        "boat_berth": [
+          130,
+          429
+        ],
+        "representative_prop": "편지 묶음",
+        "ambient_motion": "안개가 얇게 흐르고 창문 불빛이 남는다.",
+        "character_standing_points": [
+          [
+            64,
+            277
+          ],
+          [
+            100,
+            279
+          ],
+          [
+            140,
+            342
+          ]
+        ],
+        "paint_order": [
+          "sky",
+          "sea",
+          "terrain_or_pontoons",
+          "structures",
+          "dock",
+          "props",
+          "visitors",
+          "boat",
+          "weather"
+        ],
+        "canvas_ui_note": "홈 화면 선택 항로의 목적지 한 곳을 표시. 가격과 고용 선택은 앱 안에서만 제공."
+      }
+    },
+    {
+      "id": "port_glasscape",
+      "name": "유리곶",
+      "unlock": "port_glasscape",
+      "progression_ref": "port_glasscape",
+      "min_ship_level": 2,
+      "distance": 1.65,
+      "buys": {
+        "wood": 2.25,
+        "stone": 3.8,
+        "salt": 7,
+        "pottery": 6,
+        "sailcloth": 9,
+        "lumber": 7,
+        "rope": 10,
+        "dried_fish": 8,
+        "glass": 6,
+        "grain": 9,
+        "paper": 12,
+        "tools": 11
+      },
+      "sells": {
+        "glass": 7
+      },
+      "special": "glass",
+      "workers": [
+        "bityeo"
+      ],
+      "pirate_risk": 0.42,
+      "look": "항구 등대 · 렌즈 공방 · 관측집 · 반사판 창고 중심의 생활 항구.",
+      "npc": [
+        "우란"
+      ],
+      "npc_presence": [
+        {
+          "name": "우란",
+          "unlock": "port_glasscape",
+          "until": null
+        }
+      ],
+      "scene": {
+        "size": [
+          200,
+          467
+        ],
+        "colors": [
+          "#8FC4C2",
+          "#E8E5D8",
+          "#66849A"
+        ],
+        "outline_color": "#293B3B",
+        "sea_color": "#568A9E",
+        "sky_color": "#B8D4D8",
+        "structures": [
+          {
+            "id": "port_glasscape_structure_1",
+            "name": "항구 등대",
+            "rect": [
+              24,
+              192,
+              24,
+              62
+            ],
+            "type": "facility",
+            "desc": "흰 탑과 청록 유리 창",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_glasscape_structure_2",
+            "name": "렌즈 공방",
+            "rect": [
+              76,
+              204,
+              42,
+              46
+            ],
+            "type": "building",
+            "desc": "작은 반사판이 걸린 낮은 공방",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_glasscape_structure_3",
+            "name": "관측집",
+            "rect": [
+              138,
+              226,
+              42,
+              34
+            ],
+            "type": "building",
+            "desc": "바람 방향 막대가 선 지붕",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_glasscape_structure_4",
+            "name": "반사판 창고",
+            "rect": [
+              28,
+              292,
+              46,
+              38
+            ],
+            "type": "building",
+            "desc": "렌즈를 세워 넣은 칸막이 창고",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "quay_rect": [
+          14,
+          358,
+          172,
+          28
+        ],
+        "dock_rect": [
+          90,
+          386,
+          20,
+          65
+        ],
+        "boat_berth": [
+          130,
+          429
+        ],
+        "representative_prop": "작은 반사판",
+        "ambient_motion": "천과 깃발이 천천히 흔들리고 물결이 부두 아래를 지난다.",
+        "character_standing_points": [
+          [
+            64,
+            277
+          ],
+          [
+            100,
+            279
+          ],
+          [
+            140,
+            342
+          ]
+        ],
+        "paint_order": [
+          "sky",
+          "sea",
+          "terrain_or_pontoons",
+          "structures",
+          "dock",
+          "props",
+          "visitors",
+          "boat",
+          "weather"
+        ],
+        "canvas_ui_note": "홈 화면 선택 항로의 목적지 한 곳을 표시. 가격과 고용 선택은 앱 안에서만 제공."
+      }
+    },
+    {
+      "id": "port_reedbay",
+      "name": "갈대만",
+      "unlock": "port_reedbay",
+      "progression_ref": "port_reedbay",
+      "min_ship_level": 3,
+      "distance": 1.75,
+      "buys": {
+        "wood": 2.5,
+        "stone": 4.2,
+        "salt": 4,
+        "pottery": 7,
+        "sailcloth": 6,
+        "lumber": 8,
+        "rope": 7,
+        "dried_fish": 9,
+        "glass": 8,
+        "grain": 6,
+        "paper": 9,
+        "tools": 12
+      },
+      "sells": {
+        "grain": 7
+      },
+      "special": "grain",
+      "workers": [
+        "deul"
+      ],
+      "pirate_risk": 0.43,
+      "look": "곡물 창고 · 평저선 수선소 · 갈대 쉼터 · 짐 나눔 정자 중심의 생활 항구.",
+      "npc": [
+        "갈대만 뱃사공"
+      ],
+      "npc_presence": [
+        {
+          "name": "갈대만 뱃사공",
+          "unlock": "port_reedbay",
+          "until": null
+        }
+      ],
+      "scene": {
+        "size": [
+          200,
+          467
+        ],
+        "colors": [
+          "#9BAE69",
+          "#D7B878",
+          "#7D9E8A"
+        ],
+        "outline_color": "#293B3B",
+        "sea_color": "#568A9E",
+        "sky_color": "#B8D4D8",
+        "structures": [
+          {
+            "id": "port_reedbay_structure_1",
+            "name": "곡물 창고",
+            "rect": [
+              18,
+              218,
+              40,
+              36
+            ],
+            "type": "building",
+            "desc": "통풍 틈이 난 곡물 창고",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_reedbay_structure_2",
+            "name": "평저선 수선소",
+            "rect": [
+              76,
+              204,
+              42,
+              46
+            ],
+            "type": "building",
+            "desc": "납작한 배를 얹은 낮은 수선대",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_reedbay_structure_3",
+            "name": "갈대 쉼터",
+            "rect": [
+              138,
+              226,
+              42,
+              34
+            ],
+            "type": "facility",
+            "desc": "갈대색 지붕과 기다리는 의자",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_reedbay_structure_4",
+            "name": "짐 나눔 정자",
+            "rect": [
+              28,
+              292,
+              46,
+              38
+            ],
+            "type": "building",
+            "desc": "작은 꾸러미를 나누는 넓은 마루",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "quay_rect": [
+          14,
+          358,
+          172,
+          28
+        ],
+        "dock_rect": [
+          90,
+          386,
+          20,
+          65
+        ],
+        "boat_berth": [
+          130,
+          429
+        ],
+        "representative_prop": "곡물 꾸러미",
+        "ambient_motion": "천과 깃발이 천천히 흔들리고 물결이 부두 아래를 지난다.",
+        "character_standing_points": [
+          [
+            64,
+            277
+          ],
+          [
+            100,
+            279
+          ],
+          [
+            140,
+            342
+          ]
+        ],
+        "paint_order": [
+          "sky",
+          "sea",
+          "terrain_or_pontoons",
+          "structures",
+          "dock",
+          "props",
+          "visitors",
+          "boat",
+          "weather"
+        ],
+        "canvas_ui_note": "홈 화면 선택 항로의 목적지 한 곳을 표시. 가격과 고용 선택은 앱 안에서만 제공."
+      },
+      "last_mile": {
+        "method": "local_flatboat",
+        "manual_control_required": false,
+        "included_in_distance": true,
+        "note": "큰 배는 입구에 정박하고 현지 평저선이 마지막 구간을 맡는다. 추가 클릭과 별도 비용 없음."
+      }
+    },
+    {
+      "id": "port_paperwater",
+      "name": "종이물",
+      "unlock": "port_paperwater",
+      "progression_ref": "port_paperwater",
+      "min_ship_level": 3,
+      "distance": 1.8,
+      "buys": {
+        "wood": 2.65,
+        "stone": 4.45,
+        "salt": 5,
+        "pottery": 8,
+        "sailcloth": 7,
+        "lumber": 9,
+        "rope": 8,
+        "dried_fish": 10,
+        "glass": 9,
+        "grain": 11,
+        "paper": 7,
+        "tools": 13
+      },
+      "sells": {
+        "paper": 8
+      },
+      "special": "paper",
+      "workers": [
+        "saei"
+      ],
+      "pirate_risk": 0.44,
+      "look": "인쇄소 · 기록 창고 · 종이 건조대 · 지도 게시집 중심의 생활 항구.",
+      "npc": [
+        "이솔"
+      ],
+      "npc_presence": [
+        {
+          "name": "이솔",
+          "unlock": "port_paperwater",
+          "until": null
+        }
+      ],
+      "scene": {
+        "size": [
+          200,
+          467
+        ],
+        "colors": [
+          "#D8D3BF",
+          "#5F7D83",
+          "#AF8464"
+        ],
+        "outline_color": "#293B3B",
+        "sea_color": "#568A9E",
+        "sky_color": "#B8D4D8",
+        "structures": [
+          {
+            "id": "port_paperwater_structure_1",
+            "name": "인쇄소",
+            "rect": [
+              18,
+              218,
+              40,
+              36
+            ],
+            "type": "building",
+            "desc": "잉크색 간판과 작은 인쇄기 창문",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_paperwater_structure_2",
+            "name": "기록 창고",
+            "rect": [
+              76,
+              204,
+              42,
+              46
+            ],
+            "type": "building",
+            "desc": "서랍 모양 칸이 보이는 기록 창고",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_paperwater_structure_3",
+            "name": "종이 건조대",
+            "rect": [
+              138,
+              226,
+              42,
+              34
+            ],
+            "type": "facility",
+            "desc": "종이를 겹치지 않게 건 나무틀",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_paperwater_structure_4",
+            "name": "지도 게시집",
+            "rect": [
+              28,
+              292,
+              46,
+              38
+            ],
+            "type": "building",
+            "desc": "바람막이 유리 뒤 지도 게시판",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "quay_rect": [
+          14,
+          358,
+          172,
+          28
+        ],
+        "dock_rect": [
+          90,
+          386,
+          20,
+          65
+        ],
+        "boat_berth": [
+          130,
+          429
+        ],
+        "representative_prop": "접힌 항로 지도",
+        "ambient_motion": "천과 깃발이 천천히 흔들리고 물결이 부두 아래를 지난다.",
+        "character_standing_points": [
+          [
+            64,
+            277
+          ],
+          [
+            100,
+            279
+          ],
+          [
+            140,
+            342
+          ]
+        ],
+        "paint_order": [
+          "sky",
+          "sea",
+          "terrain_or_pontoons",
+          "structures",
+          "dock",
+          "props",
+          "visitors",
+          "boat",
+          "weather"
+        ],
+        "canvas_ui_note": "홈 화면 선택 항로의 목적지 한 곳을 표시. 가격과 고용 선택은 앱 안에서만 제공."
+      }
+    },
+    {
+      "id": "port_whitesail",
+      "name": "백선항",
+      "unlock": "port_whitesail",
+      "progression_ref": "port_whitesail",
+      "min_ship_level": 3,
+      "distance": 1.9,
+      "buys": {
+        "wood": 3.0,
+        "stone": 5.0,
+        "salt": 6,
+        "pottery": 5,
+        "sailcloth": 8,
+        "lumber": 6,
+        "rope": 9,
+        "dried_fish": 7,
+        "glass": 10,
+        "grain": 8,
+        "paper": 11,
+        "tools": 8
+      },
+      "sells": {
+        "tools": 9
+      },
+      "special": "tools",
+      "workers": [
+        "onyu"
+      ],
+      "pirate_risk": 0.5,
+      "look": "상회 회관 · 대형 창고 · 검사장 · 노동자 쉼터 · 공동 부두 사무소 중심의 생활 항구.",
+      "npc": [
+        "도겸",
+        "수빈"
+      ],
+      "npc_presence": [
+        {
+          "name": "도겸",
+          "unlock": "port_whitesail",
+          "until": "main_58",
+          "role": "백선상회 대표",
+          "after_until": "회관의 대표 자리에서 제거. 과거 일지는 회상으로 보관."
+        },
+        {
+          "name": "수빈",
+          "unlock": "port_whitesail",
+          "until": null,
+          "role": "현장 검사관",
+          "role_changes": [
+            {
+              "unlock": "main_46",
+              "role": "독립 검사관"
+            }
+          ]
+        }
+      ],
+      "scene": {
+        "size": [
+          200,
+          467
+        ],
+        "colors": [
+          "#E6E4D9",
+          "#657E9A",
+          "#9D7D59"
+        ],
+        "outline_color": "#293B3B",
+        "sea_color": "#568A9E",
+        "sky_color": "#B8D4D8",
+        "structures": [
+          {
+            "id": "port_whitesail_structure_1",
+            "name": "상회 회관",
+            "rect": [
+              18,
+              218,
+              40,
+              36
+            ],
+            "type": "building",
+            "desc": "높은 흰 벽과 짙은 파랑 지붕",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_whitesail_structure_2",
+            "name": "대형 창고",
+            "rect": [
+              76,
+              204,
+              42,
+              46
+            ],
+            "type": "facility",
+            "desc": "큰 문짝과 낮게 정돈된 화물",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_whitesail_structure_3",
+            "name": "검사장",
+            "rect": [
+              138,
+              226,
+              42,
+              34
+            ],
+            "type": "building",
+            "desc": "검사표가 걸린 밝은 차양",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_whitesail_structure_4",
+            "name": "노동자 쉼터",
+            "rect": [
+              28,
+              292,
+              46,
+              38
+            ],
+            "type": "building",
+            "desc": "넓은 벤치와 물통",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          },
+          {
+            "id": "port_whitesail_structure_5",
+            "name": "공동 부두 사무소",
+            "rect": [
+              120,
+              300,
+              48,
+              36
+            ],
+            "type": "building",
+            "desc": "공동 항로 표가 걸린 낮은 사무소",
+            "palette_indices": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "quay_rect": [
+          14,
+          358,
+          172,
+          28
+        ],
+        "dock_rect": [
+          90,
+          386,
+          20,
+          65
+        ],
+        "boat_berth": [
+          130,
+          429
+        ],
+        "representative_prop": "검사 도장",
+        "ambient_motion": "천과 깃발이 천천히 흔들리고 물결이 부두 아래를 지난다.",
+        "character_standing_points": [
+          [
+            64,
+            277
+          ],
+          [
+            100,
+            279
+          ],
+          [
+            140,
+            342
+          ]
+        ],
+        "paint_order": [
+          "sky",
+          "sea",
+          "terrain_or_pontoons",
+          "structures",
+          "dock",
+          "props",
+          "visitors",
+          "boat",
+          "weather"
+        ],
+        "canvas_ui_note": "홈 화면 선택 항로의 목적지 한 곳을 표시. 가격과 고용 선택은 앱 안에서만 제공."
+      }
+    }
+  ],
+  "rules": {
+    "price_currency": "gold",
+    "price_meaning": {
+      "buys": "항구가 플레이어의 화물을 사는 기본 단가",
+      "sells": "플레이어가 생산항에서 특산물을 사는 기본 단가"
+    },
+    "unlock_semantics": "ports.unlock은 항로 이용 가능 여부를 확인할 완료 플래그다. 항구 개방 구매의 선행 조건과 비용은 01_economy.json의 progression을 사용한다.",
+    "first_port_access_requires": [
+      "dock"
+    ],
+    "risk_semantics": "pirate_risk는 항해당 해적 조우 확률이며 전투 패배 확률이 아니다. 조건부 승률은 배와 해적 데이터로 별도 계산한다.",
+    "max_encounters_per_voyage": 1,
+    "trade_mode": "automatic_voyage_settlement",
+    "same_port_specialty_trade_allowed": false,
+    "specialty_units_are_in_base_storage": false,
+    "specialty_resource_ids": [
+      "salt",
+      "pottery",
+      "sailcloth",
+      "lumber",
+      "rope",
+      "dried_fish",
+      "glass",
+      "grain",
+      "paper",
+      "tools"
+    ],
+    "specialty_price_bonus_included": false,
+    "market_and_worker_bonus_source": [
+      "04_buildings.json",
+      "05_workers.json"
+    ],
+    "gold_precision_scale": 100,
+    "rounding": {
+      "unit_prices": "정수 최소 화폐 단위로 변환 후 계산",
+      "final_payout": "누적 소수 잔여를 포함해 정수 금화를 지급하고 남은 잔여를 저장",
+      "purchase": "보유한 최소 화폐 단위 잔액으로 검사하고 실제 구매액을 차감",
+      "bonus_rounding": "최소 화폐 단위 미만은 정산 시 버림"
+    },
+    "specialty_mission": {
+      "selection_location": "app",
+      "required_unlocked_ports": [
+        "producer",
+        "buyer_port"
+      ],
+      "ship_special_capacity_source": "02_ships.json.cargo_special",
+      "paid_at": "departure_reservation",
+      "procurement_mode": "purchase_at_visited_producer",
+      "duration_uses": "producer_distance",
+      "second_player_voyage_required": false,
+      "buyer_delivery_location": "island_home_contract_receiving_ship",
+      "buy_and_sell_prices_locked_at": "departure",
+      "note": "플레이어 배가 생산항을 방문해 기본 화물을 팔고 예약한 특산물을 싣고 돌아온다. 귀항 시 작은 섬의 계약 수령선에 인도하고 수령선 소속 buyer_port의 가격으로 정산한다. 구매 항구로 다시 출항하는 과정은 방문 상선이 맡는다. 생산항과 구매 항구는 모두 개방되어 있어야 한다.",
+      "insufficient_gold": "출항할 때 예약 구매 가능한 정수 수량까지 줄이고 나머지 특산물 칸은 비운다. 나무·돌 항해는 계속한다.",
+      "on_loss": "귀항한 특산물의 실제 정수 수량에 잠근 구매 항구 단가를 곱해 정산한다. 없어진 특산물 원가는 환불하지 않으며 창고에 같은 수량을 중복 지급하지 않는다.",
+      "combat_timing_source": "01_economy.json과06_pirates.json의 특산물 항해 단계 규칙을 따른다.",
+      "base_cargo_settlement_at": "visited_producer_port_arrival",
+      "specialty_settlement_at": "home_return_delivery",
+      "report_does_not_repay_settled_sales": true
+    },
+    "combat_cargo_rules": {
+      "branch_on": "actual_reserved_special_units_at_departure",
+      "without_specialty": {
+        "encounter_fraction": 0.2361111111111111,
+        "phase": "outbound",
+        "loss_targets": [
+          "wood",
+          "stone"
+        ]
+      },
+      "with_specialty": {
+        "encounter_fraction": 0.75,
+        "phase": "inbound",
+        "loss_targets": [
+          "specialty"
+        ],
+        "base_cargo_retroactive_loss": false
+      },
+      "max_encounters_per_voyage": 1,
+      "note": "특산물 계약 수량이 실제로 확보된 항해만 귀로 조우를 사용한다. 기본 화물은 방문항에서 이미 판매되므로 귀로 패배로 판매 금화를 되돌려 빼지 않는다.",
+      "authoritative_combat_file": "06_pirates.json"
+    }
+  },
+  "home_port": {
+    "id": "island_home",
+    "name": "작은 섬",
+    "kind": "home",
+    "resource_storage": "base_resources_only",
+    "fixed_residents": [
+      "단",
+      "보리",
+      "해온"
+    ],
+    "map_scene_size": [
+      200,
+      467
+    ],
+    "tradable_port": false
+  },
+  "rotating_market": {
+    "id": "return_market",
+    "name": "돌아옴장",
+    "kind": "overlay_event",
+    "unlock": "main_59",
+    "home_unlock_requires": [
+      "market"
+    ],
+    "host_locations": [
+      "island_home",
+      "port_haesol",
+      "port_saltflat",
+      "port_pottery",
+      "port_windneck",
+      "port_pineshade",
+      "port_redanchor",
+      "port_fogferry",
+      "port_glasscape",
+      "port_reedbay",
+      "port_paperwater",
+      "port_whitesail"
+    ],
+    "rotation_source": "12_seasons_events.json",
+    "new_port_purchase_required": false,
+    "price_table": "use_current_host_port_table_without_new_currencies",
+    "island_host_price_table": "port_haesol",
+    "note": "기존 장소 위에 좌판과 방문객 장식을 바꿔 표시한다. 항구나 상시 주민을 추가하지 않는다."
+  }
+}

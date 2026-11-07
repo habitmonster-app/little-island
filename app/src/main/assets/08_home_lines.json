@@ -1,0 +1,1812 @@
+{
+  "schema_version": 1,
+  "selection": {
+    "show_probability_per_wallpaper_open": 0.3,
+    "max_simultaneous_bubbles": 1,
+    "minimum_interval_seconds": 120,
+    "bubble_seconds": 5,
+    "recent_lines_excluded": 8,
+    "priority": [
+      "pirate_lose",
+      "pirate_win",
+      "worker_arrive",
+      "worker_leave",
+      "ship_return",
+      "storage_full",
+      "ship_wait",
+      "rain",
+      "idle_long",
+      "dusk",
+      "night",
+      "day"
+    ],
+    "idle_long_min_away_seconds": 7200,
+    "clock_ranges": {
+      "day": [
+        6,
+        17
+      ],
+      "dusk": [
+        17,
+        19
+      ],
+      "night": [
+        19,
+        6
+      ]
+    },
+    "range_rule": "시작 시각 이상, 끝 시각 미만. 자정을 넘는 구간은 양쪽 날짜에 적용. 기기 현지 시각은 분위기만 바꾸며 보상에 영향 없음.",
+    "weather_rule": "rain은 게임 내부의 비 연출이 보일 때만 사용. 실제 날씨 조회 불필요.",
+    "event_rule": "결과 종류는 같은 정산 사건의 확정 결과와 일치할 때만 선택. 과거 승패를 현재 승패처럼 표시하지 않음.",
+    "worker_rule": "worker_id가 해당 계약 또는 도착·출발 사건과 일치할 때만 표시. 근무 중 대사는 유효 계약이 있는 경우만. 출발 대사는 떠나는 장면의 마지막 말로 한 번 표시.",
+    "unlock_rule": "unlock은 이야기 JSON과 같은 누적 사건 완료 상태. 미구현 기능은 충족하지 않음.",
+    "source_merge_rule": "기존 18줄을 이 목록으로 대체. 두 목록을 단순 합쳐 중복 가중치를 만들지 않음.",
+    "reward_effect": null
+  },
+  "home_lines": [
+    {
+      "id": "home_dan_day_01",
+      "who": "단",
+      "time": "day",
+      "unlock": "start",
+      "text": "곧은 나무는 기둥 쪽에 둘게.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_day_02",
+      "who": "단",
+      "time": "day",
+      "unlock": "start",
+      "text": "이 못, 분명 여기 뒀는데.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_day_03",
+      "who": "단",
+      "time": "day",
+      "unlock": "start",
+      "text": "짧은 나무도 쓸 곳이 있어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_day_04",
+      "who": "단",
+      "time": "day",
+      "unlock": "start",
+      "text": "먼저 재고, 그다음 자르자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_day_05",
+      "who": "단",
+      "time": "day",
+      "unlock": "main_04",
+      "text": "편지함 경첩은 이제 안 울어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_day_06",
+      "who": "단",
+      "time": "day",
+      "unlock": "main_14",
+      "text": "포장도 목수가 할 일이네.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_day_07",
+      "who": "단",
+      "time": "day",
+      "unlock": "main_36",
+      "text": "도면은 누구나 읽게 그렸어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_day_08",
+      "who": "단",
+      "time": "day",
+      "unlock": "ending",
+      "text": "오늘은 고칠 곳부터 찾지 말자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_dusk_01",
+      "who": "단",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "망치는 여기까지. 이제 밥 먹자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_dusk_02",
+      "who": "단",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "해 지기 전에 도구만 넣을게.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_dusk_03",
+      "who": "단",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "긴 그림자 때문에 또 재 봤어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_dusk_04",
+      "who": "단",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "오늘 쓴 나무는 따로 적어 뒀어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_night_01",
+      "who": "단",
+      "time": "night",
+      "unlock": "start",
+      "text": "밤바람이네. 창문 닫아 둘까.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_night_02",
+      "who": "단",
+      "time": "night",
+      "unlock": "start",
+      "text": "달빛에 나무결이 잘 보이네.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_night_03",
+      "who": "단",
+      "time": "night",
+      "unlock": "dock",
+      "text": "부두 고리는 단단해. 확인했어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_night_04",
+      "who": "단",
+      "time": "night",
+      "unlock": "main_37",
+      "text": "등대 각도는 이제 맡겨도 돼.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_ship_wait_01",
+      "who": "단",
+      "time": "ship_wait",
+      "unlock": "sail_1",
+      "text": "배 오는 동안 선반부터 고치자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_ship_wait_02",
+      "who": "단",
+      "time": "ship_wait",
+      "unlock": "sail_1",
+      "text": "돌아오면 이 매듭을 보여 줘야지.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_ship_wait_03",
+      "who": "단",
+      "time": "ship_wait",
+      "unlock": "sail_1",
+      "text": "짐 놓을 자리는 비워 뒀어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_ship_wait_04",
+      "who": "단",
+      "time": "ship_wait",
+      "unlock": "sail_1",
+      "text": "바다만 보고 있진 않을 거야.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_ship_return_01",
+      "who": "단",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "돌아왔네. 밧줄은 이쪽으로.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_ship_return_02",
+      "who": "단",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "먼저 내려. 짐은 내가 받을게.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_ship_return_03",
+      "who": "단",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "배 소리보다 배고픈 소리가 크네.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_ship_return_04",
+      "who": "단",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "고칠 곳은 쉬고 나서 듣자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_pirate_win_01",
+      "who": "단",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "잘 돌아오면 그걸로 됐어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_pirate_win_02",
+      "who": "단",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "방어 장비가 제 몫을 했네.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_pirate_win_03",
+      "who": "단",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "자랑은 짐 내리고 나서 듣자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_pirate_win_04",
+      "who": "단",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "이번 정비도 꼼꼼히 해 둘게.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_pirate_lose_01",
+      "who": "단",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "사람이 무사하면 다시 실으면 돼.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_pirate_lose_02",
+      "who": "단",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "남은 짐부터 받을게. 천천히.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_pirate_lose_03",
+      "who": "단",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "누구 탓인지부터 찾진 말자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_pirate_lose_04",
+      "who": "단",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "다음 정비 때 살필 곳을 적었어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_worker_arrive_01",
+      "who": "단",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "무거운 건 둘이 들자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_worker_arrive_02",
+      "who": "단",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "도구는 써 보고 편한 걸 골라.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_worker_arrive_03",
+      "who": "단",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "매듭 잘 묶네. 나도 알려 줘.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_worker_arrive_04",
+      "who": "단",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "모르면 물어봐. 나도 물을게.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_worker_leave_01",
+      "who": "단",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "다음 일터에서도 손 조심해.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_worker_leave_02",
+      "who": "단",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "빌려준 도구? 벌써 닦아 뒀네.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_worker_leave_03",
+      "who": "단",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "이 매듭은 내가 계속 쓸게.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_worker_leave_04",
+      "who": "단",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "일정 맞으면 또 보자. 잘 가.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_storage_full_01",
+      "who": "단",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "꽉 찼네. 통로는 비워 두자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_storage_full_02",
+      "who": "단",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "높이 쌓기 전에 창고부터 보자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_storage_full_03",
+      "who": "단",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "나갈 짐과 남길 짐을 나누자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_storage_full_04",
+      "who": "단",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "급히 옮기다 다치진 말고.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_rain_01",
+      "who": "단",
+      "time": "rain",
+      "unlock": "start",
+      "text": "젖은 나무는 안쪽에 두자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_rain_02",
+      "who": "단",
+      "time": "rain",
+      "unlock": "start",
+      "text": "빗소리 덕에 망치가 조용하네.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_rain_03",
+      "who": "단",
+      "time": "rain",
+      "unlock": "start",
+      "text": "처마 밑이면 작업할 만해.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_rain_04",
+      "who": "단",
+      "time": "rain",
+      "unlock": "start",
+      "text": "비 그치면 바깥쪽도 살펴볼게.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_idle_long_01",
+      "who": "단",
+      "time": "idle_long",
+      "unlock": "start",
+      "text": "왔네. 하던 일부터 마저 해.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_idle_long_02",
+      "who": "단",
+      "time": "idle_long",
+      "unlock": "start",
+      "text": "새로 고친 선반, 한번 봐.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_idle_long_03",
+      "who": "단",
+      "time": "idle_long",
+      "unlock": "start",
+      "text": "배 소식은 해온이 모아 뒀어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_dan_idle_long_04",
+      "who": "단",
+      "time": "idle_long",
+      "unlock": "start",
+      "text": "잠깐 쉬어. 여기 자리는 있어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_day_01",
+      "who": "보리",
+      "time": "day",
+      "unlock": "start",
+      "text": "컵은 선반에 있어. 편하게 써.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_day_02",
+      "who": "보리",
+      "time": "day",
+      "unlock": "start",
+      "text": "오늘 수프엔 새 재료 하나만.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_day_03",
+      "who": "보리",
+      "time": "day",
+      "unlock": "start",
+      "text": "젖은 신발은 문 밖에 벗어 줘.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_day_04",
+      "who": "보리",
+      "time": "day",
+      "unlock": "start",
+      "text": "따뜻할 때 먹고 일하자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_day_05",
+      "who": "보리",
+      "time": "day",
+      "unlock": "main_04",
+      "text": "편지까지 냄비 옆에 놓진 마.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_day_06",
+      "who": "보리",
+      "time": "day",
+      "unlock": "main_13",
+      "text": "이 소금이 온 항구를 알아.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_day_07",
+      "who": "보리",
+      "time": "day",
+      "unlock": "main_18",
+      "text": "내 그릇도 먼저 챙겨 뒀어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_day_08",
+      "who": "보리",
+      "time": "day",
+      "unlock": "main_59",
+      "text": "오늘은 나도 장 구경할 거야.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_dusk_01",
+      "who": "보리",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "밥 남겨 뒀어. 급히 먹지 마.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_dusk_02",
+      "who": "보리",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "오늘은 누가 컵을 셀래?",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_dusk_03",
+      "who": "보리",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "해 질 때 바다가 제일 따뜻해.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_dusk_04",
+      "who": "보리",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "남은 일보다 저녁부터 챙기자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_night_01",
+      "who": "보리",
+      "time": "night",
+      "unlock": "start",
+      "text": "별은 내가 볼게. 냄비는 네가 봐.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_night_02",
+      "who": "보리",
+      "time": "night",
+      "unlock": "start",
+      "text": "작은 불빛도 멀리선 보이겠지.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_night_03",
+      "who": "보리",
+      "time": "night",
+      "unlock": "start",
+      "text": "문 닫기 전에 바람만 좀 빼자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_night_04",
+      "who": "보리",
+      "time": "night",
+      "unlock": "main_37",
+      "text": "창문은 어두워야 잘 자지.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_ship_wait_01",
+      "who": "보리",
+      "time": "ship_wait",
+      "unlock": "sail_1",
+      "text": "이번엔 어느 항구 냄새가 날까?",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_ship_wait_02",
+      "who": "보리",
+      "time": "ship_wait",
+      "unlock": "sail_1",
+      "text": "돌아오면 먹을 건 준비됐어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_ship_wait_03",
+      "who": "보리",
+      "time": "ship_wait",
+      "unlock": "main_18",
+      "text": "배 기다리다 내 밥 잊진 않을게.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_ship_wait_04",
+      "who": "보리",
+      "time": "ship_wait",
+      "unlock": "sail_1",
+      "text": "편지 봉투는 젖지 않았으면 좋겠다.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_ship_return_01",
+      "who": "보리",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "짐보다 먼저 얼굴부터 보여 줘.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_ship_return_02",
+      "who": "보리",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "잘 왔어. 컵은 여기 있어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_ship_return_03",
+      "who": "보리",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "이번 항구에선 뭘 먹었어?",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_ship_return_04",
+      "who": "보리",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "젖은 겉옷은 여기 걸어 줘.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_pirate_win_01",
+      "who": "보리",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "무사하다니 밥이 잘 넘어가네.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_pirate_win_02",
+      "who": "보리",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "이긴 얘기는 식탁에서 듣자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_pirate_win_03",
+      "who": "보리",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "오늘 수프는 조금 넉넉히 했어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_pirate_win_04",
+      "who": "보리",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "돌아오는 길도 편안하길.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_pirate_lose_01",
+      "who": "보리",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "남은 짐보다 네 안부가 먼저야.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_pirate_lose_02",
+      "who": "보리",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "빈손이어도 밥은 있어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_pirate_lose_03",
+      "who": "보리",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "수프는 안 잃었어. 걱정 마.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_pirate_lose_04",
+      "who": "보리",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "오늘 이야기는 천천히 해도 돼.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_worker_arrive_01",
+      "who": "보리",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "환영해. 쉬는 자리부터 보자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_worker_arrive_02",
+      "who": "보리",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "못 먹는 음식 있으면 알려 줘.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_worker_arrive_03",
+      "who": "보리",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "일 시작 전에 물부터 한 잔.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_worker_arrive_04",
+      "who": "보리",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "네 컵은 여기 둘게. 기억해 둬.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_worker_leave_01",
+      "who": "보리",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "돌아갈 때 먹어. 네 몫이야.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_worker_leave_02",
+      "who": "보리",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "빈방은 환기해 둘게. 잘 가.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_worker_leave_03",
+      "who": "보리",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "다음 일터에선 어떤 걸 배울까?",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_worker_leave_04",
+      "who": "보리",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "모자는 챙겼지? 다시 한번 봐.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_storage_full_01",
+      "who": "보리",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "창고가 든든하네. 길은 남겨 줘.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_storage_full_02",
+      "who": "보리",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "더 넣기 전에 나갈 짐부터 보자.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_storage_full_03",
+      "who": "보리",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "컵 둘 자리까진 막지 말아 줘.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_storage_full_04",
+      "who": "보리",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "차곡차곡 쌓는 것도 일이네.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_rain_01",
+      "who": "보리",
+      "time": "rain",
+      "unlock": "start",
+      "text": "비 오는 날엔 뜨거운 국이지.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_rain_02",
+      "who": "보리",
+      "time": "rain",
+      "unlock": "start",
+      "text": "옷 말릴 줄은 안쪽에 있어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_rain_03",
+      "who": "보리",
+      "time": "rain",
+      "unlock": "start",
+      "text": "빗물 받는 통은 잘 놓였네.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_rain_04",
+      "who": "보리",
+      "time": "rain",
+      "unlock": "start",
+      "text": "비 냄새가 오늘 반찬 같아.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_idle_long_01",
+      "who": "보리",
+      "time": "idle_long",
+      "unlock": "start",
+      "text": "왔구나. 네 컵은 그대로야.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_idle_long_02",
+      "who": "보리",
+      "time": "idle_long",
+      "unlock": "start",
+      "text": "쉬다 왔으면 물부터 마셔.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_idle_long_03",
+      "who": "보리",
+      "time": "idle_long",
+      "unlock": "main_04",
+      "text": "그동안 온 편지는 잘 모아 뒀어.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_bori_idle_long_04",
+      "who": "보리",
+      "time": "idle_long",
+      "unlock": "start",
+      "text": "오늘 소식은 천천히 들어도 돼.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_day_01",
+      "who": "해온",
+      "time": "day",
+      "unlock": "start",
+      "text": "나무 둘, 돌 하나… 이건 의자네요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_day_02",
+      "who": "해온",
+      "time": "day",
+      "unlock": "start",
+      "text": "장부보다 연필이 먼저 짧아져요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_day_03",
+      "who": "해온",
+      "time": "day",
+      "unlock": "start",
+      "text": "수량은 맞아요. 자리를 찾는 중이에요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_day_04",
+      "who": "해온",
+      "time": "day",
+      "unlock": "start",
+      "text": "쓰고 나서 읽어 보니 알아보겠네요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_day_05",
+      "who": "해온",
+      "time": "day",
+      "unlock": "main_04",
+      "text": "짧은 편지부터 읽어 볼까요?",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_day_06",
+      "who": "해온",
+      "time": "day",
+      "unlock": "main_13",
+      "text": "항구마다 필요한 것이 다르네요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_day_07",
+      "who": "해온",
+      "time": "day",
+      "unlock": "main_58",
+      "text": "고친 이유도 옆에 적었어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_day_08",
+      "who": "해온",
+      "time": "day",
+      "unlock": "ending",
+      "text": "빈칸은 다음 소식을 위한 자리예요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_dusk_01",
+      "who": "해온",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "오늘은 이름을 많이 적었네요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_dusk_02",
+      "who": "해온",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "마지막 줄은 내일 이어도 돼요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_dusk_03",
+      "who": "해온",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "저녁빛엔 잉크가 조금 달라 보여요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_dusk_04",
+      "who": "해온",
+      "time": "dusk",
+      "unlock": "start",
+      "text": "오늘 기록은 여기까지 모아 둘게요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_night_01",
+      "who": "해온",
+      "time": "night",
+      "unlock": "start",
+      "text": "바람 소리도 기록할 수 있을까요?",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_night_02",
+      "who": "해온",
+      "time": "night",
+      "unlock": "start",
+      "text": "등잔 가까이에선 글씨가 잘 보여요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_night_03",
+      "who": "해온",
+      "time": "night",
+      "unlock": "lighthouse",
+      "text": "등대 신호, 확인했어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_night_04",
+      "who": "해온",
+      "time": "night",
+      "unlock": "main_04",
+      "text": "낮에 온 편지는 여기 보관했어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_ship_wait_01",
+      "who": "해온",
+      "time": "ship_wait",
+      "unlock": "sail_1",
+      "text": "예상 도착과 실제 도착은 따로 적어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_ship_wait_02",
+      "who": "해온",
+      "time": "ship_wait",
+      "unlock": "sail_1",
+      "text": "빈칸은 배가 돌아오면 채울게요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_ship_wait_03",
+      "who": "해온",
+      "time": "ship_wait",
+      "unlock": "sail_1",
+      "text": "배를 기다리는 동안 종이를 말려요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_ship_wait_04",
+      "who": "해온",
+      "time": "ship_wait",
+      "unlock": "sail_1",
+      "text": "다음 편지가 올 자리를 비워 뒀어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_ship_return_01",
+      "who": "해온",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "도착한 배 이름부터 확인할게요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_ship_return_02",
+      "who": "해온",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "돌아온 짐은 실제 수량으로 적어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_ship_return_03",
+      "who": "해온",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "영수증도 같이 건네주세요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_ship_return_04",
+      "who": "해온",
+      "time": "ship_return",
+      "unlock": "voyages_1",
+      "text": "오늘 항해 기록이 한 장 늘었어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_pirate_win_01",
+      "who": "해온",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "결과와 선원 안부를 함께 적었어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_pirate_win_02",
+      "who": "해온",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "받은 금화는 한 번만 기록할게요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_pirate_win_03",
+      "who": "해온",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "승리 보고가 도착했어요. 무사해요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_pirate_win_04",
+      "who": "해온",
+      "time": "pirate_win",
+      "unlock": "pirate_1",
+      "text": "다음 항해에도 이 기록이 쓰이겠죠.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_pirate_lose_01",
+      "who": "해온",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "손실과 귀항은 다른 칸에 적어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_pirate_lose_02",
+      "who": "해온",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "남은 짐으로 항해는 계속돼요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_pirate_lose_03",
+      "who": "해온",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "사람의 이름은 손실 칸에 안 넣어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_pirate_lose_04",
+      "who": "해온",
+      "time": "pirate_lose",
+      "unlock": "pirate_1",
+      "text": "결과를 숨기지 않고 남겨 둘게요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_worker_arrive_01",
+      "who": "해온",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "일하는 시간부터 함께 확인해요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_worker_arrive_02",
+      "who": "해온",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "이름은 어떻게 적어 드릴까요?",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_worker_arrive_03",
+      "who": "해온",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "돌아갈 배도 계약에 적혀 있어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_worker_arrive_04",
+      "who": "해온",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "처음 보는 항구 이름이 늘었네요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_worker_leave_01",
+      "who": "해온",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "다음 목적지, 확인했어요. 잘 가요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_worker_leave_02",
+      "who": "해온",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "오늘까지의 계약을 마쳤어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_worker_leave_03",
+      "who": "해온",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "맡긴 편지는 다음 배로 전할게요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_worker_leave_04",
+      "who": "해온",
+      "time": "worker_leave",
+      "unlock": "worker_leave_1",
+      "text": "다음 일정은 새 계약으로 적어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_storage_full_01",
+      "who": "해온",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "창고 수량과 남은 자리를 확인했어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_storage_full_02",
+      "who": "해온",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "금화는 자원 창고와 따로 보관해요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_storage_full_03",
+      "who": "해온",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "담지 못한 자원도 따로 표시할게요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_storage_full_04",
+      "who": "해온",
+      "time": "storage_full",
+      "unlock": "first_gather",
+      "text": "항해할 짐은 먼저 나눠 둘까요?",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_rain_01",
+      "who": "해온",
+      "time": "rain",
+      "unlock": "start",
+      "text": "편지 봉투는 마른 쪽에 뒀어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_rain_02",
+      "who": "해온",
+      "time": "rain",
+      "unlock": "start",
+      "text": "빗방울은 잉크보다 빨리 번지네요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_rain_03",
+      "who": "해온",
+      "time": "rain",
+      "unlock": "start",
+      "text": "종이 밑에 마른 천을 깔았어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_rain_04",
+      "who": "해온",
+      "time": "rain",
+      "unlock": "start",
+      "text": "글씨가 번져도 읽을 방법은 있어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_idle_long_01",
+      "who": "해온",
+      "time": "idle_long",
+      "unlock": "main_04",
+      "text": "모아 둔 소식은 여기 있어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_idle_long_02",
+      "who": "해온",
+      "time": "idle_long",
+      "unlock": "main_04",
+      "text": "읽지 않은 편지도 그대로 남아 있어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_idle_long_03",
+      "who": "해온",
+      "time": "idle_long",
+      "unlock": "start",
+      "text": "지난 기록부터 천천히 볼 수 있어요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_haeon_idle_long_04",
+      "who": "해온",
+      "time": "idle_long",
+      "unlock": "start",
+      "text": "다시 온 날짜보다 안부가 궁금해요.",
+      "speaker_kind": "resident",
+      "worker_id": null
+    },
+    {
+      "id": "home_worker_yeoul_worker_arrive",
+      "who": "여울",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "또 다른 매듭을 배워 왔어요.",
+      "speaker_kind": "worker",
+      "worker_id": "yeoul",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_yeoul_day",
+      "who": "여울",
+      "time": "day",
+      "unlock": "worker_arrive_1",
+      "text": "이번엔 이쪽부터 묶어 볼게요.",
+      "speaker_kind": "worker",
+      "worker_id": "yeoul",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_yeoul_worker_leave",
+      "who": "여울",
+      "time": "worker_leave",
+      "unlock": "worker_arrive_1",
+      "text": "모자 챙겼어요. 다음에 또 봬요.",
+      "speaker_kind": "worker",
+      "worker_id": "yeoul",
+      "presence": "departure_event"
+    },
+    {
+      "id": "home_worker_mungi_worker_arrive",
+      "who": "문기",
+      "time": "worker_arrive",
+      "unlock": "worker_arrive_1",
+      "text": "무거운 짐은 같이 들죠.",
+      "speaker_kind": "worker",
+      "worker_id": "mungi",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_mungi_day",
+      "who": "문기",
+      "time": "day",
+      "unlock": "worker_arrive_1",
+      "text": "쌓기 전에 바닥부터 살필게요.",
+      "speaker_kind": "worker",
+      "worker_id": "mungi",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_mungi_worker_leave",
+      "who": "문기",
+      "time": "worker_leave",
+      "unlock": "worker_arrive_1",
+      "text": "짐 놓을 자리는 비워 뒀어요.",
+      "speaker_kind": "worker",
+      "worker_id": "mungi",
+      "presence": "departure_event"
+    },
+    {
+      "id": "home_worker_sori_worker_arrive",
+      "who": "소리",
+      "time": "worker_arrive",
+      "unlock": "port_saltflat",
+      "text": "옷에 소금 냄새가 남았네요.",
+      "speaker_kind": "worker",
+      "worker_id": "sori",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_sori_day",
+      "who": "소리",
+      "time": "day",
+      "unlock": "port_saltflat",
+      "text": "마른 쪽에 자루를 둘게요.",
+      "speaker_kind": "worker",
+      "worker_id": "sori",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_sori_worker_leave",
+      "who": "소리",
+      "time": "worker_leave",
+      "unlock": "port_saltflat",
+      "text": "돌아가면 이 바람 얘길 할게요.",
+      "speaker_kind": "worker",
+      "worker_id": "sori",
+      "presence": "departure_event"
+    },
+    {
+      "id": "home_worker_nuri_worker_arrive",
+      "who": "누리",
+      "time": "worker_arrive",
+      "unlock": "port_pottery",
+      "text": "그릇은 겹치기 전에 감싸요.",
+      "speaker_kind": "worker",
+      "worker_id": "nuri",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_nuri_day",
+      "who": "누리",
+      "time": "day",
+      "unlock": "port_pottery",
+      "text": "빈틈을 메우면 덜 흔들려요.",
+      "speaker_kind": "worker",
+      "worker_id": "nuri",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_nuri_worker_leave",
+      "who": "누리",
+      "time": "worker_leave",
+      "unlock": "port_pottery",
+      "text": "빌린 컵은 잘 씻어 뒀어요.",
+      "speaker_kind": "worker",
+      "worker_id": "nuri",
+      "presence": "departure_event"
+    },
+    {
+      "id": "home_worker_bada_worker_arrive",
+      "who": "바다",
+      "time": "worker_arrive",
+      "unlock": "port_windneck",
+      "text": "돛천 감촉이 익숙하네요.",
+      "speaker_kind": "worker",
+      "worker_id": "bada",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_bada_day",
+      "who": "바다",
+      "time": "day",
+      "unlock": "port_windneck",
+      "text": "작은 구멍부터 꿰매 볼게요.",
+      "speaker_kind": "worker",
+      "worker_id": "bada",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_bada_worker_leave",
+      "who": "바다",
+      "time": "worker_leave",
+      "unlock": "port_windneck",
+      "text": "바늘은 모두 제자리에 있어요.",
+      "speaker_kind": "worker",
+      "worker_id": "bada",
+      "presence": "departure_event"
+    },
+    {
+      "id": "home_worker_geonu_worker_arrive",
+      "who": "건우",
+      "time": "worker_arrive",
+      "unlock": "port_pineshade",
+      "text": "나무 냄새가 좋아요.",
+      "speaker_kind": "worker",
+      "worker_id": "geonu",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_geonu_day",
+      "who": "건우",
+      "time": "day",
+      "unlock": "port_pineshade",
+      "text": "짧은 자투리도 모아 둘게요.",
+      "speaker_kind": "worker",
+      "worker_id": "geonu",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_geonu_worker_leave",
+      "who": "건우",
+      "time": "worker_leave",
+      "unlock": "port_pineshade",
+      "text": "빌린 연장 날을 살펴 뒀어요.",
+      "speaker_kind": "worker",
+      "worker_id": "geonu",
+      "presence": "departure_event"
+    },
+    {
+      "id": "home_worker_dori_worker_arrive",
+      "who": "도리",
+      "time": "worker_arrive",
+      "unlock": "port_redanchor",
+      "text": "배 위보다 바닥이 조용하네요.",
+      "speaker_kind": "worker",
+      "worker_id": "dori",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_dori_day",
+      "who": "도리",
+      "time": "day",
+      "unlock": "port_redanchor",
+      "text": "묶은 뒤에 한 번 더 당겨 봐요.",
+      "speaker_kind": "worker",
+      "worker_id": "dori",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_dori_worker_leave",
+      "who": "도리",
+      "time": "worker_leave",
+      "unlock": "port_redanchor",
+      "text": "다음 항구에서도 안부 전할게요.",
+      "speaker_kind": "worker",
+      "worker_id": "dori",
+      "presence": "departure_event"
+    },
+    {
+      "id": "home_worker_haneul_worker_arrive",
+      "who": "하늘",
+      "time": "worker_arrive",
+      "unlock": "port_fogferry",
+      "text": "안개 밖은 색이 또렷하네요.",
+      "speaker_kind": "worker",
+      "worker_id": "haneul",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_haneul_day",
+      "who": "하늘",
+      "time": "day",
+      "unlock": "port_fogferry",
+      "text": "편지는 젖지 않는 안쪽에 둬요.",
+      "speaker_kind": "worker",
+      "worker_id": "haneul",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_haneul_worker_leave",
+      "who": "하늘",
+      "time": "worker_leave",
+      "unlock": "port_fogferry",
+      "text": "가져갈 답장은 다 챙겼어요.",
+      "speaker_kind": "worker",
+      "worker_id": "haneul",
+      "presence": "departure_event"
+    },
+    {
+      "id": "home_worker_bityeo_worker_arrive",
+      "who": "빛여",
+      "time": "worker_arrive",
+      "unlock": "port_glasscape",
+      "text": "빛이 닿는 자리를 보고 왔어요.",
+      "speaker_kind": "worker",
+      "worker_id": "bityeo",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_bityeo_day",
+      "who": "빛여",
+      "time": "day",
+      "unlock": "port_glasscape",
+      "text": "반사판은 마른 천으로 닦아요.",
+      "speaker_kind": "worker",
+      "worker_id": "bityeo",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_bityeo_worker_leave",
+      "who": "빛여",
+      "time": "worker_leave",
+      "unlock": "port_glasscape",
+      "text": "다음 불빛도 잘 찾아갈게요.",
+      "speaker_kind": "worker",
+      "worker_id": "bityeo",
+      "presence": "departure_event"
+    },
+    {
+      "id": "home_worker_deul_worker_arrive",
+      "who": "들",
+      "time": "worker_arrive",
+      "unlock": "port_reedbay",
+      "text": "얕은 물길을 건너왔어요.",
+      "speaker_kind": "worker",
+      "worker_id": "deul",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_deul_day",
+      "who": "들",
+      "time": "day",
+      "unlock": "port_reedbay",
+      "text": "작은 묶음이면 나르기 편해요.",
+      "speaker_kind": "worker",
+      "worker_id": "deul",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_deul_worker_leave",
+      "who": "들",
+      "time": "worker_leave",
+      "unlock": "port_reedbay",
+      "text": "빈 바구니도 잘 챙겨 갈게요.",
+      "speaker_kind": "worker",
+      "worker_id": "deul",
+      "presence": "departure_event"
+    },
+    {
+      "id": "home_worker_saei_worker_arrive",
+      "who": "새이",
+      "time": "worker_arrive",
+      "unlock": "port_paperwater",
+      "text": "종이를 펼칠 자리가 있네요.",
+      "speaker_kind": "worker",
+      "worker_id": "saei",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_saei_day",
+      "who": "새이",
+      "time": "day",
+      "unlock": "port_paperwater",
+      "text": "날짜는 다른 줄에 적을게요.",
+      "speaker_kind": "worker",
+      "worker_id": "saei",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_saei_worker_leave",
+      "who": "새이",
+      "time": "worker_leave",
+      "unlock": "port_paperwater",
+      "text": "남겨 둔 메모는 책갈피에 있어요.",
+      "speaker_kind": "worker",
+      "worker_id": "saei",
+      "presence": "departure_event"
+    },
+    {
+      "id": "home_worker_onyu_worker_arrive",
+      "who": "온유",
+      "time": "worker_arrive",
+      "unlock": "port_whitesail",
+      "text": "작은 창고라 길 찾기 쉽네요.",
+      "speaker_kind": "worker",
+      "worker_id": "onyu",
+      "presence": "arrival_event"
+    },
+    {
+      "id": "home_worker_onyu_day",
+      "who": "온유",
+      "time": "day",
+      "unlock": "port_whitesail",
+      "text": "받은 것과 보낸 것을 나눠 적어요.",
+      "speaker_kind": "worker",
+      "worker_id": "onyu",
+      "presence": "active_contract"
+    },
+    {
+      "id": "home_worker_onyu_worker_leave",
+      "who": "온유",
+      "time": "worker_leave",
+      "unlock": "port_whitesail",
+      "text": "오늘 정리한 표를 두고 갈게요.",
+      "speaker_kind": "worker",
+      "worker_id": "onyu",
+      "presence": "departure_event"
+    }
+  ]
+}

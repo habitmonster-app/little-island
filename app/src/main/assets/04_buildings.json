@@ -1,0 +1,496 @@
+{
+  "schema_version": 1,
+  "canvas": [
+    200,
+    467
+  ],
+  "buildings": [
+    {
+      "id": "house_1",
+      "name": "알바 숙소 1",
+      "unlock": "start",
+      "requires": [],
+      "requires_buildings": [],
+      "cost": {
+        "gold": 0,
+        "wood": 20,
+        "stone": 0
+      },
+      "effect": "계약 중인 알바가 쉬는 방이에요.",
+      "effects": {
+        "temporary_worker_slots": 1
+      },
+      "max_level": 1,
+      "look": "갈색 기둥과 크림색 벽, 청록색 작은 지붕. 창문 하나와 낮은 문, 컵 선반. 문 옆 빈방 표시는 실제 계약 상태에 따라 바뀜.",
+      "slot": "house_1",
+      "rect": [
+        24,
+        224,
+        32,
+        36
+      ],
+      "sprite_id": "building_house",
+      "completion_story_event": "house_1",
+      "can_demolish": false
+    },
+    {
+      "id": "house_2",
+      "name": "알바 숙소 2",
+      "unlock": "house_1",
+      "requires": [
+        "house_1"
+      ],
+      "requires_buildings": [
+        "house_1"
+      ],
+      "cost": {
+        "gold": 0,
+        "wood": 40,
+        "stone": 10
+      },
+      "effect": "계약 중인 알바가 쉬는 방이에요.",
+      "effects": {
+        "temporary_worker_slots": 1
+      },
+      "max_level": 1,
+      "look": "갈색 기둥과 크림색 벽, 청록색 작은 지붕. 창문 하나와 낮은 문, 컵 선반. 문 옆 빈방 표시는 실제 계약 상태에 따라 바뀜.",
+      "slot": "house_2",
+      "rect": [
+        64,
+        224,
+        32,
+        36
+      ],
+      "sprite_id": "building_house",
+      "completion_story_event": null,
+      "can_demolish": false
+    },
+    {
+      "id": "house_3",
+      "name": "알바 숙소 3",
+      "unlock": "house_1",
+      "requires": [
+        "house_1"
+      ],
+      "requires_buildings": [
+        "house_2"
+      ],
+      "cost": {
+        "gold": 0,
+        "wood": 80,
+        "stone": 30
+      },
+      "effect": "계약 중인 알바가 쉬는 방이에요.",
+      "effects": {
+        "temporary_worker_slots": 1
+      },
+      "max_level": 1,
+      "look": "갈색 기둥과 크림색 벽, 청록색 작은 지붕. 창문 하나와 낮은 문, 컵 선반. 문 옆 빈방 표시는 실제 계약 상태에 따라 바뀜.",
+      "slot": "house_3",
+      "rect": [
+        104,
+        224,
+        32,
+        36
+      ],
+      "sprite_id": "building_house",
+      "completion_story_event": null,
+      "can_demolish": false
+    },
+    {
+      "id": "warehouse",
+      "name": "창고",
+      "unlock": "start",
+      "cost": null,
+      "effect": "나무와 돌을 더 많이 보관해요.",
+      "effects": {
+        "capacity_mode": "per_resource",
+        "stored_resources": [
+          "wood",
+          "stone"
+        ],
+        "gold_uncapped": true
+      },
+      "max_level": 4,
+      "initial_level": 0,
+      "levels": [
+        {
+          "level": 0,
+          "capacity": 50,
+          "cost": null,
+          "requires": [
+            "start"
+          ]
+        },
+        {
+          "level": 1,
+          "capacity": 150,
+          "cost": {
+            "gold": 0,
+            "wood": 30,
+            "stone": 10
+          },
+          "requires": [
+            "first_gather"
+          ],
+          "completion_story_event": "store_1"
+        },
+        {
+          "level": 2,
+          "capacity": 400,
+          "cost": {
+            "gold": 0,
+            "wood": 80,
+            "stone": 40
+          },
+          "requires": [
+            "store_1"
+          ],
+          "completion_story_event": null
+        },
+        {
+          "level": 3,
+          "capacity": 900,
+          "cost": {
+            "gold": 3500,
+            "wood": 180,
+            "stone": 140
+          },
+          "requires": [
+            "ship_2"
+          ],
+          "completion_story_event": null
+        },
+        {
+          "level": 4,
+          "capacity": 1800,
+          "cost": {
+            "gold": 18000,
+            "wood": 360,
+            "stone": 300
+          },
+          "requires": [
+            "ship_3"
+          ],
+          "completion_story_event": null
+        }
+      ],
+      "look": "작은 갈색 창고. 같은 땅 안에서 층별로 지붕 높이와 선반 상자가 늘어남. 별도 창고 건물을 추가하지 않음.",
+      "slot": "warehouse",
+      "rect": [
+        142,
+        280,
+        36,
+        38
+      ],
+      "sprite_id": "building_warehouse",
+      "can_demolish": false
+    },
+    {
+      "id": "dock",
+      "name": "부두",
+      "unlock": "store_1",
+      "requires": [
+        "store_1"
+      ],
+      "cost": {
+        "gold": 0,
+        "wood": 60,
+        "stone": 20
+      },
+      "effect": "교역선과 보급 짐배가 드나들어요.",
+      "effects": {
+        "trade_enabled": true,
+        "supply_interval_seconds": 75,
+        "supply_wood_range": [
+          10,
+          20
+        ],
+        "supply_stone_range": [
+          5,
+          10
+        ]
+      },
+      "max_level": 1,
+      "look": "섬 남쪽으로 길게 나온 나무 잔교. 끝부분 낮은 기둥에 등잔과 안쪽 계류 고리, 파란 끈.",
+      "slot": "dock",
+      "rect": [
+        95,
+        399,
+        18,
+        56
+      ],
+      "sprite_id": "building_dock",
+      "completion_story_event": "dock",
+      "can_demolish": false
+    },
+    {
+      "id": "campfire",
+      "name": "모닥불",
+      "unlock": "start",
+      "requires": [
+        "start"
+      ],
+      "cost": {
+        "gold": 0,
+        "wood": 0,
+        "stone": 0
+      },
+      "effect": "주민들이 잠깐 쉬어 가는 자리예요.",
+      "effects": null,
+      "max_level": 1,
+      "initial_level": 1,
+      "look": "작은 돌 고리와 장작, 주황 불꽃. 주변의 낮은 의자는 통행을 막지 않는 배경 장식.",
+      "slot": "campfire",
+      "rect": [
+        74,
+        302,
+        18,
+        14
+      ],
+      "sprite_id": "building_campfire",
+      "completion_story_event": null,
+      "can_demolish": false
+    },
+    {
+      "id": "field",
+      "name": "작은 밭",
+      "unlock": "main_15",
+      "requires": [
+        "main_15"
+      ],
+      "cost": {
+        "gold": 1200,
+        "wood": 100,
+        "stone": 40
+      },
+      "effect": "일하는 알바의 채집을 조금 도와요.",
+      "effects": {
+        "worker_own_gather_rate_bonus": 0.05
+      },
+      "max_level": 1,
+      "look": "낮은 나무 경계 안에 흙 이랑 세 줄, 작물 잎과 꽃 한 포기. 수동 물주기나 시드는 상태 없음.",
+      "slot": "field",
+      "rect": [
+        26,
+        304,
+        32,
+        24
+      ],
+      "sprite_id": "building_field",
+      "completion_story_event": null,
+      "can_demolish": false,
+      "upkeep_gold": 0,
+      "adds_food_resource": false,
+      "harvest_tap_required": false
+    },
+    {
+      "id": "lighthouse",
+      "name": "등대",
+      "unlock": "main_36",
+      "requires": [
+        "main_36",
+        "port_glasscape"
+      ],
+      "cost": {
+        "gold": 28000,
+        "wood": 200,
+        "stone": 260
+      },
+      "effect": "모든 항해의 해적 대응 확률을 높여요.",
+      "effects": {
+        "pirate_win_bonus": 0.03
+      },
+      "max_level": 1,
+      "look": "동쪽 바위 위 낮고 가는 흰 탑. 청록 지붕과 작은 반사판, 밤에 밝아지는 노란 빛. 낮에도 효과 유지.",
+      "slot": "lighthouse",
+      "rect": [
+        158,
+        207,
+        20,
+        53
+      ],
+      "sprite_id": "building_lighthouse",
+      "completion_story_event": "lighthouse",
+      "can_demolish": false
+    },
+    {
+      "id": "market",
+      "name": "작은 장터",
+      "unlock": "main_41",
+      "requires": [
+        "main_41"
+      ],
+      "cost": {
+        "gold": 50000,
+        "wood": 280,
+        "stone": 240
+      },
+      "effect": "모든 항구의 판매 금액이 조금 늘어요.",
+      "effects": {
+        "sale_gold_multiplier": 1.04
+      },
+      "max_level": 1,
+      "look": "남서쪽 길가에 낮은 좌판 세 개와 크림·청록 천막. 기울어진 작은 간판, 일정에 따라 교체되는 진열품.",
+      "slot": "market",
+      "rect": [
+        34,
+        348,
+        55,
+        28
+      ],
+      "sprite_id": "building_market",
+      "completion_story_event": "market",
+      "can_demolish": false
+    }
+  ],
+  "layout": {
+    "coordinate_origin": "top_left",
+    "unit": "source_pixel",
+    "rect_order": [
+      "x",
+      "y",
+      "width",
+      "height"
+    ],
+    "fixed_slots": {
+      "house_1": [
+        24,
+        224,
+        32,
+        36
+      ],
+      "house_2": [
+        64,
+        224,
+        32,
+        36
+      ],
+      "house_3": [
+        104,
+        224,
+        32,
+        36
+      ],
+      "warehouse": [
+        142,
+        280,
+        36,
+        38
+      ],
+      "dock": [
+        95,
+        399,
+        18,
+        56
+      ],
+      "campfire": [
+        74,
+        302,
+        18,
+        14
+      ],
+      "field": [
+        26,
+        304,
+        32,
+        24
+      ],
+      "market": [
+        34,
+        348,
+        55,
+        28
+      ],
+      "lighthouse": [
+        158,
+        207,
+        20,
+        53
+      ]
+    },
+    "decorations_use_existing_slots": true,
+    "foot_point": "bottom_center",
+    "collision": "solid_footprint_except_dock_walkway",
+    "walkway_polylines": [
+      [
+        [
+          40,
+          266
+        ],
+        [
+          80,
+          277
+        ],
+        [
+          120,
+          266
+        ]
+      ],
+      [
+        [
+          80,
+          277
+        ],
+        [
+          104,
+          285
+        ],
+        [
+          104,
+          335
+        ],
+        [
+          104,
+          390
+        ],
+        [
+          104,
+          453
+        ]
+      ],
+      [
+        [
+          104,
+          335
+        ],
+        [
+          150,
+          335
+        ],
+        [
+          160,
+          321
+        ]
+      ],
+      [
+        [
+          120,
+          277
+        ],
+        [
+          151,
+          265
+        ]
+      ]
+    ],
+    "character_collision_radius_pixels": 2
+  },
+  "construction": {
+    "time_seconds": 0,
+    "where": "app",
+    "spend_once": true,
+    "cannot_spend_below_zero": true,
+    "preview_before_purchase": true,
+    "duplicate_purchase_guard": "building_id_and_target_level",
+    "old_save_migration": "기존 집·창고·부두 상태를 그대로 읽고 완료 사건을 재구성한다. 이미 지은 건물을 다시 사게 하지 않는다.",
+    "worker_slot_limit": 3,
+    "permanent_resident_count": 3,
+    "storage_capacity_mode": "per_resource",
+    "capacity_semantics_note": "이번 출시안의 용량은 나무와 돌 각각의 상한이다. 기존 저장 형식이 합산이면 데이터 이관에서 각각의 상한으로 명시적으로 변환한다.",
+    "storage_overflow": "cap_each_resource; do_not_convert_discarded_units_to_gold",
+    "gold_has_no_storage_cap": true,
+    "level_purchase_rule": "target_level_must_equal_current_level_plus_one",
+    "all_previous_level_costs_required": true
+  }
+}

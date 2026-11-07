@@ -1,0 +1,952 @@
+{
+  "schema_version": 1,
+  "workers": [
+    {
+      "id": "yeoul",
+      "name": "여울",
+      "port": "port_haesol",
+      "unlock": "start",
+      "role": "계절 나무꾼",
+      "trait": "본인 나무 채집 +{wood_bonus_percent}%",
+      "trait_values": {
+        "wood_bonus_percent": 20.0,
+        "stone_bonus_percent": 0,
+        "sale_bonus_percent": 0,
+        "pirate_bonus_percent": 0
+      },
+      "effects": {
+        "gather_wood_bonus": 0.2,
+        "gather_stone_bonus": 0,
+        "sale_bonus": 0,
+        "pirate_win_bonus": 0
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 10,
+      "permanent_resident": false,
+      "look": "밀짚모자 아래 짧은 갈색 머리. 초록 작업복, 갈색 장화, 모자 안쪽에 작은 승선표.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "일할 시간부터 확인할게요.",
+        "매듭은 제가 묶어 둘게요.",
+        "다음 배 일정도 적어 뒀어요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "yeoul_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "yeoul_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "yeoul_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      },
+      "first_hire": {
+        "required": true,
+        "random_selection": false,
+        "hire_port": "port_haesol",
+        "requires_empty_house": true,
+        "story_arrival_key": "worker_arrive_1",
+        "story_departure_key": "worker_leave_1"
+      },
+      "role_variants": [
+        {
+          "unlock": "start",
+          "role": "계절 나무꾼",
+          "look_addition": null,
+          "stat_changes": null
+        },
+        {
+          "unlock": "main_15",
+          "role": "돛 수선 견습",
+          "look_addition": "밀짚모자 가장자리에 바람목의 푸른 천 조각",
+          "stat_changes": null
+        },
+        {
+          "unlock": "main_43",
+          "role": "항만 일자리 안내 보조",
+          "look_addition": "모자 안쪽에 접힌 새 고용표",
+          "stat_changes": null
+        }
+      ]
+    },
+    {
+      "id": "mungi",
+      "name": "문기",
+      "port": "port_haesol",
+      "unlock": "start",
+      "role": "돌 고르는 일꾼",
+      "trait": "본인 돌 채집 +{stone_bonus_percent}%",
+      "trait_values": {
+        "wood_bonus_percent": 0,
+        "stone_bonus_percent": 20.0,
+        "sale_bonus_percent": 0,
+        "pirate_bonus_percent": 0
+      },
+      "effects": {
+        "gather_wood_bonus": 0,
+        "gather_stone_bonus": 0.2,
+        "sale_bonus": 0,
+        "pirate_win_bonus": 0
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 10,
+      "permanent_resident": false,
+      "look": "짙은 곱슬머리, 주황 조끼, 회색 바지. 작은 돌망치와 둥근 천주머니.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "받침돌은 이쪽이 단단해요.",
+        "돌마다 놓일 자리가 달라요.",
+        "망치는 돌려주고 갈게요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "mungi_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "mungi_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "mungi_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      }
+    },
+    {
+      "id": "sori",
+      "name": "소리",
+      "port": "port_saltflat",
+      "unlock": "port_saltflat",
+      "role": "포대 정리꾼",
+      "trait": "본인 나무 채집 +{wood_bonus_percent}% · 본인 돌 채집 +{stone_bonus_percent}%",
+      "trait_values": {
+        "wood_bonus_percent": 10.0,
+        "stone_bonus_percent": 10.0,
+        "sale_bonus_percent": 0,
+        "pirate_bonus_percent": 0
+      },
+      "effects": {
+        "gather_wood_bonus": 0.1,
+        "gather_stone_bonus": 0.1,
+        "sale_bonus": 0,
+        "pirate_win_bonus": 0
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 16,
+      "permanent_resident": false,
+      "look": "푸른 머리수건, 밝은 모래색 옷. 소금이 묻은 앞치마와 접은 포대.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "포대 입구는 위로 둘게요.",
+        "오늘 바람은 일하기 좋네요.",
+        "빈 포대도 잘 접어 둘게요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "sori_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "sori_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "sori_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      }
+    },
+    {
+      "id": "nuri",
+      "name": "누리",
+      "port": "port_pottery",
+      "unlock": "port_pottery",
+      "role": "화물 포장공",
+      "trait": "본인 돌 채집 +{stone_bonus_percent}% · 판매 수입 +{sale_bonus_percent}%",
+      "trait_values": {
+        "wood_bonus_percent": 0,
+        "stone_bonus_percent": 15.0,
+        "sale_bonus_percent": 1.0,
+        "pirate_bonus_percent": 0
+      },
+      "effects": {
+        "gather_wood_bonus": 0,
+        "gather_stone_bonus": 0.15,
+        "sale_bonus": 0.01,
+        "pirate_win_bonus": 0
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 20,
+      "permanent_resident": false,
+      "look": "붉은 갈색 단발, 짙은 청록 작업복. 크림색 손목천과 작은 칸막이 판.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "흔들리지 않게 받쳐 둘게요.",
+        "깨지기 전에 자리를 바꿔요.",
+        "컵 손잡이가 참 편하네요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "nuri_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "nuri_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "nuri_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      }
+    },
+    {
+      "id": "bada",
+      "name": "바다",
+      "port": "port_windneck",
+      "unlock": "port_windneck",
+      "role": "돛 수선 견습",
+      "trait": "본인 나무 채집 +{wood_bonus_percent}% · 자동 방어 승률 +{pirate_bonus_percent}%p",
+      "trait_values": {
+        "wood_bonus_percent": 15.0,
+        "stone_bonus_percent": 0,
+        "sale_bonus_percent": 0,
+        "pirate_bonus_percent": 0.5
+      },
+      "effects": {
+        "gather_wood_bonus": 0.15,
+        "gather_stone_bonus": 0,
+        "sale_bonus": 0,
+        "pirate_win_bonus": 0.005
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 24,
+      "permanent_resident": false,
+      "look": "회청색 짧은 머리, 크림색 두건, 파란 조끼. 둥근 천 보따리와 바늘집.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "바람보다 먼저 매듭을 봐요.",
+        "이 천은 아직 쓸 수 있어요.",
+        "돛 귀퉁이도 살펴봤어요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "bada_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "bada_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "bada_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      }
+    },
+    {
+      "id": "geonu",
+      "name": "건우",
+      "port": "port_pineshade",
+      "unlock": "port_pineshade",
+      "role": "자재 재단공",
+      "trait": "본인 나무 채집 +{wood_bonus_percent}%",
+      "trait_values": {
+        "wood_bonus_percent": 30.0,
+        "stone_bonus_percent": 0,
+        "sale_bonus_percent": 0,
+        "pirate_bonus_percent": 0
+      },
+      "effects": {
+        "gather_wood_bonus": 0.3,
+        "gather_stone_bonus": 0,
+        "sale_bonus": 0,
+        "pirate_win_bonus": 0
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 28,
+      "permanent_resident": false,
+      "look": "짙은 녹색 머리띠, 검은 짧은 머리. 황토색 앞치마와 납작한 대패.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "짧은 나무도 쓸 곳이 있어요.",
+        "자를 곳은 연필로 표시해요.",
+        "톱밥은 한쪽에 모아 둘게요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "geonu_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "geonu_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "geonu_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      }
+    },
+    {
+      "id": "dori",
+      "name": "도리",
+      "port": "port_redanchor",
+      "unlock": "port_redanchor",
+      "role": "밧줄 정비공",
+      "trait": "본인 돌 채집 +{stone_bonus_percent}% · 자동 방어 승률 +{pirate_bonus_percent}%p",
+      "trait_values": {
+        "wood_bonus_percent": 0,
+        "stone_bonus_percent": 10.0,
+        "sale_bonus_percent": 0,
+        "pirate_bonus_percent": 1.0
+      },
+      "effects": {
+        "gather_wood_bonus": 0,
+        "gather_stone_bonus": 0.1,
+        "sale_bonus": 0,
+        "pirate_win_bonus": 0.01
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 36,
+      "permanent_resident": false,
+      "look": "검붉은 두건, 검은 땋은 머리. 회색 작업복과 허리에 맨 밧줄 고리.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "당겨 보기 전에 끝부터 봐요.",
+        "느슨한 매듭은 다시 묶어요.",
+        "정비표에 제 이름도 적어요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "dori_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "dori_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "dori_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      }
+    },
+    {
+      "id": "haneul",
+      "name": "하늘",
+      "port": "port_fogferry",
+      "unlock": "port_fogferry",
+      "role": "편지 분류원",
+      "trait": "본인 나무 채집 +{wood_bonus_percent}% · 판매 수입 +{sale_bonus_percent}%",
+      "trait_values": {
+        "wood_bonus_percent": 10.0,
+        "stone_bonus_percent": 0,
+        "sale_bonus_percent": 2.0,
+        "pirate_bonus_percent": 0
+      },
+      "effects": {
+        "gather_wood_bonus": 0.1,
+        "gather_stone_bonus": 0,
+        "sale_bonus": 0.02,
+        "pirate_win_bonus": 0
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 42,
+      "permanent_resident": false,
+      "look": "차분한 보라빛 머리, 연회색 겉옷. 청록 우편 가방과 작은 이름표.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "받는 사람 이름부터 볼게요.",
+        "늦은 편지도 버리지 않아요.",
+        "답장 칸은 비워 둘게요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "haneul_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "haneul_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "haneul_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      }
+    },
+    {
+      "id": "bityeo",
+      "name": "빛여",
+      "port": "port_glasscape",
+      "unlock": "port_glasscape",
+      "role": "반사판 연마공",
+      "trait": "본인 돌 채집 +{stone_bonus_percent}%",
+      "trait_values": {
+        "wood_bonus_percent": 0,
+        "stone_bonus_percent": 30.0,
+        "sale_bonus_percent": 0,
+        "pirate_bonus_percent": 0
+      },
+      "effects": {
+        "gather_wood_bonus": 0,
+        "gather_stone_bonus": 0.3,
+        "sale_bonus": 0,
+        "pirate_win_bonus": 0
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 48,
+      "permanent_resident": false,
+      "look": "밝은 금갈색 묶은 머리, 흰 작업복. 파란 장갑과 작은 닦는 천.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "눈부신 쪽은 돌려 둘게요.",
+        "모서리부터 천천히 닦아요.",
+        "작은 빛도 방향이 중요해요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "bityeo_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "bityeo_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "bityeo_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      }
+    },
+    {
+      "id": "deul",
+      "name": "들",
+      "port": "port_reedbay",
+      "unlock": "port_reedbay",
+      "role": "꾸러미 운반공",
+      "trait": "본인 나무 채집 +{wood_bonus_percent}% · 본인 돌 채집 +{stone_bonus_percent}%",
+      "trait_values": {
+        "wood_bonus_percent": 20.0,
+        "stone_bonus_percent": 20.0,
+        "sale_bonus_percent": 0,
+        "pirate_bonus_percent": 0
+      },
+      "effects": {
+        "gather_wood_bonus": 0.2,
+        "gather_stone_bonus": 0.2,
+        "sale_bonus": 0,
+        "pirate_win_bonus": 0
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 54,
+      "permanent_resident": false,
+      "look": "짙은 갈색 머리, 갈대색 모자. 녹색 조끼와 넓은 어깨끈 꾸러미.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "무게를 나눠 싣고 갈게요.",
+        "좁은 길은 천천히 가요.",
+        "돌아갈 짐도 확인했어요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "deul_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "deul_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "deul_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      }
+    },
+    {
+      "id": "saei",
+      "name": "새이",
+      "port": "port_paperwater",
+      "unlock": "port_paperwater",
+      "role": "거래표 정리원",
+      "trait": "판매 수입 +{sale_bonus_percent}%",
+      "trait_values": {
+        "wood_bonus_percent": 0,
+        "stone_bonus_percent": 0,
+        "sale_bonus_percent": 3.0,
+        "pirate_bonus_percent": 0
+      },
+      "effects": {
+        "gather_wood_bonus": 0,
+        "gather_stone_bonus": 0,
+        "sale_bonus": 0.03,
+        "pirate_win_bonus": 0
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 64,
+      "permanent_resident": false,
+      "look": "먹색 단발, 흰 셔츠 위 청록 앞치마. 종이 뭉치와 잉크 묻은 손끝.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "틀린 곳엔 이유도 적어요.",
+        "작은 글씨는 제가 읽을게요.",
+        "여백도 조금 남겨 둘게요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "saei_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "saei_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "saei_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      }
+    },
+    {
+      "id": "onyu",
+      "name": "온유",
+      "port": "port_whitesail",
+      "unlock": "port_whitesail",
+      "role": "항만 정비 보조",
+      "trait": "본인 돌 채집 +{stone_bonus_percent}% · 판매 수입 +{sale_bonus_percent}% · 자동 방어 승률 +{pirate_bonus_percent}%p",
+      "trait_values": {
+        "wood_bonus_percent": 0,
+        "stone_bonus_percent": 15.0,
+        "sale_bonus_percent": 1.0,
+        "pirate_bonus_percent": 1.0
+      },
+      "effects": {
+        "gather_wood_bonus": 0,
+        "gather_stone_bonus": 0.15,
+        "sale_bonus": 0.01,
+        "pirate_win_bonus": 0.01
+      },
+      "base_gather_rate_per_second": 0.055,
+      "gather_weights": {
+        "wood": 0.68,
+        "stone": 0.32
+      },
+      "work_hours": 6,
+      "wage": 80,
+      "permanent_resident": false,
+      "look": "회갈색 짧은 머리, 남색 작업복. 흰 팔띠와 접힌 점검표.",
+      "sprite_size": [
+        8,
+        13
+      ],
+      "lines": [
+        "확인한 곳부터 표시할게요.",
+        "쉬는 순서도 정해 둘까요.",
+        "다음 작업자에게 적어 둘게요."
+      ],
+      "revisit_lines": [
+        "또 만나서 반가워요.",
+        "맡겨 둔 이야기를 가져왔어요."
+      ],
+      "revisit": {
+        "count_on": "contract_completed",
+        "milestones": [
+          {
+            "completed_contracts": 2,
+            "unlock_cosmetic": "onyu_tool_tag",
+            "label": "이름표 달린 작업 도구",
+            "effect": null
+          },
+          {
+            "completed_contracts": 5,
+            "unlock_cosmetic": "onyu_letter",
+            "label": "익숙한 손님의 편지",
+            "effect": null
+          },
+          {
+            "completed_contracts": 10,
+            "unlock_cosmetic": "onyu_patch",
+            "label": "작은 섬 천 조각",
+            "effect": null
+          }
+        ],
+        "wage_discount": 0,
+        "production_bonus": 0,
+        "contract_extension_hours": 0,
+        "missing_visit_penalty": false
+      }
+    }
+  ],
+  "rules": {
+    "permanent_residents": [
+      "단",
+      "보리",
+      "해온"
+    ],
+    "max_houses": 3,
+    "slots_per_house": 1,
+    "max_simultaneous_workers": 3,
+    "contract_hours": 6,
+    "contract_starts_at": "home_arrival",
+    "contract_ends_at": "arrival_plus_work_hours",
+    "offline_resolution_source": "01_economy.json.offline_processing",
+    "finished_contract_does_not_require_app_open": true,
+    "first_hire_id": "yeoul",
+    "first_hire_overrides_auto_preference": true,
+    "hire_control_location": "app",
+    "worker_is_not_random_loot": true,
+    "visible_roster_mode": "all_eligible_at_selected_port",
+    "wage_payment": "once_at_port_recruitment",
+    "wage_wording": "고용비",
+    "wage_refund": "탑승 전에 고용이 취소되면 전액 환불. 정상 귀항과 계약 완료에는 추가 지급이나 차감 없음.",
+    "hire_travel": {
+      "maximum_per_voyage": 1,
+      "reserve_house_at_recruitment": true,
+      "reserved_house_counts_as_occupied": true,
+      "sailing_worker_produces": false,
+      "pirate_loss_affects_worker": false,
+      "same_worker_simultaneous_duplicates": false,
+      "recruitable_after_previous_contract": "worker_leave_processed"
+    },
+    "production_formula": {
+      "wood": "base_gather_rate_per_second * gather_weights.wood * (1 + effects.gather_wood_bonus) * active_field_multiplier",
+      "stone": "base_gather_rate_per_second * gather_weights.stone * (1 + effects.gather_stone_bonus) * active_field_multiplier",
+      "own_effect_only": true,
+      "residents_receive_worker_gather_bonus": false,
+      "fractional_accumulator_per_worker_resource": true,
+      "full_storage": "초과 생산은 저장하지 않으며 다음 생산 시 재고 공간을 다시 확인한다. 이미 모은 자원을 버리도록 요구하지 않는다."
+    },
+    "global_effects": {
+      "sale_bonus_cap": 0.06,
+      "pirate_win_bonus_cap": 0.02,
+      "stacking": "활성 계약마다 더한 뒤 각각 상한을 적용한다. 같은 알바의 영구 숙련 배수는 없음.",
+      "sale_bonus_scope": "화물 판매 수입만. 해적 보상·사건 보상·부재 보상의 보상 수치에는 중복 적용하지 않음.",
+      "snapshot_at": "voyage_departure",
+      "snapshot_valid_until": "same_voyage_settlement",
+      "contract_expiry_during_voyage": "이미 출항한 항해의 효과는 유지하고 다음 출항부터 제외한다.",
+      "market_stack": "판매 수입에 시장 보너스와 알바 보너스를 더한 배수를 한 번 적용한다."
+    },
+    "auto_hire": {
+      "enabled_by_default": true,
+      "initial_port": "port_haesol",
+      "mode": "replace_completed_contract_when_next_eligible_voyage_visits_port",
+      "budget_gold_per_credited_day": 120,
+      "max_single_wage_gold": 10,
+      "reserve_gold_floor": 20,
+      "first_hire_ignores_reserve_floor": true,
+      "first_hire_still_requires_wage": true,
+      "budget_period_hours": 24,
+      "budget_clock": "credited_simulation_time",
+      "unused_budget_rolls_over": false,
+      "budget_debit_at": "recruitment_commit",
+      "selection_order": [
+        "player_port_preference",
+        "lowest_wage",
+        "worker_id"
+      ],
+      "eligible_conditions": [
+        "port_unlocked",
+        "worker_unlock_complete",
+        "free_unreserved_house",
+        "worker_not_active_or_in_transit",
+        "enough_gold_for_wage_and_reserve",
+        "within_user_budget",
+        "at_most_one_hire_this_voyage"
+      ],
+      "budget_failure": "알바 없이 교역과 주민 생산을 계속한다. 금화가 음수가 되지 않으며 경고 팝업을 반복하지 않는다.",
+      "manual_hire_budget_interaction": "직접 고용은 확인 화면에 보이는 고용비로 처리하고 자동 고용 예산을 차감하지 않는다.",
+      "offline": "직접 선택한 자동 고용 설정으로 부재 보상 계산 구간 안에서만 계약을 새로 체결한다. 초과 부재 구간 정리는 경제 파일의 공통 시계 규칙을 따른다.",
+      "higher_wage_worker_policy": "기본 단건 상한을 넘는 알바는 자동 고용하지 않는다. 플레이어가 앱에서 명단·단건 상한·총예산을 직접 바꾼 뒤에만 해당 설정을 적용한다."
+    },
+    "revisit_progression": "완료한 계약만 단골 횟수에 더한다. 이야기 읽음이나 실시간 접속 횟수를 세지 않으며 능력치 대신 편지·작업 도구 외형만 열린다.",
+    "display_templates": {
+      "contract": "고용비 {wage}금화 · 근무 {work_hours}시간",
+      "arrival": "{name}이 일을 도우러 왔어요.",
+      "departure": "{name}이 계약을 마쳤어요.",
+      "reserved": "{name}이 배를 타고 오고 있어요.",
+      "budget": "자동 고용 예산 {budget_gold}금화",
+      "no_housing": "빈 숙소가 생기면 고용할 수 있어요."
+    }
+  }
+}

@@ -1,0 +1,592 @@
+{
+  "schema_version": 1,
+  "design_status": "release_balance_proposal",
+  "source_story_file": "little_island_story.json",
+  "selection": {
+    "trigger": "voyage_return",
+    "event_chance": 0.35,
+    "max_events_per_return": 1,
+    "eligibility_order": [
+      "본문 voyage_events의 unlock이 처리 완료인지 확인",
+      "효과 데이터의 unlock과 requires가 모두 처리 완료인지 확인",
+      "실제 목적항이 ports에 포함되는지 확인. ports가 null이면 모든 목적항 허용",
+      "state_requirements의 로컬 상태를 모두 확인",
+      "미반복 사건의 최초 처리 여부와 항해 횟수 기반 간격을 확인",
+      "직전 선택된 사건과 같은 id를 제외"
+    ],
+    "requires_semantics": "all",
+    "unlock_state": "자동 사건 처리 완료. 읽음, 현재 화면, 실제 접속 시각을 사용하지 않는다.",
+    "weight_semantics": "적격 후보끼리의 상대 가중치이며 고정 발동 확률이 아니다.",
+    "conditional_probability_formula": "weight / sum(eligible.weight)",
+    "per_return_probability_formula": "event_chance * weight / sum(eligible.weight)",
+    "no_event_probability_when_candidates_exist": 0.65,
+    "no_eligible_candidate": "추첨과 보상을 생략하고 정상 귀항만 정산한다.",
+    "exclude_last_selected_event": true,
+    "cooldown_counter": "전체 완료 항해 수. 사건이 처리된 항해의 번호를 저장한다.",
+    "cooldown_formula": "current_completed_voyages - last_occurrence_completed_voyages >= cooldown_completed_voyages",
+    "repeat_false_policy": "첫 발생 후 영구 후보 제외. 일지에서 다시 읽기는 허용한다.",
+    "draw_timing": "귀항 결과 확정 시",
+    "persist_selected_id_and_effect_before_credit": true,
+    "seed_scope": "voyage_id_and_flavor_event",
+    "reroll_on_app_open": false,
+    "reroll_on_journal_open": false,
+    "offline_policy": "부재 보상 한도 안에 완료된 항해를 같은 규칙으로 시간 순서대로 처리한다.",
+    "already_settled_legacy_voyages": "과거 완료 항해를 다시 추첨하거나 소급 지급하지 않는다."
+  },
+  "settlement": {
+    "authority": "voyage_ledger",
+    "idempotency_key": "voyage:{voyage_id}:flavor:{event_id}",
+    "credit_on": "same_voyage_return_settlement",
+    "effect_null_means": "게임 수치 변화 없음",
+    "apply_after_scheduled_combat_and_trade": true,
+    "recalculate_already_committed_cargo_loss": false,
+    "recalculate_already_committed_sale": false,
+    "refund_prepaid_specialty_contract": false,
+    "numeric_effect_semantics": "기본 자원 장부에 한 번 더할 고정 수량",
+    "item_and_gold_double_credit": false,
+    "specialty_created_by_events": false,
+    "storage_overflow_policy": "나무·돌은 해당 자원의 남은 창고 칸까지만 추가하고 초과분은 버린다. 초과분 자동 판매나 재지급은 하지 않는다.",
+    "gold_storage_cap": null,
+    "new_rewards_in_same_voyage_retriggers_event": false,
+    "reopening_card_or_journal_grants_reward": false,
+    "event_changes_battle_result": false,
+    "event_changes_voyage_duration": false,
+    "event_consumes_additional_resources": false,
+    "nonzero_reward_events": [
+      "voy_15",
+      "voy_21"
+    ],
+    "max_single_gold_reward": 8,
+    "max_single_wood_reward": 3,
+    "max_single_stone_reward": 0,
+    "home_display": "일반 귀항 또는 부재 결과 카드에 보상을 합산하고 원문의 home_news를 짧은 소식으로 사용한다."
+  },
+  "story_special_event_separation": {
+    "main_33_main_34": "보물창고의 확정 이야기는 이 무작위 사건 풀에 넣지 않는다.",
+    "main_51_to_main_57": "폭풍은 고정 자동 서사다. 이 파일의 추첨, 현실 날씨, 미접속 시간에 따라 피해나 결말을 바꾸지 않는다.",
+    "main_53": "06_pirates.json의 gurok_trap 정의를 사용하는 본편 사건이며 추가 전투 보상은 없다.",
+    "main_59": "돌아옴장은 순환 시장 콘텐츠로 연결하며 이 파일에서 시장을 새로 건설하거나 주민을 늘리지 않는다."
+  },
+  "voyage_event_effects": [
+    {
+      "id": "voy_01",
+      "title": "모자에 앉은 갈매기",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "생활 소식만 기록한다. 금화·자원·항해 시간·전투 결과를 바꾸지 않는다."
+    },
+    {
+      "id": "voy_02",
+      "title": "비어 있는 병",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [
+        "voyages_3"
+      ],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 1,
+      "effect": null,
+      "repeat": false,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "병 발견과 답장은 지난 항해들을 돌아보는 완결 기록으로 보관한다. 새 실시간 대기나 추가 보상을 만들지 않는다."
+    },
+    {
+      "id": "voy_03",
+      "title": "길을 바꾼 물고기 떼",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "생활 소식만 기록한다. 금화·자원·항해 시간·전투 결과를 바꾸지 않는다."
+    },
+    {
+      "id": "voy_04",
+      "title": "젖지 않은 편지",
+      "trigger": "voyage_return",
+      "unlock": "main_14",
+      "requires": [
+        "port_pottery"
+      ],
+      "ports": [
+        "port_pottery"
+      ],
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "비는 기록 속 장면이다. 실제 날씨나 휴대폰의 현재 화면과 일치할 필요가 없다."
+    },
+    {
+      "id": "voy_05",
+      "title": "안개 속 낯익은 종",
+      "trigger": "voyage_return",
+      "unlock": "main_37",
+      "requires": [
+        "lighthouse",
+        "port_fogferry"
+      ],
+      "ports": [
+        "port_fogferry"
+      ],
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "신호표가 도입된 뒤의 항해 회상이다. 안개 때문에 실제 항해 시간을 늘리지 않는다."
+    },
+    {
+      "id": "voy_06",
+      "title": "너무 큰 채소",
+      "trigger": "voyage_return",
+      "unlock": "main_38",
+      "requires": [
+        "port_reedbay"
+      ],
+      "ports": [
+        "port_reedbay"
+      ],
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "채소는 식사 장면의 물건이다. 별도의 음식 자원이나 영구 주민으로 추가하지 않는다."
+    },
+    {
+      "id": "voy_07",
+      "title": "뒤바뀐 이름표",
+      "trigger": "voyage_return",
+      "unlock": "main_13",
+      "requires": [
+        "port_saltflat"
+      ],
+      "ports": [
+        "port_haesol",
+        "port_saltflat"
+      ],
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "설탕은 이야기 속 식재료다. 기본 자원 목록에 추가하지 않는다."
+    },
+    {
+      "id": "voy_08",
+      "title": "도착한 잃어버린 장갑",
+      "trigger": "voyage_return",
+      "unlock": "main_15",
+      "requires": [
+        "port_windneck"
+      ],
+      "ports": [
+        "port_windneck"
+      ],
+      "state_requirements": [],
+      "weight": 1,
+      "effect": null,
+      "repeat": false,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "원문의 잃어버린 장갑 이야기는 완결 기록으로 보관한다. 변주 원고가 생기기 전까지 같은 분실을 반복하지 않는다."
+    },
+    {
+      "id": "voy_09",
+      "title": "파도에 흔들린 글씨",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "생활 소식만 기록한다. 금화·자원·항해 시간·전투 결과를 바꾸지 않는다."
+    },
+    {
+      "id": "voy_10",
+      "title": "바람 없는 낮잠",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "선원들의 휴식 장면이며 항해 시간 변경이나 수동 돛 조작을 요구하지 않는다."
+    },
+    {
+      "id": "voy_11",
+      "title": "냄비 뚜껑 신호",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "생활 소식만 기록한다. 금화·자원·항해 시간·전투 결과를 바꾸지 않는다."
+    },
+    {
+      "id": "voy_12",
+      "title": "구멍 하나의 거래",
+      "trigger": "voyage_return",
+      "unlock": "main_15",
+      "requires": [
+        "port_windneck"
+      ],
+      "ports": [
+        "port_windneck"
+      ],
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "수선비는 서사 표현이다. 이번 효과로 금화를 추가 차감하거나 별도의 수리 기능을 요구하지 않는다."
+    },
+    {
+      "id": "voy_13",
+      "title": "다른 항구의 노래",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": [
+        "port_haesol"
+      ],
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "생활 소식만 기록한다. 금화·자원·항해 시간·전투 결과를 바꾸지 않는다."
+    },
+    {
+      "id": "voy_14",
+      "title": "별이 많은 귀항",
+      "trigger": "voyage_return",
+      "unlock": "main_37",
+      "requires": [
+        "lighthouse"
+      ],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "별빛 아래의 항해를 회상한다. 실제 야간 접속을 조건으로 쓰지 않는다."
+    },
+    {
+      "id": "voy_15",
+      "title": "물건보다 큰 포장",
+      "trigger": "voyage_return",
+      "unlock": "main_31",
+      "requires": [
+        "port_fogferry"
+      ],
+      "ports": [
+        "port_fogferry"
+      ],
+      "state_requirements": [],
+      "weight": 1,
+      "effect": {
+        "wood": 3
+      },
+      "repeat": true,
+      "cooldown_completed_voyages": 6,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "회수한 포장재의 일부만 나무 보상으로 합친다. 창고 초과분을 금화로 다시 판매하지 않는다."
+    },
+    {
+      "id": "voy_16",
+      "title": "항구 고양이의 검사",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "생활 소식만 기록한다. 금화·자원·항해 시간·전투 결과를 바꾸지 않는다."
+    },
+    {
+      "id": "voy_17",
+      "title": "낯선 도장",
+      "trigger": "voyage_return",
+      "unlock": "main_13",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 1,
+      "effect": null,
+      "repeat": false,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "첫 그림 도장을 소개하는 기록이다. 항구별 추가 도장 원고가 없으므로 같은 최초 사건을 재추첨하지 않는다."
+    },
+    {
+      "id": "voy_18",
+      "title": "남은 빵의 행선지",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "간식 교환은 생활 장면이며 거래 수익이나 무료 자원 생성으로 계산하지 않는다."
+    },
+    {
+      "id": "voy_19",
+      "title": "짧아진 줄",
+      "trigger": "voyage_return",
+      "unlock": "voyages_3",
+      "requires": [
+        "main_08"
+      ],
+      "ports": [
+        "port_haesol"
+      ],
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "하역 개선의 이야기다. 배 속도나 도착 타이머를 추가로 단축하지 않는다."
+    },
+    {
+      "id": "voy_20",
+      "title": "파란 끈의 새 매듭",
+      "trigger": "voyage_return",
+      "unlock": "main_31",
+      "requires": [
+        "port_fogferry"
+      ],
+      "ports": [
+        "port_fogferry"
+      ],
+      "state_requirements": [],
+      "weight": 1,
+      "effect": null,
+      "repeat": false,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "소아의 매듭을 처음 배우는 기록을 보관한다. 능력치나 해금 필수 수집품은 아니다."
+    },
+    {
+      "id": "voy_21",
+      "title": "작은 보물 주머니",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 1,
+      "effect": {
+        "gold": 8
+      },
+      "repeat": true,
+      "cooldown_completed_voyages": 12,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "주머니 속 동전은 주인에게 돌려준다. 효과의 금화만 사례금이며 둘을 더해 중복 지급하지 않는다."
+    },
+    {
+      "id": "voy_22",
+      "title": "잠시 쉬어 간 큰 그림자",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 1,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "고래는 관찰 연출이다. 추격, 포획, 새 동물 자원은 없다."
+    },
+    {
+      "id": "voy_23",
+      "title": "돌아온 연장",
+      "trigger": "voyage_return",
+      "unlock": "port_pineshade",
+      "requires": [
+        "main_15"
+      ],
+      "ports": [
+        "port_pineshade"
+      ],
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "손질된 연장은 기념 장면이다. 단의 생산 속도나 작업 도구 능력치를 영구 증가시키지 않는다."
+    },
+    {
+      "id": "voy_24",
+      "title": "아주 작은 손님",
+      "trigger": "voyage_return",
+      "unlock": "main_35",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [
+        {
+          "path": "buildings.field.level",
+          "op": "gte",
+          "value": 1
+        }
+      ],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "본문에 꽃을 둘 수 있도록 밭이 있는 경우만 사용한다. 밭은 로컬 건물 상태로 검사하며 새 이야기 해금 키를 만들지 않는다."
+    },
+    {
+      "id": "voy_25",
+      "title": "같은 날씨의 다른 이야기",
+      "trigger": "voyage_return",
+      "unlock": "main_14",
+      "requires": [
+        "port_saltflat",
+        "port_pottery"
+      ],
+      "ports": [
+        "port_saltflat",
+        "port_pottery"
+      ],
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "생활 소식만 기록한다. 금화·자원·항해 시간·전투 결과를 바꾸지 않는다."
+    },
+    {
+      "id": "voy_26",
+      "title": "선원의 첫 편지",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 1,
+      "effect": null,
+      "repeat": false,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "새 선원의 첫 보고를 소개하는 완결 기록이다. 별도 선원 명단을 생성하지 않는다."
+    },
+    {
+      "id": "voy_27",
+      "title": "가격표를 고친 날",
+      "trigger": "voyage_return",
+      "unlock": "main_42",
+      "requires": [
+        "market"
+      ],
+      "ports": [
+        "port_haesol"
+      ],
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "이야기 속 가격표를 고치는 장면이다. 판매가를 다시 계산하거나 이미 확정한 정산을 소급 변경하지 않는다."
+    },
+    {
+      "id": "voy_28",
+      "title": "강한 바람 뒤의 점검",
+      "trigger": "voyage_return",
+      "unlock": "main_36",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "자동 정비가 끝난 기록이다. 수리 버튼, 내구도 소모, 추가 수리비는 없다."
+    },
+    {
+      "id": "voy_29",
+      "title": "다음 항구의 추천",
+      "trigger": "voyage_return",
+      "unlock": "main_59",
+      "requires": [
+        "market"
+      ],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 1,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "다음 장터의 방문객을 예고한다. 영구 주민이나 숙소를 추가하지 않는다."
+    },
+    {
+      "id": "voy_30",
+      "title": "늘 같은 귀항 인사",
+      "trigger": "voyage_return",
+      "unlock": "main_08",
+      "requires": [],
+      "ports": null,
+      "state_requirements": [],
+      "weight": 3,
+      "effect": null,
+      "repeat": true,
+      "cooldown_completed_voyages": 2,
+      "journal_policy": "append_new_occurrence_and_keep_first_record",
+      "note": "평범한 귀항도 일지에 남긴다. 사건이 선택되지 않은 귀항에도 정상 정산과 귀항 카드는 표시한다."
+    }
+  ]
+}

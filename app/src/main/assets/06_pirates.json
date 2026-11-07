@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "design_status": "release_balance_proposal",
+  "combat_rules": {
+    "mode": "automatic",
+    "max_normal_encounters_per_voyage": 1,
+    "encounter_probability_source": "port.pirate_risk",
+    "encounter_probability_meaning": "항해 중 조우할 확률이며 패배 확률이 아니다.",
+    "encounter_schedule": {
+      "decision_snapshot": "voyage_departure",
+      "specialty_contract_definition": "출항 전에 선결제가 확정된 양수 수량의 특산물 계약. 예약 실패 또는 빈 계약은 계약 없음으로 처리한다.",
+      "without_specialty_contract": {
+        "leg": "outbound",
+        "resolve_at_fraction": 0.2361111111111111,
+        "cargo_present": [
+          "wood",
+          "stone"
+        ]
+      },
+      "with_specialty_contract": {
+        "leg": "inbound",
+        "resolve_at_fraction": 0.75,
+        "cargo_present": [
+          "specialty_cargo"
+        ]
+      },
+      "sample_encounter_only_once": true,
+      "same_port_risk_for_both_legs": true,
+      "same_win_formula_for_both_legs": true,
+      "note": "특산물 계약이 있으면 왕로의 조우를 따로 굴리지 않는다. 귀로 조우 때는 방문항에서 이미 판매한 기본 화물을 손실 대상으로 다시 세지 않는다."
+    },
+    "eligibility": {
+      "unlock_and_requires": "all",
+      "disabled_by": "any",
+      "port_filter": "destination_port",
+      "pirate_eligibility_snapshot": "combat_resolution",
+      "ship_and_worker_bonus_snapshot": "voyage_departure",
+      "building_bonus_snapshot": "voyage_departure",
+      "progress_flag_semantics": "자동 사건 처리 완료. 읽음 여부와 무관하다.",
+      "no_eligible_pirate": "조우를 생략하고 항해를 계속한다."
+    },
+    "normal_pool_choice": {
+      "method": "weighted_random",
+      "formula": "selection_weight / sum(eligible.selection_weight)",
+      "exclude_story_fixed": true
+    },
+    "conditional_win_probability": {
+      "base_field": "ship.pirate_win",
+      "power_reference": 1.0,
+      "power_penalty_coefficient": 0.1,
+      "lighthouse_bonus": 0.03,
+      "active_worker_bonus_cap": 0.02,
+      "minimum": 0.35,
+      "maximum": 0.97,
+      "formula": "clamp(ship.pirate_win - power_penalty_coefficient * (pirate.power - power_reference) + lighthouse_bonus_if_built + active_worker_bonus, minimum, maximum)",
+      "day_night_modifier": 0,
+      "offline_modifier": 0,
+      "read_state_modifier": 0
+    },
+    "first_encounter": {
+      "requires": [
+        "sail_1"
+      ],
+      "unless_completed": "pirate_1",
+      "disabled_by": [
+        "main_53"
+      ],
+      "force_encounter": true,
+      "pirate_id": "hook_minor",
+      "force_victory": false,
+      "emit_on_either_result": "pirate_1",
+      "consume_normal_encounter_slot": true,
+      "note": "최초 조우만 보장하며 승패는 일반 승률로 확정한다. 패배해도 본편이 진행된다."
+    },
+    "cargo_loss": {
+      "applies_to_by_contract": {
+        "without_specialty_contract": [
+          "wood",
+          "stone"
+        ],
+        "with_specialty_contract": [
+          "specialty_cargo"
+        ]
+      },
+      "remaining_formula": "floor(current_onboard_quantity * (1 - pirate.lose_cargo))",
+      "rounding_scope": "each_cargo_line",
+      "timing": "scheduled_combat_resolution",
+      "quantity_snapshot": "전투 시점에 실제 배에 남아 있는 화물 수량",
+      "without_specialty_contract_sale_order": "왕로 전투 후 남은 기본 화물만 방문항에서 판매한다.",
+      "with_specialty_contract_sale_order": "기본 화물은 방문항에서 판매 완료한다. 그 뒤 선적한 특산물만 귀로 전투의 손실 대상이다.",
+      "already_sold_cargo_retroactive_loss": 0,
+      "already_posted_sale_revenue_adjustment": 0,
+      "already_paid_specialty_purchase_refund": false,
+      "gold_balance_loss": 0,
+      "worker_loss": 0,
+      "resident_loss": 0,
+      "ship_destruction": false,
+      "building_damage": false,
+      "extra_repair_fee": 0
+    },
+    "specialty_contract_payment": {
+      "price_authority": "01_economy.json 및 03_ports.json의 계약 가격",
+      "debit_at": "voyage_departure",
+      "debit_count_per_contract": 1,
+      "cargo_load_at": "destination_port_visit",
+      "debit_again_at_port": false,
+      "debit_again_at_combat": false,
+      "debit_again_at_return": false,
+      "refund_on_pirate_loss": false,
+      "note": "금화 선결제와 실제 화물 선적은 다른 시점이다. 왕로에는 매입할 특산물을 적재 화물로 취급하지 않는다."
+    },
+    "win_reward": {
+      "currency": "gold",
+      "range_field": "win_gold",
+      "distribution": "uniform_integer_inclusive",
+      "lose_result_gold": 0,
+      "settlement": "voyage_ledger",
+      "idempotency_key": "voyage:{voyage_id}:pirate",
+      "credit_on": "voyage_return_settlement",
+      "journal_replay_grants_reward": false,
+      "note": "전투 보상은 항해 정산에 합쳐 지급하며 카드와 일지는 확정된 장부만 읽는다."
+    },
+    "randomness": {
+      "persist_result": true,
+      "persist_selected_pirate": true,
+      "seed_scope": "voyage_id_and_combat_slot",
+      "reroll_on_app_open": false,
+      "reroll_on_journal_open": false,
+      "offline_uses_same_resolver": true
+    },
+    "friendly_factions": [
+      "붉은돛 선단"
+    ],
+    "never_enemy_characters": [
+      "가람",
+      "서린",
+      "여울"
+    ],
+    "main_53_transition": {
+      "authority": "story_engine",
+      "story_ref": "main_53",
+      "special_pirate_id": "gurok_trap",
+      "settlement_key": "story:main_53",
+      "fixed_outcome": "capture_after_rescue",
+      "random_rolls": 0,
+      "gold_reward": 0,
+      "cargo_loss": 0,
+      "extra_normal_encounter": false,
+      "consume_normal_encounter_slot": false,
+      "ignore_offline_duration": true,
+      "ignore_real_weather": true,
+      "disable_prior_faction_variants_immediately_for_new_resolution": true,
+      "keep_already_committed_past_logs": true,
+      "note": "구록 체포는 본편의 고정 사건이다. 일반 전투와 중복 정산하지 않으며 이후 미확정 전투는 잔당 또는 별개 약탈자로 고른다."
+    },
+    "home_cards": {
+      "win_event": "pirate_win",
+      "lose_event": "pirate_lose",
+      "merge_into_return_or_away_summary": true
+    }
+  },
+  "pirates": [
+    {
+      "id": "hook_minor",
+      "name": "갈고리단 정찰선",
+      "unlock": "start",
+      "requires": [],
+      "disabled_by": [
+        "main_53"
+      ],
+      "encounter_mode": "normal",
+      "normal_pool": true,
+      "ports": null,
+      "selection_weight": 8,
+      "power": 1.0,
+      "win_gold": [
+        10,
+        20
+      ],
+      "lose_cargo": 0.4,
+      "repeat": true,
+      "sprite_id": "pirate_hook_minor",
+      "sprite_size": [
+        28,
+        22
+      ],
+      "colors": [
+        "#30343B",
+        "#AAB4BB",
+        "#795139"
+      ],
+      "look": "검은 소형 돛 가운데 회색 갈고리. 낮은 갈색 선체와 짧은 선수. 해골 문양은 쓰지 않는다."
+    },
+    {
+      "id": "hook_raider",
+      "name": "갈고리단 약탈선",
+      "unlock": "ship_2",
+      "requires": [],
+      "disabled_by": [
+        "main_53"
+      ],
+      "encounter_mode": "normal",
+      "normal_pool": true,
+      "ports": null,
+      "selection_weight": 5,
+      "power": 1.2,
+      "win_gold": [
+        16,
+        24
+      ],
+      "lose_cargo": 0.35,
+      "repeat": true,
+      "sprite_id": "pirate_hook_raider",
+      "sprite_size": [
+        34,
+        26
+      ],
+      "colors": [
+        "#252B33",
+        "#C39753",
+        "#6C4637"
+      ],
+      "look": "먹색 돛에 황동색 갈고리. 선체 양옆으로 화물 갈고리가 접혀 있고 뱃전은 정찰선보다 높다."
+    },
+    {
+      "id": "false_redsail",
+      "name": "붉은 돛 위장선",
+      "unlock": "main_23",
+      "requires": [],
+      "disabled_by": [
+        "main_53"
+      ],
+      "encounter_mode": "normal",
+      "normal_pool": true,
+      "ports": null,
+      "selection_weight": 3,
+      "power": 1.25,
+      "win_gold": [
+        18,
+        28
+      ],
+      "lose_cargo": 0.35,
+      "repeat": true,
+      "sprite_id": "pirate_false_redsail",
+      "sprite_size": [
+        34,
+        26
+      ],
+      "colors": [
+        "#A65F59",
+        "#D2AC85",
+        "#3B3840"
+      ],
+      "look": "바랜 붉은 포장천을 이어 붙인 돛. 가장자리의 거친 바느질과 모서리 갈고리 표식으로 가람의 선단과 구분한다."
+    },
+    {
+      "id": "hook_blockader",
+      "name": "갈고리단 봉쇄선",
+      "unlock": "main_28",
+      "requires": [],
+      "disabled_by": [
+        "main_53"
+      ],
+      "encounter_mode": "normal",
+      "normal_pool": true,
+      "ports": null,
+      "selection_weight": 3,
+      "power": 1.45,
+      "win_gold": [
+        25,
+        38
+      ],
+      "lose_cargo": 0.35,
+      "repeat": true,
+      "sprite_id": "pirate_hook_blockader",
+      "sprite_size": [
+        40,
+        30
+      ],
+      "colors": [
+        "#292B30",
+        "#8E9A9E",
+        "#6B493A"
+      ],
+      "look": "석탄색 넓은 돛에 회색 가로띠. 굵은 닻줄을 낮게 감고 선체 앞부분에 철테를 두른다."
+    },
+    {
+      "id": "gurok_trap",
+      "name": "구록의 매복선",
+      "unlock": "main_52",
+      "requires": [
+        "main_52"
+      ],
+      "disabled_by": [
+        "main_53"
+      ],
+      "encounter_mode": "story_fixed",
+      "normal_pool": false,
+      "ports": null,
+      "selection_weight": 0,
+      "power": 1.6,
+      "win_gold": [
+        0,
+        0
+      ],
+      "lose_cargo": 0,
+      "repeat": false,
+      "story_ref": "main_53",
+      "fixed_outcome": "capture_after_rescue",
+      "sprite_id": "pirate_gurok_trap",
+      "sprite_size": [
+        44,
+        34
+      ],
+      "colors": [
+        "#252B33",
+        "#AB5A4E",
+        "#B8A37C"
+      ],
+      "look": "검은 돛에 큰 갈고리, 붉은 작은 보조천. 닻줄이 잔해에 걸린 모습과 정지 신호로 포위를 표현한다. 침몰이나 인명 손실 장면은 없다."
+    },
+    {
+      "id": "hook_remnant",
+      "name": "갈고리단 잔당선",
+      "unlock": "main_53",
+      "requires": [],
+      "disabled_by": [],
+      "encounter_mode": "normal",
+      "normal_pool": true,
+      "ports": null,
+      "selection_weight": 7,
+      "power": 1.15,
+      "win_gold": [
+        18,
+        28
+      ],
+      "lose_cargo": 0.25,
+      "repeat": true,
+      "sprite_id": "pirate_hook_remnant",
+      "sprite_size": [
+        30,
+        24
+      ],
+      "colors": [
+        "#45454A",
+        "#9A9990",
+        "#795442"
+      ],
+      "look": "찢어진 먹색 돛에 지워진 갈고리 흔적. 잘린 장식과 기운 널빤지가 남아 있지만 구록은 타고 있지 않다."
+    },
+    {
+      "id": "reef_looter",
+      "name": "암초 약탈선",
+      "unlock": "main_53",
+      "requires": [],
+      "disabled_by": [],
+      "encounter_mode": "normal",
+      "normal_pool": true,
+      "ports": null,
+      "selection_weight": 4,
+      "power": 1.35,
+      "win_gold": [
+        22,
+        35
+      ],
+      "lose_cargo": 0.3,
+      "repeat": true,
+      "sprite_id": "pirate_reef_looter",
+      "sprite_size": [
+        32,
+        24
+      ],
+      "colors": [
+        "#76685B",
+        "#D2924D",
+        "#41484D"
+      ],
+      "look": "회갈색 돛에 주황색 마름모. 낮고 넓은 배에 작은 노가 붙은 별개의 약탈자이며 붉은돛 선단과 관계없다."
+    },
+    {
+      "id": "farwater_raider",
+      "name": "먼물 약탈선",
+      "unlock": "ending",
+      "requires": [],
+      "disabled_by": [],
+      "encounter_mode": "normal",
+      "normal_pool": true,
+      "ports": null,
+      "selection_weight": 2,
+      "power": 1.6,
+      "win_gold": [
+        35,
+        50
+      ],
+      "lose_cargo": 0.3,
+      "repeat": true,
+      "sprite_id": "pirate_farwater_raider",
+      "sprite_size": [
+        40,
+        30
+      ],
+      "colors": [
+        "#344D66",
+        "#D2D4C8",
+        "#76513B"
+      ],
+      "look": "짙은 남색 돛을 흰 가로선이 가른다. 긴 선체와 높은 선수로 먼바다 출신임을 구분하며 새로운 거대 악당으로 설정하지 않는다."
+    }
+  ]
+}
