@@ -34,6 +34,7 @@ object Game {
     var route = "port_haesol"; private set
     var autoSail = true
     var autoHire = true
+    var autoBuild = true                       // 금화가 안 드는 기본 시설은 알아서 짓기
     var hireAny = false                        // 비싼 알바도 자동 고용
     var supplyT = 0f; private set              // 부두 짐배 주기
     var supplies = 0                           // 짐배 도착 수 (화면 연출용, Scene이 0으로 돌림)
@@ -117,7 +118,7 @@ object Game {
         dock = sp.getBoolean("dock", false); field = sp.getBoolean("field", false)
         lighthouse = sp.getBoolean("lighthouse", false); market = sp.getBoolean("market", false)
         shipLevel = sp.getInt("shipLevel", 1); route = sp.getString("route", "port_haesol")!!
-        autoSail = sp.getBoolean("autoSail", true); autoHire = sp.getBoolean("autoHire", true); hireAny = sp.getBoolean("hireAny", false)
+        autoSail = sp.getBoolean("autoSail", true); autoHire = sp.getBoolean("autoHire", true); autoBuild = sp.getBoolean("autoBuild", true); hireAny = sp.getBoolean("hireAny", false)
         supplyT = sp.getFloat("supplyT", sp.getFloat("shipT", 0f))
         hireSpent = sp.getInt("hireSpent", 0); hireDay = sp.getLong("hireDay", -1L)
         last = sp.getLong("last", System.currentTimeMillis())
@@ -167,7 +168,7 @@ object Game {
             putInt("houses", houses); putInt("warehouse", warehouse); putInt("storage", min(warehouse, 2))
             putBoolean("dock", dock); putBoolean("field", field); putBoolean("lighthouse", lighthouse); putBoolean("market", market)
             putInt("shipLevel", shipLevel); putString("route", route)
-            putBoolean("autoSail", autoSail); putBoolean("autoHire", autoHire); putBoolean("hireAny", hireAny)
+            putBoolean("autoSail", autoSail); putBoolean("autoHire", autoHire); putBoolean("autoBuild", autoBuild); putBoolean("hireAny", hireAny)
             putFloat("supplyT", supplyT); putInt("hireSpent", hireSpent); putLong("hireDay", hireDay)
             putLong("last", last); putInt("voyages", voyages)
             putString("flags", flags.joinToString(",")); putString("opened", opened.joinToString(",")); putString("read", read.joinToString(","))
@@ -260,6 +261,8 @@ object Game {
                 supplies++
             }
         }
+
+        if (autoBuild) autoBuildStep()
 
         // 항해
         val v = voy
@@ -483,6 +486,46 @@ object Game {
         }
         if (key.startsWith("ship_")) card("배를 고쳤어요", ship().news)
         done(key); return true
+    }
+
+    // ---------- 다음 목표 (홈 화면 소식판과 앱 맨 위) ----------
+
+    class Goal(val key: String, val name: String, val cost: Data.Cost?, val ready: Boolean, val basic: Boolean)
+
+    /** 섬이 다음에 할 일. 기본 시설(숙소·창고·부두·밭)을 먼저, 그다음 배와 항구. */
+    fun goal(): Goal? {
+        val h = nextHouse(); val w = nextWarehouse()
+        if (houses == 0 && h != null) return Goal("house", "첫 알바 숙소", h.cost, houseReady(), true)
+        if (warehouse == 0 && w != null) return Goal("ware", "창고 1단계", w.second.cost, warehouseReady(), true)
+        if (!dock) return Goal("dock", "부두", Data.dock?.cost ?: Data.Cost(0, 60, 20), dockReady(), true)
+        if (h != null && houseReady()) return Goal("house", "알바 숙소 " + (houses + 1) + "채", h.cost, true, true)
+        if (warehouse < 2 && w != null && warehouseReady()) return Goal("ware", "창고 " + (warehouse + 1) + "단계", w.second.cost, true, true)
+        if (fieldReady()) return Goal("field", "작은 밭", Data.field?.cost, true, true)
+        val ships = Data.unlock("ship_" + (shipLevel + 1))
+        val cands = Data.unlocks.filter { !has(it.key) && it.cost != null && (it.key.startsWith("ship_") || it.key.startsWith("port_") || it.key == "lighthouse" || it.key == "market") }
+        val u = cands.firstOrNull { unlockReady(it) } ?: ships?.takeIf { !has(it.key) } ?: return null
+        val name = when {
+            u.key.startsWith("ship_") -> "배 " + u.key.removePrefix("ship_") + "단계"
+            u.key.startsWith("port_") -> Data.port(u.key).name + " 항로"
+            u.key == "lighthouse" -> "등대"
+            else -> "장터"
+        }
+        return Goal(u.key, name, u.cost, unlockReady(u), false)
+    }
+
+    fun goalProgress(g: Goal): String {
+        val c = g.cost ?: return ""
+        return listOfNotNull(
+            if (c.wood > 0) "나무 " + min(wood, c.wood) + "/" + c.wood else null,
+            if (c.stone > 0) "돌 " + min(stone, c.stone) + "/" + c.stone else null,
+            if (c.gold > 0) "금화 " + "%,d".format(min(gold, c.gold)) + "/" + "%,d".format(c.gold) else null).joinToString(" · ")
+    }
+
+    private fun autoBuildStep() {
+        val g = goal() ?: return
+        if (!g.basic || !g.ready || (g.cost?.gold ?: 0) > 0 || !canPay(g.cost)) return
+        val ok = when (g.key) { "house" -> buildHouse(); "ware" -> upgradeWarehouse(); "dock" -> buildDock(); "field" -> buildField(); else -> false }
+        if (ok) card("섬이 자랐어요", g.name + " 완성!")
     }
 
     fun reset() {

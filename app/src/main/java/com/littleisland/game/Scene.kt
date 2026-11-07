@@ -250,6 +250,7 @@ class Scene {
                     val tx = if (hasStore) storeX - 2 else fireX
                     val ty = if (hasStore) storeY + 4 else fireY + 5
                     if (moveTo(v, tx, ty, dt)) {
+                        if (pops.size < 6) pops.add(Pop(tx - 6, ty + OY - 8, if (v.carry == 1) "+나무" else "+돌", 1.6f))
                         v.carry = 0; v.st = 0; v.t = 0.2f + Random.nextFloat() * .8f
                     }
                 }

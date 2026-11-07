@@ -31,7 +31,6 @@ import kotlin.math.min
 class MainActivity : Activity() {
 
     private lateinit var preview: PreviewView
-    private lateinit var diag: TextView
     private lateinit var body: LinearLayout
     private var dp = 1f
     private val ui = Handler(Looper.getMainLooper())
@@ -55,8 +54,10 @@ class MainActivity : Activity() {
         root.addView(TextView(this).apply {
             text = "작은 섬"; setTextColor(Color.parseColor("#f2b544")); textSize = 22f; typeface = Typeface.DEFAULT_BOLD
         })
-        diag = TextView(this).apply { setTextColor(Color.parseColor("#5f7590")); textSize = 10f }
-        root.addView(diag)
+        root.addView(TextView(this).apply {
+            text = "홈 화면 속 섬이 알아서 나무·돌을 모으고, 배가 항구를 오가며 금화를 벌어요."
+            setTextColor(Color.parseColor("#9fb3c8")); textSize = 12f
+        })
         preview = PreviewView(this)
         val ph = (resources.displayMetrics.heightPixels * .30f).toInt()
         root.addView(preview, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ph).apply { topMargin = (6 * dp).toInt() })
@@ -92,6 +93,19 @@ class MainActivity : Activity() {
         val now = System.currentTimeMillis()
         val s = Game.ship()
 
+        Game.goal()?.let { g ->
+            val canBuy = g.ready && Game.canPay(g.cost)
+            val txt = Game.goalProgress(g) + "\n" + when {
+                !g.ready -> "조건이 갖춰지면 열려요"
+                g.basic && Game.autoBuild && (g.cost?.gold ?: 0) == 0 -> if (canBuy) "지금 지을 수 있어요" else "모이면 자동으로 지어요"
+                canBuy -> "지금 할 수 있어요!"
+                else -> "모으는 중이에요"
+            }
+            l.add(Spec("goal", "다음 목표 · " + g.name, txt, if (g.ready) "하기" else null, canBuy, {
+                val ok = when (g.key) { "house" -> Game.buildHouse(); "ware" -> Game.upgradeWarehouse(); "dock" -> Game.buildDock(); "field" -> Game.buildField(); else -> Game.buyUnlock(g.key) }
+                if (ok) toast(g.name + " 완성!")
+            }))
+        }
         l.add(Spec("res", "나무 " + Game.wood + "/" + Game.cap() + "   돌 " + Game.stone + "/" + Game.cap() + "   금화 " + "%,d".format(Game.gold),
             "주민 단·보리·해온 + 알바 " + Game.workers.size + "/" + Game.beds(), null, false, null, true))
 
@@ -146,6 +160,8 @@ class MainActivity : Activity() {
 
         // 섬 건물
         l.add(Spec("h_build", "섬 짓기", "", null, false, null, true))
+        l.add(Spec("autobuild", "기본 시설 자동 짓기 " + (if (Game.autoBuild) "켜짐" else "꺼짐"), "숙소·창고·부두·밭은 재료가 모이면 알아서 지어요 (금화는 안 써요)",
+            if (Game.autoBuild) "끄기" else "켜기", true, { Game.autoBuild = !Game.autoBuild; Game.save() }))
         val h = Game.nextHouse()
         l.add(Spec("house", "알바 숙소 " + Game.houses + "/3", if (h == null) "다 지었어요" else (h.cost?.text() ?: "") + (if (!Game.houseReady()) "\n먼저: " + need(h.requires) else ""),
             if (h == null) null else "짓기", h != null && Game.houseReady() && Game.canPay(h.cost), { if (Game.buildHouse()) toast("숙소를 지었어요") }))
@@ -190,8 +206,22 @@ class MainActivity : Activity() {
             val opts = arrayOf("지금", "낮", "노을", "밤"); val hs = arrayOf<Float?>(null, 12f, 18.6f, 23f)
             AlertDialog.Builder(this).setItems(opts) { _, i -> preview.scene.hourOverride = hs[i] }.show()
         }))
+        l.add(Spec("tut", "처음 안내 다시 보기", "이 게임이 어떻게 돌아가는지", "보기", true, { showTutorial(0) }))
         l.add(Spec("wall", "배경화면으로 설정", "홈 화면 빈 곳을 톡 치면 섬 → 바다 → 항구로 넘어가요", "설정", true, { openWallpaperPicker() }))
         return l
+    }
+
+    private fun showTutorial(i: Int) {
+        val sc = listOf(
+            "주머니 속 작은 섬" to "단·보리·해온이 나무와 돌을 모아요. 홈 화면에서는 섬이 움직이는 모습과 소식만 편하게 봐요.",
+            "섬이 알아서 자라요" to "재료가 모이면 숙소·창고·부두를 자동으로 지어요. 직접 고르고 싶으면 앱에서 짓기를 눌러요.",
+            "배가 알아서 다녀와요" to "부두가 생기면 배가 짐을 싣고 항구로 떠나 금화를 벌어 와요. 해적은 자동으로 싸워요.",
+            "금화로 더 멀리" to "모은 금화로 배를 고치고 새 항구를 열어요. 홈 화면 위쪽 소식판에 다음 목표가 보여요.",
+            "소식은 기다려 줘요" to "비운 동안의 보상은 최대 8시간까지 모여요. 이야기는 항해일지에 쌓이고, 읽지 않아도 섬은 계속 움직여요.")
+        if (i >= sc.size) return
+        AlertDialog.Builder(this).setTitle((i + 1).toString() + "/" + sc.size + "  " + sc[i].first).setMessage(sc[i].second)
+            .setPositiveButton(if (i == sc.size - 1) "섬으로 가기" else "다음") { _, _ -> showTutorial(i + 1) }
+            .setNegativeButton("건너뛰기", null).show()
     }
 
     private fun fmt(f: Float) = if (f % 1f == 0f) f.toInt().toString() else "%.2f".format(f).trimEnd('0').trimEnd('.')
@@ -274,7 +304,8 @@ class MainActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
-        diag.text = Diag.text(this)
+        val sp = getSharedPreferences("island", Context.MODE_PRIVATE)
+        if (!sp.getBoolean("tutorialSeen", false)) { sp.edit().putBoolean("tutorialSeen", true).apply(); showTutorial(0) }
         Game.catchUp()
         Game.report?.let { r ->
             Game.report = null

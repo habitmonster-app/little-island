@@ -142,7 +142,37 @@ class IslandWallpaperService : WallpaperService() {
             dst.set(0, 0, sw, sh)
             cv.drawBitmap(scene.bitmap, src, dst, paint)
             drawTalk(cv, sx, scale)
+            drawBoard(cv)
             drawCard(cv)
+        }
+
+        private val boardBg = Paint().apply { isAntiAlias = true; color = Color.parseColor("#1d3347") }
+        private val boardTx = Paint().apply { isAntiAlias = true; color = Color.parseColor("#f4ead2"); textAlign = Paint.Align.CENTER }
+        private val boardHi = Paint().apply { isAntiAlias = true; color = Color.parseColor("#ffd36a"); typeface = Typeface.DEFAULT_BOLD; textAlign = Paint.Align.CENTER }
+
+        /** 하늘 아래쪽의 작은 소식판: 가진 것, 배가 어디쯤인지, 다음 목표. 홈 화면만 봐도 무슨 일이 일어나는지 보이게. */
+        private fun drawBoard(cv: Canvas) {
+            val d = cv.width / 400f
+            val now = System.currentTimeMillis()
+            val l1 = "나무 " + Game.wood + "   돌 " + Game.stone + "   금화 " + "%,d".format(Game.gold)
+            val v = Game.voy
+            val l2 = if (v != null) {
+                val f = Game.voyFrac(now)
+                val left = ((1f - f) * v.dur / 60f).toInt() + 1
+                val p = Data.port(v.port).name
+                when { f < Data.fArrive -> "⛵ " + p + " 가는 중"; f < Data.fLeave -> "⛵ " + p + "에서 짐 파는 중"; else -> "⛵ 섬으로 돌아오는 중" } + " · " + left + "분"
+            } else if (!Game.dock) "부두를 지으면 배가 항구로 떠나요" else "⛵ 곧 출항해요"
+            val g = Game.goal()
+            val l3 = if (g == null) "" else "다음: " + g.name + " · " + Game.goalProgress(g) +
+                (if (!g.basic && g.ready && Game.canPay(g.cost)) " · 앱에서 열기" else "")
+            val w = cv.width * .86f; val h = (if (l3.isEmpty()) 46 else 64) * d
+            val x = (cv.width - w) / 2f; val y = cv.height * .295f
+            boardBg.alpha = 190
+            cv.drawRoundRect(android.graphics.RectF(x, y, x + w, y + h), 12 * d, 12 * d, boardBg)
+            fun fit(p: Paint, t: String, size: Float) { p.textSize = size; while (p.measureText(t) > w - 20 * d && p.textSize > 8 * d) p.textSize -= 1 }
+            fit(boardHi, l1, 15 * d); cv.drawText(l1, x + w / 2, y + 19 * d, boardHi)
+            fit(boardTx, l2, 13 * d); cv.drawText(l2, x + w / 2, y + 38 * d, boardTx)
+            if (l3.isNotEmpty()) { fit(boardTx, l3, 13 * d); cv.drawText(l3, x + w / 2, y + 56 * d, boardTx) }
         }
 
         private val talkBg = Paint().apply { isAntiAlias = true; color = Color.parseColor("#fbf6e8") }
