@@ -44,6 +44,37 @@ object Game {
     private var cargoW = 0; private var cargoS = 0
     private var voyGold = 0; private var voyHire = 0
 
+    // ---------- 이야기 진행 ----------
+    private val flags = HashSet<String>()     // 일어난 사건 (house_1, sail_1, main_05 …)
+    private val opened = HashSet<String>()    // 열린 화
+    private val read = HashSet<String>()      // 읽은 화
+    var voyages = 0; private set
+
+    fun has(f: String): Boolean = when {
+        f.isEmpty() || f == "start" -> true
+        f.startsWith("voyages_") -> voyages >= (f.removePrefix("voyages_").toIntOrNull() ?: Int.MAX_VALUE)
+        else -> f in flags
+    }
+    fun flag(f: String) { if (flags.add(f)) storyDirty = true }
+    fun isOpen(id: String) = id in opened
+    fun open(id: String) { opened.add(id) }
+    fun isRead(id: String) = id in read
+    fun markRead(id: String) { if (read.add(id)) save() }
+    fun unread() = opened.count { it !in read }
+    private var storyDirty = true
+
+    /** 새 사건이 생겼으면 이야기를 열고 카드로 알린다 */
+    fun checkStory() {
+        if (!storyDirty) return
+        storyDirty = false
+        val got = Story.refresh().filter { it.kind != Story.VOYAGE }
+        if (got.isEmpty()) return
+        val first = got.first()
+        if (got.size == 1) card("새 일지 · " + first.label, Story.fill(first.news))
+        else card("새 일지 " + got.size + "편", Story.fill(got.last().news))
+        save()
+    }
+
     /** 결과 카드 (제목, 내용). 배경화면이 하나씩 보여준다 */
     val cards = ArrayDeque<Pair<String, String>>()
     /** 앱에 보여줄 최근 항해 일지 */
@@ -77,6 +108,7 @@ object Game {
         voyWin = Math.random() < 0.7
         voyStep = 0; voyGold = 0; voyHire = 0
         voyStart = System.currentTimeMillis()
+        flag("sail_1"); checkStory()
         save(); return true
     }
 
@@ -85,6 +117,7 @@ object Game {
         val t = voyT(now)
         if (voyStep == 0 && t >= BATTLE_AT) {
             voyStep = 1
+            flag("pirate_1")
             if (voyWin) {
                 val g = 10 + (Math.random() * 11).toInt()
                 voyGold += g
@@ -97,6 +130,7 @@ object Game {
         }
         if (voyStep == 1 && t >= PORT_AT) {
             voyStep = 2
+            flag("sale_1")
             val sale = cargoW + cargoS * 2
             voyGold += sale
             val free = houses - workers.size
@@ -109,6 +143,9 @@ object Game {
             repeat(voyHire) { workers.add(homeAt + WORK_MS) }
             arrived += voyHire
             card("배가 돌아왔어요", "금화 +" + voyGold + if (voyHire > 0) ", 알바 +" + voyHire else "")
+            voyages++
+            if (voyHire > 0) flag("worker_arrive_1")
+            Story.pickVoyageEvent()?.let { ev -> open(ev.id); card("항해 기록 · " + ev.title, Story.fill(ev.news)) }
             voyStart = 0L; voyStep = 0; cargoW = 0; cargoS = 0; voyGold = 0; voyHire = 0
         }
     }
@@ -117,6 +154,8 @@ object Game {
         val before = voyStep to voyStart
         updateVoyage(now)
         val changed = workers.removeAll { it <= now }
+        if (changed) flag("worker_leave_1")
+        checkStory()
         if (changed || before != (voyStep to voyStart)) save()
     }
 
@@ -132,6 +171,15 @@ object Game {
         voyStart = sp.getLong("voyStart", 0L); voyWin = sp.getBoolean("voyWin", true)
         voyStep = sp.getInt("voyStep", 0); cargoW = sp.getInt("cargoW", 0); cargoS = sp.getInt("cargoS", 0)
         voyGold = sp.getInt("voyGold", 0); voyHire = sp.getInt("voyHire", 0)
+        voyages = sp.getInt("voyages", 0)
+        fun set(k: String, h: HashSet<String>) { h.clear(); sp.getString(k, "")!!.split(",").filter { it.isNotEmpty() }.forEach { h.add(it) } }
+        set("flags", flags); set("opened", opened); set("read", read)
+        // 이야기 이전부터 하던 사람: 이미 지은 것은 일어난 일로 인정
+        if (houses >= 1) flags.add("house_1")
+        if (storage >= 1) flags.add("store_1")
+        if (dock) flags.add("dock")
+        Story.load(c)
+        storyDirty = true
         workers.clear()
         sp.getString("workers", "")!!.split(",").mapNotNull { it.toLongOrNull() }.forEach { workers.add(it) }
     }
@@ -144,6 +192,8 @@ object Game {
             ?.putLong("last", last)?.putInt("gold", gold)
             ?.putLong("voyStart", voyStart)?.putBoolean("voyWin", voyWin)?.putInt("voyStep", voyStep)
             ?.putInt("cargoW", cargoW)?.putInt("cargoS", cargoS)?.putInt("voyGold", voyGold)?.putInt("voyHire", voyHire)
+            ?.putInt("voyages", voyages)?.putString("flags", flags.joinToString(","))
+            ?.putString("opened", opened.joinToString(","))?.putString("read", read.joinToString(","))
             ?.putString("workers", workers.joinToString(","))?.apply()
     }
 
@@ -197,13 +247,17 @@ object Game {
         return true
     }
 
-    fun buildHouse(): Boolean { if (!pay(houseCost())) return false; houses++; save(); return true }
-    fun buildStore(): Boolean { if (!pay(storeCost())) return false; storage++; save(); return true }
-    fun buildDock(): Boolean { if (!pay(dockCost())) return false; dock = true; shipT = SHIP_EVERY - 8; save(); return true }
+    fun buildHouse(): Boolean { if (!pay(houseCost())) return false; houses++; flag("house_1"); checkStory(); save(); return true }
+    fun buildStore(): Boolean { if (!pay(storeCost())) return false; storage++; flag("store_1"); checkStory(); save(); return true }
+    fun buildDock(): Boolean { if (!pay(dockCost())) return false; dock = true; shipT = SHIP_EVERY - 8; flag("dock"); checkStory(); save(); return true }
+
+    /** 주민이 처음으로 나무나 돌을 창고에 넣었을 때 */
+    fun gathered() { if ("first_gather" !in flags) flag("first_gather") }
 
     fun reset() {
         wood = 12; stone = 4; houses = 0; storage = 0; dock = false; shipT = 0f; report = null
         workers.clear(); gold = 0; voyStart = 0L; voyStep = 0; cards.clear(); log.clear()
+        flags.clear(); opened.clear(); read.clear(); voyages = 0; storyDirty = true
         save()
     }
 }

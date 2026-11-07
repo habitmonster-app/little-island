@@ -149,6 +149,32 @@ class Scene {
     private var shipX = 240f
     private var shipWait = 0f
 
+    // ---------- 주민 말풍선 (단·보리·해온) ----------
+    val NAMES = listOf("단", "보리", "해온")
+    private var talkWait = 6f
+    var talkText: String? = null; private set
+    var talkWho = 0; private set
+    var talkT = 0f; private set
+
+    private fun updateTalk(dt: Float) {
+        if (talkT > 0f) { talkT -= dt; if (talkT <= 0f) talkText = null }
+        talkWait -= dt
+        if (talkWait > 0f || villagers.size < 3) return
+        talkWait = 25f + Random.nextFloat() * 30f
+        val h = hourNow()
+        val time = if (Game.voyT() >= 0f && Random.nextBoolean()) "ship_wait"
+            else if (h in 7f..17f) "day" else if (h in 17f..19.6f) "dusk" else "night"
+        val who = Random.nextInt(3)
+        val line = Story.pickLine(NAMES[who], time) ?: Story.pickLine(NAMES[who], "day") ?: return
+        talkWho = who; talkText = line; talkT = 5f
+    }
+
+    /** 말하는 주민의 머리 위치 (세계 좌표) */
+    fun talkPos(): Pair<Float, Float>? {
+        val v = villagers.getOrNull(talkWho) ?: return null
+        return v.x to (v.y + OY - 8)
+    }
+
     /** 짐이 들어왔을 때 잠깐 띄우는 글자 */
     class Pop(val x: Float, var y: Float, val text: String, var t: Float)
     val pops = ArrayList<Pop>()
@@ -177,6 +203,7 @@ class Scene {
     fun update(dt: Float) {
         Game.tick(dt)
         syncVillagers()
+        updateTalk(dt)
         if (Game.arrived > 0) { pops.add(Pop(176f, 88f + OY, "알바 +" + Game.arrived, 3f)); Game.arrived = 0 }
         for (pp in pops) { pp.t -= dt; pp.y -= dt * 6 }
         pops.removeAll { it.t <= 0f }
@@ -217,6 +244,7 @@ class Scene {
                     val ty = if (hasStore) storeY + 4 else fireY + 5
                     if (moveTo(v, tx, ty, dt)) {
                         if (v.carry == 1) Game.add(1, 0) else if (v.carry == 2) Game.add(0, 1)
+                        Game.gathered()
                         v.carry = 0; v.st = 0; v.t = 0.2f + Random.nextFloat() * .8f
                     }
                 }

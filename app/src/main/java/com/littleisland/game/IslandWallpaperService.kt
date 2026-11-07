@@ -140,7 +140,35 @@ class IslandWallpaperService : WallpaperService() {
             src.set(sx.toInt(), 0, (sx + viewW).toInt(), Scene.H)
             dst.set(0, 0, sw, sh)
             cv.drawBitmap(scene.bitmap, src, dst, paint)
+            drawTalk(cv, sx, scale)
             drawCard(cv)
+        }
+
+        private val talkBg = Paint().apply { isAntiAlias = true; color = Color.parseColor("#fbf6e8") }
+        private val talkTx = Paint().apply { isAntiAlias = true; color = Color.parseColor("#3a2a1a"); textAlign = Paint.Align.CENTER }
+        private val talkName = Paint().apply { isAntiAlias = true; color = Color.parseColor("#a0683a"); typeface = Typeface.DEFAULT_BOLD; textAlign = Paint.Align.CENTER }
+
+        /** 주민 머리 위 말풍선. 결과 카드가 떠 있으면 비켜 준다. */
+        private fun drawTalk(cv: Canvas, sx: Float, scale: Float) {
+            if (cardT > 0f) return
+            val text = scene.talkText ?: return
+            val (wx, wy) = scene.talkPos() ?: return
+            val d = cv.width / 400f
+            val px = (wx - sx) * scale; val py = wy * scale
+            if (px < 0 || px > cv.width) return
+            talkTx.textSize = 15 * d; talkName.textSize = 12 * d
+            val name = scene.NAMES[scene.talkWho]
+            while (talkTx.measureText(text) > cv.width - 60 * d && talkTx.textSize > 9 * d) talkTx.textSize -= 1
+            val w = talkTx.measureText(text) + 24 * d; val h = 46 * d
+            val left = (px - w / 2).coerceIn(8 * d, cv.width - w - 8 * d)
+            val top = py - h - 10 * d
+            val a = (min(1f, scene.talkT) * 255).toInt()
+            talkBg.alpha = (a * .94f).toInt(); talkTx.alpha = a; talkName.alpha = a
+            cv.drawRoundRect(android.graphics.RectF(left, top, left + w, top + h), 12 * d, 12 * d, talkBg)
+            val tail = android.graphics.Path().apply { moveTo(px - 6 * d, top + h); lineTo(px + 6 * d, top + h); lineTo(px, top + h + 9 * d); close() }
+            cv.drawPath(tail, talkBg)
+            cv.drawText(name, left + w / 2, top + 17 * d, talkName)
+            cv.drawText(text, left + w / 2, top + 37 * d, talkTx)
         }
 
         /** 다시 화면을 켰을 때, 비운 동안 모인 자원을 양피지 카드로 몇 초 보여준다. */
@@ -157,9 +185,13 @@ class IslandWallpaperService : WallpaperService() {
             cv.drawRoundRect(box, 14 * d, 14 * d, cardBg)
             cv.drawRoundRect(box, 14 * d, 14 * d, cardEdge)
             cardTitle.textSize = 20 * d; cardText.textSize = 16 * d
+            // 긴 문장은 카드 안에 들어가게 글씨를 줄인다
+            fun fit(p: Paint, t: String, size: Float) { p.textSize = size; while (p.measureText(t) > w - 24 * d && p.textSize > 9 * d) p.textSize -= 1 }
+            fit(cardTitle, r.first, 20 * d)
             cv.drawText(r.first, x + w / 2, y + h * .36f, cardTitle)
+            fit(cardText, r.second, 16 * d)
             cv.drawText(r.second, x + w / 2, y + h * .62f, cardText)
-            if (r.third.isNotEmpty()) cv.drawText(r.third, x + w / 2, y + h * .85f, cardText)
+            if (r.third.isNotEmpty()) { fit(cardText, r.third, 16 * d); cv.drawText(r.third, x + w / 2, y + h * .85f, cardText) }
         }
     }
 }

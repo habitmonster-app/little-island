@@ -30,6 +30,34 @@ class MainActivity : Activity() {
     private lateinit var rowStore: Row
     private lateinit var rowDock: Row
     private lateinit var rowHire: Row
+    private lateinit var journal: Button
+
+    /** 항해일지: 열린 본편·외전·항해 기록. 안 읽은 건 ● 표시 */
+    private fun openJournal() {
+        val list = Story.entries.filter { Game.isOpen(it.id) }
+            .sortedWith(compareBy({ it.kind }, { Story.entries.indexOf(it) }))
+        if (list.isEmpty()) { Toast.makeText(this, "아직 일지가 없어요", Toast.LENGTH_SHORT).show(); return }
+        val items = list.map { (if (Game.isRead(it.id)) "" else "● ") + it.label + " · " + it.title }.toTypedArray()
+        android.app.AlertDialog.Builder(this).setTitle("항해일지")
+            .setItems(items) { _, i -> openEntry(list[i]) }
+            .setNegativeButton("닫기", null).show()
+    }
+
+    private fun openEntry(e: Story.Entry) {
+        Game.markRead(e.id)
+        val dp = resources.displayMetrics.density
+        val tv = TextView(this).apply {
+            text = (if (e.summary.isNotEmpty()) Story.fill(e.summary) + "\n\n" else "") + Story.fill(e.body)
+            textSize = 16f
+            setLineSpacing(0f, 1.35f)
+            setPadding((22 * dp).toInt(), (12 * dp).toInt(), (22 * dp).toInt(), (12 * dp).toInt())
+        }
+        val sv = android.widget.ScrollView(this).apply { addView(tv) }
+        android.app.AlertDialog.Builder(this).setTitle(e.label + " · " + e.title).setView(sv)
+            .setPositiveButton("목록") { _, _ -> openJournal() }
+            .setNegativeButton("닫기", null).show()
+        refresh()
+    }
     private val ui = android.os.Handler(android.os.Looper.getMainLooper())
     private val refresher = object : Runnable { override fun run() { refresh(); ui.postDelayed(this, 500L) } }
 
@@ -63,7 +91,7 @@ class MainActivity : Activity() {
 
     private fun refresh() {
         res.text = "나무 " + Game.wood + "/" + Game.cap() + "    돌 " + Game.stone + "/" + Game.cap() +
-            "    금화 " + Game.gold + "\n주민 " + Game.RESIDENTS + " + 알바 " + Game.workers.size + "/" + Game.beds()
+            "    금화 " + Game.gold + "\n주민 단·보리·해온" + " + 알바 " + Game.workers.size + "/" + Game.beds()
         val now = System.currentTimeMillis()
         fun mmss(ms: Long): String { val t = (ms / 1000).coerceAtLeast(0); return if (t >= 3600) (t / 3600).toString() + "시간 " + (t % 3600 / 60) + "분" else (t / 60).toString() + ":" + "%02d".format(t % 60) }
         val t = Game.voyT(now)
@@ -82,6 +110,8 @@ class MainActivity : Activity() {
         val log = if (Game.log.isEmpty()) "" else "\n· " + Game.log.joinToString("\n· ")
         rowHire.text.text = "항해 · 해적은 자동 전투, 항구에서 알바 고용(금화 " + Game.WAGE + ")\n" + hireState + left + log
         rowHire.btn.isEnabled = Game.canSail()
+        val n = Game.unread()
+        journal.text = "항해일지" + if (n > 0) " (새 글 " + n + ")" else ""
         rowHire.btn.text = if (t >= 0f) "항해 중" else "출항"
         setRow(rowHouse, Game.houses.toString() + "/3", Game.houseCost())
         setRow(rowStore, Game.storage.toString() + "/2", Game.storeCost())
@@ -143,6 +173,8 @@ class MainActivity : Activity() {
         root.addView(buildRow("창고", "더 많이 담기") { Game.buildStore() }.withRow { rowStore = it })
         root.addView(buildRow("부두", "짐배가 들러요") { Game.buildDock() }.withRow { rowDock = it })
         root.addView(buildRow("항해", "") { Game.sail() }.withRow { rowHire = it })
+        journal = Button(this).apply { setOnClickListener { openJournal() } }
+        root.addView(journal)
         root.addView(set)
         setContentView(root)
     }
