@@ -207,7 +207,7 @@ class MainActivity : Activity() {
             AlertDialog.Builder(this).setItems(opts) { _, i -> preview.scene.hourOverride = hs[i] }.show()
         }))
         l.add(Spec("tut", "처음 안내 다시 보기", "이 게임이 어떻게 돌아가는지", "보기", true, { showTutorial(0) }))
-        l.add(Spec("wall", "배경화면으로 설정", "홈 화면 빈 곳을 톡 치면 섬 → 바다 → 항구로 넘어가요", "설정", true, { openWallpaperPicker() }))
+        l.add(Spec("wall", "배경화면으로 설정", "홈 화면에서 섬과 배가 늘 움직여요", "설정", true, { openWallpaperPicker() }))
         return l
     }
 
@@ -321,7 +321,7 @@ class MainActivity : Activity() {
 
     override fun onPause() { super.onPause(); preview.running = false; ui.removeCallbacks(refresher); Game.save() }
 
-    /** 앱 안에서 보는 섬 미리보기. 세 장면을 천천히 번갈아 보여준다. */
+    /** 앱 안에서 보는 섬 미리보기 (홈 화면과 같은 바다 띠) */
     class PreviewView(ctx: Context) : View(ctx) {
         val scene = Scene()
         var running = false
@@ -337,14 +337,11 @@ class MainActivity : Activity() {
             last = now
             scene.update(dt)
             scene.draw(now / 1000f)
-            // 미리보기는 가로로 넓으니 섬이 화면에 다 들어오도록 아래쪽 중심으로 자른다
-            val scale = width.toFloat() / Scene.PAGE
+            // 바다 띠 부분만 잘라서 보여준다
+            val scale = width.toFloat() / Scene.W
             val viewH = (height / scale).coerceAtMost(Scene.H.toFloat())
-            val page = ((now / 5000L) % 3).toInt()
-            val target = page * Scene.PAGE.toFloat()
-            cam += (target - cam) * 0.08f
-            val top = (Scene.OY + 30f - viewH / 2f + 80f).coerceIn(0f, Scene.H - viewH)
-            src.set(cam.toInt(), top.toInt(), (cam + Scene.PAGE).toInt(), (top + viewH).toInt())
+            val top = (Scene.WL - viewH * .62f).coerceIn(0f, Scene.H - viewH)
+            src.set(0, top.toInt(), Scene.W, (top + viewH).toInt())
             dst.set(0, 0, width, height)
             canvas.drawBitmap(scene.bitmap, src, dst, paint)
             if (running) postInvalidateDelayed(66L)

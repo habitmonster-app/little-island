@@ -102,10 +102,6 @@ class IslandWallpaperService : WallpaperService() {
             val dt = min(0.1f, (now - lastMs) / 1000f).coerceAtLeast(0f)
             lastMs = now
             scene.update(dt)
-            // 배가 있는 곳으로 화면이 따라간다 (단계가 바뀔 때만, 그 뒤엔 톡으로 자유롭게)
-            val vf = Game.voyFrac()
-            val phase = when { vf < 0f -> 0; vf < Data.fArrive -> 1; vf < Data.fLeave -> 2; else -> 11 }
-            if (phase != lastPhase) { if (lastPhase != -1) tapPage = phase % 10; lastPhase = phase }
             if (cardT > 0f) cardT -= dt
             if (cardT <= 0f && Game.cards.isNotEmpty()) {   // 항해 결과 카드를 하나씩
                 val (t, m) = Game.cards.removeFirst()
@@ -126,53 +122,91 @@ class IslandWallpaperService : WallpaperService() {
             if (visible) handler.postDelayed(frame, 66L) // 초당 15장 정도
         }
 
+        // 그림 좌표 → 화면 좌표
+        private var scale = 1f; private var ox = 0f; private var oy = 0f
+
         private fun render(cv: Canvas) {
-            val sw = cv.width
-            val sh = cv.height
-            val scale = sh.toFloat() / Scene.H
-            val viewW = (sw / scale).coerceAtMost(Scene.W.toFloat())
-            // 페이지 넘김을 지원하면 섬 → 바다 → 항구로 이동, 아니면 섬만 보여줌
-            val maxX = Scene.W - viewW
-            val target = if (paging) xOffset * maxX
-                else (tapPage * Scene.PAGE + (Scene.PAGE - viewW) / 2f).coerceIn(0f, maxX.coerceAtLeast(0f))
-            // 톡 쳐서 이동할 때는 카메라가 부드럽게 미끄러진다
-            cam = if (cam < 0f || paging) target else cam + (target - cam) * 0.12f
-            val sx = cam
-            src.set(sx.toInt(), 0, (sx + viewW).toInt(), Scene.H)
+            val sw = cv.width; val sh = cv.height
+            scale = maxOf(sw.toFloat() / Scene.W, sh.toFloat() / Scene.H)
+            val vw = sw / scale; val vh = sh / scale
+            val left = (Scene.W - vw) / 2f
+            val top = ((Scene.H - vh) / 2f).coerceIn(0f, (Scene.H - vh).coerceAtLeast(0f))
+            ox = left; oy = top
+            src.set(left.toInt(), top.toInt(), (left + vw).toInt(), (top + vh).toInt())
             dst.set(0, 0, sw, sh)
             cv.drawBitmap(scene.bitmap, src, dst, paint)
-            drawTalk(cv, sx, scale)
+            drawPops(cv)
+            drawTalk(cv)
             drawBoard(cv)
             drawCard(cv)
         }
+        private fun sxOf(x: Float) = (x - ox) * scale
+        private fun syOf(y: Float) = (y - oy) * scale
 
-        private val boardBg = Paint().apply { isAntiAlias = true; color = Color.parseColor("#1d3347") }
-        private val boardTx = Paint().apply { isAntiAlias = true; color = Color.parseColor("#f4ead2"); textAlign = Paint.Align.CENTER }
-        private val boardHi = Paint().apply { isAntiAlias = true; color = Color.parseColor("#ffd36a"); typeface = Typeface.DEFAULT_BOLD; textAlign = Paint.Align.CENTER }
+        private val popTx = Paint().apply { isAntiAlias = true; typeface = Typeface.DEFAULT_BOLD; textAlign = Paint.Align.CENTER }
+        private fun drawPops(cv: Canvas) {
+            val d = cv.width / 400f
+            for (pp in scene.pops) {
+                val a = (min(1f, pp.t) * 255).toInt()
+                popTx.textSize = (if (pp.gold) 17 else 13) * d
+                val x = sxOf(pp.x); val y = syOf(pp.y)
+                popTx.color = Color.argb(a, 30, 20, 10); cv.drawText(pp.text, x + 2 * d, y + 2 * d, popTx)
+                popTx.color = if (pp.gold) Color.argb(a, 255, 211, 106) else Color.argb(a, 255, 244, 214); cv.drawText(pp.text, x, y, popTx)
+            }
+        }
 
-        /** 하늘 아래쪽의 작은 소식판: 가진 것, 배가 어디쯤인지, 다음 목표. 홈 화면만 봐도 무슨 일이 일어나는지 보이게. */
+        private val boardHi = Paint().apply { isAntiAlias = true; typeface = Typeface.DEFAULT_BOLD }
+        private val barBg = Paint().apply { color = Color.parseColor("#1a1410") }
+        private val barEdge = Paint().apply { color = Color.parseColor("#c8a050"); style = Paint.Style.STROKE }
+        private val barFill = Paint().apply { color = Color.parseColor("#e0b45a") }
+        private val shadow = Paint().apply { isAntiAlias = true; color = Color.parseColor("#1a1410"); typeface = Typeface.DEFAULT_BOLD }
+
+        /** 띠 위의 진행 표시: "항해 14 · 소금여울 가는 중" + 진행 막대 + 자원 한 줄. 늘 보인다. */
         private fun drawBoard(cv: Canvas) {
             val d = cv.width / 400f
             val now = System.currentTimeMillis()
-            val l1 = "나무 " + Game.wood + "   돌 " + Game.stone + "   금화 " + "%,d".format(Game.gold)
             val v = Game.voy
-            val l2 = if (v != null) {
-                val f = Game.voyFrac(now)
-                val left = ((1f - f) * v.dur / 60f).toInt() + 1
-                val p = Data.port(v.port).name
-                when { f < Data.fArrive -> "⛵ " + p + " 가는 중"; f < Data.fLeave -> "⛵ " + p + "에서 짐 파는 중"; else -> "⛵ 섬으로 돌아오는 중" } + " · " + left + "분"
-            } else if (!Game.dock) "부두를 지으면 배가 항구로 떠나요" else "⛵ 곧 출항해요"
             val g = Game.goal()
-            val l3 = if (g == null) "" else "다음: " + g.name + " · " + Game.goalProgress(g) +
-                (if (!g.basic && g.ready && Game.canPay(g.cost)) " · 앱에서 열기" else "")
-            val w = cv.width * .86f; val h = (if (l3.isEmpty()) 46 else 64) * d
-            val x = (cv.width - w) / 2f; val y = cv.height * .295f
-            boardBg.alpha = 190
-            cv.drawRoundRect(android.graphics.RectF(x, y, x + w, y + h), 12 * d, 12 * d, boardBg)
-            fun fit(p: Paint, t: String, size: Float) { p.textSize = size; while (p.measureText(t) > w - 20 * d && p.textSize > 8 * d) p.textSize -= 1 }
-            fit(boardHi, l1, 15 * d); cv.drawText(l1, x + w / 2, y + 19 * d, boardHi)
-            fit(boardTx, l2, 13 * d); cv.drawText(l2, x + w / 2, y + 38 * d, boardTx)
-            if (l3.isNotEmpty()) { fit(boardTx, l3, 13 * d); cv.drawText(l3, x + w / 2, y + 56 * d, boardTx) }
+            val title: String; val sub: String; val frac: Float
+            if (v != null) {
+                val f = Game.voyFrac(now)
+                val pn = Data.port(v.port).name
+                val left = ((1f - f) * v.dur / 60f).toInt() + 1
+                title = "항해 " + (Game.voyages + 1) + " · " + when {
+                    v.encounter && f > Data.fPirate - .055f && f < Data.fPirate + .035f -> "해적과 싸우는 중!"
+                    f < Data.fArrive -> pn + " 가는 중"
+                    f < Data.fLeave -> pn + "에서 짐 파는 중"
+                    else -> "섬으로 돌아오는 중"
+                }
+                sub = "귀항까지 " + left + "분"
+                frac = f
+            } else if (g != null) {
+                title = "섬 · 다음 목표 " + g.name
+                sub = Game.goalProgress(g) + if (!g.basic && g.ready && Game.canPay(g.cost)) " · 앱에서 열기" else ""
+                frac = g.cost?.let { c ->
+                    val parts = listOfNotNull(if (c.wood > 0) min(1f, Game.wood / c.wood.toFloat()) else null,
+                        if (c.stone > 0) min(1f, Game.stone / c.stone.toFloat()) else null,
+                        if (c.gold > 0) min(1f, Game.gold / c.gold.toFloat()) else null)
+                    if (parts.isEmpty()) 1f else parts.average().toFloat()
+                } ?: 0f
+            } else { title = "섬 · 배가 곧 떠나요"; sub = ""; frac = 0f }
+            val res = "나무 " + Game.wood + " · 돌 " + Game.stone + " · 금화 " + "%,d".format(Game.gold)
+            val y0 = syOf(Scene.HOR - 74f)
+            val x0 = 22 * d; val w = cv.width - 44 * d
+            fun outlined(t: String, x: Float, y: Float, size: Float, cl: Int, align: Paint.Align, maxW: Float) {
+                shadow.textSize = size; shadow.textAlign = align
+                while (shadow.measureText(t) > maxW && shadow.textSize > 9 * d) shadow.textSize -= 1
+                boardHi.textSize = shadow.textSize; boardHi.textAlign = align
+                for ((dx, dy) in listOf(-2 to 0, 2 to 0, 0 to -2, 0 to 2, 2 to 2)) cv.drawText(t, x + dx * d, y + dy * d, shadow)
+                boardHi.color = cl; cv.drawText(t, x, y, boardHi)
+            }
+            outlined(title, x0, y0, 17 * d, Color.parseColor("#ffe7a8"), Paint.Align.LEFT, w)
+            val by = y0 + 9 * d; val bh = 9 * d
+            cv.drawRect(x0, by, x0 + w, by + bh, barBg)
+            cv.drawRect(x0 + 2 * d, by + 2 * d, x0 + 2 * d + (w - 4 * d) * frac.coerceIn(0f, 1f), by + bh - 2 * d, barFill)
+            barEdge.strokeWidth = 2 * d; cv.drawRect(x0, by, x0 + w, by + bh, barEdge)
+            if (sub.isNotEmpty()) outlined(sub, x0, by + bh + 17 * d, 13 * d, Color.parseColor("#f4ead2"), Paint.Align.LEFT, w * .52f)
+            outlined(res, x0 + w, by + bh + 17 * d, 13 * d, Color.parseColor("#ffd36a"), Paint.Align.RIGHT, if (sub.isEmpty()) w else w * .46f)
         }
 
         private val talkBg = Paint().apply { isAntiAlias = true; color = Color.parseColor("#fbf6e8") }
@@ -180,12 +214,12 @@ class IslandWallpaperService : WallpaperService() {
         private val talkName = Paint().apply { isAntiAlias = true; color = Color.parseColor("#a0683a"); typeface = Typeface.DEFAULT_BOLD; textAlign = Paint.Align.CENTER }
 
         /** 주민 머리 위 말풍선. 결과 카드가 떠 있으면 비켜 준다. */
-        private fun drawTalk(cv: Canvas, sx: Float, scale: Float) {
+        private fun drawTalk(cv: Canvas) {
             if (cardT > 0f) return
             val text = scene.talkText ?: return
             val (wx, wy) = scene.talkPos() ?: return
             val d = cv.width / 400f
-            val px = (wx - sx) * scale; val py = wy * scale
+            val px = sxOf(wx); val py = syOf(wy)
             if (px < 0 || px > cv.width) return
             talkTx.textSize = 15 * d; talkName.textSize = 12 * d
             val name = scene.NAMES[scene.talkWho]

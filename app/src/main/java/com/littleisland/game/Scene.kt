@@ -8,52 +8,48 @@ import android.graphics.Paint
 import android.graphics.Shader
 import java.util.Calendar
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.floor
-import kotlin.math.hypot
 import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.sin
-import kotlin.math.cos
 import kotlin.math.sqrt
 import kotlin.random.Random
 
 /**
- * 섬 세계를 작은 도트 그림(600 x 467)으로 그린다.
- * 0~200: 내 섬, 200~400: 항해 중인 바다, 400~600: 항구.
- * 화면에는 이 그림의 일부를 확대해서 보여준다.
+ * 옆에서 본 바다 띠 (200 x 467 도트).
+ * 화면 가운데 가로 띠에서 늘 무언가 움직인다:
+ *  - 배가 섬에 있으면: 섬 장면 (주민이 나무를 베고 돌을 날라 창고에 쌓는다)
+ *  - 항해 중이면: 배가 오른쪽으로 나아가고 바다·먼 섬·구름이 흘러간다.
+ *    출항 → 해적과 포격전 → 항구에 닿아 짐 내리기 → 다시 섬으로.
  */
 class Scene {
     companion object {
-        const val W = 600
+        const val W = 200
         const val H = 467
-        const val PAGE = 200
-        const val OY = 153f       // 섬을 아래로 내리는 양
-        const val HORIZON = 178f  // 수평선 높이
-        private const val CX = 100f
-        private const val CY = 102f
+        const val HOR = 226f      // 수평선
+        const val GROUND = 244f   // 섬 땅 높이 (발 딛는 곳)
+        const val WL = 252f       // 물 높이 (배가 뜨는 곳)
+        const val SAIL_X = 74f    // 항해 중 배가 머무는 화면 위치
+        const val SHIFT = 260f    // 장면이 들어오고 나가는 거리
     }
 
     val bitmap: Bitmap = Bitmap.createBitmap(W, H, Bitmap.Config.ARGB_8888)
     private val c = Canvas(bitmap)
     private val p = Paint().apply { isAntiAlias = false }
     private val gp = Paint().apply { isAntiAlias = false }
-    private var ga = 1f   // 전역 투명도
-    private val tp = Paint().apply { isAntiAlias = false; textSize = 8f; typeface = android.graphics.Typeface.DEFAULT_BOLD; textAlign = Paint.Align.CENTER }
+    private var ga = 1f
 
-    /** 테스트용: null이면 실제 시각을 씀 */
     var hourOverride: Float? = null
 
     // ---------- 그리기 도구 ----------
     private fun col(hex: String) = Color.parseColor(hex)
-
     private fun r(x: Float, y: Float, w: Float, h: Float, color: Int) {
         p.color = color
         p.alpha = (Color.alpha(color) * ga).roundToInt().coerceIn(0, 255)
-        val xx = x.roundToInt().toFloat()
-        val yy = y.roundToInt().toFloat()
-        c.drawRect(xx, yy, xx + w, yy + h, p)
+        val xx = x.roundToInt().toFloat(); val yy = y.roundToInt().toFloat()
+        c.drawRect(xx, yy, xx + w.roundToInt(), yy + h.roundToInt(), p)
     }
-
     private fun ell(cx: Float, cy: Float, rx: Float, ry: Float, color: Int) {
         val iry = ry.roundToInt()
         if (iry <= 0) { r(cx - rx, cy, rx * 2, 1f, color); return }
@@ -64,30 +60,30 @@ class Scene {
             r(cx - w, cy + y, w * 2, 1f, color)
         }
     }
-
     private fun mix(a: Int, b: Int, t: Float): Int {
         val tt = t.coerceIn(0f, 1f)
         fun ch(x: Int, y: Int) = (x + (y - x) * tt).roundToInt()
         return Color.rgb(ch(Color.red(a), Color.red(b)), ch(Color.green(a), Color.green(b)), ch(Color.blue(a), Color.blue(b)))
     }
+    private fun lerp(a: Float, b: Float, t: Float) = a + (b - a) * t.coerceIn(0f, 1f)
+    private fun ease(t: Float): Float { val x = t.coerceIn(0f, 1f); return x * x * (3 - 2 * x) }
 
     // ---------- 시간대 색 ----------
     private class Key(val h: Float, top: String, bot: String, sea: String, val dark: Float) {
         val top = Color.parseColor(top); val bot = Color.parseColor(bot); val sea = Color.parseColor(sea)
     }
     private val keys = listOf(
-        Key(0f, "#0b1030", "#1c2350", "#0f2a4a", .75f),
-        Key(5f, "#0b1030", "#1c2350", "#0f2a4a", .75f),
-        Key(6.2f, "#3a3f7a", "#f0a27a", "#2a5a7a", .35f),
+        Key(0f, "#0b1030", "#1c2350", "#0f2a4a", .7f),
+        Key(5f, "#0b1030", "#1c2350", "#0f2a4a", .7f),
+        Key(6.2f, "#3a3f7a", "#f0a27a", "#2a5a7a", .3f),
         Key(7.6f, "#4aa8e8", "#bfe6f5", "#2f8fb8", 0f),
         Key(17f, "#4aa8e8", "#bfe6f5", "#2f8fb8", 0f),
-        Key(18.5f, "#5a4f9a", "#ff9a5a", "#3a6a8a", .25f),
-        Key(19.6f, "#2a2a60", "#a05a70", "#1f3f60", .55f),
-        Key(21f, "#0b1030", "#1c2350", "#0f2a4a", .75f),
-        Key(24f, "#0b1030", "#1c2350", "#0f2a4a", .75f),
+        Key(18.5f, "#5a4f9a", "#ff9a5a", "#3a6a8a", .2f),
+        Key(19.6f, "#2a2a60", "#a05a70", "#1f3f60", .5f),
+        Key(21f, "#0b1030", "#1c2350", "#0f2a4a", .7f),
+        Key(24f, "#0b1030", "#1c2350", "#0f2a4a", .7f),
     )
     private var skyTop = 0; private var skyBot = 0; private var sea = 0; private var dark = 0f
-
     private fun palette(h: Float) {
         for (i in 0 until keys.size - 1) {
             val a = keys[i]; val b = keys[i + 1]
@@ -99,57 +95,92 @@ class Scene {
             }
         }
     }
-
     fun hourNow(): Float {
         hourOverride?.let { return it }
         val cal = Calendar.getInstance()
         return cal.get(Calendar.HOUR_OF_DAY) + cal.get(Calendar.MINUTE) / 60f
     }
 
-    // ---------- 섬 시뮬레이션 ----------
-    private class Tree(val x: Float, val y: Float) { var hp = 3; var regrow = 0f }
-    private class Rock(val x: Float, val y: Float)
-    private class Target(val wood: Boolean, val tree: Tree?, val rock: Rock?, val x: Float, val y: Float)
-    private class Villager(var x: Float, var y: Float, val color: Int, val helper: Boolean = false) {
-        var st = 0  // 0 쉼, 1 가는 중, 2 일하는 중, 3 돌아오는 중
+    // =====================================================================
+    // 섬 사람들
+
+    private class Tree(val x: Float) { var hp = 3; var regrow = 0f; var shake = 0f }
+    private class Rock(val x: Float)
+    private class Person(var x: Float, val look: Int) {
+        var st = 0          // 0 쉼, 1 일터로, 2 일하는 중, 3 창고로
         var t = Random.nextFloat() * 2f
-        var tgt: Target? = null
-        var carry = 0 // 0 없음, 1 나무, 2 돌
+        var tx = 0f
+        var tree: Tree? = null
+        var carry = 0       // 1 나무, 2 돌
         var dir = 1f
         var step = 0f
     }
 
-    private val houseSlots = listOf(80f to 96f, 118f to 124f, 84f to 124f)
-    private val trees = listOf(50 to 80, 62 to 72, 44 to 96, 56 to 112, 70 to 130, 134 to 74, 148 to 86, 128 to 132, 142 to 118, 76 to 68, 112 to 66)
-        .map { Tree(it.first.toFloat(), it.second.toFloat()) }
-    private val rocks = listOf(66 to 90, 136 to 102, 106 to 138, 96 to 74).map { Rock(it.first.toFloat(), it.second.toFloat()) }
-    private val fireX = 100f; private val fireY = 106f
-    private val storeX = 114f; private val storeY = 96f
-    private val bodyColors = listOf("#e0574a", "#4a8fe0", "#e0c04a", "#9a5ae0", "#4ac08a", "#e08a4a").map { col(it) }
-    private val villagers = ArrayList<Villager>()
+    private val trees = listOf(12f, 28f, 160f).map { Tree(it) }
+    private val rocks = listOf(44f, 146f).map { Rock(it) }
+    private val storeX = 62f          // 창고 가운데
+    private val fireX = 86f
+    private val houseX = listOf(104f, 124f, 144f)
+    private val dockX = 170f
+    private val people = ArrayList<Person>()
 
-    // 건물은 저장된 진행 상황(Game)을 따른다
-    private val houses get() = Game.houses
-    private val hasStore = true
-    private val hasDock get() = Game.dock
-
-    /** 주민 수를 집 수에 맞춘다. 새 주민은 부두 쪽에서 걸어 들어온다. */
-    private fun syncVillagers() {
-        while (villagers.size < Game.pop()) {
-            val i = villagers.size
-            val v = if (i < Game.RESIDENTS) Villager(fireX + i * 4 - 4, fireY + 6, bodyColors[i])
-                else Villager(170f, 102f, bodyColors[i % bodyColors.size], true)  // 알바는 부두에서 내린다
-            villagers.add(v)
+    /** 주민 3명 + 지금 일하는 알바 */
+    private fun syncPeople() {
+        val want = Game.RESIDENTS + Game.workers.size
+        while (people.size < want) {
+            val i = people.size
+            people.add(Person(if (i < 3) fireX - 6 + i * 6 else dockX, if (i < 3) i else 3 + (i % 3)))
         }
-        while (villagers.size > Game.pop()) villagers.removeAt(villagers.size - 1)
+        while (people.size > want) people.removeAt(people.size - 1)
     }
 
-    // 부두에 들르는 짐배 (0 멀리, 1 들어오는 중, 2 정박, 3 나가는 중)
-    private var shipSt = 0
-    private var shipX = 240f
-    private var shipWait = 0f
+    class Pop(var x: Float, var y: Float, val text: String, var t: Float, val gold: Boolean = false)
+    val pops = ArrayList<Pop>()
 
-    // ---------- 주민 말풍선 (단·보리·해온) ----------
+    private fun walk(v: Person, x: Float, dt: Float): Boolean {
+        val dx = x - v.x; val sp = 13f * dt
+        if (abs(dx) <= sp) { v.x = x; return true }
+        v.x += if (dx > 0) sp else -sp
+        v.dir = if (dx < 0) -1f else 1f
+        v.step += dt * 9
+        return false
+    }
+
+    private fun updatePeople(dt: Float) {
+        for (t in trees) { if (t.hp <= 0) { t.regrow -= dt; if (t.regrow <= 0) t.hp = 3 }; if (t.shake > 0) t.shake -= dt }
+        for (v in people) {
+            when (v.st) {
+                0 -> { v.t -= dt; if (v.t <= 0) {
+                    val live = trees.filter { it.hp > 0 }
+                    if (Random.nextFloat() < .68f && live.isNotEmpty()) {
+                        val t = live[Random.nextInt(live.size)]; v.tree = t; v.tx = t.x + (if (t.x < 100) 7f else -7f)
+                    } else { v.tree = null; val rk = rocks[Random.nextInt(rocks.size)]; v.tx = rk.x + (if (rk.x < 100) 6f else -6f) }
+                    v.st = 1
+                } }
+                1 -> if (walk(v, v.tx, dt)) {
+                    val t = v.tree
+                    if (t != null && t.hp <= 0) { v.st = 0; v.t = .3f }
+                    else { v.st = 2; v.t = 2.4f; v.dir = if ((t?.x ?: v.tx) > v.x) 1f else -1f
+                        v.dir = if (t != null) (if (t.x > v.x) 1f else -1f) else (if (v.tx < 100) -1f else 1f) }
+                }
+                2 -> {
+                    v.t -= dt
+                    v.tree?.let { if ((v.t * 2.5f) % 1f < .1f) it.shake = .15f }
+                    if (v.t <= 0) {
+                        v.tree?.let { if (it.hp > 0) { it.hp--; if (it.hp <= 0) it.regrow = 40f } }
+                        v.carry = if (v.tree != null) 1 else 2
+                        v.st = 3
+                    }
+                }
+                3 -> if (walk(v, storeX + (if (v.x < storeX) -8f else 8f), dt)) {
+                    if (pops.size < 8) pops.add(Pop(storeX, GROUND - 26, if (v.carry == 1) "+나무" else "+돌", 1.6f))
+                    v.carry = 0; v.st = 0; v.t = .3f + Random.nextFloat() * 1.2f
+                }
+            }
+        }
+    }
+
+    // ---------- 말풍선 ----------
     val NAMES = listOf("단", "보리", "해온")
     private var talkWait = 6f
     var talkText: String? = null; private set
@@ -159,7 +190,7 @@ class Scene {
     private fun updateTalk(dt: Float) {
         if (talkT > 0f) { talkT -= dt; if (talkT <= 0f) talkText = null }
         talkWait -= dt
-        if (talkWait > 0f || villagers.size < 3) return
+        if (talkWait > 0f || people.size < 3 || islandOffset() == null) return
         talkWait = 25f + Random.nextFloat() * 30f
         val h = hourNow()
         val now = System.currentTimeMillis()
@@ -177,412 +208,480 @@ class Scene {
         talkWho = who; talkText = line; talkT = 5f
     }
 
-    /** 말하는 주민의 머리 위치 (세계 좌표) */
+    /** 말하는 주민의 머리 위치 (그림 좌표). 섬이 화면에 없으면 null */
     fun talkPos(): Pair<Float, Float>? {
-        val v = villagers.getOrNull(talkWho) ?: return null
-        return v.x to (v.y + OY - 8)
+        val o = islandOffset() ?: return null
+        val v = people.getOrNull(talkWho) ?: return null
+        val x = v.x + o
+        if (x < 0 || x > W) return null
+        return x to (GROUND - 17)
     }
 
-    /** 짐이 들어왔을 때 잠깐 띄우는 글자 */
-    class Pop(val x: Float, var y: Float, val text: String, var t: Float)
-    val pops = ArrayList<Pop>()
+    // =====================================================================
+    // 항해 장면: 지금 화면에 무엇이 어디 있는지
 
-    private fun pickTarget(): Target {
-        if (Random.nextFloat() < .68f) {
-            val live = trees.filter { it.hp > 0 }
-            if (live.isNotEmpty()) {
-                val t = live[Random.nextInt(live.size)]
-                return Target(true, t, null, t.x + if (Random.nextBoolean()) -5f else 5f, t.y + 1)
-            }
+    private var scroll = 0f         // 바다가 흘러간 거리
+    private var lastF = -1f
+
+    /** 섬이 화면에서 얼마나 밀려 있는지. 안 보이면 null */
+    private fun islandOffset(): Float? {
+        val f = Game.voyFrac()
+        if (f < 0f) return 0f
+        val dep = .05f; val ret = .95f
+        return when {
+            f < dep -> -SHIFT * ease(f / dep)
+            f > ret -> SHIFT * (1 - ease((f - ret) / (1 - ret)))
+            else -> null
         }
-        val rk = rocks[Random.nextInt(rocks.size)]
-        return Target(false, null, rk, rk.x - 5, rk.y + 1)
     }
 
-    private fun moveTo(v: Villager, x: Float, y: Float, dt: Float): Boolean {
-        val dx = x - v.x; val dy = y - v.y; val d = hypot(dx, dy); val sp = 11f * dt
-        if (d <= sp) { v.x = x; v.y = y; return true }
-        v.x += dx / d * sp; v.y += dy / d * sp
-        v.dir = if (dx < 0) -1f else 1f
-        v.step += dt * 8
-        return false
+    private fun portOffset(): Float? {
+        val f = Game.voyFrac()
+        if (f < 0f) return null
+        val a0 = Data.fArrive - .05f
+        return when {
+            f in a0..Data.fArrive -> SHIFT * (1 - ease((f - a0) / .05f))
+            f in Data.fArrive..Data.fLeave -> 0f
+            f in Data.fLeave..(Data.fLeave + .05f) -> -SHIFT * ease((f - Data.fLeave) / .05f)
+            else -> null
+        }
+    }
+
+    /** 우리 배의 화면 x. 부두가 없으면 null */
+    private fun shipX(): Float? {
+        if (!Game.dock) return null
+        val f = Game.voyFrac()
+        if (f < 0f) return dockX + 16
+        return when {
+            f < .05f -> lerp(dockX + 16, SAIL_X, ease(f / .05f))
+            f > .95f -> lerp(SAIL_X, dockX + 16, ease((f - .95f) / .05f))
+            else -> SAIL_X
+        }
+    }
+
+    /** 바다가 흘러가는 중인가 (항구에 묶여 있거나 섬에 있으면 멈춘다) */
+    private fun sailing(): Boolean {
+        val f = Game.voyFrac()
+        if (f < 0f) return false
+        return !(f in Data.fArrive..Data.fLeave)
+    }
+
+    // 해적: 다가옴 → 포격 → (이기면) 가라앉음 / (지면) 짐을 들고 달아남
+    private val pA = .055f; private val pB = .02f
+    private fun pirateU(): Float {
+        val v = Game.voy ?: return -1f
+        if (!v.encounter) return -1f
+        val f = Game.voyFrac()
+        val s = Data.fPirate - pA
+        return if (f in s..(Data.fPirate + .035f)) (f - s) / (pA + .035f) else -1f
     }
 
     fun update(dt: Float) {
         Game.tick(dt)
-        syncVillagers()
+        syncPeople()
+        updatePeople(dt)
         updateTalk(dt)
-        if (Game.arrived > 0) { pops.add(Pop(176f, 88f + OY, "알바 +" + Game.arrived, 3f)); Game.arrived = 0 }
-        for (pp in pops) { pp.t -= dt; pp.y -= dt * 6 }
+        if (sailing()) scroll += dt * 16f
+        if (Game.arrived > 0) { pops.add(Pop(dockX, GROUND - 24, "알바 도착", 3f)); Game.arrived = 0 }
+        if (Game.supplies > 0) { if (islandOffset() == 0f) pops.add(Pop(dockX + 10, WL - 22, "짐배 +짐", 2.5f)); Game.supplies = 0 }
+        // 해적 결과, 항구 판매 순간에 숫자를 띄운다
+        val f = Game.voyFrac()
+        val v = Game.voy
+        if (v != null && lastF >= 0f) {
+            if (v.encounter && lastF < Data.fPirate && f >= Data.fPirate)
+                pops.add(if (v.win) Pop(150f, WL - 34, "승리! 보물", 3f, true) else Pop(SAIL_X, WL - 34, "짐을 빼앗겼어요", 3f))
+            if (lastF < Data.fArrive && f >= Data.fArrive) pops.add(Pop(SAIL_X + 30, WL - 40, "판매 +" + (v.saleC / 100) + "금화", 3.5f, true))
+        }
+        lastF = f
+        for (pp in pops) { pp.t -= dt; pp.y -= dt * 5 }
         pops.removeAll { it.t <= 0f }
-        // 부두 짐배: 실제 계산은 Game이 하고, 여기서는 주기에 맞춰 보여주기만 한다
-        if (Game.supplies > 0) { pops.add(Pop(180f, 118f + OY, "짐배 도착", 3f)); Game.supplies = 0 }
-        if (hasDock) {
-            val st = Game.supplyT; val e = Data.supplyEvery
-            when {
-                st < 9f -> { shipSt = 2; shipX = 178f }
-                st < 15f -> { shipSt = 3; shipX = 178f + (st - 9f) * 10f }
-                st > e - 12f -> { shipSt = 1; shipX = 240f - (st - (e - 12f)) / 12f * 62f }
-                else -> shipSt = 0
-            }
-        }
-        for (t in trees) if (t.hp <= 0) { t.regrow -= dt; if (t.regrow <= 0) t.hp = 3 }
-        for (v in villagers) {
-            when (v.st) {
-                0 -> { v.t -= dt; if (v.t <= 0) { v.tgt = pickTarget(); v.st = 1 } }
-                1 -> {
-                    val g = v.tgt!!
-                    if (moveTo(v, g.x, g.y, dt)) {
-                        if (g.wood && (g.tree?.hp ?: 0) <= 0) { v.st = 0; v.t = .3f }
-                        else { v.st = 2; v.t = 2.4f; val ox = g.tree?.x ?: g.rock!!.x; v.dir = if (ox > v.x) 1f else -1f }
-                    }
-                }
-                2 -> {
-                    v.t -= dt
-                    if (v.t <= 0) {
-                        val g = v.tgt!!
-                        g.tree?.let { if (it.hp > 0) { it.hp--; if (it.hp <= 0) it.regrow = 40f } }
-                        v.carry = if (g.wood) 1 else 2
-                        v.st = 3
-                    }
-                }
-                3 -> {
-                    val tx = if (hasStore) storeX - 2 else fireX
-                    val ty = if (hasStore) storeY + 4 else fireY + 5
-                    if (moveTo(v, tx, ty, dt)) {
-                        if (pops.size < 6) pops.add(Pop(tx - 6, ty + OY - 8, if (v.carry == 1) "+나무" else "+돌", 1.6f))
-                        v.carry = 0; v.st = 0; v.t = 0.2f + Random.nextFloat() * .8f
-                    }
-                }
-            }
-        }
     }
 
-    // ---------- 그리기 ----------
+    // =====================================================================
+    // 그리기
+
     fun draw(time: Float) {
         val h = hourNow()
         palette(h)
         ga = 1f
         sky(time, h)
-        // 바다
-        r(0f, HORIZON, W.toFloat(), H - HORIZON, sea)
-        waves(time)
-        island(time)
-        if (hasDock && shipSt != 0) smallShip(shipX, OY + 142, time, col("#c0463a"))
-        seaPage(time)
-        port(time)
-        voyageShips(time)
+        farIslands()
+        seaBody(time)
+        birds(time)
+        val io = islandOffset()
+        val po = portOffset()
+        if (io != null) island(time, io)
+        if (po != null) port(time, po)
+        pirates(time)
+        shipX()?.let { ourShip(it, time) }
+        foreWater(time)
         if (dark > 0f) {
-            p.color = Color.argb((dark * .68f * 255).roundToInt(), 8, 12, 40)
+            p.color = Color.argb((dark * .6f * 255).roundToInt(), 8, 12, 40)
             c.drawRect(0f, 0f, W.toFloat(), H.toFloat(), p)
-        }
-        if (dark > .15f) {
-            ga = min(1f, dark * 1.6f)
-            lights(time)
-            ga = 1f
-        }
-        for (pp in pops) {
-            tp.alpha = (min(1f, pp.t) * 255).roundToInt()
-            tp.color = Color.argb(tp.alpha, 40, 24, 10); c.drawText(pp.text, pp.x + 1, pp.y + 1, tp)
-            tp.color = Color.argb(tp.alpha, 255, 226, 140); c.drawText(pp.text, pp.x, pp.y, tp)
+            ga = min(1f, dark * 1.6f); nightLights(time, io, po); ga = 1f
         }
     }
 
     private fun sky(time: Float, h: Float) {
-        gp.shader = LinearGradient(0f, 0f, 0f, HORIZON, skyTop, skyBot, Shader.TileMode.CLAMP)
-        c.drawRect(0f, 0f, W.toFloat(), HORIZON, gp)
-        gp.shader = null
+        gp.shader = LinearGradient(0f, 60f, 0f, HOR, skyTop, skyBot, Shader.TileMode.CLAMP)
+        c.drawRect(0f, 0f, W.toFloat(), HOR, gp); gp.shader = null
         if (dark > .3f) {
             ga = (dark - .3f) * 2
-            for (i in 0 until 270) {
-                val x = (i * 73) % W; val y = (i * 37) % HORIZON.toInt()
+            for (i in 0 until 90) {
+                val x = (i * 73) % W; val y = (i * 37) % HOR.toInt()
                 if ((i + floor(time * 1.5f).toInt()) % 11 > 1) r(x.toFloat(), y.toFloat(), 1f, 1f, Color.WHITE)
             }
             ga = 1f
         }
-        // 해와 달: 각 페이지마다 같은 자리에 보이게 그린다
-        for (page in 0 until 3) {
-            val ox = page * PAGE.toFloat()
-            if (h in 5.6f..19.4f) {
-                val t = (h - 5.6f) / 13.8f
-                val x = ox + 12 + t * 176; val y = HORIZON - 6 - sin(t * PI.toFloat()) * 38
-                ell(x, y, 6f, 6f, if (h < 7 || h > 17.8f) col("#ffb070") else col("#fff2b0"))
-            } else {
-                val hh = if (h < 12) h + 24 else h
-                val t = (hh - 19.4f) / 10.2f
-                val x = ox + 12 + t * 176; val y = HORIZON - 6 - sin(t * PI.toFloat()) * 38
-                ell(x, y, 5f, 5f, col("#e8ecff")); ell(x + 2, y - 1, 4f, 4f, skyTop)
-            }
+        if (h in 5.6f..19.4f) {
+            val t = (h - 5.6f) / 13.8f
+            ell(14 + t * 172, HOR - 20 - sin(t * PI.toFloat()) * 70, 7f, 7f, if (h < 7 || h > 17.8f) col("#ffb070") else col("#fff2b0"))
+        } else {
+            val hh = if (h < 12) h + 24 else h
+            val t = (hh - 19.4f) / 10.2f
+            val x = 14 + t * 172; val y = HOR - 20 - sin(t * PI.toFloat()) * 70
+            ell(x, y, 6f, 6f, col("#e8ecff")); ell(x + 2, y - 1, 5f, 5f, skyTop)
         }
-        // 구름
-        val n = W / 40
-        for (i in 0 until n) {
-            val sp = .5f + (i % 3) * .25f
-            val x = ((i * 67 + time * 2 * sp) % (W + 40)) - 30
-            val y = 50f + (i * 29) % 110
+        // 구름: 항해 중엔 조금 빨리 흘러간다
+        for (i in 0 until 7) {
+            val sp = .5f + (i % 3) * .3f
+            val x = ((i * 53 + time * 1.5f * sp + scroll * .15f * sp) % (W + 60)).let { W + 30 - it }
+            val y = 70f + (i * 23) % 120
             ga = .85f - dark * .5f
-            ell(x, y, 12f, 3f, Color.WHITE); ell(x + 8, y - 2, 7f, 3f, Color.WHITE)
+            ell(x, y, 13f, 3f, Color.WHITE); ell(x + 8, y - 2, 8f, 3f, Color.WHITE); ell(x - 6, y + 1, 6f, 2f, Color.WHITE)
             ga = 1f
         }
     }
 
-    private fun waves(time: Float) {
-        ga = .22f
-        var y = HORIZON + 3
-        while (y < H) {
-            var x = ((y * 13 + floor(time * 6)) % 24) - 24
-            while (x < W) { r(x, y, 5f, 1f, Color.WHITE); x += 24 }
-            y += 6
+    /** 수평선 위 먼 섬들 (천천히 흘러간다) */
+    private fun farIslands() {
+        val cl = mix(sea, skyBot, .55f)
+        for (i in 0 until 4) {
+            val span = 300f
+            val x = ((i * 83f - scroll * .25f) % span + span) % span - 50f
+            val w = 18f + (i * 11) % 22; val hh = 4f + (i * 5) % 7
+            ell(x, HOR, w, hh, cl)
+        }
+    }
+
+    private fun seaBody(time: Float) {
+        val deep = mix(sea, col("#06101e"), .85f)
+        gp.shader = LinearGradient(0f, HOR, 0f, H.toFloat(), sea, deep, Shader.TileMode.CLAMP)
+        c.drawRect(0f, HOR, W.toFloat(), H.toFloat(), gp); gp.shader = null
+        // 물결 줄: 가까울수록 빨리 흘러간다
+        var y = HOR + 2; var k = 0
+        while (y < WL + 40) {
+            val sp = .2f + (y - HOR) / 40f
+            val off = (scroll * sp + time * 3) % 26
+            ga = .25f
+            var x = -off + (k * 9) % 26 - 26
+            while (x < W) { r(x, y, 6f, 1f, Color.WHITE); x += 26 }
+            ga = 1f
+            y += 5; k++
+        }
+        // 깊은 바다: 빛줄기와 거품
+        ga = .08f
+        for (i in 0 until 5) {
+            val x = ((i * 47 - scroll * .4f) % 230 + 230) % 230 - 15
+            r(x, WL + 20, 6f, 150f, Color.WHITE)
+        }
+        ga = .35f
+        for (i in 0 until 14) {
+            val x = ((i * 31 - scroll * .6f) % 210 + 210) % 210 - 5
+            val yy = H - ((time * (6 + i % 4) + i * 37) % (H - WL - 30))
+            r(x + sin(time + i) * 2, yy, 1f, 1f, Color.WHITE)
         }
         ga = 1f
     }
 
-    // ----- 1페이지: 내 섬 -----
-    private fun island(time: Float) {
-        c.save(); c.translate(0f, OY)
-        val foam = if (sin(time * 2) > 0) 1f else 0f
-        ell(CX, CY + 2, 72 + foam, 45 + foam, col("#e9f4f6"))
-        ell(CX, CY + 2, 70f, 44f, col("#e6cf8f"))
-        ell(CX, CY - 1, 62f, 38f, col("#5fae4e"))
-        ell(CX - 6, CY - 6, 48f, 26f, col("#6dbd58"))
-        for (i in 0 until 60) {
-            val a = i * 2.39f; val rr = sqrt(i / 60f)
-            r(CX + cos(a) * rr * 56, CY - 1 + sin(a) * rr * 32, 1f, 1f, col("#4f9a42"))
-        }
-        if (hasDock) {
-            r(166f, 100f, 34f, 4f, col("#8a5a32"))
-            var x = 168f; while (x < 200) { r(x, 104f, 1f, 4f, col("#5a3a1e")); x += 6 }
-            r(166f, 100f, 34f, 1f, col("#a87444"))
-        }
-        // y 순서대로 그리기
-        val items = ArrayList<Pair<Float, () -> Unit>>()
-        for (t in trees) items.add(t.y to { drawTree(t) })
-        for (rk in rocks) items.add(rk.y to { ell(rk.x, rk.y - 2, 5f, 3f, col("#8b96a3")); ell(rk.x - 1, rk.y - 3, 3f, 2f, col("#b3bcc6")) })
-        items.add(fireY to { r(fireX - 4, fireY - 1, 8f, 2f, col("#7d7d7d")); flame(time) })
-        if (hasStore) items.add(storeY + 6 to { drawStore(storeX, storeY) })
-        for (i in 0 until houses) { val (x, y) = houseSlots[i]; items.add(y + 6 to { drawHouse(x, y) }) }
-        for (v in villagers) items.add(v.y to { drawVillager(v, time) })
-        items.sortBy { it.first }
-        for (it in items) it.second()
-        c.restore()
-    }
-
-    private fun drawTree(t: Tree) {
-        if (t.hp <= 0) { r(t.x - 2, t.y - 2, 4f, 2f, col("#7a4a24")); return }
-        r(t.x - 1, t.y - 5, 2f, 5f, col("#7a4a24"))
-        val s = when (t.hp) { 3 -> 0f; 2 -> -1f; else -> -2f }
-        ell(t.x, t.y - 10, 6 + s, 6 + s, col("#2f7a3a"))
-        ell(t.x - 1, t.y - 11, 4 + s, 4 + s, col("#3f9a48"))
-        r(t.x - 2, t.y - 13, 2f, 1f, col("#6cc06a"))
-    }
-
-    private fun flame(time: Float) {
-        val f = floor(time * 8).toInt() % 3
-        r(fireX - 2, fireY - 4, 4f, 2f, col("#ff7a2a"))
-        r(fireX - 1, fireY - 6 - if (f == 1) 1 else 0, 2f, 2f, col("#ffc94a"))
-    }
-
-    private fun drawHouse(x: Float, y: Float) {
-        r(x, y - 6, 12f, 7f, col("#e8d6b0"))
-        for (i in 0 until 5) r(x - 1 + i, y - 7 - i, 14f - i * 2, 1f, col("#c0463a"))
-        r(x + 5, y - 3, 2f, 4f, col("#6b4a2a"))
-        r(x + 2, y - 3, 2f, 2f, col("#7fb6d9")); r(x + 8, y - 3, 2f, 2f, col("#7fb6d9"))
-    }
-
-    private fun drawStore(x: Float, y: Float) {
-        if (Game.warehouse >= 1) { r(x + 14, y - 3, 4f, 4f, col("#b07a44")); r(x + 14, y - 3, 4f, 1f, col("#7d4c28")) }
-        if (Game.warehouse >= 2) { r(x + 15, y - 7, 4f, 4f, col("#b07a44")); r(x - 5, y - 3, 4f, 4f, col("#b07a44")) }
-        r(x, y - 7, 13f, 8f, col("#9a6236"))
-        var i = 0; while (i < 13) { r(x + i, y - 7, 1f, 8f, col("#7d4c28")); i += 3 }
-        r(x - 1, y - 9, 15f, 2f, col("#5d3a1f"))
-        r(x + 5, y - 4, 3f, 5f, col("#4a2c16"))
-    }
-
-    private fun drawVillager(v: Villager, time: Float) {
-        val bob = if (v.st == 2) floor(time * 6).toInt() % 2 else 0
-        val lx = v.x - 1; val ly = v.y - 5 - bob
-        r(lx, ly, 3f, 2f, col("#f2c79a")); r(lx, ly, 3f, 1f, col("#3a2a1a"))
-        if (v.helper) { r(lx - 1, ly - 1, 5f, 1f, col("#e8c060")); r(lx, ly - 2, 3f, 1f, col("#e8c060")) } // 밀짚모자
-        r(lx, ly + 2, 3f, 2f, v.color)
-        val walking = v.st == 1 || v.st == 3
-        val st = if (walking) floor(v.step).toInt() % 2 else 0
-        r(lx, ly + 4, 1f, 1f, col("#3a2a1a")); r(lx + 2, ly + 4 - st, 1f, 1f, col("#3a2a1a"))
-        if (v.st == 2) r(lx + if (v.dir > 0) 3 else -1, ly + 1 + floor(time * 6).toInt() % 2, 1f, 2f, col("#9aa4ae"))
-        if (v.carry != 0) r(lx, ly - 2, 3f, 2f, if (v.carry == 1) col("#a0683a") else col("#aab4be"))
-    }
-
-    // ----- 2페이지: 항해 중인 바다 -----
-    private fun seaPage(time: Float) {
-        c.save()
-        c.clipRect(200f, HORIZON, 400f, H.toFloat())
-        ga = .3f
-        var y = HORIZON + 4
-        while (y < H) {
-            var x = 200 + (((y * 7 - floor(time * 22)) % 30) + 30) % 30 - 30
-            while (x < 400) { r(x, y, 7f, 1f, Color.WHITE); x += 30 }
-            y += 5
-        }
-        ga = 1f
-        // 고래 (가끔)
-        val wt = time % 14
-        if (wt < 5) {
-            val wx = 250 + wt * 4; val wy = 322f
-            ell(wx, wy, 9f, 3f, col("#2a3f5e")); r(wx - 10, wy - 2, 3f, 2f, col("#2a3f5e"))
-            if (wt > 1.5f && wt < 3.5f) { ga = .8f; r(wx + 4, wy - 8, 1f, 5f, col("#e9f4f6")); r(wx + 2, wy - 10, 5f, 2f, col("#e9f4f6")); ga = 1f }
-        }
-        // 갈매기
+    /** 갈매기와 뛰어오르는 물고기: 바다가 비어 보이지 않게 */
+    private fun birds(time: Float) {
+        val cl = if (dark > .4f) col("#c8cce0") else col("#ffffff")
         for (i in 0 until 3) {
-            val gx = 300 + i * 18 + sin(time + i) * 8; val gy = 200 + i * 10 + cos(time * 1.3f + i) * 3
-            val f = (floor(time * 4).toInt() + i) % 2
-            r(gx - 2, gy - f, 2f, 1f, Color.WHITE); r(gx, gy, 1f, 1f, Color.WHITE); r(gx + 1, gy - f, 2f, 1f, Color.WHITE)
+            val x = W + 20 - ((time * (7f + i * 2) + i * 90 + scroll * .3f) % (W + 40))
+            val y = HOR - 60 - i * 22 + sin(time * .7f + i) * 4
+            val up = (floor(time * 4 + i) % 2).toInt() == 0
+            r(x, y, 1f, 1f, cl)
+            if (up) { r(x - 2, y - 1, 2f, 1f, cl); r(x + 1, y - 1, 2f, 1f, cl); r(x - 3, y - 2, 1f, 1f, cl); r(x + 3, y - 2, 1f, 1f, cl) }
+            else { r(x - 3, y, 3f, 1f, cl); r(x + 1, y, 3f, 1f, cl) }
         }
-        c.restore()
-    }
-
-    // ----- 항해: 우리 배와 해적선 -----
-    private val SEA_Y = 300f
-
-    /** 우리 큰 배의 위치와 방향. 부두가 없으면 null */
-    private fun shipPos(): Triple<Float, Float, Boolean>? {
-        if (!hasDock) return null
-        val f = Game.voyFrac()
-        if (f < 0f) return Triple(192f, OY + 122, true)                     // 섬 부두에 정박
-        val b0 = Data.fPirate - .04f; val b1 = Data.fPirate + .03f
-        return when {
-            f < b0 -> Triple(215f + f / b0 * 80f, SEA_Y, true)                   // 출발
-            f < b1 -> Triple(295f, SEA_Y, true)                                  // 해적 만나는 자리
-            f < Data.fArrive -> Triple(295f + (f - b1) / (Data.fArrive - b1) * 90f, SEA_Y, true)
-            f < Data.fLeave -> Triple(462f, OY + 138, true)                      // 항구에 정박
-            else -> Triple(385f - (f - Data.fLeave) / (1f - Data.fLeave) * 170f, SEA_Y, false) // 귀항
-        }
-    }
-
-    private fun voyageShips(time: Float) {
-        val (x, y, right) = shipPos() ?: return
-        val v = Game.voy
-        // 해적선: 만나는 자리에서 다가와 싸우고, 이기면 가라앉고 지면 떠난다
-        val u = if (v != null && v.encounter) (Game.voyFrac() - (Data.fPirate - .07f)) / .13f else -1f
-        if (v != null && u in 0f..1f) {
-            val win = v.win
-            val px = when {
-                u < .25f -> 400f - u / .25f * 65f
-                u < .7f -> 335f
-                win -> 335f
-                else -> 335f + (u - .7f) * 220f
-            }
-            val sink = if (win && u > .7f) (u - .7f) * 90f else 0f
-            c.save(); c.clipRect(200f, 0f, 400f, SEA_Y + 12)
-            pirateShip(px, SEA_Y + sink, time, Data.pirate(v.pirate ?: "")?.colors ?: emptyList())
-            c.restore()
-            if (u in .25f..0.7f) {   // 대포 연기
-                val k = floor(time * 2).toInt() % 2
-                ga = .9f
-                if (k == 0) { ell(x + 20, y - 8, 4f, 3f, col("#f0f0f0")); r(x + 24, y - 9, 2f, 2f, col("#ffb347")) }
-                else { ell(px - 18, SEA_Y - 8, 4f, 3f, col("#f0f0f0")); r(px - 22, SEA_Y - 9, 2f, 2f, col("#ffb347")) }
-                ga = 1f
+        if (sailing()) {
+            val t = (time * .35f) % 1f
+            if (t < .25f) {
+                val u = t / .25f
+                val fx = 150f - u * 20; val fy = WL + 2 - sin(u * PI.toFloat()) * 10
+                r(fx, fy, 3f, 2f, col("#9fc4d8")); r(fx + 3, fy - 1, 1f, 1f, col("#9fc4d8"))
+                if (u < .15f || u > .85f) { ga = .7f; ell(fx + 1, WL + 2, 3f, 1f, Color.WHITE); ga = 1f }
             }
         }
-        if (right) bigShip(x, y, time, 1f)
-        else { c.save(); c.scale(-1f, 1f, x, 0f); bigShip(x, y, time, 1f); c.restore() }
     }
 
-    /** 해적선. 색은 06_pirates의 colors (돛, 무늬, 선체) */
-    private fun pirateShip(x: Float, y0: Float, time: Float, cs: List<Int>) {
-        val sail = cs.getOrElse(0) { col("#30343B") }; val mark = cs.getOrElse(1) { col("#AAB4BB") }; val hull = cs.getOrElse(2) { col("#795139") }
-        val y = y0 + (sin(time * 2.1f) * 1.2f).roundToInt()
-        for (i in 0 until 6) r(x - 15 + i, y + i, 30f - i * 2, 1f, hull)
-        r(x - 15, y - 1, 30f, 1f, mix(hull, Color.WHITE, .25f))
-        r(x, y - 30, 1f, 30f, col("#1e1410"))
-        r(x - 7, y - 27, 14f, 10f, sail); r(x - 6, y - 15, 12f, 9f, sail)
-        // 갈고리 무늬 (해골은 쓰지 않는다)
-        r(x - 1, y - 25, 2f, 5f, mark); r(x - 3, y - 21, 4f, 1f, mark); r(x - 3, y - 22, 1f, 1f, mark)
-        r(x, y - 35, 6f, 4f, sail); r(x + 2, y - 34, 2f, 1f, mark)
-    }
-
-    private fun bigShip(x: Float, y0: Float, time: Float, s: Float) {
-        val y = y0 + (sin(time * 1.8f) * 1.2f).roundToInt()
-        for (i in 0 until 7) r(x - 18 * s + i, y + i, 36 * s - i * 2, 1f, if (i < 2) col("#8a5530") else col("#6b4022"))
-        r(x - 18 * s, y - 1, 36 * s, 1f, col("#a8703f")); r(x + 14 * s, y - 3, 6 * s, 2f, col("#6b4022"))
-        var i = -12; while (i <= 12) { r(x + i * s, y + 2, 2f, 2f, col("#3a2412")); i += 6 }
-        // 배 단계에 따라 돛대 수가 늘어난다 (1·2단계 1개, 3단계 2개, 4단계 3개)
-        val lv = Game.shipLevel
-        val masts = when (lv) { 1, 2 -> floatArrayOf(0f); 3 -> floatArrayOf(-8f, 6f); else -> floatArrayOf(-10f, 0f, 10f) }
-        if (lv >= 2) { r(x + 12 * s, y - 2, 3f, 1f, col("#2a2a2a")) }                 // 선수 방어포
-        if (lv >= 3) { r(x - 14 * s, y - 2, 3f, 1f, col("#2a2a2a")) }
-        r(x + 15 * s, y - 1, 2f, 2f, col("#3B8F91"))                                   // 파란 끈
-        for (k in masts.indices) {
-            val m = masts[k]
-            val big = masts.size == 1 || k == masts.size / 2
-            val mh = (if (big) (if (lv == 1) 30f else 40f) else 32f) * s
-            r(x + m * s, y - mh, 1f, mh, col("#4a2c16"))
-            val sw = (if (big) (if (lv == 1) 11f else 14f) else 11f) * s; val sh = (if (big) (if (lv == 1) 8f else 11f) else 9f) * s
-            for (j in 0 until 2) {
-                val top = y - mh + 3 + j * (sh + 3)
-                r(x + m * s - sw / 2, top, sw, sh, col("#f6f0de"))
-                r(x + m * s + sw / 2 - 2, top + 1, 2f, sh - 2, col("#e2d8bc"))
-            }
-        }
-        r(x, y - 42 * s - 5, 6f, 3f, col("#c0463a")); r(x, y - 42 * s - 5, 1f, 5f, col("#4a2c16"))
-        ga = .7f
-        for (k in 1 until 6) { val xx = x - 20 * s - k * 8 - ((time * 20) % 8); r(xx, y + 6 + (k % 2), 5f, 1f, Color.WHITE) }
+    /** 배 앞쪽 물: 배가 물에 잠겨 보이게 띠를 덮는다 */
+    private fun foreWater(time: Float) {
+        ga = .55f
+        r(0f, WL + 3, W.toFloat(), 3f, sea)
+        ga = .3f
+        val off = (scroll * 1.2f + time * 4) % 18
+        var x = -off
+        while (x < W) { r(x, WL + 3, 8f, 1f, Color.WHITE); x += 18 }
         ga = 1f
     }
 
-    // ----- 3페이지: 항구 -----
-    private fun port(time: Float) {
-        val ox = 400f
-        c.save(); c.translate(ox, OY)
-        ell(100f, 104f, 76f, 40f, col("#e9f4f6")); ell(100f, 104f, 74f, 39f, col("#e6cf8f"))
-        ell(104f, 100f, 64f, 33f, col("#7aa85a")); ell(96f, 96f, 46f, 22f, col("#86b464"))
-        r(118f, 62f, 22f, 14f, col("#cfc6b4"))
-        r(118f, 58f, 4f, 4f, col("#cfc6b4")); r(127f, 58f, 4f, 4f, col("#cfc6b4")); r(136f, 58f, 4f, 4f, col("#cfc6b4"))
-        r(126f, 68f, 6f, 8f, col("#5a4a3a")); r(128f, 46f, 1f, 12f, col("#4a2c16")); r(129f, 46f, 6f, 4f, col("#2f6fb8"))
-        // 항구 색은 지금 항로의 항구 데이터에서 (03_ports scene.colors)
-        val pc = Data.port(Game.voy?.port ?: Game.route).colors
-        val awn = if (pc.size >= 3) listOf(pc[0], pc[1], pc[2], pc[0]) else listOf(col("#c0463a"), col("#2f6fb8"), col("#e0a030"), col("#4a9a5a"))
-        for (i in awn.indices) {
-            val x = 56f + i * 15; val y = 96f + (i % 2) * 6
-            r(x, y - 6, 12f, 6f, col("#e8d6b0"))
-            var k = 0; while (k < 12) { r(x + k, y - 9, 2f, 3f, if (k % 4 != 0) col("#f4f1e6") else awn[i]); k += 2 }
-            r(x + 2, y - 3, 3f, 3f, col("#a0683a")); r(x + 7, y - 3, 3f, 3f, col("#d9b86a"))
+    // ---------- 섬 ----------
+    private fun island(time: Float, o: Float) {
+        c.save(); c.translate(o, 0f)
+        // 물 밑 바위와 모래 (옆 단면)
+        for (i in 0..40) {
+            val y = WL + i
+            val inset = i * 1.3f
+            r(4 + inset, y, 186 - inset * 2, 1f, mix(col("#8a6a44"), col("#1d2a33"), i / 40f))
         }
-        r(40f, 84f, 14f, 9f, col("#9a6236")); r(39f, 82f, 16f, 2f, col("#5d3a1f"))
-        r(146f, 92f, 14f, 9f, col("#9a6236")); r(145f, 90f, 16f, 2f, col("#5d3a1f"))
-        for (i in 0 until 7) {
-            val dirSign = if (i % 2 == 1) 1 else -1
-            val raw = (i * 23 + floor(time * 6).toInt() * dirSign) % 60
-            val x = 60f + ((raw + 60) % 60); val y = 108f + (i % 3) * 4
-            r(x, y - 5, 3f, 2f, col("#f2c79a")); r(x, y - 3, 3f, 2f, bodyColors[i % 6])
+        // 모래와 풀
+        r(2f, GROUND, 192f, WL - GROUND + 1, col("#e6cf8f"))
+        r(6f, GROUND - 3, 168f, 4f, col("#5fae4e"))
+        r(6f, GROUND - 4, 168f, 1f, col("#7cc65e"))
+        for (i in 0 until 30) r(8f + (i * 37) % 164, GROUND - 1 + (i % 2), 1f, 1f, col("#4f9a42"))
+        // 부두 (없으면 부서진 말뚝)
+        if (Game.dock) {
+            r(dockX - 4, GROUND - 1, 34f, 3f, col("#8a5a32")); r(dockX - 4, GROUND - 1, 34f, 1f, col("#a87444"))
+            var x = dockX; while (x < dockX + 30) { r(x, GROUND + 2, 2f, 10f, col("#5a3a1e")); x += 8 }
+            r(dockX + 26, GROUND - 10, 1f, 9f, col("#5a3a1e")); r(dockX + 25, GROUND - 12, 3f, 3f, col("#ffd36a"))
+        } else {
+            r(dockX + 2, GROUND, 2f, 9f, col("#5a3a1e")); r(dockX + 12, GROUND + 3, 2f, 7f, col("#5a3a1e"))
+            r(dockX, GROUND - 1, 8f, 2f, col("#7a5030"))
         }
-        r(14f, 110f, 30f, 4f, col("#8a5a32"))
-        var x = 16f; while (x < 44) { r(x, 114f, 1f, 5f, col("#5a3a1e")); x += 6 }
+        // 창고
+        storehouse(storeX, GROUND - 3)
+        // 모닥불
+        r(fireX - 4, GROUND - 4, 8f, 2f, col("#7d7d7d")); flame(fireX, GROUND - 5, time)
+        // 숙소
+        for (i in 0 until Game.houses) house(houseX[i], GROUND - 3)
+        // 나무와 돌
+        for (t in trees) tree(t, GROUND - 3)
+        for (rk in rocks) { ell(rk.x, GROUND - 6, 6f, 4f, col("#8b96a3")); ell(rk.x - 1, GROUND - 7, 4f, 2f, col("#b3bcc6")) }
+        // 사람
+        for (v in people) person(v, time)
         c.restore()
-        smallShip(ox + 20, OY + 118, time, col("#2f6fb8"))
-        smallShip(ox + 170, OY + 130, time, col("#e0a030"))
     }
 
-    private fun smallShip(x: Float, y0: Float, time: Float, flag: Int) {
-        val y = y0 + sin(time * 2 + x).roundToInt()
-        r(x - 6, y, 13f, 2f, col("#6b4022")); r(x - 4, y + 2, 9f, 1f, col("#4a2c16"))
-        r(x, y - 10, 1f, 10f, col("#4a2c16"))
-        r(x - 4, y - 9, 4f, 7f, col("#f4f1e6")); r(x + 1, y - 8, 4f, 6f, col("#f4f1e6"))
-        r(x, y - 12, 3f, 2f, flag)
+    private fun tree(t: Tree, base: Float) {
+        val sx = if (t.shake > 0) (if ((t.shake * 40).toInt() % 2 == 0) 1f else -1f) else 0f
+        if (t.hp <= 0) { r(t.x - 2, base - 3, 4f, 3f, col("#7a4a24")); r(t.x - 2, base - 3, 4f, 1f, col("#c49a6a")); return }
+        val sc = .7f + t.hp * .1f
+        r(t.x - 1, base - 12 * sc, 3f, 12 * sc, col("#6b4022"))
+        ell(t.x + sx, base - 18 * sc, 9 * sc, 7 * sc, col("#3f8a3a"))
+        ell(t.x - 3 + sx, base - 21 * sc, 6 * sc, 5 * sc, col("#4f9a42"))
+        ell(t.x + 3 + sx, base - 23 * sc, 5 * sc, 4 * sc, col("#5fae4e"))
     }
 
-    // ----- 밤 불빛 -----
-    private fun lights(time: Float) {
-        c.save(); c.translate(0f, OY)
-        val save = ga; ga = save * .25f; ell(fireX, fireY - 2, 10f, 6f, col("#ffb347")); ga = save
-        flame(time)
-        for (i in 0 until houses) { val (x, y) = houseSlots[i]; r(x + 2, y - 3, 2f, 2f, col("#ffd36a")); r(x + 8, y - 3, 2f, 2f, col("#ffd36a")) }
-        if (hasStore) r(storeX + 5, storeY - 4, 2f, 2f, col("#ffd36a"))
-        for (v in villagers) r(v.x + v.dir * 2, v.y - 4, 1f, 1f, col("#ffe08a"))
-        if (hasDock) r(197f, 95f, 3f, 2f, col("#ffd36a"))
-        // 항구
-        for (i in 0 until 4) r(400f + 60 + i * 15, 93f + (i % 2) * 6, 2f, 2f, col("#ffd36a"))
-        r(526f, 64f, 2f, 2f, col("#ffd36a")); r(446f, 88f, 2f, 2f, col("#ffd36a")); r(552f, 96f, 2f, 2f, col("#ffd36a"))
+    private fun house(x: Float, base: Float) {
+        r(x - 8, base - 11, 16f, 11f, col("#e8d6b0"))
+        for (i in 0 until 6) r(x - 10 + i, base - 12 - i, 20f - i * 2, 1f, col("#c0463a"))
+        r(x - 2, base - 7, 4f, 7f, col("#7a4a24"))
+        r(x - 7, base - 8, 3f, 3f, col("#7fb3d5")); r(x + 4, base - 8, 3f, 3f, col("#7fb3d5"))
+    }
+
+    private fun storehouse(x: Float, base: Float) {
+        val lv = Game.warehouse
+        val w = 20f + lv * 2
+        r(x - w / 2, base - 13, w, 13f, col("#8a5a32"))
+        var i = 0f; while (i < w) { r(x - w / 2 + i, base - 13, 1f, 13f, col("#6b4022")); i += 4 }
+        r(x - w / 2 - 1, base - 15, w + 2, 2f, col("#5d3a1f"))
+        r(x - 3, base - 8, 6f, 8f, col("#3a2412"))
+        // 쌓인 나무·돌 더미가 창고 옆에 보인다
+        val logs = min(6, Game.wood / 12)
+        for (k in 0 until logs) r(x + w / 2 + 1 + (k % 3) * 3, base - 2 - (k / 3) * 2, 3f, 2f, col("#a8703f"))
+        val st = min(4, Game.stone / 10)
+        for (k in 0 until st) ell(x - w / 2 - 4 - (k % 2) * 3, base - 1 - (k / 2) * 2, 2f, 1f, col("#9aa4ae"))
+    }
+
+    private fun flame(x: Float, y: Float, time: Float) {
+        val k = (floor(time * 8) % 3).toInt()
+        r(x - 2, y - 2, 4f, 3f, col("#ff8a2a")); r(x - 1, y - 4 - k, 2f, 3f, col("#ffd36a"))
+    }
+
+    /** 9 x 14 주민 (옆모습). 단: 밤색 머리·벽돌색 옷 / 보리: 둥근 단발·겨자색 앞치마 / 해온: 남색 머리·물빛 셔츠 */
+    private val looks = listOf(
+        intArrayOf(col("#714A36"), col("#D9B58A"), col("#B85B42"), col("#6D6250")),
+        intArrayOf(col("#573B34"), col("#F0C49A"), col("#D5A751"), col("#3f8f8a")),
+        intArrayOf(col("#334F5C"), col("#E0B895"), col("#668F9A"), col("#6D6250")),
+        intArrayOf(col("#d9b86a"), col("#E8C49A"), col("#5a9a4a"), col("#5a4a3a")),   // 알바 (밀짚모자)
+        intArrayOf(col("#3a2a20"), col("#D9B58A"), col("#7a6ab0"), col("#4a4a5a")),
+        intArrayOf(col("#8a4a2a"), col("#F0C49A"), col("#c07a3a"), col("#4a4a5a")),
+    )
+    private val outline = Color.parseColor("#263A40")
+
+    private fun person(v: Person, time: Float) {
+        val lk = looks[v.look % looks.size]
+        val d = v.dir
+        val x0 = v.x - 4; val top = GROUND - 17
+        fun px(i: Float, y: Float, w: Float, h: Float, cl: Int) { val xx = if (d > 0) x0 + i else x0 + 9 - i - w; r(xx, top + y, w, h, cl) }
+        val moving = v.st == 1 || v.st == 3
+        val f = if (moving) (floor(v.step) % 4).toInt() else 0
+        val bob = if (moving && f % 2 == 1) -1f else if (!moving && (floor(time * 1.6f + v.look) % 2).toInt() == 1) -0f else 0f
+        c.save(); c.translate(0f, bob)
+        // 다리
+        val l1 = if (moving) intArrayOf(0, 1, 0, -1)[f].toFloat() else 0f
+        px(2f + l1, 11f, 2f, 3f, lk[3]); px(5f - l1, 11f, 2f, 3f, lk[3])
+        // 몸
+        px(2f, 6f, 5f, 5f, lk[2]); px(1f, 6f, 1f, 4f, outline)
+        if (v.look == 2) px(3f, 7f, 1f, 3f, col("#6b4a2a"))      // 해온의 조끼
+        if (v.look == 1) px(3f, 8f, 4f, 3f, col("#e8c870"))      // 보리의 앞치마
+        // 머리
+        px(2f, 1f, 5f, 5f, lk[1])
+        px(1f, 0f, 7f, 2f, lk[0]); px(1f, 2f, 2f, 2f, lk[0])
+        if (v.look == 0) px(5f, -1f, 2f, 1f, lk[0])              // 단의 뻗친 앞머리
+        if (v.look == 1) px(1f, 2f, 1f, 4f, lk[0])               // 보리의 단발
+        if (v.look == 3) { px(-1f, 0f, 11f, 1f, col("#e8c870")); px(1f, -2f, 7f, 2f, col("#e8c870")) }  // 밀짚모자
+        px(5f, 3f, 1f, 1f, outline)                              // 눈
+        // 팔과 도구
+        if (v.st == 2) {
+            val sw = (floor(time * 5) % 2).toInt()
+            if (v.tree != null) {   // 도끼질
+                if (sw == 0) { px(7f, 5f, 1f, 3f, lk[1]); px(7f, 2f, 1f, 4f, col("#6b4022")); px(7f, 1f, 3f, 2f, col("#b3bcc6")) }
+                else { px(7f, 8f, 2f, 1f, lk[1]); px(8f, 8f, 4f, 1f, col("#6b4022")); px(11f, 7f, 2f, 3f, col("#b3bcc6")) }
+            } else {                // 곡괭이
+                if (sw == 0) { px(7f, 4f, 1f, 4f, col("#6b4022")); px(6f, 3f, 4f, 1f, col("#8b96a3")) }
+                else { px(7f, 8f, 3f, 1f, col("#6b4022")); px(9f, 7f, 1f, 4f, col("#8b96a3")) }
+            }
+        } else if (v.carry == 1) { px(0f, -3f, 9f, 2f, col("#a8703f")); px(0f, -3f, 1f, 2f, col("#c49a6a")); px(7f, 6f, 1f, 2f, lk[1]) }
+        else if (v.carry == 2) { px(7f, 7f, 3f, 3f, col("#9aa4ae")) }
+        else { val a = if (moving) intArrayOf(0, 1, 0, -1)[f].toFloat() else 0f; px(4f + a, 7f, 1f, 3f, lk[1]) }
         c.restore()
-        // 배 등불
-        shipPos()?.let { (x, y) -> r(x - 17, y - 4, 2f, 2f, col("#ffd36a")); r(x + 16, y - 5, 2f, 2f, col("#ffd36a")) }
+    }
+
+    // ---------- 우리 배 ----------
+    private fun ourShip(x: Float, time: Float) {
+        val lv = Game.shipLevel
+        val y = WL + (sin(time * 1.8f) * 1.2f).roundToInt()
+        val len = 30f + (lv - 1) * 7f
+        val hull = col("#6D513A"); val hullL = col("#A78355")
+        for (i in 0 until 7) r(x - len / 2 + i, y - 4 + i, len - i * 2 + (if (i < 3) 4f else 0f), 1f, if (i < 2) hullL else hull)
+        r(x - len / 2, y - 5, len + 4, 1f, col("#c49a6a"))
+        r(x + len / 2, y - 7, 4f, 2f, hull)                       // 뱃머리
+        r(x + len / 2 + 2, y - 6, 2f, 2f, col("#3B8F91"))         // 파란 끈
+        // 대포 (2단계부터)
+        if (lv >= 2) for (k in 0 until min(3, lv - 1)) r(x - len / 2 + 6 + k * 9, y - 3, 3f, 2f, col("#2a2a2a"))
+        // 돛
+        val masts = when (lv) { 1, 2 -> floatArrayOf(0f); 3 -> floatArrayOf(-8f, 7f); else -> floatArrayOf(-11f, 0f, 11f) }
+        val sway = if (sailing()) (sin(time * 2.4f) * 1f).roundToInt().toFloat() else 0f
+        for ((k, m) in masts.withIndex()) {
+            val main = masts.size == 1 || k == masts.size / 2
+            val mh = if (main) 24f + lv * 3 else 22f
+            r(x + m, y - 5 - mh, 1f, mh, col("#4a2c16"))
+            val sw = if (main) 12f + lv else 10f; val sh = if (main) 9f + lv else 8f
+            r(x + m - sw / 2 + sway, y - 5 - mh + 3, sw, sh, col("#E8DFC4"))
+            r(x + m - sw / 2 + 1 + sway, y - 5 - mh + 5 + sh, sw - 2, sh - 2, col("#E8DFC4"))
+            r(x + m + sw / 2 - 2 + sway, y - 5 - mh + 4, 2f, sh - 2, col("#cfc4a4"))
+        }
+        r(x, y - 5 - 24f - lv * 3 - 4, 6f, 3f, col("#c0463a"))
+        // 갑판 위 선원 둘
+        r(x - 8, y - 9, 2f, 2f, col("#e0b895")); r(x - 8, y - 7, 2f, 2f, col("#668F9A"))
+        r(x + 6, y - 9, 2f, 2f, col("#e0b895")); r(x + 6, y - 7, 2f, 2f, col("#B85B42"))
+        // 실은 짐 (나무 상자)
+        val v = Game.voy
+        if (v != null && (v.cw + v.cs) > 0 && Game.voyFrac() < Data.fArrive) { r(x - 3, y - 9, 4f, 4f, col("#b07a44")); r(x - 3, y - 9, 4f, 1f, col("#d9a86a")) }
+        // 물살
+        if (sailing()) {
+            ga = .7f
+            for (k in 1 until 6) { val xx = x - len / 2 - k * 7 - ((time * 18) % 7); r(xx, y + 2 + (k % 2), 4f, 1f, Color.WHITE) }
+            r(x + len / 2 + 3, y - 1, 2f, 1f, Color.WHITE)
+            ga = 1f
+        }
+    }
+
+    // ---------- 해적 ----------
+    private fun pirates(time: Float) {
+        val u = pirateU(); if (u < 0f) return
+        val v = Game.voy ?: return
+        val cs = Data.pirate(v.pirate ?: "")?.colors ?: emptyList()
+        val fightA = pA * 0.55f / (pA + .035f); val fightB = pA / (pA + .035f)
+        var x = 150f; var sink = 0f
+        when {
+            u < fightA -> x = lerp(230f, 150f, ease(u / fightA))
+            u < fightB -> x = 150f
+            v.win -> { x = 150f - (u - fightB) * 40f; sink = (u - fightB) / (1 - fightB) * 30f }
+            else -> x = lerp(150f, 240f, ease((u - fightB) / (1 - fightB)))
+        }
+        pirateShip(x, WL + sink, time, cs, sink > 0)
+        // 포격: 번갈아 쏘고 포탄이 날아간다
+        if (u in fightA..fightB) {
+            val k = time * 1.6f
+            val turn = floor(k).toInt() % 2; val t = k % 1f
+            val sx = if (turn == 0) SAIL_X + 18 else x - 16
+            val ex = if (turn == 0) x - 10 else SAIL_X + 10
+            if (t < .12f) { r(sx - 1, WL - 9, 3f, 3f, col("#ffd36a")); r(sx, WL - 8, 1f, 1f, Color.WHITE) }
+            if (t < .7f) {
+                val bx = lerp(sx, ex, t / .7f); val by = WL - 8 - sin(t / .7f * PI.toFloat()) * 14
+                r(bx, by, 2f, 2f, col("#1a1a1a"))
+            } else {
+                val s = (t - .7f) / .3f
+                ga = 1 - s; ell(ex, WL - 8, 3 + s * 5, 2 + s * 4, col("#e8e8e8")); ga = 1f
+            }
+            ga = .5f; ell(sx, WL - 10, 4f + t * 4, 3f + t * 2, col("#d8d8d8")); ga = 1f
+        }
+    }
+
+    private fun pirateShip(x: Float, y0: Float, time: Float, cs: List<Int>, sinking: Boolean) {
+        val sail = cs.getOrElse(0) { col("#383D40") }; val mark = cs.getOrElse(1) { col("#B4BDB9") }; val hull = cs.getOrElse(2) { col("#644B37") }
+        val y = y0 + (sin(time * 2.1f) * 1.2f).roundToInt()
+        c.save()
+        if (sinking) { c.rotate(18f * min(1f, (y0 - WL) / 20f), x, y); c.clipRect(0f, 0f, W.toFloat(), WL + 4) }
+        for (i in 0 until 6) r(x - 15 + i - 3, y - 4 + i, 30f - i * 2, 1f, hull)
+        r(x - 19, y - 6, 4f, 2f, hull)
+        r(x - 15, y - 5, 30f, 1f, mix(hull, Color.WHITE, .25f))
+        r(x, y - 32, 1f, 28f, col("#1e1410"))
+        r(x - 7, y - 29, 14f, 10f, sail); r(x - 6, y - 17, 12f, 9f, sail)
+        r(x - 1, y - 27, 2f, 5f, mark); r(x - 3, y - 23, 4f, 1f, mark); r(x - 3, y - 24, 1f, 1f, mark)   // 갈고리 무늬
+        r(x, y - 36, 6f, 4f, sail)
+        r(x - 12, y - 3, 3f, 2f, col("#2a2a2a"))
+        c.restore()
+    }
+
+    // ---------- 항구 ----------
+    private fun port(time: Float, o: Float) {
+        val pr = Data.port(Game.voy?.port ?: Game.route)
+        val pc = pr.colors
+        c.save(); c.translate(o, 0f)
+        // 뒤쪽 땅과 집
+        r(40f, GROUND - 2, 170f, WL - GROUND + 3, col("#cdb98a"))
+        r(40f, GROUND - 3, 170f, 1f, col("#e2d3a8"))
+        val bc = listOf(col("#e8d6b0"), col("#d8c4a0"), col("#cfc6b4"))
+        for (i in 0 until 4) {
+            val bx = 110f + i * 24; val bh = 18f + (i % 2) * 7
+            r(bx, GROUND - 2 - bh, 20f, bh, bc[i % 3])
+            for (k in 0 until 5) r(bx - 2 + k, GROUND - 3 - bh - k, 24f - k * 2, 1f, if (pc.isNotEmpty()) pc[i % pc.size] else col("#c0463a"))
+            r(bx + 8, GROUND - 9, 4f, 7f, col("#5a4a3a"))
+            r(bx + 3, GROUND - bh + 2, 3f, 3f, col("#7fb3d5"))
+        }
+        // 부두 판자
+        r(40f, GROUND + 1, 160f, 3f, col("#8a5a32")); r(40f, GROUND + 1, 160f, 1f, col("#a87444"))
+        var x = 44f; while (x < 200f) { r(x, GROUND + 4, 2f, 10f, col("#5a3a1e")); x += 12 }
+        // 크레인
+        r(96f, GROUND - 30, 2f, 30f, col("#5a3a1e")); r(80f, GROUND - 30, 20f, 2f, col("#5a3a1e"))
+        val swing = sin(time * 1.2f) * 3
+        r(82f + swing, GROUND - 28, 1f, 10f, col("#3a2a1a")); r(80f + swing, GROUND - 18, 5f, 4f, col("#b07a44"))
+        // 상자 나르는 항구 사람들
+        for (i in 0 until 3) {
+            val t = ((time * .25f + i * .33f) % 1f)
+            val px = 60f + t * 40f; val carry = t < .5f
+            r(px, GROUND - 7, 2f, 2f, col("#f2c79a")); r(px, GROUND - 5, 2f, 4f, if (pc.size > 1) pc[1] else col("#2f6fb8"))
+            if (carry) r(px - 1, GROUND - 10, 4f, 3f, col("#b07a44"))
+        }
+        // 상자 더미
+        for (k in 0 until 4) r(170f + (k % 2) * 5, GROUND - 4 - (k / 2) * 4, 5f, 4f, col("#9a6236"))
+        c.restore()
+    }
+
+    // ---------- 밤 불빛 ----------
+    private fun nightLights(time: Float, io: Float?, po: Float?) {
+        if (io != null) {
+            val save = ga; ga = save * .3f; ell(fireX + io, GROUND - 6, 10f, 6f, col("#ffb347")); ga = save
+            flame(fireX + io, GROUND - 5, time)
+            for (i in 0 until Game.houses) { r(houseX[i] + io - 7, GROUND - 11, 3f, 3f, col("#ffd36a")); r(houseX[i] + io + 4, GROUND - 11, 3f, 3f, col("#ffd36a")) }
+            if (Game.dock) r(dockX + 25 + io, GROUND - 12, 3f, 3f, col("#ffd36a"))
+        }
+        if (po != null) for (i in 0 until 4) r(110f + i * 24 + 3 + po, GROUND - 18, 3f, 3f, col("#ffd36a"))
+        shipX()?.let { x -> r(x + 16, WL - 10, 2f, 2f, col("#ffd36a")); r(x - 16, WL - 8, 2f, 2f, col("#ffd36a")) }
     }
 }
