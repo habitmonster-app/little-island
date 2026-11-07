@@ -314,7 +314,12 @@ object Pix {
     )
 
     /** 아이콘을 s배로 그린다 */
+    private val iconOrder = listOf("wood", "stone", "gold", "map", "house", "store", "dock", "field", "lighthouse", "market", "ship", "anchor", "person", "puzzle", "book", "gear")
+    private val ip = Paint().apply { isFilterBitmap = false }
+
     fun icon(c: Canvas, name: String, x: Float, y: Float, s: Float, alpha: Int = 255) {
+        val k = iconOrder.indexOf(name)
+        if (k >= 0) Art.cell("icons", 4, 4, k, (10 * s).toInt())?.let { ip.alpha = alpha; c.drawBitmap(it, x, y, ip); return }
         val rows = icons[name] ?: return
         for ((r, line) in rows.withIndex()) for ((k, ch) in line.withIndex()) {
             if (k >= 10) break

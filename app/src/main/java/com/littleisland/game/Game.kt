@@ -116,7 +116,7 @@ object Game {
     // =====================================================================
     fun init(c: Context) {
         if (prefs != null) return
-        Data.load(c); Story.load(c)
+        Data.load(c); Story.load(c); Art.init(c)
         val sp = c.applicationContext.getSharedPreferences("island", Context.MODE_PRIVATE)
         prefs = sp
         wood = sp.getInt("wood", 12); stone = sp.getInt("stone", 4)
