@@ -206,6 +206,15 @@ class MainActivity : Activity() {
             val opts = arrayOf("지금", "낮", "노을", "밤"); val hs = arrayOf<Float?>(null, 12f, 18.6f, 23f)
             AlertDialog.Builder(this).setItems(opts) { _, i -> preview.scene.hourOverride = hs[i] }.show()
         }))
+        l.add(Spec("pack", "짐 정리 퍼즐" + if (Game.packed) " · 다 정리했어요" else "",
+            if (Game.packed) "다음 항구 판매금 +" + (Game.PACK_BONUS * 100).toInt() + "%가 붙어요"
+            else "짐칸을 상자로 빈틈없이 채우면 다음 판매금 +" + (Game.PACK_BONUS * 100).toInt() + "%", "정리하기", !Game.packed, { openCargoPuzzle() }))
+        val mp = Game.mapPieces
+        l.add(Spec("map", "보물 지도 맞추기 · 조각 " + mp + "/" + Game.MAP_NEED,
+            when { Game.treasurePending -> "지도를 맞췄어요. 다음 항해에 보물섬에 들러요"
+                   mp >= Game.MAP_NEED -> "조각이 다 모였어요! 밀어서 지도를 맞춰요"
+                   else -> "홈 화면에 떠다니는 유리병·보물상자를 톡 쳐서 조각을 모아요" },
+            "맞추기", mp >= Game.MAP_NEED && !Game.treasurePending, { openMapPuzzle() }))
         l.add(Spec("tut", "처음 안내 다시 보기", "이 게임이 어떻게 돌아가는지", "보기", true, { showTutorial(0) }))
         l.add(Spec("wall", "배경화면으로 설정", "홈 화면에서 섬과 배가 늘 움직여요", "설정", true, { openWallpaperPicker() }))
         return l
@@ -263,6 +272,39 @@ class MainActivity : Activity() {
     }
 
     // ---------- 항해일지 ----------
+    private fun openCargoPuzzle() {
+        var dlg: AlertDialog? = null
+        val v = CargoPuzzleView(this) {
+            Game.pack()
+            ui.postDelayed({ dlg?.dismiss(); toast("짐을 다 실었어요! 다음 판매금 +" + (Game.PACK_BONUS * 100).toInt() + "%") }, 700L)
+        }
+        val pad = (16 * dp).toInt()
+        val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(pad, pad, pad, 0) }
+        box.addView(TextView(this).apply { text = "아래 상자를 고르고 짐칸을 누르면 놓여요. 놓인 상자를 누르면 다시 빠져요."; textSize = 13f })
+        box.addView(v, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = pad / 2 })
+        box.addView(Button(this).apply { text = "고른 상자 돌리기"; setOnClickListener { v.rotateSelected() } })
+        dlg = AlertDialog.Builder(this).setTitle("짐 정리").setView(box).setNegativeButton("나중에", null).show()
+    }
+
+    private fun openMapPuzzle() {
+        var dlg: AlertDialog? = null
+        val v = MapPuzzleView(this) {
+            if (Game.solveMap()) {
+                ui.postDelayed({
+                    dlg?.dismiss()
+                    AlertDialog.Builder(this).setTitle("지도가 완성됐어요!")
+                        .setMessage("X 표시가 보물섬이에요. 다음 항해 때 배가 들렀다가 보물을 싣고 돌아와요.")
+                        .setPositiveButton("좋아요", null).show()
+                }, 700L)
+            }
+        }
+        val pad = (16 * dp).toInt()
+        val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(pad, pad, pad, 0) }
+        box.addView(TextView(this).apply { text = "빈칸 옆 조각을 누르면 미끄러져요. 원래 지도로 맞춰 보세요."; textSize = 13f })
+        box.addView(v, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = pad / 2 })
+        dlg = AlertDialog.Builder(this).setTitle("보물 지도 맞추기").setView(box).setNegativeButton("나중에", null).show()
+    }
+
     private fun openJournal() {
         val list = Story.entries.filter { Game.isOpen(it.id) }
             .sortedWith(compareBy({ it.kind }, { Story.entries.indexOf(it) }))

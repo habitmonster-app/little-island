@@ -177,7 +177,7 @@ class IslandWallpaperService : WallpaperService() {
                     f < Data.fLeave -> pn + "에서 짐 파는 중"
                     else -> "섬으로 돌아오는 중"
                 }
-                sub = "귀항까지 " + left + "분"
+                sub = "귀항까지 " + left + "분" + (if (Game.treasurePending) " · 보물섬 경유" else "") + (if (Game.packed) " · 짐 정리 +20%" else "")
                 frac = f
             } else if (g != null) {
                 title = "섬 · 다음 목표 " + g.name

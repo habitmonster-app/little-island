@@ -60,6 +60,11 @@ object Game {
     var voyages = 0; private set
     var mapPieces = 0; private set            // 홈 화면 톡 기믹으로 모으는 지도 조각
     var finds = 0; private set                // 톡으로 주운 횟수
+    var treasurePending = false; private set  // 지도를 맞추면 다음 항해에 보물섬에 들른다
+    var treasures = 0; private set
+    const val MAP_NEED = 8
+    var packed = false; private set          // 짐 싣기 퍼즐을 풀면 다음 판매 +20%
+    const val PACK_BONUS = .2f
     var lastBattle = ""; private set          // "pirate_win" / "pirate_lose" (말풍선용)
     var lastBattleAt = 0L; private set
     var lastReturnAt = 0L; private set
@@ -124,7 +129,7 @@ object Game {
         supplyT = sp.getFloat("supplyT", sp.getFloat("shipT", 0f))
         hireSpent = sp.getInt("hireSpent", 0); hireDay = sp.getLong("hireDay", -1L)
         last = sp.getLong("last", System.currentTimeMillis())
-        voyages = sp.getInt("voyages", 0); mapPieces = sp.getInt("mapPieces", 0); finds = sp.getInt("finds", 0)
+        voyages = sp.getInt("voyages", 0); mapPieces = sp.getInt("mapPieces", 0); treasurePending = sp.getBoolean("treasurePending", false); treasures = sp.getInt("treasures", 0); packed = sp.getBoolean("packed", false); finds = sp.getInt("finds", 0)
         fun set(k: String, h: HashSet<String>) { h.clear(); sp.getString(k, "")!!.split(",").filter { it.isNotEmpty() }.forEach { h.add(it) } }
         set("flags", flags); set("opened", opened); set("read", read)
         sp.getString("completed", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); completed[k] = v.toIntOrNull() ?: 0 }
@@ -172,7 +177,7 @@ object Game {
             putInt("shipLevel", shipLevel); putString("route", route)
             putBoolean("autoSail", autoSail); putBoolean("autoHire", autoHire); putBoolean("autoBuild", autoBuild); putBoolean("hireAny", hireAny)
             putFloat("supplyT", supplyT); putInt("hireSpent", hireSpent); putLong("hireDay", hireDay)
-            putLong("last", last); putInt("voyages", voyages); putInt("mapPieces", mapPieces); putInt("finds", finds)
+            putLong("last", last); putInt("voyages", voyages); putInt("mapPieces", mapPieces); putBoolean("treasurePending", treasurePending); putInt("treasures", treasures); putBoolean("packed", packed); putInt("finds", finds)
             putString("flags", flags.joinToString(",")); putString("opened", opened.joinToString(",")); putString("read", read.joinToString(","))
             putString("completed", completed.entries.joinToString(",") { it.key + ":" + it.value })
             putString("eventLast", eventLast.entries.joinToString(",") { it.key + ":" + it.value })
@@ -346,7 +351,8 @@ object Game {
         }
         if (v.step == 1 && f >= Data.fArrive) {
             v.step = 2
-            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus()
+            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f)
+            packed = false
             val sale = floor((v.cw * p.buyW + v.cs * p.buyS) * mul * 100).toLong()
             goldC += sale; v.saleC = sale
             flag("sale_1")
@@ -387,6 +393,12 @@ object Game {
             arrived++
             flag("worker_arrive_1")
             line += ", " + (d?.name ?: "알바") + " 도착"
+        }
+        if (treasurePending) {
+            treasurePending = false; treasures++
+            val g = 150 * shipLevel + 50 * treasures
+            goldC += g * 100L; add(30, 15)
+            card("보물섬에 다녀왔어요!", "금화 +$g, 나무 +30, 돌 +15")
         }
         voyages++
         voy = null
@@ -541,6 +553,14 @@ object Game {
                     else { val g = (3 + kotlin.random.Random.nextInt(6)) * lv; goldC += g * 100L; "유리병 속 금화 +$g" }
         }
         save(); return text
+    }
+
+    /** 지도 퍼즐을 다 맞췄을 때: 조각을 쓰고 다음 항해에 보물섬에 들른다 */
+    fun pack() { packed = true; save() }
+
+    fun solveMap(): Boolean {
+        if (mapPieces < MAP_NEED || treasurePending) return false
+        mapPieces -= MAP_NEED; treasurePending = true; save(); return true
     }
 
     fun reset() {
