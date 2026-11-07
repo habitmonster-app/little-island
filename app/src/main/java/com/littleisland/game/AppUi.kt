@@ -41,7 +41,7 @@ class AppUi(val scene: Scene, val host: Host) {
     private val src = Rect(); private val dst = Rect()
     private val bp = Paint().apply { isFilterBitmap = false }
     private val top = 16f
-    private val sceneH = 150f
+    private val sceneH = 184f
 
     // ---------- 칸 목록 ----------
     private fun need(keys: List<String>): String = keys.filter { !Game.has(it) }.joinToString(", ") { k ->
@@ -174,7 +174,7 @@ class AppUi(val scene: Scene, val host: Host) {
         val k = Pix
         k.rect(c, 0f, 0f, W.toFloat(), H.toFloat(), k.col("#0d0a08"))
         // 위: 장면 (바다 띠 부분을 잘라서)
-        val sy = (Scene.WL - sceneH * .62f).toInt()
+        val sy = (Scene.WL - sceneH * .55f).toInt()
         src.set(0, sy, Scene.W, sy + sceneH.toInt())
         dst.set(0, top.toInt(), W, (top + sceneH).toInt())
         c.drawBitmap(scene.bitmap, src, dst, bp)
