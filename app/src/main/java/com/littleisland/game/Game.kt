@@ -58,6 +58,8 @@ object Game {
                  val pirate: String?, val win: Boolean, var step: Int, var rewardC: Long, var hire: String?, var saleC: Long)
     var voy: Voyage? = null; private set
     var voyages = 0; private set
+    var mapPieces = 0; private set            // 홈 화면 톡 기믹으로 모으는 지도 조각
+    var finds = 0; private set                // 톡으로 주운 횟수
     var lastBattle = ""; private set          // "pirate_win" / "pirate_lose" (말풍선용)
     var lastBattleAt = 0L; private set
     var lastReturnAt = 0L; private set
@@ -122,7 +124,7 @@ object Game {
         supplyT = sp.getFloat("supplyT", sp.getFloat("shipT", 0f))
         hireSpent = sp.getInt("hireSpent", 0); hireDay = sp.getLong("hireDay", -1L)
         last = sp.getLong("last", System.currentTimeMillis())
-        voyages = sp.getInt("voyages", 0)
+        voyages = sp.getInt("voyages", 0); mapPieces = sp.getInt("mapPieces", 0); finds = sp.getInt("finds", 0)
         fun set(k: String, h: HashSet<String>) { h.clear(); sp.getString(k, "")!!.split(",").filter { it.isNotEmpty() }.forEach { h.add(it) } }
         set("flags", flags); set("opened", opened); set("read", read)
         sp.getString("completed", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); completed[k] = v.toIntOrNull() ?: 0 }
@@ -170,7 +172,7 @@ object Game {
             putInt("shipLevel", shipLevel); putString("route", route)
             putBoolean("autoSail", autoSail); putBoolean("autoHire", autoHire); putBoolean("autoBuild", autoBuild); putBoolean("hireAny", hireAny)
             putFloat("supplyT", supplyT); putInt("hireSpent", hireSpent); putLong("hireDay", hireDay)
-            putLong("last", last); putInt("voyages", voyages)
+            putLong("last", last); putInt("voyages", voyages); putInt("mapPieces", mapPieces); putInt("finds", finds)
             putString("flags", flags.joinToString(",")); putString("opened", opened.joinToString(",")); putString("read", read.joinToString(","))
             putString("completed", completed.entries.joinToString(",") { it.key + ":" + it.value })
             putString("eventLast", eventLast.entries.joinToString(",") { it.key + ":" + it.value })
@@ -526,6 +528,19 @@ object Game {
         if (!g.basic || !g.ready || (g.cost?.gold ?: 0) > 0 || !canPay(g.cost)) return
         val ok = when (g.key) { "house" -> buildHouse(); "ware" -> upgradeWarehouse(); "dock" -> buildDock(); "field" -> buildField(); else -> false }
         if (ok) card("섬이 자랐어요", g.name + " 완성!")
+    }
+
+    /** 홈 화면에서 떠다니는 물건을 톡 쳤을 때. 보상 글을 돌려준다. */
+    fun pickUp(kind: Int): String {
+        finds++
+        val lv = shipLevel
+        val text = when (kind) {
+            1 -> { val g = (20 + kotlin.random.Random.nextInt(21)) * lv; goldC += g * 100L; mapPieces++; "보물상자! 금화 +$g, 지도 조각 +1" }
+            2 -> { val w = 4 + kotlin.random.Random.nextInt(5); add(w, 0); "갈매기가 떨어뜨린 나무 +$w" }
+            else -> if (kotlin.random.Random.nextFloat() < .3f) { mapPieces++; "유리병 속 지도 조각 +1" }
+                    else { val g = (3 + kotlin.random.Random.nextInt(6)) * lv; goldC += g * 100L; "유리병 속 금화 +$g" }
+        }
+        save(); return text
     }
 
     fun reset() {

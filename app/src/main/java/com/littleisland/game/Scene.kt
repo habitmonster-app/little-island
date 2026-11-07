@@ -134,6 +134,64 @@ class Scene {
         while (people.size > want) people.removeAt(people.size - 1)
     }
 
+    /** 떠다니는 물건: 0 유리병, 1 보물상자, 2 갈매기(나무 물고 감) */
+    class Floater(var x: Float, var y: Float, val kind: Int, var t: Float)
+    val floaters = ArrayList<Floater>()
+    private var floatWait = 20f
+
+    /** 톡 친 곳 근처의 물건을 줍는다 (그림 좌표). 주우면 보상 글 */
+    fun tap(x: Float, y: Float): String? {
+        val f = floaters.minByOrNull { abs(it.x - x) + abs(it.y - y) } ?: return null
+        if (abs(f.x - x) > 22 || abs(f.y - y) > 26) return null
+        floaters.remove(f)
+        val t = Game.pickUp(f.kind)
+        pops.add(Pop(f.x, f.y - 10, t, 3.5f, true))
+        return t
+    }
+
+    private fun updateFloaters(dt: Float) {
+        floatWait -= dt
+        if (floatWait <= 0f && floaters.size < 2) {
+            floatWait = 35f + Random.nextFloat() * 50f
+            val k = Random.nextFloat()
+            floaters.add(when {
+                k < .12f -> Floater(W + 10f, WL + 1, 1, 40f)
+                k < .35f -> Floater(W + 10f, HOR - 40 - Random.nextFloat() * 30, 2, 30f)
+                else -> Floater(W + 10f, WL + 1, 0, 40f)
+            })
+        }
+        for (f in floaters) {
+            f.t -= dt
+            f.x -= dt * (if (f.kind == 2) 9f else if (sailing()) 7f else 4f)
+        }
+        floaters.removeAll { it.t <= 0f || it.x < -15f }
+    }
+
+    private fun drawFloaters(time: Float) {
+        for (f in floaters) {
+            val bob = sin(time * 2.5f + f.x) * 1.2f
+            val glow = (floor(time * 3) % 2).toInt() == 0
+            when (f.kind) {
+                0 -> {   // 유리병 + 반짝임
+                    r(f.x - 5, f.y - 5 + bob, 9f, 5f, col("#7cc8b4")); r(f.x + 4, f.y - 4 + bob, 3f, 2f, col("#c8a050"))
+                    r(f.x - 4, f.y - 5 + bob, 6f, 1f, col("#e8fff6")); r(f.x - 3, f.y - 3 + bob, 4f, 2f, col("#f4ead2"))
+                    if (glow) r(f.x, f.y - 8 + bob, 1f, 3f, col("#fff6c0")).also { r(f.x - 1, f.y - 7 + bob, 3f, 1f, col("#fff6c0")) }
+                }
+                1 -> {   // 보물상자
+                    r(f.x - 5, f.y - 6 + bob, 10f, 6f, col("#9a6236")); r(f.x - 5, f.y - 7 + bob, 10f, 2f, col("#6b4022"))
+                    r(f.x - 1, f.y - 5 + bob, 2f, 2f, col("#ffd36a")); r(f.x - 5, f.y - 4 + bob, 10f, 1f, col("#c8a050"))
+                    if (glow) { r(f.x - 7, f.y - 11 + bob, 1f, 1f, col("#fff6c0")); r(f.x + 6, f.y - 12 + bob, 1f, 1f, col("#fff6c0")); r(f.x, f.y - 14 + bob, 1f, 1f, col("#fff6c0")) }
+                }
+                else -> {  // 갈매기가 나뭇가지를 물고 날아간다
+                    val up = (floor(time * 5) % 2).toInt() == 0
+                    r(f.x - 2, f.y, 5f, 2f, Color.WHITE); r(f.x - 3, f.y + 1, 1f, 1f, col("#ffb347"))
+                    if (up) { r(f.x - 1, f.y - 3, 1f, 3f, Color.WHITE); r(f.x + 2, f.y - 3, 1f, 3f, Color.WHITE) } else { r(f.x - 4, f.y + 2, 3f, 1f, Color.WHITE); r(f.x + 3, f.y + 2, 3f, 1f, Color.WHITE) }
+                    r(f.x - 5, f.y + 2, 4f, 1f, col("#a8703f"))
+                }
+            }
+        }
+    }
+
     class Pop(var x: Float, var y: Float, val text: String, var t: Float, val gold: Boolean = false)
     val pops = ArrayList<Pop>()
 
@@ -281,6 +339,7 @@ class Scene {
         syncPeople()
         updatePeople(dt)
         updateTalk(dt)
+        updateFloaters(dt)
         if (sailing()) scroll += dt * 16f
         if (Game.arrived > 0) { pops.add(Pop(dockX, GROUND - 24, "알바 도착", 3f)); Game.arrived = 0 }
         if (Game.supplies > 0) { if (islandOffset() == 0f) pops.add(Pop(dockX + 10, WL - 22, "짐배 +짐", 2.5f)); Game.supplies = 0 }
@@ -314,6 +373,7 @@ class Scene {
         if (po != null) port(time, po)
         pirates(time)
         shipX()?.let { ourShip(it, time) }
+        drawFloaters(time)
         foreWater(time)
         if (dark > 0f) {
             p.color = Color.argb((dark * .6f * 255).roundToInt(), 8, 12, 40)

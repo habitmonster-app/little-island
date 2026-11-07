@@ -107,7 +107,7 @@ class MainActivity : Activity() {
             }))
         }
         l.add(Spec("res", "나무 " + Game.wood + "/" + Game.cap() + "   돌 " + Game.stone + "/" + Game.cap() + "   금화 " + "%,d".format(Game.gold),
-            "주민 단·보리·해온 + 알바 " + Game.workers.size + "/" + Game.beds(), null, false, null, true))
+            "주민 단·보리·해온 + 알바 " + Game.workers.size + "/" + Game.beds() + " · 지도 조각 " + Game.mapPieces, null, false, null, true))
 
         // 항해
         l.add(Spec("h_voy", "항해", "", null, false, null, true))
@@ -216,7 +216,7 @@ class MainActivity : Activity() {
             "주머니 속 작은 섬" to "단·보리·해온이 나무와 돌을 모아요. 홈 화면에서는 섬이 움직이는 모습과 소식만 편하게 봐요.",
             "섬이 알아서 자라요" to "재료가 모이면 숙소·창고·부두를 자동으로 지어요. 직접 고르고 싶으면 앱에서 짓기를 눌러요.",
             "배가 알아서 다녀와요" to "부두가 생기면 배가 짐을 싣고 항구로 떠나 금화를 벌어 와요. 해적은 자동으로 싸워요.",
-            "금화로 더 멀리" to "모은 금화로 배를 고치고 새 항구를 열어요. 홈 화면 위쪽 소식판에 다음 목표가 보여요.",
+            "금화로 더 멀리" to "모은 금화로 배를 고치고 새 항구를 열어요. 바다에 반짝이는 유리병이나 보물상자가 떠오면 홈 화면에서 톡 쳐서 주워요.",
             "소식은 기다려 줘요" to "비운 동안의 보상은 최대 8시간까지 모여요. 이야기는 항해일지에 쌓이고, 읽지 않아도 섬은 계속 움직여요.")
         if (i >= sc.size) return
         AlertDialog.Builder(this).setTitle((i + 1).toString() + "/" + sc.size + "  " + sc[i].first).setMessage(sc[i].second)

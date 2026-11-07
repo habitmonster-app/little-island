@@ -87,10 +87,9 @@ class IslandWallpaperService : WallpaperService() {
         }
 
         override fun onCommand(action: String?, x: Int, y: Int, z: Int, extras: Bundle?, resultRequested: Boolean): Bundle? {
-            if (action == WallpaperManager.COMMAND_TAP && !paging) {
-                tapPage = (tapPage + 1) % 3
-                cardT = 0f
-                Diag.tap(this@IslandWallpaperService)
+            if (action == WallpaperManager.COMMAND_TAP) {
+                // 떠다니는 유리병·보물상자·갈매기를 톡 치면 줍는다
+                if (scene.tap(x / scale + ox, y / scale + oy) == null) cardT = 0f
                 if (visible) drawFrame()
             }
             return super.onCommand(action, x, y, z, extras, resultRequested)
