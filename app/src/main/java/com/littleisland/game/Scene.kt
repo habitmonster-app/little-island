@@ -750,6 +750,7 @@ class Scene {
     private val deckX = floatArrayOf(-.20f, .16f, -.02f, .30f, -.34f)
     // 배 그림(128칸) 안의 장식 자리: 돛대 꼭대기, 뱃머리 끝, 큰 돛 가운데, 갑판 장식 자리 (배 단계별)
     private val MAST = arrayOf(intArrayOf(60, 40), intArrayOf(63, 22), intArrayOf(55, 25), intArrayOf(66, 23))
+    private val MAST3 = arrayOf(intArrayOf(58, 30), intArrayOf(60, 16), intArrayOf(56, 20), intArrayOf(64, 15))   // 깃대가 있는 모양의 깃대 꼭대기
     private val BOW = arrayOf(intArrayOf(98, 97), intArrayOf(106, 92), intArrayOf(112, 94), intArrayOf(116, 95))
     private val SAIL = arrayOf(intArrayOf(70, 70), intArrayOf(76, 56), intArrayOf(66, 60), intArrayOf(74, 60))
     private val DECKP = arrayOf(intArrayOf(40, 96), intArrayOf(40, 76), intArrayOf(36, 73), intArrayOf(31, 78))
@@ -767,7 +768,8 @@ class Scene {
                     Art.draw(c, it, px(SAIL[i][0]), py(SAIL[i][1]) + 3f) }
                 "flag" -> Art.sub("ship_deco", 4, 4, d.icon, .32f, .14f, .94f, .68f, 10 * SS)?.let {
                     val wave = if ((floor(time * 3) % 2).toInt() == 0) 0f else 1f
-                    Art.draw(c, it, px(MAST[i][0]) + 5.5f, py(MAST[i][1]) + 6f + wave) }
+                    val m = if (Game.lookStage() == 3) intArrayOf(MAST3[i][0] + 3, MAST3[i][1] + 1) else MAST[i]
+                    Art.draw(c, it, px(m[0]) + 5.5f, py(m[1]) + 6f + wave) }
                 "figurehead" -> acell("ship_deco", 4, 4, d.icon, 10)?.let { Art.draw(c, it, px(BOW[i][0]), py(BOW[i][1]) + 4f) }
                 "deck" -> acell("ship_deco", 4, 4, d.icon, 9)?.let { Art.draw(c, it, px(DECKP[i][0]), py(DECKP[i][1])) }
             }
@@ -796,7 +798,12 @@ class Scene {
         val lv = Game.shipLevel
         val y = WL + (sin(time * 1.8f) * 1.2f).roundToInt()
         val sw = 54 + (lv - 1) * 8
-        val sb = acell("ship_stages", 4, 4, (lv - 1) * 4 + Game.lookStage(), sw) ?: acell("ships", 4, 1, lv - 1, sw)
+        val look = Game.lookStage()
+        // 장식 깃발을 달면 4번째 모양의 원래 빨간 깃발은 지우고 그린다 (겹치지 않게)
+        val t3 = MAST3[(lv - 1).coerceIn(0, 3)]
+        val sb = (if (look == 3 && Game.decoOn["flag"] != null)
+                Art.cellCut("ship_stages", 4, 4, (lv - 1) * 4 + 3, sw * SS, t3[0] + 6, t3[1] + 1, t3[0] + 34, t3[1] + 18) else null)
+            ?: acell("ship_stages", 4, 4, (lv - 1) * 4 + look, sw) ?: acell("ships", 4, 1, lv - 1, sw)
         if (sb != null) { Art.draw(c, sb, x, y + 5); shipDeco(x, y + 5f, sw.toFloat(), lv, time); deckCrew(x, y, sw.toFloat(), time); return }
         val len = 30f + (lv - 1) * 7f
         val hull = col("#6D513A"); val hullL = col("#A78355")

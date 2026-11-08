@@ -49,6 +49,18 @@ object Art {
     }
 
     /** 격자 그림(cols x rows)에서 한 칸을 가로 w도트로 */
+    /** 칸을 꺼내되 (x0,y0)~(x1,y1) 칸 픽셀 범위는 지운다 (원래 그림의 깃발을 지우고 장식 깃발을 달 때) */
+    @Synchronized fun cellCut(name: String, cols: Int, rows: Int, idx: Int, w: Int, x0: Int, y0: Int, x1: Int, y1: Int): Bitmap? =
+        cache.getOrPut("$name#$cols.$rows.$idx.cut$x0.$y0.$x1.$y1@$w") {
+            val b = load(name) ?: return@getOrPut null
+            val cw = b.width / cols; val ch = b.height / rows
+            val part = mutable(Bitmap.createBitmap(b, (idx % cols) * cw, (idx / cols) * ch, cw, ch))
+            val k = cw / 128f
+            for (y in (y0 * k).toInt() until minOf(ch, (y1 * k).toInt())) for (x in (x0 * k).toInt() until minOf(cw, (x1 * k).toInt())) part.setPixel(x, y, 0)
+            val h = (ch * w / cw.toFloat()).toInt().coerceAtLeast(1)
+            mutable(Bitmap.createScaledBitmap(part, w, h, true)).also { clean(it) }
+        }
+
     /** 칸 안의 일부(비율로 자른 곳)만 */
     @Synchronized fun sub(name: String, cols: Int, rows: Int, idx: Int, x0: Float, y0: Float, x1: Float, y1: Float, w: Int): Bitmap? =
         cache.getOrPut("$name#$cols.$rows.$idx.$x0.$y0.$x1.$y1@$w") {
