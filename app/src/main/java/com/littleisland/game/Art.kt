@@ -49,6 +49,18 @@ object Art {
     }
 
     /** 격자 그림(cols x rows)에서 한 칸을 가로 w도트로 */
+    /** 칸 안의 일부(비율로 자른 곳)만 */
+    @Synchronized fun sub(name: String, cols: Int, rows: Int, idx: Int, x0: Float, y0: Float, x1: Float, y1: Float, w: Int): Bitmap? =
+        cache.getOrPut("$name#$cols.$rows.$idx.$x0.$y0.$x1.$y1@$w") {
+            val b = load(name) ?: return@getOrPut null
+            val cw = b.width / cols; val ch = b.height / rows
+            val l = (idx % cols) * cw + (cw * x0).toInt(); val t = (idx / cols) * ch + (ch * y0).toInt()
+            val pw = (cw * (x1 - x0)).toInt().coerceAtLeast(1); val ph = (ch * (y1 - y0)).toInt().coerceAtLeast(1)
+            val part = Bitmap.createBitmap(b, l, t, pw, ph)
+            val h = (ph * w / pw.toFloat()).toInt().coerceAtLeast(1)
+            mutable(Bitmap.createScaledBitmap(part, w, h, true)).also { clean(it) }
+        }
+
     @Synchronized fun cell(name: String, cols: Int, rows: Int, idx: Int, w: Int): Bitmap? = cache.getOrPut("$name#$cols.$rows.$idx@$w") {
         val b = load(name) ?: return@getOrPut null
         val cw = b.width / cols; val ch = b.height / rows

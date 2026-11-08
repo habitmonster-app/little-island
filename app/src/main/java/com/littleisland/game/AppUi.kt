@@ -127,6 +127,25 @@ class AppUi(val scene: Scene, val host: Host) {
                 l.add(Tile("ship", "배 상태", "짐 " + Game.LOAD_W + "/" + Game.LOAD_S, St.NORMAL,
                     Game.ship().name + "\n짐: 나무 " + Game.LOAD_W + " · 돌 " + Game.LOAD_S + "\n항해 시간 -" + Fleet.pct(Game.speedCut()) +
                     " (" + (Game.voyageSeconds() / 60).toInt() + "분)\n선원 " + Game.aboard.size + "/" + Game.slots() + "명 탑승"))
+                // 배 꾸미기: 자리마다 한 칸. 누르면 가진 장식을 차례로 바꿔 달기 (모양만 바뀌고 능력치는 그대로)
+                for (slot in Fleet.SLOTS) {
+                    val all = Fleet.decos.filter { it.slot == slot }
+                    val own = all.filter { it.id in Game.decoOwned }
+                    val cur = Game.decoOn[slot]?.let { Fleet.deco(it) }
+                    val list = all.joinToString("\n") { dc -> (if (dc.id in Game.decoOwned) "● " else "○ ") + dc.name + " · " + dc.howText +
+                        (if (!dc.auto) " (금화 " + dc.gold + ")" else "") }
+                    val next = if (own.isEmpty()) null else { val k = own.indexOfFirst { it.id == cur?.id }; if (k + 1 < own.size) own[k + 1] else null }
+                    val info = "배 꾸미기 · " + Fleet.slotName(slot) + "\n" + (cur?.let { it.name + ": " + it.desc } ?: "지금은 비어 있어요") + (next?.let { "\n누르면 → " + it.name } ?: "") +
+                        "\n\n" + list + "\n\n모양만 바뀌어요. 능력치는 그대로예요."
+                    l.add(if (own.isEmpty()) Tile("lock", "꾸미기 " + Fleet.slotName(slot), "아직 없음", St.LOCKED, info)
+                        else Tile(cur?.let { "deco:" + it.icon } ?: "deco:" + own[0].icon, Fleet.slotName(slot) + " " + own.size + "/" + all.size,
+                            cur?.name ?: "비어 있음", if (cur != null) St.ON else St.NORMAL, info, null,
+                            if (next != null) "바꿔 달기" else "떼기",
+                            { Game.setDeco(slot, next?.id) }, next?.let { it.name + "을(를) 달았어요" } ?: Fleet.slotName(slot) + " 장식을 뗐어요"))
+                    for (dc in all) if (!dc.auto && dc.id !in Game.decoOwned && Game.decoReady(dc))
+                        l.add(Tile("deco:" + dc.icon, dc.name, "금화 " + dc.gold, if (Game.gold >= dc.gold) St.READY else St.NORMAL,
+                            dc.desc + "\n자리: " + Fleet.slotName(slot) + "\n모양만 바뀌어요. 능력치는 그대로예요.", Data.Cost(dc.gold, 0, 0), "사기", { Game.buyDeco(dc.id) }, dc.name + "을(를) 달았어요"))
+                }
             }
             2 -> {
                 for (p in Data.ports) {

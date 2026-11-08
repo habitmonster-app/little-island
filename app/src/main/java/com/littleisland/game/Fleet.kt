@@ -28,6 +28,19 @@ object Fleet {
     var xpPerVoyage = 10; private set
     var xpTo = listOf(30, 60, 100, 150, 220, 300, 400, 520, 660); private set
     var maxCrewLevel = 10; private set
+    /** 21_crew_stories.json: 갑판 대사, 싸움 대사, 레벨 업 한마디, 짝 대사 */
+    class Voice(val deck: List<String>, val fight: List<String>, val levelUp: String)
+    class Pair(val ids: List<String>, val speakers: List<String>, val lines: List<String>)
+    val voices = HashMap<String, Voice>()
+    /** 22_ship_cosmetics.json: 배 꾸미기 (깃발·뱃머리·돛·갑판). 능력치 없이 모양만 */
+    class Cond(val type: String, val key: String, val value: Int)
+    class Deco(val id: String, val slot: String, val name: String, val icon: Int, val desc: String, val howText: String,
+               val auto: Boolean, val gold: Int, val conds: List<Cond>)
+    val decos = ArrayList<Deco>()
+    val SLOTS = listOf("flag", "figurehead", "sail", "deck")
+    fun slotName(s: String) = when (s) { "flag" -> "깃발"; "figurehead" -> "뱃머리"; "sail" -> "돛 무늬"; else -> "갑판" }
+    fun deco(id: String) = decos.firstOrNull { it.id == id }
+    val pairs = ArrayList<Pair>()
     private var loaded = false
 
     fun load(c: Context) {
@@ -71,6 +84,32 @@ object Fleet {
             if (sy != null) for (i in 0 until sy.length()) {
                 val s = sy.getJSONObject(i); val ids = s.getJSONArray("ids")
                 synergies.add(Synergy(ids.getString(0), ids.getString(1), s.optString("name"), s.optString("effect"), s.getDouble("value").toFloat(), s.optString("desc")))
+            }
+        } catch (e: Exception) { }
+        try {
+            val d = JSONObject(c.assets.open("21_crew_stories.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
+            fun strs(a: org.json.JSONArray?) = if (a == null) emptyList() else (0 until a.length()).map { a.getString(it) }
+            val cs = d.getJSONArray("crew")
+            for (i in 0 until cs.length()) {
+                val x = cs.getJSONObject(i)
+                voices[x.getString("worker_id")] = Voice(strs(x.optJSONArray("deck_lines")), strs(x.optJSONArray("fight_lines")), x.optString("levelup_line"))
+            }
+            val pl = d.optJSONArray("pair_lines")
+            if (pl != null) for (i in 0 until pl.length()) {
+                val x = pl.getJSONObject(i)
+                pairs.add(Pair(strs(x.optJSONArray("ids")), strs(x.optJSONArray("speakers")), strs(x.optJSONArray("lines"))))
+            }
+        } catch (e: Exception) { }
+        try {
+            val d = JSONObject(c.assets.open("22_ship_cosmetics.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
+            val it0 = d.getJSONArray("items")
+            for (i in 0 until it0.length()) {
+                val x = it0.getJSONObject(i); val a = x.optJSONObject("acquisition") ?: JSONObject()
+                val all = a.optJSONArray("all_of")
+                val conds = if (all == null) emptyList() else (0 until all.length()).map { k -> val o = all.getJSONObject(k)
+                    Cond(o.optString("type"), o.optString("key", o.optString("counter")), o.optInt("value", o.optInt("level"))) }
+                decos.add(Deco(x.getString("id"), x.optString("slot"), x.optString("name"), x.optInt("icon_index", i), x.optString("desc"),
+                    x.optString("how_to_get_text"), a.optString("mode") != "manual_purchase", a.optJSONObject("cost")?.optInt("gold") ?: 0, conds))
             }
         } catch (e: Exception) { }
     }

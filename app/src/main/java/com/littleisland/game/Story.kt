@@ -13,7 +13,7 @@ object Story {
                 val after: String?, val summary: String, val body: String, val news: String)
     class Line(val who: String, val time: String, val text: String, val unlock: String)
 
-    const val MAIN = 0; const val SIDE = 1; const val VOYAGE = 2
+    const val MAIN = 0; const val SIDE = 1; const val VOYAGE = 2; const val CREW = 3
 
     val entries = ArrayList<Entry>()
     val lines = ArrayList<Line>()
@@ -51,6 +51,25 @@ object Story {
                 lines.add(Line(e.optString("who"), e.optString("time"), e.optString("text"), e.optString("unlock", "start")))
             }
         } catch (e: Exception) { /* 이야기 파일이 없어도 게임은 돈다 */ }
+        // 선원 이야기 (21_crew_stories.json): 승진·Lv5·Lv10. 조건은 "crew_<id>_promote" 같은 이름 그대로
+        try {
+            val d = JSONObject(c.assets.open("21_crew_stories.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
+            val cs = d.getJSONArray("crew")
+            val names = try {
+                val w = JSONObject(c.assets.open("20_crew.json").bufferedReader(Charsets.UTF_8).use { it.readText() }).getJSONArray("crew")
+                (0 until w.length()).associate { w.getJSONObject(it).getString("worker_id") to w.getJSONObject(it).optString("name") }
+            } catch (e: Exception) { emptyMap() }
+            for (i in 0 until cs.length()) {
+                val x = cs.getJSONObject(i); val id = x.getString("worker_id")
+                for ((k, tag) in listOf("promote_story" to "승진", "lv5_story" to "Lv5", "lv10_story" to "Lv10")) {
+                    val s = x.optJSONObject(k) ?: continue
+                    val sid = s.getString("id")
+                    val sum = s.optString("summary")
+                    entries.add(Entry(sid, CREW, "선원 " + (names[id] ?: id) + " · " + tag, s.optString("title"), sid, null,
+                        sum, s.optString("body"), sum.substringBefore("\n")))
+                }
+            }
+        } catch (e: Exception) { }
     }
 
     /** 숫자 자리표시자를 실제 게임 값으로 */

@@ -106,7 +106,7 @@ class IslandWallpaperService : WallpaperService() {
             if (cardT > 0f) cardT -= dt
             if (cardT <= 0f && Game.cards.isNotEmpty()) {   // 항해 결과 카드를 하나씩
                 val (t, m) = Game.cards.removeFirst()
-                card = Triple(t, m, ""); cardT = 6f
+                val sp = m.split("\n", limit = 2); card = Triple(t, sp[0], sp.getOrElse(1) { "" }); cardT = 6f
             }
             scene.draw(now / 1000f)
             // 진행 한 줄: 도트 글꼴로 장면 그림 위에 바로 쓴다 (화면에서 함께 커진다)
@@ -225,7 +225,7 @@ class IslandWallpaperService : WallpaperService() {
             val px = sxOf(wx); val py = syOf(wy)
             if (px < 0 || px > cv.width) return
             talkTx.textSize = 15 * d; talkName.textSize = 12 * d
-            val name = scene.NAMES[scene.talkWho]
+            val name = scene.talkName
             while (talkTx.measureText(text) > cv.width - 60 * d && talkTx.textSize > 9 * d) talkTx.textSize -= 1
             val w = talkTx.measureText(text) + 24 * d; val h = 46 * d
             val left = (px - w / 2).coerceIn(8 * d, cv.width - w - 8 * d)

@@ -1,0 +1,3956 @@
+{
+  "schema_version": 1,
+  "locale": "en",
+  "app_name": "Little Island",
+  "episodes": [
+    {
+      "id": "main_01",
+      "title": "The Lantern on the Broken Pier",
+      "summary": "Dan, Bori, and Haeon begin their first day on the little island beside its worn-out pier. The lantern Seorin brought is lit, and the first voyage journal begins."
+    },
+    {
+      "id": "main_02",
+      "title": "A Place for Everything",
+      "summary": "When their first wood and stone get wet in the rain, the three residents organize the warehouse. They give everything a place and set aside wood for the next morning."
+    },
+    {
+      "id": "main_03",
+      "title": "One Empty Bed",
+      "summary": "The island's first house gets a bed and a shelf for visiting workers. No guest has arrived yet, but the empty room with its two cups makes the island feel less lonely."
+    },
+    {
+      "id": "main_04",
+      "title": "The Blue Cord Behind the Warehouse",
+      "summary": "While expanding the warehouse, they discover a box tied with blue cord and a bundle of old letters. Haeon finds an erased port name and turns the box into a new mailbox."
+    },
+    {
+      "id": "main_05",
+      "title": "A Knot for the Return",
+      "summary": "At the finished pier, Seorin asks for one more mooring ring to shelter a boat from the wind. Dan listens to the people who use the pier and improves its welcome for returning ships."
+    },
+    {
+      "id": "main_06",
+      "title": "The Weight of the First Cargo",
+      "summary": "The three residents divide cargo and provisions aboard their first trading ship. Work on the island continues after departure as they wait to hear how the first trade goes."
+    },
+    {
+      "id": "main_07",
+      "title": "A Brief Report from the Sea",
+      "summary": "Seorin sends a report after meeting a ship flying a hook flag. Whatever the outcome, the crew continues safely while the island prepares for their return."
+    },
+    {
+      "id": "main_08",
+      "title": "A Receipt from Haesol",
+      "summary": "Mora checks the remaining cargo at Haesol and issues their first trade receipt. The island receives its first earnings and a notice offering help from local workers."
+    },
+    {
+      "id": "main_09",
+      "title": "Yeoul's Straw Hat",
+      "summary": "Yeoul, the first visiting worker, checks the working hours and the boat home. As they work together, the three residents hear stories of Yeoul's hometown, Saltflat."
+    },
+    {
+      "id": "main_10",
+      "title": "A Port Name in an Empty Room",
+      "summary": "After finishing the contract, Yeoul leaves a boarding pass and news of Saltflat. Haeon realizes the hometown has not disappeared; the boats that served it have stopped."
+    },
+    {
+      "id": "main_11",
+      "title": "A Place for the Gold",
+      "summary": "The three residents discuss what their ship and island need before spending their first earnings. Their choice of cargo space, sails, or defenses becomes part of the ship's new look."
+    },
+    {
+      "id": "main_12",
+      "title": "Still the Same Ship",
+      "summary": "The larger ship still carries traces of its first voyage and the work of everyone who helped. As departure preparations end, a trade request arrives from Yeondu in Saltflat."
+    },
+    {
+      "id": "main_13",
+      "title": "The Warehouse by the White Hills",
+      "summary": "In Saltflat, Seorin meets Yeondu, who is struggling with shipping costs. They discuss a steady trading arrangement and take aboard a letter for Yeoul."
+    },
+    {
+      "id": "main_14",
+      "title": "Arriving in One Piece",
+      "summary": "Thanks to Dan's dividers and Bori's wrapping, the tableware from Pottery arrives intact. Seorin finds a use for a cup left out of the sale because of its crooked handle."
+    },
+    {
+      "id": "main_15",
+      "title": "A New Hat from Windneck",
+      "summary": "After learning sail repairs in Windneck, Yeoul returns to the island on a new contract. After receiving a letter from an older sister and repairing the sail, Yeoul sets off for the next job."
+    },
+    {
+      "id": "main_16",
+      "title": "Buying Prices, Selling Prices",
+      "summary": "Comparing salt prices and freight charges, Haeon notices a recurring requirement to take a detour. The residents ask why shipments must pass through a distant Company warehouse when a shorter route exists."
+    },
+    {
+      "id": "main_17",
+      "title": "The Word Temporary",
+      "summary": "The Company says the detour is necessary because the route was temporarily closed after an old storm. They decide to check the route themselves, while a familiar form makes Haeon hesitate."
+    },
+    {
+      "id": "main_18",
+      "title": "Setting the Table Three Times",
+      "summary": "Busy feeding everyone else, Bori realizes her own meal has gone uneaten. The residents find a way for people to eat and rest even when their boats arrive at different times."
+    },
+    {
+      "id": "main_19",
+      "title": "News Before Cargo",
+      "summary": "Letters passed between ports reveal where a misclassified sluice part should have gone. A copy of Yeondu's shipping form still bears a name missing from the map: Fogferry."
+    },
+    {
+      "id": "main_20",
+      "title": "Different Sails of the Same Color",
+      "summary": "Another red-sailed ship helps Homeward escape a pirate pursuit. After learning to tell the flags apart, the residents send the helpful fleet a letter of thanks."
+    },
+    {
+      "id": "main_21",
+      "title": "An Anchorage at Sea",
+      "summary": "At Redanchor, a moving anchorage where crews live together across several ships, Seorin meets Garam. Ships listed as out of service are still carrying supplies to small ports."
+    },
+    {
+      "id": "main_22",
+      "title": "Kindness Has Its Terms",
+      "summary": "When Garam offers to guide the route, Seorin checks the safety terms as well as the price. The island's residents put the agreement into plain language and arrange to work with the fleet."
+    },
+    {
+      "id": "main_23",
+      "title": "Stitches in a False Flag",
+      "summary": "Red cloth from an attack and the trading records reveal how the Hook Gang disguised its ships. Some accusations are cleared, though the Red Sail Fleet still has incidents of its own to explain."
+    },
+    {
+      "id": "main_24",
+      "title": "What to Throw Overboard First",
+      "summary": "During a shared convoy, Garam gives up valuable cargo to help a boat falling behind. Seorin writes of a past rescue that also meant leaving cargo behind."
+    },
+    {
+      "id": "main_25",
+      "title": "The Door Yeondu Kept Shut",
+      "summary": "Yeondu refuses to open the warehouse to Garam, who once took its food by force. Garam acknowledges the damage that remains, despite recent good deeds, and agrees to discuss repayment."
+    },
+    {
+      "id": "main_26",
+      "title": "Haeon's Stamp",
+      "summary": "A stamp on an old shipping form prompts Haeon to admit having compiled the Company's closure list. Haeon begins rebuilding trust by sharing records that were wrong or never properly checked."
+    },
+    {
+      "id": "main_27",
+      "title": "Names Listed as Absent",
+      "summary": "The closure list reveals what happened when very different situations were marked with the same symbol. A reply brought by Soa describes the people still living in those ports and the boats they need."
+    },
+    {
+      "id": "main_28",
+      "title": "One Piece from Every Port",
+      "summary": "Records gathered across the ports reveal where sailing information leaked to the Hook Gang. They help Subin verify the originals while keeping copies in several places."
+    },
+    {
+      "id": "main_29",
+      "title": "Cargo in Place of an Apology",
+      "summary": "Garam arrives in Saltflat with grain and repair materials to begin making amends. Yeondu records only what has actually been delivered and checks the shipments still owed."
+    },
+    {
+      "id": "main_30",
+      "title": "Evening Lights Beyond the Fog",
+      "summary": "Guided by Soa, Seorin, Garam, and Subin carefully survey the side channel. Beyond the mist, the people of Fogferry are doing their evening work and waiting for the next boat."
+    },
+    {
+      "id": "main_31",
+      "title": "Like First-Time Guests",
+      "summary": "The people of Fogferry share the routines they have kept for years and the supplies they need now. The little island combines their small orders and completes its first formal trade there."
+    },
+    {
+      "id": "main_32",
+      "title": "The Singing Reef",
+      "summary": "The reef's mysterious song turns out to be waves sounding an old warning device. Marks beneath it point toward a forgotten warehouse that appears at low tide."
+    },
+    {
+      "id": "main_33",
+      "title": "A Map of Lowtide Island",
+      "summary": "Seorin and the crew mark their way back as they approach the warehouse uncovered by the falling tide. Beyond a door bearing a cooking-pot symbol, they find sealed chests and a large bell."
+    },
+    {
+      "id": "main_34",
+      "title": "Gold and a Place at the Table",
+      "summary": "The warehouse gold is a shared fund set aside to restore the shipping routes. The ports check the records together and divide it between pay for the expedition and route repairs."
+    },
+    {
+      "id": "main_35",
+      "title": "A Use for a Broken Lens",
+      "summary": "In place of the huge old lens, Uran tests small reflectors to light the side channel. Once the needed signals are clear, work begins on a lighthouse suited to the little island."
+    },
+    {
+      "id": "main_36",
+      "title": "Stitching the Third Sail",
+      "summary": "Skills from several ports come together in Homeward's third design. Dan makes a maintenance list others can read and begins handing over parts of the work."
+    },
+    {
+      "id": "main_37",
+      "title": "The Window in the Lighthouse Beam",
+      "summary": "A reflector adjustment moves the lighthouse beam away from Bori's window. A test ship answers the agreed signal, and the three residents watch its light together."
+    },
+    {
+      "id": "main_38",
+      "title": "Where the Big Ship Stopped",
+      "summary": "When the larger ship cannot enter shallow Reedbay, local small boats divide up its cargo. Haeon records a route that large ships and small boats can keep running together."
+    },
+    {
+      "id": "main_39",
+      "title": "The Night the Map Changed",
+      "summary": "Maps and revision orders kept by Isol reveal how the small ports were erased. Haeon compares the records and makes copies to send to the other ports."
+    },
+    {
+      "id": "main_40",
+      "title": "Who Owns the Shortest Route?",
+      "summary": "Dogyeom asks who will pay to maintain the route but does not explain the needless detours. Facing Company trade restrictions, the residents look for a way the ports can maintain their route together."
+    },
+    {
+      "id": "main_41",
+      "title": "A Morning Without Orders",
+      "summary": "Worried about Company penalties, merchants cancel orders on the new route. While keeping its existing trade going, the little island starts preparing a small market for direct sales."
+    },
+    {
+      "id": "main_42",
+      "title": "The Crooked Market Sign",
+      "summary": "The first market visitors arrive beneath a sign tilted by too many names. Small exchanges, repaired chairs, and traded goods fill the island's empty spaces."
+    },
+    {
+      "id": "main_43",
+      "title": "The Fare Back Home",
+      "summary": "The job notices Yeoul gathers leave out return fares and the length of each stay. The island sends out new notices covering lodging and the journey home as well as the work and pay."
+    },
+    {
+      "id": "main_44",
+      "title": "A Receipt for an Unrepaired Lighthouse",
+      "summary": "An expense record bears a completion stamp for lighthouse repairs that never happened. Mora and colleagues compare the supplies with the records and send the same evidence to the Company and the ports."
+    },
+    {
+      "id": "main_45",
+      "title": "Dogyeom's Map",
+      "summary": "At a meeting in Whitesail, Dogyeom cites a past rescue to defend control of the routes. Seorin and Soa present safety surveys and repair costs, but the meeting ends without agreement."
+    },
+    {
+      "id": "main_46",
+      "title": "The Inspector's Empty Signature Line",
+      "summary": "Subin refuses to sign an inaccurate report and takes on an independent inspection. Dan replaces a mooring ring flagged during the first visit to the island's pier."
+    },
+    {
+      "id": "main_47",
+      "title": "One Task for Every Port",
+      "summary": "Rather than gathering every job in one place, the ports divide the work according to their strengths. The little island takes responsibility for rest stops and passing on news, completing the shared plan."
+    },
+    {
+      "id": "main_48",
+      "title": "An Old Ship's New Nameplate",
+      "summary": "Homeward's fourth refit adds more cargo space and stronger defenses. Seorin and Dan keep the nameplate from the first voyage and prepare to share deliveries with smaller boats."
+    },
+    {
+      "id": "main_49",
+      "title": "The Longest Receipt",
+      "summary": "The first shared shipment passes between several ports and small boats. On the evening Subin recommends formal operation, a report arrives of a change in the southern wind."
+    },
+    {
+      "id": "main_50",
+      "title": "This Time, Beforehand",
+      "summary": "Observations from several ports point to a strong storm approaching. Everyone receives the same warning, and boats and supplies begin moving to shelter."
+    },
+    {
+      "id": "main_51",
+      "title": "Close the Doors, Light the Lamps",
+      "summary": "The island and ports follow their plan, checking boat positions and shelter preparations. As the three residents ready the signal chart and old lantern, answering lights appear offshore."
+    },
+    {
+      "id": "main_52",
+      "title": "The Back of the Long Receipt",
+      "summary": "Food, bowls, and repair supplies from the ports reach the sheltered boats. Bori and Haeon record who has received what and what is still needed."
+    },
+    {
+      "id": "main_53",
+      "title": "Where the Hook Caught",
+      "summary": "Gurok's false distress signal fails the agreed response check. The shared convoy guides merchant ships around it, while a patrol boat rescues Gurok's crew and arrests their captain."
+    },
+    {
+      "id": "main_54",
+      "title": "When the Lighthouse Paused",
+      "summary": "As wind and rain dim the lighthouse, the old lantern and neighboring ports keep the signals connected. After waiting safely, Dan repairs it with Yeoul and realizes the whole job need not rest on one person."
+    },
+    {
+      "id": "main_55",
+      "title": "Names Returning Through the Reeds",
+      "summary": "When news from a Reedbay work crew is late, Haeon asks for a local check instead of assuming an accident. Safe arrivals are confirmed one by one as the group completes its planned journey in small boats."
+    },
+    {
+      "id": "main_56",
+      "title": "The Warehouse Doors at Whitesail",
+      "summary": "Dogyeom sets aside the approval rules he created and opens the Whitesail warehouse to those seeking shelter. The other ports help with the rescue effort while continuing their claims over earlier losses."
+    },
+    {
+      "id": "main_57",
+      "title": "Counting the Returning Ships",
+      "summary": "As the rain eases, boats leave their prepared shelters and return to the little island. To the sound of the arrival bell, Haeon and the others call out each ship's name."
+    },
+    {
+      "id": "main_58",
+      "title": "Correcting the Erased Entries",
+      "summary": "A meeting settles Company responsibility, compensation, and independent route operation, and Dogyeom steps down. Haeon also shares the records from his own work, correcting them to distinguish a port's operating status from a person's address."
+    },
+    {
+      "id": "main_59",
+      "title": "The First Homecoming Market",
+      "summary": "People from many ports gather at the first Homecoming Market to share goods, skills, and news. When it ends, visitors return to their own boats, leaving the island with the memory of a day together."
+    },
+    {
+      "id": "main_60",
+      "title": "A Place to Come Back To",
+      "summary": "After the market, an ordinary boat arrives with cargo and letters. Welcoming new guests, the three residents write to the Island Keeper about all the new places to return to across the sea."
+    }
+  ],
+  "side_stories": [
+    {
+      "id": "side_01",
+      "title": "Dan's New Hammer",
+      "summary": "Reluctant to use a new hammer, Dan watches a visiting carpenter at work. Dan tries the new tool and decides to keep using both hammers."
+    },
+    {
+      "id": "side_02",
+      "title": "A Short Reply from a Teacher",
+      "summary": "Dan sends pier measurements and a materials list to a former teacher. After reading the brief reply, Dan starts by asking the people who use the pier what they need."
+    },
+    {
+      "id": "side_03",
+      "title": "A Day Without Repairs",
+      "summary": "Even on a day off, Dan reaches to fix a seashell, then stops. Seeing repairs another carpenter has finished helps Dan learn how to rest."
+    },
+    {
+      "id": "side_04",
+      "title": "Bori's Unusual Soup",
+      "summary": "Bori puts ingredients from several ports into one pot, with disappointing results. While making a familiar soup again, she decides to try new ingredients one at a time."
+    },
+    {
+      "id": "side_05",
+      "title": "The Cookbook from a Closed Shop",
+      "summary": "Bori's old cookbook returns with notes from former customers. She realizes the shop she closed need not be remembered only as a failure."
+    },
+    {
+      "id": "side_06",
+      "title": "Time Booked in My Own Name",
+      "summary": "Bori puts time to browse the market on the preparation schedule. Leaving Dan in charge of the pot, she picks a plate for her own snack."
+    },
+    {
+      "id": "side_07",
+      "title": "Haeon's Untidy Handwriting",
+      "summary": "A letter Haeon copies in a hurry delivers its news in time. After reading Soa's reply, Haeon keeps the shaky handwriting as part of the record."
+    },
+    {
+      "id": "side_08",
+      "title": "A Gift at the Wrong Port",
+      "summary": "Haeon's thank-you gifts reach Pottery and Windneck the wrong way around. When the recipients find new uses for them, Haeon records both the mistake and its outcome."
+    },
+    {
+      "id": "side_09",
+      "title": "A Ledger Without an Eraser",
+      "summary": "While organizing a new ledger, Haeon realizes why old entries should be kept. Instead of erasing mistakes, Haeon adds the date and reason for each correction."
+    },
+    {
+      "id": "side_10",
+      "title": "Inside Yeoul's Hat",
+      "summary": "When the wind takes Yeoul's hat, boarding passes full of memories scatter across the ground. Yeoul leaves a few in the island's care before setting off for the next job."
+    },
+    {
+      "id": "side_11",
+      "title": "The Cargo Seorin Lost",
+      "summary": "A letter arrives from someone Seorin rescued long ago. Seorin accepts the connection that remained after the cargo was lost and hangs a small bell on the ship."
+    },
+    {
+      "id": "side_12",
+      "title": "The Margins of Mora's Ledger",
+      "summary": "Haeon finds symbols for greetings and personal news in the margins of Mora's ledger. Together, they write down the meanings so others can read them too."
+    },
+    {
+      "id": "side_13",
+      "title": "Yeondu's Letter Without Salt",
+      "summary": "At a younger sibling's request, Yeondu writes a letter about an ordinary day. The missing salt tally follows separately, giving personal news and work their own space."
+    },
+    {
+      "id": "side_14",
+      "title": "Garam's Loose Knot",
+      "summary": "When Garam tries to secure every crate of a repayment shipment alone, Yeondu calls a crew member over. Garam learns to record who is responsible and what was checked instead of doing every task personally."
+    },
+    {
+      "id": "side_15",
+      "title": "The Stars Uran Hadn't Seen",
+      "summary": "After focusing only on lighthouse brightness, Uran looks at the night sky from the other side. The route keeps its signal while less light spills into the residents' windows."
+    },
+    {
+      "id": "side_16",
+      "title": "Soa's Late Birthday Letter",
+      "summary": "Soa discovers a birthday letter left unsent for a long time. Sent at last with the current date added, it brings back old memories and a new drawing in reply."
+    },
+    {
+      "id": "side_17",
+      "title": "Isol's Blank Map",
+      "summary": "A child who cannot find home on a new map draws a route in the margin. Isol leaves space on the next map for people to add paths of their own."
+    },
+    {
+      "id": "side_18",
+      "title": "Subin's Holiday Inspection",
+      "summary": "Subin spends a day on the island without an inspection form. In a letter afterward, Subin writes of a good rest instead of inspection results."
+    }
+  ],
+  "home_lines": [
+    {
+      "id": "home_dan_day_01",
+      "text": "I'll save the straight wood for posts."
+    },
+    {
+      "id": "home_dan_day_02",
+      "text": "I could swear I left that nail here."
+    },
+    {
+      "id": "home_dan_day_03",
+      "text": "Even short planks have a use."
+    },
+    {
+      "id": "home_dan_day_04",
+      "text": "Measure first, then cut."
+    },
+    {
+      "id": "home_dan_day_05",
+      "text": "The mailbox hinge is quiet now."
+    },
+    {
+      "id": "home_dan_day_06",
+      "text": "Packing is a carpenter's job too."
+    },
+    {
+      "id": "home_dan_day_07",
+      "text": "I drew plans anyone can follow."
+    },
+    {
+      "id": "home_dan_day_08",
+      "text": "Let's not start by looking for repairs."
+    },
+    {
+      "id": "home_dan_dusk_01",
+      "text": "That's enough hammering. Time to eat."
+    },
+    {
+      "id": "home_dan_dusk_02",
+      "text": "I'll put the tools away before sunset."
+    },
+    {
+      "id": "home_dan_dusk_03",
+      "text": "Those long shadows made me measure again."
+    },
+    {
+      "id": "home_dan_dusk_04",
+      "text": "I've noted the wood we used today."
+    },
+    {
+      "id": "home_dan_night_01",
+      "text": "A night breeze. Shall I close the window?"
+    },
+    {
+      "id": "home_dan_night_02",
+      "text": "The wood grain shows in the moonlight."
+    },
+    {
+      "id": "home_dan_night_03",
+      "text": "The mooring rings are firm. I checked."
+    },
+    {
+      "id": "home_dan_night_04",
+      "text": "I can leave the lighthouse angle to someone else."
+    },
+    {
+      "id": "home_dan_ship_wait_01",
+      "text": "Let's fix the shelf while we wait."
+    },
+    {
+      "id": "home_dan_ship_wait_02",
+      "text": "I'll show them this knot when they return."
+    },
+    {
+      "id": "home_dan_ship_wait_03",
+      "text": "I've cleared a spot for the cargo."
+    },
+    {
+      "id": "home_dan_ship_wait_04",
+      "text": "I won't just stand here watching the sea."
+    },
+    {
+      "id": "home_dan_ship_return_01",
+      "text": "Welcome back. Pass the rope this way."
+    },
+    {
+      "id": "home_dan_ship_return_02",
+      "text": "Step ashore first. I'll take the cargo."
+    },
+    {
+      "id": "home_dan_ship_return_03",
+      "text": "Those stomachs are louder than the boat."
+    },
+    {
+      "id": "home_dan_ship_return_04",
+      "text": "Tell me what needs fixing after a rest."
+    },
+    {
+      "id": "home_dan_pirate_win_01",
+      "text": "Getting home safely is enough."
+    },
+    {
+      "id": "home_dan_pirate_win_02",
+      "text": "The defenses did their job."
+    },
+    {
+      "id": "home_dan_pirate_win_03",
+      "text": "Unload first. Then tell us the good bits."
+    },
+    {
+      "id": "home_dan_pirate_win_04",
+      "text": "I'll be thorough with the next repairs too."
+    },
+    {
+      "id": "home_dan_pirate_lose_01",
+      "text": "Everyone's safe. We can load another cargo."
+    },
+    {
+      "id": "home_dan_pirate_lose_02",
+      "text": "I'll take the remaining crates. No rush."
+    },
+    {
+      "id": "home_dan_pirate_lose_03",
+      "text": "Let's not start by finding someone to blame."
+    },
+    {
+      "id": "home_dan_pirate_lose_04",
+      "text": "I've noted what to check next time."
+    },
+    {
+      "id": "home_dan_worker_arrive_01",
+      "text": "Let's lift the heavy things together."
+    },
+    {
+      "id": "home_dan_worker_arrive_02",
+      "text": "Try the tools and pick what feels right."
+    },
+    {
+      "id": "home_dan_worker_arrive_03",
+      "text": "That's a good knot. Teach me sometime."
+    },
+    {
+      "id": "home_dan_worker_arrive_04",
+      "text": "Ask if you're unsure. I will too."
+    },
+    {
+      "id": "home_dan_worker_leave_01",
+      "text": "Watch your hands at the next job."
+    },
+    {
+      "id": "home_dan_worker_leave_02",
+      "text": "The borrowed tools? You've cleaned them already."
+    },
+    {
+      "id": "home_dan_worker_leave_03",
+      "text": "I'll keep using that knot you taught me."
+    },
+    {
+      "id": "home_dan_worker_leave_04",
+      "text": "See you when our schedules line up. Take care."
+    },
+    {
+      "id": "home_dan_storage_full_01",
+      "text": "It's full. Let's keep the aisle clear."
+    },
+    {
+      "id": "home_dan_storage_full_02",
+      "text": "Check the warehouse before stacking higher."
+    },
+    {
+      "id": "home_dan_storage_full_03",
+      "text": "Let's sort what ships out and what stays."
+    },
+    {
+      "id": "home_dan_storage_full_04",
+      "text": "Take your time moving those crates."
+    },
+    {
+      "id": "home_dan_rain_01",
+      "text": "Let's put the wet wood inside."
+    },
+    {
+      "id": "home_dan_rain_02",
+      "text": "The rain makes my hammer sound quiet."
+    },
+    {
+      "id": "home_dan_rain_03",
+      "text": "We can work under the eaves."
+    },
+    {
+      "id": "home_dan_rain_04",
+      "text": "I'll check outside when the rain stops."
+    },
+    {
+      "id": "home_dan_idle_long_01",
+      "text": "You're back. Finish what you were doing first."
+    },
+    {
+      "id": "home_dan_idle_long_02",
+      "text": "Have a look at the shelf I fixed."
+    },
+    {
+      "id": "home_dan_idle_long_03",
+      "text": "Haeon has gathered the shipping news."
+    },
+    {
+      "id": "home_dan_idle_long_04",
+      "text": "Take a break. There's a seat here."
+    },
+    {
+      "id": "home_bori_day_01",
+      "text": "Cups are on the shelf. Help yourself."
+    },
+    {
+      "id": "home_bori_day_02",
+      "text": "Just one new ingredient in today's soup."
+    },
+    {
+      "id": "home_bori_day_03",
+      "text": "Please leave wet shoes outside the door."
+    },
+    {
+      "id": "home_bori_day_04",
+      "text": "Let's eat while it's warm, then work."
+    },
+    {
+      "id": "home_bori_day_05",
+      "text": "Don't leave letters next to the pot."
+    },
+    {
+      "id": "home_bori_day_06",
+      "text": "I know which port this salt came from."
+    },
+    {
+      "id": "home_bori_day_07",
+      "text": "I've set out my own bowl too."
+    },
+    {
+      "id": "home_bori_day_08",
+      "text": "Today I'm browsing the market as well."
+    },
+    {
+      "id": "home_bori_dusk_01",
+      "text": "I saved you a meal. Take your time."
+    },
+    {
+      "id": "home_bori_dusk_02",
+      "text": "Whose turn is it to count the cups?"
+    },
+    {
+      "id": "home_bori_dusk_03",
+      "text": "The sea looks warmest at sunset."
+    },
+    {
+      "id": "home_bori_dusk_04",
+      "text": "Let's have dinner before finishing up."
+    },
+    {
+      "id": "home_bori_night_01",
+      "text": "I'll watch the stars. You watch the pot."
+    },
+    {
+      "id": "home_bori_night_02",
+      "text": "Even a little light must show from far away."
+    },
+    {
+      "id": "home_bori_night_03",
+      "text": "Let's air the room before closing the door."
+    },
+    {
+      "id": "home_bori_night_04",
+      "text": "A dark window makes for better sleep."
+    },
+    {
+      "id": "home_bori_ship_wait_01",
+      "text": "Which port's scent will the ship bring?"
+    },
+    {
+      "id": "home_bori_ship_wait_02",
+      "text": "The welcome-home meal is ready."
+    },
+    {
+      "id": "home_bori_ship_wait_03",
+      "text": "I won't forget my dinner while waiting."
+    },
+    {
+      "id": "home_bori_ship_wait_04",
+      "text": "I hope the letters stayed dry."
+    },
+    {
+      "id": "home_bori_ship_return_01",
+      "text": "Let me see you before I see the cargo."
+    },
+    {
+      "id": "home_bori_ship_return_02",
+      "text": "Welcome back. Here's a cup."
+    },
+    {
+      "id": "home_bori_ship_return_03",
+      "text": "What did you eat at the port?"
+    },
+    {
+      "id": "home_bori_ship_return_04",
+      "text": "Hang your wet coat here."
+    },
+    {
+      "id": "home_bori_pirate_win_01",
+      "text": "Dinner tastes better knowing you're safe."
+    },
+    {
+      "id": "home_bori_pirate_win_02",
+      "text": "Tell us how you won over dinner."
+    },
+    {
+      "id": "home_bori_pirate_win_03",
+      "text": "I made a little extra soup today."
+    },
+    {
+      "id": "home_bori_pirate_win_04",
+      "text": "May the journey home be peaceful too."
+    },
+    {
+      "id": "home_bori_pirate_lose_01",
+      "text": "How you are matters more than the cargo."
+    },
+    {
+      "id": "home_bori_pirate_lose_02",
+      "text": "There's a meal even if you return empty-handed."
+    },
+    {
+      "id": "home_bori_pirate_lose_03",
+      "text": "The soup is still here. Don't worry."
+    },
+    {
+      "id": "home_bori_pirate_lose_04",
+      "text": "You can tell today's story when you're ready."
+    },
+    {
+      "id": "home_bori_worker_arrive_01",
+      "text": "Welcome. Let's find you a place to rest."
+    },
+    {
+      "id": "home_bori_worker_arrive_02",
+      "text": "Tell me if there's anything you can't eat."
+    },
+    {
+      "id": "home_bori_worker_arrive_03",
+      "text": "Have some water before you start."
+    },
+    {
+      "id": "home_bori_worker_arrive_04",
+      "text": "I'll keep your cup here. Remember the spot."
+    },
+    {
+      "id": "home_bori_worker_leave_01",
+      "text": "For the journey home. This one's yours."
+    },
+    {
+      "id": "home_bori_worker_leave_02",
+      "text": "I'll air the room. Have a good trip."
+    },
+    {
+      "id": "home_bori_worker_leave_03",
+      "text": "What will you learn at your next job?"
+    },
+    {
+      "id": "home_bori_worker_leave_04",
+      "text": "Got your hat? Check once more."
+    },
+    {
+      "id": "home_bori_storage_full_01",
+      "text": "A well-stocked warehouse. Keep a path clear."
+    },
+    {
+      "id": "home_bori_storage_full_02",
+      "text": "Check the outgoing cargo before adding more."
+    },
+    {
+      "id": "home_bori_storage_full_03",
+      "text": "Please leave a little room for the cups."
+    },
+    {
+      "id": "home_bori_storage_full_04",
+      "text": "Stacking neatly is a job in itself."
+    },
+    {
+      "id": "home_bori_rain_01",
+      "text": "Rainy days call for hot soup."
+    },
+    {
+      "id": "home_bori_rain_02",
+      "text": "The drying line is inside."
+    },
+    {
+      "id": "home_bori_rain_03",
+      "text": "The rain barrel is in just the right spot."
+    },
+    {
+      "id": "home_bori_rain_04",
+      "text": "The scent of rain goes with today's meal."
+    },
+    {
+      "id": "home_bori_idle_long_01",
+      "text": "Welcome back. Your cup is still here."
+    },
+    {
+      "id": "home_bori_idle_long_02",
+      "text": "Have some water before you settle in."
+    },
+    {
+      "id": "home_bori_idle_long_03",
+      "text": "I've kept the letters that arrived."
+    },
+    {
+      "id": "home_bori_idle_long_04",
+      "text": "There's no hurry to hear all the news."
+    },
+    {
+      "id": "home_haeon_day_01",
+      "text": "Two bits of wood, one stone... that's a chair."
+    },
+    {
+      "id": "home_haeon_day_02",
+      "text": "My pencil runs out before the ledger does."
+    },
+    {
+      "id": "home_haeon_day_03",
+      "text": "The count is right. Now to find room for it."
+    },
+    {
+      "id": "home_haeon_day_04",
+      "text": "Reading it back, I can make sense of it."
+    },
+    {
+      "id": "home_haeon_day_05",
+      "text": "Shall we start with a short letter?"
+    },
+    {
+      "id": "home_haeon_day_06",
+      "text": "Every port needs something different."
+    },
+    {
+      "id": "home_haeon_day_07",
+      "text": "I've added the reason for the correction."
+    },
+    {
+      "id": "home_haeon_day_08",
+      "text": "Blank spaces leave room for the next bit of news."
+    },
+    {
+      "id": "home_haeon_dusk_01",
+      "text": "I've written a lot of names today."
+    },
+    {
+      "id": "home_haeon_dusk_02",
+      "text": "The last line can wait until tomorrow."
+    },
+    {
+      "id": "home_haeon_dusk_03",
+      "text": "Ink looks different in the evening light."
+    },
+    {
+      "id": "home_haeon_dusk_04",
+      "text": "I'll gather today's records here."
+    },
+    {
+      "id": "home_haeon_night_01",
+      "text": "Could we write down the sound of the wind?"
+    },
+    {
+      "id": "home_haeon_night_02",
+      "text": "The writing is clearer near the lantern."
+    },
+    {
+      "id": "home_haeon_night_03",
+      "text": "Lighthouse signal confirmed."
+    },
+    {
+      "id": "home_haeon_night_04",
+      "text": "I've kept today's letters here."
+    },
+    {
+      "id": "home_haeon_ship_wait_01",
+      "text": "I record expected and actual arrivals separately."
+    },
+    {
+      "id": "home_haeon_ship_wait_02",
+      "text": "I'll fill that space when the ship returns."
+    },
+    {
+      "id": "home_haeon_ship_wait_03",
+      "text": "The paper can dry while we wait."
+    },
+    {
+      "id": "home_haeon_ship_wait_04",
+      "text": "I've left room for the next letter."
+    },
+    {
+      "id": "home_haeon_ship_return_01",
+      "text": "Let me check the returning ship's name first."
+    },
+    {
+      "id": "home_haeon_ship_return_02",
+      "text": "I'll record the actual cargo that came back."
+    },
+    {
+      "id": "home_haeon_ship_return_03",
+      "text": "Please pass me the receipt too."
+    },
+    {
+      "id": "home_haeon_ship_return_04",
+      "text": "One more page for our voyage journal."
+    },
+    {
+      "id": "home_haeon_pirate_win_01",
+      "text": "I've noted the result and how the crew is doing."
+    },
+    {
+      "id": "home_haeon_pirate_win_02",
+      "text": "I'll record the gold just once."
+    },
+    {
+      "id": "home_haeon_pirate_win_03",
+      "text": "The victory report is here. Everyone is safe."
+    },
+    {
+      "id": "home_haeon_pirate_win_04",
+      "text": "This record may help on the next voyage."
+    },
+    {
+      "id": "home_haeon_pirate_lose_01",
+      "text": "Losses and homecomings go in separate columns."
+    },
+    {
+      "id": "home_haeon_pirate_lose_02",
+      "text": "The voyage continues with the remaining cargo."
+    },
+    {
+      "id": "home_haeon_pirate_lose_03",
+      "text": "People's names don't belong in a loss column."
+    },
+    {
+      "id": "home_haeon_pirate_lose_04",
+      "text": "I'll keep an honest record of the result."
+    },
+    {
+      "id": "home_haeon_worker_arrive_01",
+      "text": "Let's check the working hours together."
+    },
+    {
+      "id": "home_haeon_worker_arrive_02",
+      "text": "How would you like your name written?"
+    },
+    {
+      "id": "home_haeon_worker_arrive_03",
+      "text": "The return boat is in the contract too."
+    },
+    {
+      "id": "home_haeon_worker_arrive_04",
+      "text": "There are more port names for me to learn."
+    },
+    {
+      "id": "home_haeon_worker_leave_01",
+      "text": "Next destination confirmed. Safe travels."
+    },
+    {
+      "id": "home_haeon_worker_leave_02",
+      "text": "Your contract is complete as of today."
+    },
+    {
+      "id": "home_haeon_worker_leave_03",
+      "text": "I'll send your letter on the next boat."
+    },
+    {
+      "id": "home_haeon_worker_leave_04",
+      "text": "We'll make a new contract for your next visit."
+    },
+    {
+      "id": "home_haeon_storage_full_01",
+      "text": "I've checked the stock and remaining space."
+    },
+    {
+      "id": "home_haeon_storage_full_02",
+      "text": "Gold is kept separately from warehouse goods."
+    },
+    {
+      "id": "home_haeon_storage_full_03",
+      "text": "I'll mark what we couldn't store as well."
+    },
+    {
+      "id": "home_haeon_storage_full_04",
+      "text": "Shall we set aside the voyage cargo first?"
+    },
+    {
+      "id": "home_haeon_rain_01",
+      "text": "The envelopes are in a dry spot."
+    },
+    {
+      "id": "home_haeon_rain_02",
+      "text": "Raindrops spread faster than ink."
+    },
+    {
+      "id": "home_haeon_rain_03",
+      "text": "I've put a dry cloth under the paper."
+    },
+    {
+      "id": "home_haeon_rain_04",
+      "text": "Even smudged writing can still be read."
+    },
+    {
+      "id": "home_haeon_idle_long_01",
+      "text": "The news I've gathered is right here."
+    },
+    {
+      "id": "home_haeon_idle_long_02",
+      "text": "Your unread letters are still waiting."
+    },
+    {
+      "id": "home_haeon_idle_long_03",
+      "text": "You can start with the older records."
+    },
+    {
+      "id": "home_haeon_idle_long_04",
+      "text": "I'm more interested in how you are than when you came back."
+    },
+    {
+      "id": "home_worker_yeoul_worker_arrive",
+      "text": "I learned another knot on the way."
+    },
+    {
+      "id": "home_worker_yeoul_day",
+      "text": "I'll start tying things down on this side."
+    },
+    {
+      "id": "home_worker_yeoul_worker_leave",
+      "text": "I've got my hat. See you next time."
+    },
+    {
+      "id": "home_worker_mungi_worker_arrive",
+      "text": "Let's lift the heavy cargo together."
+    },
+    {
+      "id": "home_worker_mungi_day",
+      "text": "I'll check the floor before we stack."
+    },
+    {
+      "id": "home_worker_mungi_worker_leave",
+      "text": "I've cleared a place for the cargo."
+    },
+    {
+      "id": "home_worker_sori_worker_arrive",
+      "text": "My clothes still smell of salt."
+    },
+    {
+      "id": "home_worker_sori_day",
+      "text": "I'll put the sacks in the dry spot."
+    },
+    {
+      "id": "home_worker_sori_worker_leave",
+      "text": "I'll tell them about this breeze back home."
+    },
+    {
+      "id": "home_worker_nuri_worker_arrive",
+      "text": "Wrap the bowls before stacking them."
+    },
+    {
+      "id": "home_worker_nuri_day",
+      "text": "Fill the gaps and things shift less."
+    },
+    {
+      "id": "home_worker_nuri_worker_leave",
+      "text": "I've washed the cup I borrowed."
+    },
+    {
+      "id": "home_worker_bada_worker_arrive",
+      "text": "This sailcloth feels familiar."
+    },
+    {
+      "id": "home_worker_bada_day",
+      "text": "I'll start by mending the little holes."
+    },
+    {
+      "id": "home_worker_bada_worker_leave",
+      "text": "All the needles are back in place."
+    },
+    {
+      "id": "home_worker_geonu_worker_arrive",
+      "text": "I like the smell of wood."
+    },
+    {
+      "id": "home_worker_geonu_day",
+      "text": "I'll keep the little offcuts too."
+    },
+    {
+      "id": "home_worker_geonu_worker_leave",
+      "text": "I've checked the edges of the borrowed tools."
+    },
+    {
+      "id": "home_worker_dori_worker_arrive",
+      "text": "The ground is quieter than a ship's deck."
+    },
+    {
+      "id": "home_worker_dori_day",
+      "text": "Give the rope another tug after tying it."
+    },
+    {
+      "id": "home_worker_dori_worker_leave",
+      "text": "I'll pass on your greetings at the next port."
+    },
+    {
+      "id": "home_worker_haneul_worker_arrive",
+      "text": "Colors look clearer outside the fog."
+    },
+    {
+      "id": "home_worker_haneul_day",
+      "text": "Keep the letters well inside, where it's dry."
+    },
+    {
+      "id": "home_worker_haneul_worker_leave",
+      "text": "I've packed all the replies to take."
+    },
+    {
+      "id": "home_worker_bityeo_worker_arrive",
+      "text": "I've checked where the light falls."
+    },
+    {
+      "id": "home_worker_bityeo_day",
+      "text": "Wipe the reflectors with a dry cloth."
+    },
+    {
+      "id": "home_worker_bityeo_worker_leave",
+      "text": "I'll find the next guiding light too."
+    },
+    {
+      "id": "home_worker_deul_worker_arrive",
+      "text": "I crossed the shallow channel to get here."
+    },
+    {
+      "id": "home_worker_deul_day",
+      "text": "Small bundles are easier to carry."
+    },
+    {
+      "id": "home_worker_deul_worker_leave",
+      "text": "I'll remember the empty basket too."
+    },
+    {
+      "id": "home_worker_saei_worker_arrive",
+      "text": "There's room to spread out the papers."
+    },
+    {
+      "id": "home_worker_saei_day",
+      "text": "I'll put the dates on another line."
+    },
+    {
+      "id": "home_worker_saei_worker_leave",
+      "text": "The note I left is by the bookmark."
+    },
+    {
+      "id": "home_worker_onyu_worker_arrive",
+      "text": "It's easy to find my way in this small warehouse."
+    },
+    {
+      "id": "home_worker_onyu_day",
+      "text": "I record incoming and outgoing goods separately."
+    },
+    {
+      "id": "home_worker_onyu_worker_leave",
+      "text": "I'll leave today's sorted records here."
+    }
+  ],
+  "parts": {
+    "hull": {
+      "name": "Hull",
+      "desc": "More room for cargo."
+    },
+    "sail": {
+      "name": "Sail",
+      "desc": "Shorter round-trip voyages."
+    },
+    "cannon": {
+      "name": "Cannon",
+      "desc": "A better chance of fending off pirates."
+    },
+    "helm": {
+      "name": "Helm",
+      "desc": "More good events and better cargo protection."
+    }
+  },
+  "crew": {
+    "yeoul": {
+      "name": "Yeoul",
+      "role": "Bosun",
+      "role_desc": "Handles knots and work on deck.",
+      "deck_line": "I'll tie the knots.",
+      "skills": {
+        "tight_knots": {
+          "name": "Firm Knots",
+          "desc": "Carry 5% more cargo."
+        },
+        "balanced_deck": {
+          "name": "Balanced Hold",
+          "desc": "Carry 8% more cargo."
+        },
+        "steady_orders": {
+          "name": "Calm Orders",
+          "desc": "Win chance against pirates +1.5 pp."
+        }
+      }
+    },
+    "mungi": {
+      "name": "Mungi",
+      "role": "Gunner",
+      "role_desc": "Uses a stoneworker’s keen eye to check the cannon.",
+      "deck_line": "Cannon low, cargo tied down.",
+      "skills": {
+        "measured_cannon": {
+          "name": "Precise Aim",
+          "desc": "Win chance against pirates +2 pp."
+        },
+        "stone_grading": {
+          "name": "Stone Grain",
+          "desc": "Stone sale income +3%."
+        },
+        "warning_volley": {
+          "name": "Clearing Volley",
+          "desc": "Win chance against pirates +3 pp."
+        }
+      }
+    },
+    "sori": {
+      "name": "Sori",
+      "role": "Supply Officer",
+      "role_desc": "Keeps the supplies dry.",
+      "deck_line": "Even the spare sacks will come in handy.",
+      "skills": {
+        "dry_wrapping": {
+          "name": "Dry Sacks",
+          "desc": "Cargo loss rate after a pirate defeat -4%."
+        },
+        "spare_supplies": {
+          "name": "Spare Supplies",
+          "desc": "Good event chance +1.5 pp."
+        },
+        "folded_stores": {
+          "name": "Snug Stores",
+          "desc": "Carry 8% more cargo."
+        }
+      }
+    },
+    "nuri": {
+      "name": "Nuri",
+      "role": "Cargo Master",
+      "role_desc": "Packs fragile goods into their own spaces.",
+      "deck_line": "A perfect fit between the dividers.",
+      "skills": {
+        "fitted_crates": {
+          "name": "Fitted Dividers",
+          "desc": "Carry 6% more cargo."
+        },
+        "padded_cargo": {
+          "name": "Cushioned Cargo",
+          "desc": "Cargo loss rate after a pirate defeat -6%."
+        },
+        "clean_delivery": {
+          "name": "Tidy Delivery",
+          "desc": "Cargo sale income +3%."
+        }
+      }
+    },
+    "bada": {
+      "name": "Bada",
+      "role": "Sailkeeper",
+      "role_desc": "Looks after the sails and watches the wind.",
+      "deck_line": "The sail tips are moving lightly.",
+      "skills": {
+        "trim_sail": {
+          "name": "Sail Trim",
+          "desc": "Round-trip voyage time -2%."
+        },
+        "read_gust": {
+          "name": "Reading the Wind",
+          "desc": "Round-trip voyage time -3%."
+        },
+        "sound_stitch": {
+          "name": "Sturdy Stitches",
+          "desc": "Cargo loss rate after a pirate defeat -6%."
+        }
+      }
+    },
+    "geonu": {
+      "name": "Geonu",
+      "role": "Shipwright",
+      "role_desc": "Checks the planks and joints.",
+      "deck_line": "Those repaired joints are holding firm.",
+      "skills": {
+        "braced_planks": {
+          "name": "Braced Planks",
+          "desc": "Cargo loss rate after a pirate defeat -5%."
+        },
+        "timber_eye": {
+          "name": "Eye for Timber",
+          "desc": "Wood sale income +4%."
+        },
+        "kept_cargo": {
+          "name": "Cargo Kept Safe",
+          "desc": "Cargo loss rate after a pirate defeat -8%."
+        }
+      }
+    },
+    "dori": {
+      "name": "Dori",
+      "role": "Helmsman",
+      "role_desc": "Uses the helm and ropes to find a safe course.",
+      "deck_line": "I'll watch the current and turn gently.",
+      "skills": {
+        "smooth_helm": {
+          "name": "Gentle Helm",
+          "desc": "Round-trip voyage time -2%."
+        },
+        "safe_turn": {
+          "name": "Safe Turn",
+          "desc": "Win chance against pirates +2 pp."
+        },
+        "known_current": {
+          "name": "Familiar Current",
+          "desc": "Round-trip voyage time -4%."
+        }
+      }
+    },
+    "haneul": {
+      "name": "Haneul",
+      "role": "Messenger",
+      "role_desc": "Carries letters and news between ports.",
+      "deck_line": "I'll pass on the good news first.",
+      "skills": {
+        "open_letters": {
+          "name": "Open Lines",
+          "desc": "Good event chance +1.5 pp."
+        },
+        "trusted_contact": {
+          "name": "Trusted Contact",
+          "desc": "Cargo sale income +2%."
+        },
+        "clear_signals": {
+          "name": "Clear Signals",
+          "desc": "Good event chance +2.5 pp."
+        }
+      }
+    },
+    "bityeo": {
+      "name": "Bityeo",
+      "role": "Lookout",
+      "role_desc": "Spots lights and small objects out at sea.",
+      "deck_line": "Something's glinting. Let's take a look.",
+      "skills": {
+        "bright_glint": {
+          "name": "Little Glimmer",
+          "desc": "Treasure-pouch event chance +2 pp."
+        },
+        "early_watch": {
+          "name": "Distant Sails",
+          "desc": "Win chance against pirates +1.5 pp."
+        },
+        "treasure_watch": {
+          "name": "Following the Light",
+          "desc": "Treasure-pouch event chance +3.5 pp."
+        }
+      }
+    },
+    "deul": {
+      "name": "Deul",
+      "role": "Deck Cook",
+      "role_desc": "Makes even a short meal break a hearty one.",
+      "deck_line": "A good meal puts strength in your hands.",
+      "skills": {
+        "packed_meals": {
+          "name": "Neat Provisions",
+          "desc": "Carry 4% more cargo."
+        },
+        "timely_meal": {
+          "name": "A Timely Meal",
+          "desc": "Round-trip voyage time -2%."
+        },
+        "warm_table": {
+          "name": "Warm Table",
+          "desc": "Good event chance +2.5 pp."
+        }
+      }
+    },
+    "saei": {
+      "name": "Saei",
+      "role": "Trader",
+      "role_desc": "Checks prices and trade records carefully.",
+      "deck_line": "Every line of the trade sheet is accounted for.",
+      "skills": {
+        "honest_ledger": {
+          "name": "Tidy Ledger",
+          "desc": "Cargo sale income +2%."
+        },
+        "timber_quote": {
+          "name": "Timber Quotes",
+          "desc": "Wood sale income +4%."
+        },
+        "stone_quote": {
+          "name": "Stone Quotes",
+          "desc": "Stone sale income +6%."
+        }
+      }
+    },
+    "onyu": {
+      "name": "Onyu",
+      "role": "Safety Officer",
+      "role_desc": "Checks the ship before departure and on return.",
+      "deck_line": "Everyone's safe. I'll check the remaining cargo.",
+      "skills": {
+        "checked_lashings": {
+          "name": "Departure Check",
+          "desc": "Cargo loss rate after a pirate defeat -5%."
+        },
+        "safe_response": {
+          "name": "Calm Response",
+          "desc": "Win chance against pirates +2 pp."
+        },
+        "return_check": {
+          "name": "Return Check",
+          "desc": "Good event chance +3 pp."
+        }
+      }
+    }
+  },
+  "synergies": {
+    "knots_and_current": {
+      "name": "Knots and Currents",
+      "desc": "Together: Carry 5% more cargo."
+    },
+    "safe_cannon": {
+      "name": "Steady Cannon",
+      "desc": "Together: Win chance against pirates +2 pp."
+    },
+    "hearty_table": {
+      "name": "A Hearty Table",
+      "desc": "Together: Good event chance +2 pp."
+    },
+    "careful_trade": {
+      "name": "Careful Trading",
+      "desc": "Together: Cargo sale income +3%."
+    },
+    "wind_letters": {
+      "name": "News on the Wind",
+      "desc": "Together: Round-trip voyage time -2%."
+    },
+    "craft_and_watch": {
+      "name": "Craft and Care",
+      "desc": "Together: Cargo loss rate after a pirate defeat -5%."
+    }
+  },
+  "ui": {
+    "섬 관리하기": "Manage Island",
+    "뒤로": "Back",
+    "닫기": "Close",
+    "확인": "Confirm",
+    "취소": "Cancel",
+    "저장": "Save",
+    "짓기": "Build",
+    "확장하기": "Expand",
+    "배 강화": "Upgrade Ship",
+    "항로 고르기": "Choose Route",
+    "다음 항로로 정하기": "Set Next Route",
+    "항해 켜기": "Enable Voyages",
+    "다음 출항 쉬기": "Pause Next Departure",
+    "항해 이어가기": "Resume Voyages",
+    "계약하기": "Hire",
+    "계약 보기": "View Contract",
+    "자동 고용": "Auto Hire",
+    "예산 정하기": "Set Budget",
+    "항해일지": "Voyage Journal",
+    "펼쳐 읽기": "Read Story",
+    "접기": "Collapse",
+    "읽음 표시": "Mark as Read",
+    "다시 읽기": "Read Again",
+    "편지함": "Mailbox",
+    "모두 보기": "View All",
+    "자세히 보기": "View Details",
+    "짐 고르기": "Choose Cargo",
+    "꾸밈 고르기": "Choose Decoration",
+    "꾸미기": "Decorate",
+    "미리 보기": "Preview",
+    "배경화면으로 보기": "Set Live Wallpaper",
+    "설정": "Settings",
+    "다음": "Next",
+    "섬으로 가기": "Visit Island",
+    "나중에 보기": "Maybe Later",
+    "처음 안내 다시 보기": "Replay Introduction",
+    "처음부터 시작": "Start Over",
+    "기록 지우고 시작": "Erase and Restart",
+    "그대로 계속하기": "Keep Playing",
+    "기기 알림 설정": "Device Notification Settings",
+    "전체로 보기": "Show All",
+    "정렬": "Sort",
+    "기본 꾸밈으로": "Restore Default Look",
+    "도움말": "Help",
+    "나무": "Wood",
+    "돌": "Stone",
+    "금화": "Gold",
+    "작은 섬": "Little Island",
+    "바다": "Sea",
+    "항구": "Port",
+    "섬 주민": "Island Residents",
+    "함께 일하는 사람": "Workers",
+    "빈방": "Vacant Room",
+    "사용 중": "Occupied",
+    "남은 근무 시간": "Work Time Left",
+    "귀항까지": "Time to Return",
+    "다음 목적지": "Next Destination",
+    "이번 목적지": "Current Destination",
+    "실은 짐": "Loaded Cargo",
+    "기본 화물": "Basic Cargo",
+    "특산물": "Specialty Goods",
+    "구매 비용": "Purchase Cost",
+    "예상 판매액": "Estimated Revenue",
+    "실제 판매액": "Actual Revenue",
+    "거래 결과": "Trade Result",
+    "판매 단가": "Sale Price",
+    "구매 단가": "Purchase Price",
+    "왕복 시간": "Round-trip Time",
+    "해적을 만날 가능성": "Pirate Encounter Chance",
+    "해적을 만났을 때 승리 가능성": "Win Chance on Encounter",
+    "화물 손실": "Cargo Lost",
+    "다시 온 일손": "Returning Worker",
+    "근무 시간": "Work Duration",
+    "고용비": "Hiring Fee",
+    "남은 고용 예산": "Hiring Budget Left",
+    "보관 한도": "Storage Capacity",
+    "보관 중": "In Storage",
+    "새 소식": "Unread",
+    "읽은 기록": "Read",
+    "본편": "Main Story",
+    "인물 이야기": "Character Stories",
+    "항해 소식": "Voyage News",
+    "지난 기록": "Past Records",
+    "최근 도착순": "Newest First",
+    "처음부터": "Oldest First",
+    "전체": "All",
+    "사용 가능": "Available",
+    "아직 준비 중": "Not Yet Available",
+    "완료": "Complete",
+    "필요한 준비": "Requirements",
+    "필요한 자원": "Resources Needed",
+    "보유": "Owned",
+    "부족한 양": "Shortfall",
+    "받은 보상": "Rewards Received",
+    "꾸밈": "Cosmetic",
+    "계절 꾸밈": "Seasonal Decorations",
+    "소리": "Sound",
+    "알림": "Notifications",
+    "섬의 기록": "Island Progress",
+    "버전": "Version",
+    "우리 섬": "Our Island",
+    "짓고 싶은 건물과 필요한 일을 여기서 골라요.": "Choose what to build and what needs doing.",
+    "홈 화면에서는 섬이 움직이는 모습을 편하게 지켜봐요.": "Relax and watch the island on your home screen.",
+    "섬의 자리": "Island Buildings",
+    "정해진 자리에 건물을 짓고 넓혀요.": "Build and expand in the designated spaces.",
+    "알바 숙소는 최대 {house_max}채예요. 주민은 늘어나지 않아요.": "There are up to {house_max} worker lodgings. The resident population stays the same.",
+    "창고": "Warehouse",
+    "나무와 돌을 나눠 보관해요.": "Store wood and stone separately.",
+    "창고가 가득 차면 더 담지 못한 양은 보상에 포함되지 않아요.": "Resources that cannot fit in a full warehouse are not included in your rewards.",
+    "우리 배": "Our Ship",
+    "짐칸과 돛, 방어 장비가 함께 자라요.": "Grow your cargo hold, sails, and defenses.",
+    "강화해도 처음 타던 배의 이름과 기록은 남아요.": "Upgrades preserve your ship’s name and history.",
+    "바닷길": "Sea Routes",
+    "다음에 오갈 항구를 골라요.": "Choose the port for your next voyage.",
+    "바꾼 항로는 지금 항해가 끝난 뒤 다음 출항부터 적용돼요.": "Route changes apply to the next departure, after the current voyage ends.",
+    "다음 항해의 짐": "Cargo for the Next Voyage",
+    "기본 화물과 특산물을 확인해요.": "Check your basic cargo and specialty goods.",
+    "특산물은 출항할 때 예약해요. 방문항에서 싣고 돌아와 작은 섬에 온 계약 수령선에 팔아요.": "Reserve specialty goods at departure. Load them at the visited port, then sell them to the contracted buyer’s ship back at the island.",
+    "빈방과 계약 조건을 확인하고 일손을 맞아요.": "Check rooms and contract terms before welcoming a worker.",
+    "계약 시간은 섬에 도착한 뒤부터 흘러요.": "Work time begins when the worker reaches the island.",
+    "항구와 예산을 정해 두면 빈방에 새 일손을 맞아요.": "Choose a port and budget to welcome workers into vacant rooms.",
+    "예산이 부족하면 고용만 쉬고 생산과 항해는 계속돼요.": "If the budget runs out, hiring pauses while production and voyages continue.",
+    "섬과 항구에서 모인 이야기를 읽어요.": "Read stories gathered from the island and its ports.",
+    "읽지 않아도 생산과 항해는 계속돼요. 기록은 사라지지 않아요.": "Production and voyages continue while stories wait. Your records stay safe.",
+    "함께 만난 사람들의 소식을 보관해요.": "Keep news from the people you have met.",
+    "떠난 사람의 편지도 여기에서 다시 볼 수 있어요.": "You can reread letters even after their writers have left.",
+    "항해 기록": "Voyage History",
+    "판매와 전투, 귀항 결과를 함께 살펴봐요.": "Review sales, encounters, and returns together.",
+    "요약의 금화는 아래 상세 내역을 합친 값이에요.": "The gold summary is the total of the details below.",
+    "섬 꾸미기": "Island Decorations",
+    "모아 둔 장식으로 작은 자리를 바꿔요.": "Change a little corner with the decorations you have collected.",
+    "계절 꾸밈은 성능을 바꾸지 않아요.": "Seasonal decorations do not affect performance.",
+    "돌아오는 장": "Homecoming Market",
+    "여러 항구의 물건과 소식이 모이는 자리예요.": "A meeting place for goods and news from many ports.",
+    "손님은 장이 끝나면 자기 배와 항구로 돌아가요.": "Visitors return to their own ships and ports when the market closes.",
+    "소리와 알림을 내게 맞게 정해요.": "Set sound and notifications to suit you.",
+    "알림을 꺼도 생산과 항해는 계속돼요.": "Production and voyages continue with notifications off.",
+    "알바 숙소": "Worker Lodging",
+    "일을 도우러 온 사람이 계약 동안 머무는 방이에요.": "A room for a visiting worker to stay in during a contract.",
+    "집마다 일손 {workers_per_house}명이 머물러요.": "Workers per house: {workers_per_house}.",
+    "섬 주민은 단·보리·해온 그대로예요.": "Dan, Bori, and Haeon remain the island’s residents.",
+    "나무와 돌이 비에 젖지 않게 모아 두는 곳이에요.": "Keep your wood and stone out of the rain.",
+    "자원마다 최대 {capacity}개를 보관해요.": "Store up to {capacity} of each resource.",
+    "금화와 편지는 이 한도를 쓰지 않아요.": "Gold and letters do not use this capacity.",
+    "부두": "Dock",
+    "짐배와 교역선이 안전하게 쉬어 가는 자리예요.": "A safe stopping place for supply boats and trading ships.",
+    "교역선이 출항하고 보급품이 도착해요.": "Trading ships depart and supplies arrive here.",
+    "항해와 해적 조우는 알아서 진행돼요.": "Voyages and pirate encounters run automatically.",
+    "모닥불": "Campfire",
+    "세 주민이 잠깐 앉아 이야기를 나누는 자리예요.": "A place for the three residents to sit and chat.",
+    "작은 섬의 저녁 풍경을 밝혀요.": "A warm light for the island’s evenings.",
+    "불을 직접 지킬 필요는 없어요.": "There is no need to tend the fire yourself.",
+    "작은 밭": "Small Field",
+    "함께 먹을 재료와 소소한 즐거움이 자라는 곳이에요.": "A place to grow ingredients and little everyday pleasures.",
+    "근무 중인 알바의 채집량이 {bonus_percent}% 늘어요.": "Active workers gather {bonus_percent}% more resources.",
+    "물을 주거나 수확 시간을 맞출 필요는 없어요.": "There is no need to time watering or harvests.",
+    "등대": "Lighthouse",
+    "돌아오는 배들이 작은 섬을 알아보는 불빛이에요.": "A light that helps returning ships find the island.",
+    "해적 조우 승리 가능성이 {bonus_points}%p 높아져요.": "Pirate encounter win chance increases by {bonus_points} percentage points.",
+    "낮과 밤에 같은 효과를 받아요.": "The effect is the same by day and night.",
+    "시장": "Market",
+    "물건과 수선, 편지가 모이는 작은 장터예요.": "A small gathering of goods, repairs, and letters.",
+    "판매액이 {bonus_percent}% 늘어요.": "Sales earn {bonus_percent}% more.",
+    "새 손님이 상시 주민으로 늘어나지는 않아요.": "New visitors do not become permanent residents.",
+    "아직 도착한 일지가 없어요": "No journal entries yet",
+    "섬에서 첫 일을 시작하면 기록이 차곡차곡 쌓여요.": "Start your first task on the island, and the records will begin to grow.",
+    "이 분류에는 아직 기록이 없어요": "No records in this category yet",
+    "다른 기록을 보거나 다음 항해를 기다려 보세요.": "Browse another category or wait for the next voyage.",
+    "아직 편지가 없어요": "No letters yet",
+    "항구에서 만난 사람들이 배에 소식을 실어 보낼 거예요.": "People you meet at the ports will send news with passing ships.",
+    "지금 머무는 일손이 없어요": "No workers are staying here",
+    "빈방을 준비하고 항구에서 새 계약을 골라 보세요.": "Prepare a vacant room and choose a new contract at a port.",
+    "모든 방에 손님이 있어요": "Every room has a guest",
+    "계약이 끝나 빈방이 생기면 다음 일손을 맞을 수 있어요.": "You can welcome another worker after a contract ends and a room becomes free.",
+    "지금 가능한 계약이 없어요": "No contracts available right now",
+    "다음 항구 방문 때 공고를 다시 확인해요.": "Check the noticeboard again on your next port visit.",
+    "배를 맞을 부두가 필요해요": "Your ship needs a dock",
+    "부두를 지으면 교역선이 항구를 오가기 시작해요.": "Build a dock to start trading voyages between ports.",
+    "아직 새 항로가 준비되지 않았어요": "No new routes are ready yet",
+    "배를 키우고 도착한 소식을 따라가면 길이 넓어져요.": "Upgrade your ship and follow the news to open more routes.",
+    "필요한 준비 보기": "View Requirements",
+    "이번 항해는 기본 화물을 실어요": "Basic cargo for this voyage",
+    "새 항구와 연결되면 특산물도 고를 수 있어요.": "Connect with new ports to choose specialty goods too.",
+    "다음 짐을 모으고 있어요": "Gathering the Next Cargo",
+    "준비가 되면 자동으로 출항해요.": "The ship will depart automatically when the cargo is ready.",
+    "첫 항해를 기다리고 있어요": "Waiting for the first voyage",
+    "거래와 귀항이 끝나면 이곳에 결과가 남아요.": "Trade and return results will appear here.",
+    "기본 꾸밈을 쓰고 있어요": "Using the default decorations",
+    "항해와 이야기를 따라가며 새로운 장식을 만나요.": "Find new decorations as you follow voyages and stories.",
+    "도착한 소식을 모두 읽었어요": "You have read all the news",
+    "새 소식이 와도 서두르지 않아도 돼요.": "There is no hurry when the next story arrives.",
+    "지난 기록 보기": "View Past Records",
+    "장터를 준비할 자리가 있어요": "A place for a future market",
+    "새 항구들과 인연을 쌓으면 이곳에 장을 열 수 있어요.": "Build connections with new ports to open a market here.",
+    "주머니 속 작은 섬": "A Little Island in Your Pocket",
+    "단·보리·해온이 자원을 모으고 섬을 돌봐요. 홈 화면에서는 움직이는 풍경과 새 소식만 편하게 봐요.": "Dan, Bori, and Haeon gather resources and care for the island. Enjoy its moving scenery and news on your home screen.",
+    "필요한 자리를 마련해요": "Make Room for What You Need",
+    "건물을 고르고 짓는 일은 앱 안에서 해요. 집은 일하러 온 사람이 잠시 머무는 숙소예요.": "Choose and build structures in the app. Houses are temporary lodgings for visiting workers.",
+    "배가 알아서 다녀와요": "The Ship Finds Its Way",
+    "부두가 생기면 배가 짐을 싣고 항구로 떠나요. 거래와 해적 조우 결과는 돌아온 소식으로 확인해요.": "Once the dock is ready, your ship loads cargo and heads to a port. Read the trade and pirate encounter results when news returns.",
+    "소식은 기다려 줘요": "The News Can Wait",
+    "자리를 비운 동안의 보상은 최대 {away_cap}시간까지 모여요. 이야기는 사라지지 않고, 읽지 않아도 섬은 계속 움직여요.": "Away rewards accumulate for up to {away_cap} hours. Stories stay in your journal, and the island keeps moving whether you read them or not.",
+    "효과음": "Sound Effects",
+    "발소리와 항구의 작은 소리를 들어요.": "Hear footsteps and the little sounds of the harbor.",
+    "켜짐": "On",
+    "꺼짐": "Off",
+    "바다 소리": "Sea Ambience",
+    "앱에서 섬을 볼 때 잔잔한 바다 소리를 들어요.": "Hear a gentle sea while viewing the island in the app.",
+    "소식 알림": "News Notifications",
+    "원할 때만 귀항과 창고 소식을 알려 드려요.": "Receive return and storage news only when you want it.",
+    "알림을 켜면 앱을 열지 않아도 선택한 소식을 받을 수 있어요.": "Turn on notifications to receive selected news without opening the app.",
+    "알림은 꺼 두었어요. 섬은 그대로 움직여요.": "Notifications are off. The island keeps moving.",
+    "기기 설정에서 이 앱의 알림을 허용해 주세요.": "Allow notifications for this app in your device settings.",
+    "귀항 소식": "Return News",
+    "여러 항해 결과를 모아 조용히 알려요.": "Get a quiet summary of several voyage results.",
+    "창고 소식": "Storage News",
+    "창고가 가득 찼을 때 한 번 알려요.": "Receive one notification when the warehouse becomes full.",
+    "조용한 시간": "Quiet Hours",
+    "정한 시간에는 알림을 보내지 않아요.": "No notifications during your chosen hours.",
+    "움직임 줄이기": "Reduce Motion",
+    "물결과 반짝임을 차분하게 보여요.": "Keep waves and sparkles more subdued.",
+    "작은 섬을 돌보는 방법을 다시 살펴봐요.": "Take another look at how to care for your island.",
+    "이 기기에 저장된 섬의 진행 기록을 지우고 새로 시작해요.": "Erase this device’s saved island progress and begin again.",
+    "섬을 처음부터 시작할까요?": "Start the island over?",
+    "자원, 건물, 배, 항해 기록과 읽은 이야기를 포함한 이 기기의 진행 기록이 지워져요.": "This device’s progress will be erased, including resources, buildings, ship growth, voyage records, and read stories.",
+    "계속 확인하기": "Continue to Confirmation",
+    "진행 기록을 모두 지울까요?": "Erase all progress?",
+    "지운 기록은 이 화면에서 되돌릴 수 없어요. 새 섬의 첫날부터 다시 시작해요.": "This screen cannot restore erased progress. You will start again on a new island’s first day.",
+    "다음 출항을 쉴까요?": "Pause the next departure?",
+    "지금 항해 중인 배는 예정대로 돌아와요. 귀항한 뒤 부두에서 기다려요.": "The ship currently at sea will return as planned, then wait at the dock.",
+    "계속 항해하기": "Keep Sailing",
+    "다음 항로를 바꿀까요?": "Change the next route?",
+    "현재 항해는 그대로 마치고 다음 출항부터 선택한 항구로 가요.": "Finish the current voyage, then sail to the selected port on the next departure.",
+    "항로 바꾸기": "Change Route",
+    "새 계약을 맺을까요?": "Start a new contract?",
+    "{worker}의 고용비는 {wage}금화예요. 섬에 도착한 뒤 {work_hours}시간 일하고 계약을 마쳐요.": "Hiring {worker} costs {wage} gold. The contract lasts {work_hours} hours from arrival at the island.",
+    "자동 고용을 끌까요?": "Turn off auto hiring?",
+    "이미 맺은 계약은 그대로 이어져요. 이후 항구에서는 새 계약을 자동으로 맺지 않아요.": "Existing contracts continue. New contracts will no longer be started automatically at ports.",
+    "자동 고용 끄기": "Turn Off Auto Hire",
+    "홈 화면에서도 섬을 볼까요?": "See the island on your home screen?",
+    "다음 화면에서 작은 섬을 배경화면으로 선택해 주세요. 건설과 항로 선택은 이 앱에서 할 수 있어요.": "Choose Little Island as your wallpaper on the next screen. Build and select routes here in the app.",
+    "배경화면 선택": "Choose Wallpaper",
+    "나중에": "Later",
+    "다음 항해에 특산물을 실을까요?": "Take specialty goods on the next voyage?",
+    "{goods} {cargo}개를 {gold}금화에 예약해요. 방문항에서 싣고 돌아와 계약 수령선에 팔아요. 귀로에서 해적을 만나면 실은 특산물 일부를 잃을 수 있어요.": "Reserve {cargo} {goods} for {gold} gold. Load them at the port, then sell them to the contracted buyer’s ship on return. You may lose some specialty cargo to pirates on the way home.",
+    "이 짐으로 정하기": "Choose This Cargo",
+    "필요한 자원이 아직 부족해요. 더 모이면 다시 확인해요.": "Not enough resources yet. Check again when you have gathered more.",
+    "금화가 부족해요. 다음 거래 결과를 기다려 보세요.": "Not enough gold. Wait for the next trade result.",
+    "이 항목은 다음 이야기와 함께 준비될 예정이에요.": "This feature is planned for a later part of the story.",
+    "이미 마련한 자리예요.": "This structure is already built.",
+    "지금 준비된 마지막 단계예요.": "This is the final stage currently available.",
+    "돌아오는 배에 함께 올 일손이 있어요.": "A worker is already booked on the returning ship.",
+    "지금 계약은 약속한 시간까지 이어져요.": "The current contract continues for its agreed duration.",
+    "변경한 내용을 저장했어요.": "Your changes have been saved.",
+    "변경 내용을 저장하지 못했어요. 잠시 뒤 다시 시도해 주세요.": "Could not save your changes. Please try again shortly.",
+    "이야기를 불러오지 못했어요. 섬의 진행 기록은 그대로예요.": "Could not load the story. Your island progress is unchanged.",
+    "지난 이야기는 언제든 다시 펼쳐 볼 수 있어요.": "You can reopen earlier stories at any time.",
+    "예상 판매액이에요. 실제 수량과 거래 결과에 따라 달라질 수 있어요.": "This is an estimate. Actual quantities and trade results may change the revenue.",
+    "예산으로 살 수 있는 정수 수량까지만 예약해요. 하나도 살 수 없으면 특산물 없이 나무와 돌 거래를 이어가요.": "Only reserve whole units that fit the budget. If none are affordable, continue trading wood and stone without specialty goods.",
+    "부재 보상은 최대 {away_cap}시간까지 계산해요. 오래 비워도 이야기 기록은 사라지지 않아요.": "Away rewards cover up to {away_cap} hours. Your stories remain saved even after a long absence.",
+    "보관 한도는 나무와 돌에 각각 적용돼요.": "Storage capacity applies separately to wood and stone.",
+    "이야기를 읽지 않아도 생산과 항해는 계속돼요.": "Production and voyages continue whether you read the stories or not.",
+    "첫 일손은 여울이에요. 이후에는 열린 항구의 계약을 고를 수 있어요.": "Yeoul is your first worker. After that, choose contracts at unlocked ports.",
+    "같은 소식이 반복해서 울리지 않도록 묶어서 알려요.": "News is grouped so the same update does not keep alerting you.",
+    "계절 꾸밈은 보상과 생산 속도를 바꾸지 않아요.": "Seasonal decorations do not change rewards or production speed.",
+    "폭풍 이야기는 기록된 순서대로 이어져요. 접속 시간에 따라 결말이 달라지지 않아요.": "The storm story follows its recorded sequence. Your login times do not change the ending.",
+    "본편을 마쳤어요. 교역과 꾸미기, 새로운 편지는 계속돼요.": "The main story is complete. Trading, decorating, and new letters continue.",
+    "나무와 돌은 방문항에서 팔아요. 특산물은 귀항 후 계약 수령선에 넘기고 판매액을 받아요.": "Sell wood and stone at the visited port. Deliver specialty goods to the contracted buyer’s ship and receive payment after returning home.",
+    "전투 보상은 결과가 정해지면 기록하고, 배가 돌아올 때 한 번 받아요.": "Combat rewards are recorded when the outcome is decided and paid once when the ship returns.",
+    "그동안 섬에서": "While You Were Away",
+    "금화 {gold_delta} · 자원 +{resources}": "Gold {gold_delta} · Resources +{resources}",
+    "항해 소식을 모았어요": "Voyage News Collected",
+    "완료한 항해 {voyage_count}회": "Voyages completed: {voyage_count}",
+    "다시 작은 섬에 왔어요": "Welcome Back",
+    "모아 둔 기록은 그대로 있어요.": "Your saved records are still here.",
+    "부재 보상을 정리했어요": "Away Rewards Tallied",
+    "보상은 최대 {away_cap}시간까지예요.": "Rewards cover up to {away_cap} hours.",
+    "해적 조우를 마쳤어요": "Pirate Encounter Over",
+    "선원 무사 · 귀항 보상 {gold}": "Crew safe · Return reward {gold}",
+    "남은 짐으로 항해해요": "Sailing with What Remains",
+    "선원 무사 · 화물 -{lost_cargo}": "Crew safe · Cargo -{lost_cargo}",
+    "순조롭게 항해 중이에요": "Smooth Sailing",
+    "이번 구간은 조용히 지났어요.": "This stretch of sea was quiet.",
+    "항구에 도착했어요": "Arrived at Port",
+    "{port}에서 짐을 내리고 있어요.": "Unloading cargo at {port}.",
+    "항구에서 기본 짐을 팔았어요": "Basic Cargo Sold",
+    "나무·돌 판매 금화 +{gold}": "Wood and stone sales: +{gold} gold",
+    "다음 거래를 준비해요": "Preparing the Next Trade",
+    "이번에 판매할 짐은 없었어요.": "There was no cargo to sell this time.",
+    "배가 출항했어요": "The Ship Has Departed",
+    "{port} 항로로 떠났어요.": "Sailing the route to {port}.",
+    "배가 돌아왔어요": "The Ship Is Home",
+    "금화 {gold_delta} · 짐 {cargo}": "Gold {gold_delta} · Cargo {cargo}",
+    "준비되면 배가 다시 출항해요.": "The ship will depart when ready.",
+    "배가 부두에서 쉬고 있어요": "Resting at the Dock",
+    "앱에서 항해를 다시 켤 수 있어요.": "Resume voyages in the app.",
+    "다음 항로를 정했어요": "Next Route Set",
+    "다음 목적지: {port}": "Next destination: {port}",
+    "함께 일할 사람을 만났어요": "A New Helping Hand",
+    "{worker} · 고용비 {wage}금화": "{worker} · Hiring fee: {wage} gold",
+    "새 일손이 도착했어요": "A Worker Has Arrived",
+    "{worker} · {work_hours}시간 근무": "{worker} · Work time: {work_hours} hours",
+    "계약을 마치고 떠났어요": "Contract Completed",
+    "{worker}의 다음 일정을 응원해요.": "Wishing {worker} well on the next job.",
+    "숙소가 모두 사용 중이에요": "All Lodgings Are Occupied",
+    "빈방이 생기면 새 일손을 맞아요.": "Welcome a worker when a room opens.",
+    "고용 예산을 확인해 주세요": "Check the Hiring Budget",
+    "남은 예산 {budget}금화": "Budget left: {budget} gold",
+    "반가운 일손이 다시 왔어요": "A Familiar Face Returns",
+    "{worker}와 새 계약을 시작해요.": "A new contract with {worker} begins.",
+    "자동 고용을 켰어요": "Auto Hire Is On",
+    "정한 예산 안에서 일손을 맞아요.": "Welcome workers within your budget.",
+    "자동 고용을 껐어요": "Auto Hire Is Off",
+    "이미 맺은 계약은 그대로 이어져요.": "Existing contracts continue.",
+    "창고가 가득 찼어요": "The Warehouse Is Full",
+    "항해할 짐과 확장 계획을 살펴봐요.": "Review cargo plans and expansions.",
+    "창고를 넓혔어요": "Warehouse Expanded",
+    "자원별 최대 {capacity}개 보관": "Capacity per resource: {capacity}",
+    "자원을 모았어요": "Resources Gathered",
+    "나무 +{wood} · 돌 +{stone}": "Wood +{wood} · Stone +{stone}",
+    "짐배가 보급품을 가져왔어요": "The Supply Boat Is Here",
+    "보관할 수 있는 만큼 받았어요": "Stored What Would Fit",
+    "넘친 자원 {overflow_resources}개는 제외했어요.": "Excluded overflow: {overflow_resources}",
+    "새 자리가 생겼어요": "A New Place Is Ready",
+    "{building} 완공": "{building} completed",
+    "우리 배가 더 자랐어요": "Our Ship Has Grown",
+    "배 {level}단계 강화 완료": "Ship upgrade to stage {level} complete",
+    "새 항구와 연결됐어요": "A New Port Connected",
+    "{port} 항로를 선택할 수 있어요.": "The route to {port} is now available.",
+    "등대에 불이 켜졌어요": "The Lighthouse Is Lit",
+    "배들이 작은 섬의 신호를 알아봐요.": "Ships can see the island’s signal.",
+    "작은 섬의 장이 열렸어요": "The Island Market Is Open",
+    "여러 항구의 물건과 소식이 모여요.": "Goods and news arrive from many ports.",
+    "섬에 작은 밭이 생겼어요": "A Small Field Is Ready",
+    "함께 일하는 하루가 조금 편해져요.": "A little help for each working day.",
+    "새 항해일지가 도착했어요": "A New Journal Entry",
+    "본편 {story_no}화 · 나중에 읽어도 돼요.": "Chapter {story_no} · Read it later, too.",
+    "누군가의 편지가 왔어요": "A Letter Has Arrived",
+    "외전 {story_no}편을 보관했어요.": "Side story {story_no} has been saved.",
+    "편지함에 소식이 모였어요": "News in the Mailbox",
+    "새 편지 {count}통": "New letters: {count}",
+    "작은 섬의 새 소식": "News from the Island",
+    "{home_news}": "{home_news}",
+    "도착한 기록을 모두 봤어요": "All Caught Up",
+    "다음 소식은 항해일지에 모아 둘게요.": "The next news will wait in the journal.",
+    "이번 항해에서": "On This Voyage",
+    "예약한 특산물을 실었어요": "Reserved Goods Loaded",
+    "{goods} {cargo}개 · 선적 완료": "{goods} ×{cargo} · Loading complete",
+    "특산물 수량을 줄였어요": "Fewer Specialty Goods",
+    "예산 안에서 {cargo}개 예약했어요.": "Reserved {cargo} within your budget.",
+    "귀항한 특산물을 팔았어요": "Specialty Goods Sold",
+    "{goods} 판매 · 금화 +{gold}": "{goods} sold · Gold +{gold}",
+    "섬의 장식이 달라졌어요": "A Change of Decorations",
+    "{season}의 색으로 섬을 꾸몄어요.": "The island wears the colors of {season}.",
+    "돌아옴장이 열렸어요": "The Homecoming Fair Is Open",
+    "오늘도 여러 항구가 인사를 나눠요.": "Ports exchange greetings once again.",
+    "항구들의 소식이 도착했어요": "News from the Ports",
+    "폭풍을 지나는 기록을 보관했어요.": "The storm’s story has been saved.",
+    "옛 창고의 기록을 찾았어요": "Old Warehouse Records Found",
+    "확인된 보상 금화 +{gold}": "Confirmed reward: +{gold} gold",
+    "돌아올 자리가 많아졌어요": "More Places to Come Home To",
+    "이야기는 끝나도 항해는 계속돼요.": "The story ends. The voyages continue.",
+    "다음 계절의 편지가 왔어요": "A Letter for the Next Season",
+    "새 이야기를 항해일지에 보관했어요.": "A new story is saved in the journal.",
+    "새 꾸밈을 보관했어요": "New Decoration Collected",
+    "{goods} · 꾸미기에서 골라요.": "{goods} · Choose it in Decorations.",
+    "다음 거래 값을 확인해요": "Check the Next Trade Price",
+    "이번 거래 단가 {price}금화": "Price for this trade: {price} gold",
+    "돌아온 소식을 함께 모았어요": "Homecoming News Collected",
+    "귀항 {count}회 · 금화 {gold_delta}": "Returns: {count} · Gold {gold_delta}",
+    "특산물 없이 항해해요": "Sailing Without Specialties",
+    "나무와 돌 거래는 그대로 이어가요.": "Wood and stone trading continues.",
+    "작은 섬: 돌아오는 바다": "Little Island",
+    "홈 화면에서 자라는 도트 섬, 자원을 모으고 자동 교역선을 보내 작은 일상을 가꿔요": "A cozy pixel island on your home screen, with gathering and automatic sea trade.",
+    "휴대폰 홈 화면에서 작은 섬의 하루를 바라보세요.\n\n작은 섬: 돌아오는 바다는 주민들이 자원을 모으고 배가 교역을 다녀오는 Android 라이브 배경화면 게임이에요. 홈 화면에서는 섬과 바다의 움직임을 감상하고, 앱에서 건물을 짓고 진행 상황을 확인할 수 있어요.\n\n나무와 돌을 모아 집과 창고, 부두를 마련해요. 부두에서 출항한 배는 항구에 짐을 팔고 섬으로 돌아옵니다. 항해 중 해적을 만나면 전투는 자동으로 진행되고 결과가 기록돼요.\n\n빈 숙소가 있으면 일을 도울 알바를 맞이할 수 있어요. 알바는 약속된 시간 동안 일하고 떠나며, 주민들과 함께 섬의 자원을 모읍니다.\n\n자리를 비운 동안의 진행은 돌아왔을 때 결과 카드로 확인할 수 있어요. 계속 버튼을 누르지 않아도 조금씩 움직이는 작은 섬을 만나 보세요.\n\n이 앱은 Android 라이브 배경화면을 사용하는 게임입니다. 배경화면 적용과 건설은 앱의 안내를 따라 진행할 수 있어요.": "Watch a little island’s day unfold on your phone’s home screen.\n\nLittle Island is an Android live wallpaper game where residents gather resources and ships make trading voyages. Enjoy the island and sea on your home screen, then open the app to build and check your progress.\n\nGather wood and stone to prepare houses, a warehouse, and a dock. Ships depart from the dock, sell their cargo at a port, and return home. Pirate encounters resolve automatically, with the results recorded for you.\n\nWith a vacant lodging, you can welcome a worker to help. Workers gather resources alongside the residents for their agreed contract, then leave for their next destination.\n\nWhen you return, a results card shows the progress made while you were away. Discover a little island that keeps moving without constant tapping.\n\nThis game uses Android live wallpaper. Follow the in-app guidance to apply the wallpaper and build on your island.",
+    "홈 화면에서 자라는 도트 섬, 자동 항해와 교역을 즐기고 돌아온 배의 이야기를 모아요": "Grow an island, send trading ships, and collect the stories they bring home.",
+    "휴대폰 홈 화면에 작은 섬이 생겼어요.\n단은 나무를 모으고, 보리는 손님을 맞을 자리를 살피고, 해온은 돌아온 배의 소식을 적어요. 잠깐 바라보는 사이에도 섬의 하루는 이어집니다.\n\n작은 섬: 돌아오는 바다는 라이브 배경화면으로 감상하는 방치형 섬 생활 게임이에요. 홈 화면에서는 움직이는 주민과 배를 보고, 앱에서는 건물을 짓고 모아 둔 기록을 확인해요.\n\n배가 돌아오는 기분\n나무와 돌을 모아 부두를 마련하면 교역선이 출항해요. 배는 항구에서 짐을 팔고 다시 섬으로 돌아옵니다. 바다에서 만나는 해적과의 전투도 자동으로 진행돼요. 돌아왔을 때 결과를 차분히 확인하세요.\n\n손님이 쉬어 갈 자리\n빈방을 마련하면 일을 도울 알바를 맞이할 수 있어요. 손님은 약속한 시간 동안 함께 일하고 다음 항구로 떠나요. 작은 방과 컵, 부두의 불빛에 조금씩 이야기가 쌓입니다.\n\n읽고 싶을 때 펼치는 항해일지\n처음 불을 밝힌 날부터 첫 교역과 첫 손님의 이야기까지, 섬에서 일어난 일이 일지에 남아요. 짧은 소식만 확인해도 좋고, 시간이 날 때 본문을 펼쳐도 좋아요. 이야기를 읽지 않아도 생산과 항해는 이어져요.\n\n나만의 속도로 돌아오는 곳\n계속 화면을 누르며 지켜볼 필요는 없어요. 비운 동안 모인 결과는 다시 돌아왔을 때 확인할 수 있어요. 홈 화면에서는 섬을 감상하고, 정하고 싶은 일이 생기면 앱을 열어 주세요.\n\n작은 섬의 첫 항해를 함께해요.\n\n이 앱은 Android 라이브 배경화면을 사용하는 게임입니다. 배경화면 적용과 건설, 기록 확인은 앱의 안내를 따라 진행할 수 있어요.": "A little island has appeared on your phone’s home screen.\nDan gathers wood, Bori prepares a place for visitors, and Haeon writes down news from returning ships. The island’s day goes on, even during a brief glance.\n\nLittle Island is an idle island-life game you can enjoy as a live wallpaper. Watch residents and ships on your home screen, then open the app to build and read the records you have gathered.\n\nThe feeling of a ship coming home\nGather wood and stone to build a dock and send out a trading ship. It sells cargo at a port, then returns to the island. Pirate encounters at sea resolve automatically. Check the results at your own pace when the ship comes home.\n\nA place for guests to rest\nPrepare a vacant room to welcome a worker. Visitors help for their agreed contract, then head to another port. Small rooms, cups, and lights on the pier gather stories of their own.\n\nA journal to open when you like\nFrom the first light to the first trade and the first guest, island life finds its way into the journal. Read a quick update or open the full story when you have time. Production and voyages continue either way.\n\nA place that welcomes your own pace\nThere is no need to keep tapping or watching. Check the results of your time away when you return. Enjoy the island on your home screen, and open the app whenever you want to make a choice.\n\nJoin the island’s first voyage.\n\nThis game uses Android live wallpaper. Follow the in-app guidance to apply the wallpaper, build, and browse your records.",
+    "홈 화면에서 자라는 도트 섬, 항구를 잇는 자동 교역과 주민들의 긴 항해 이야기를 만나세요": "Connect distant ports through idle sea trade and stories on your home screen.",
+    "작은 섬에 불빛을 켜 주세요.\n배가 돌아오고, 편지가 도착하고, 멀리 떨어진 항구들의 이야기가 이어집니다.\n\n작은 섬: 돌아오는 바다는 Android 홈 화면에서 감상하는 방치형 섬 생활 게임이에요. 단, 보리, 해온이 머무는 섬을 가꾸고 자동 교역선을 보내며 여울해의 항구들을 만나 보세요. 건설과 항로 선택은 앱에서, 섬의 움직임과 짧은 소식은 홈 화면에서 즐길 수 있어요.\n\n낡은 배와 시작하는 교역\n모은 나무와 돌을 배에 싣고 바다로 나가요. 항구마다 다른 물건과 거래처를 만나고, 우리 배의 짐칸과 돛을 고쳐 더 넓은 항로를 이어 갑니다. 해적과의 전투는 자동으로 진행되며 귀항 결과에 함께 기록돼요.\n\n작은 섬에 남는 변화\n처음에는 빈방과 창고, 부두였던 섬에 장터와 등대의 불빛이 더해져요. 일을 도우러 온 알바는 약속한 시간 동안 머물고 자기 일정에 따라 떠납니다. 섬이 커져도 단, 보리, 해온이 함께하는 일상은 계속돼요.\n\n지도에서 지워진 항구의 비밀\n파란 끈이 묶인 상자, 낡은 승선표, 멀리서 온 편지. 평범한 교역에서 시작한 이야기는 끊어진 바닷길과 사람들의 약속으로 이어져요. 항해일지에 모이는 본편과 인물들의 외전, 소소한 항해 사건을 편할 때 읽어 보세요.\n\n이야기를 읽는 시간도 자유롭게\n일지를 펼치지 않아도 생산과 항해는 계속됩니다. 놓친 편지는 사라지지 않고, 늦게 읽어도 주요 이야기의 결말은 달라지지 않아요. 비운 동안 모인 결과와 새 소식을 돌아왔을 때 확인하면 돼요.\n\n돌아온 뒤에도 계속되는 하루\n이야기가 끝난 뒤에는 계절 장식과 항구의 장터, 다시 찾아온 사람들의 편지를 모을 수 있어요. 작은 섬을 잃거나 배를 처음부터 다시 키우지 않고 다음 항해로 이어 갑니다.\n\n가끔 켜 보는 홈 화면에, 돌아올 자리가 있는 바다를 담아 보세요.\n\n이 앱은 Android 라이브 배경화면을 사용하는 게임입니다. 배경화면 적용과 건설, 항로 선택, 기록 확인은 앱의 안내를 따라 진행할 수 있어요.": "Light a lantern on a little island.\nShips come home, letters arrive, and stories connect faraway ports.\n\nLittle Island is an idle island-life game for your Android home screen. Care for the island where Dan, Bori, and Haeon live, send automatic trading voyages, and meet the ports of the Yeoul Sea. Build and choose routes in the app; enjoy the island’s scenery and brief news on your home screen.\n\nTrade begins with an old boat\nLoad the wood and stone you have gathered and set out to sea. Discover different goods and trading partners at each port. Improve the cargo hold and sails of your own ship to reach wider routes. Pirate encounters resolve automatically and are recorded with the return results.\n\nChanges that stay with the island\nWhat began with spare rooms, a warehouse, and a dock grows to include a market and a lighthouse. Visiting workers stay for their agreed contracts and leave according to their own schedules. However the island grows, everyday life with Dan, Bori, and Haeon continues.\n\nThe mystery of a port erased from the map\nA blue cord around a crate, an old boarding pass, a letter from far away. Ordinary trade leads to broken sea routes and promises between people. Read the main story, character side stories, and small voyage encounters whenever you like.\n\nStories on your own schedule\nProduction and voyages continue while the journal stays closed. Unread letters do not disappear, and reading late does not change the main story’s ending. Return to find the news and results that have gathered.\n\nLife after coming home\nAfter the story ends, collect seasonal decorations, enjoy harbor markets, and receive letters from returning visitors. Continue to the next voyage without losing your island or starting your ship’s growth over.\n\nBring a sea full of places to return to onto the home screen you visit each day.\n\nThis game uses Android live wallpaper. Follow the in-app guidance to apply the wallpaper, build, select routes, and browse your records.",
+    "홈 화면에 작은 섬이 살아요": "A Little Island Lives on Your Home Screen",
+    "홈 화면의 작은 섬에서 주민들이 일하고 부두 옆 배가 움직이는 모습": "Residents work on a small home-screen island while a boat moves beside the pier.",
+    "배는 스스로 교역을 다녀와요": "Your Ship Trades on Its Own",
+    "항해 중인 배와 목적지, 돌아올 때까지의 진행 상황": "A ship at sea, its destination, and progress toward its return.",
+    "돌아오면 소식이 모여 있어요": "News Awaits Your Return",
+    "귀항 뒤 받은 금화와 자원, 항해 결과를 한 카드에서 확인하는 화면": "A return-results card showing gold, resources, and voyage results together.",
+    "일을 돕고 쉬어 가는 사람들": "People Who Help and Rest a While",
+    "알바의 계약 시간과 숙소를 확인하는 앱 화면": "The app’s worker contract and lodging status screen.",
+    "섬의 이야기는 읽고 싶을 때": "Island Stories, Whenever You Like",
+    "열린 항해일지의 제목과 요약, 펼친 이야기 본문": "Journal titles and summaries with an expanded story.",
+    "작은 섬을 차근차근 가꿔요": "Grow Your Island, One Step at a Time",
+    "모인 소식을 전해요": "Your News Is Here",
+    "배와 섬의 소식이 모였어요.": "News from the ship and island has arrived.",
+    "귀항 소식을 확인할 수 있어요.": "Your return news is ready to read.",
+    "창고가 가득해요": "The Warehouse Is Full",
+    "모은 자원을 쓸 수 있어요.": "Your gathered resources are ready to use.",
+    "손님이 도착했어요": "A Guest Has Arrived",
+    "{worker_name}의 계약이 시작됐어요.": "{worker_name}’s contract has begun.",
+    "계약을 마쳤어요": "Contract Completed",
+    "{worker_name}의 계약이 끝났어요.": "{worker_name}’s contract has ended.",
+    "새 일지가 왔어요": "A New Journal Entry",
+    "새 이야기가 일지에 남았어요.": "A new story has been added to the journal.",
+    "편지가 도착했어요": "Letters Have Arrived",
+    "읽을 편지 {count}통이 모였어요.": "Letters waiting to be read: {count}",
+    "새 항구가 열렸어요": "A New Port Is Open",
+    "새 항로를 선택할 수 있어요.": "You can now choose a new route.",
+    "하루 최대 {daily_max}번": "Up to {daily_max} times a day",
+    "{start_hour}시부터 {end_hour}시까지 쉬어요.": "Quiet from {start_hour}:00 to {end_hour}:00.",
+    "일을 도울 손님이 도착했어요.": "A helping hand has arrived.",
+    "홈 화면 속 작은 섬에서 배가 돌아오고 사람들의 이야기가 쌓이는 방치형 게임": "A home-screen island where ships return and people’s stories gather.",
+    "오늘도 돌아오는 배가 있어요": "Another ship is coming home today."
+  },
+  "ui_by_id": {
+    "schema_version": 1,
+    "buttons": {
+      "open_app": "Manage Island",
+      "back": "Back",
+      "close": "Close",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "save": "Save",
+      "build": "Build",
+      "upgrade": "Expand",
+      "ship_upgrade": "Upgrade Ship",
+      "select_route": "Choose Route",
+      "set_next_route": "Set Next Route",
+      "start_voyage": "Enable Voyages",
+      "pause_voyage": "Pause Next Departure",
+      "resume_voyage": "Resume Voyages",
+      "hire": "Hire",
+      "contract_details": "View Contract",
+      "auto_hire": "Auto Hire",
+      "set_budget": "Set Budget",
+      "view_journal": "Voyage Journal",
+      "read_story": "Read Story",
+      "collapse_story": "Collapse",
+      "mark_read": "Mark as Read",
+      "read_again": "Read Again",
+      "view_letters": "Mailbox",
+      "view_all": "View All",
+      "view_details": "View Details",
+      "choose_specialty": "Choose Cargo",
+      "choose_decoration": "Choose Decoration",
+      "apply_decoration": "Decorate",
+      "preview": "Preview",
+      "set_wallpaper": "Set Live Wallpaper",
+      "settings": "Settings",
+      "next": "Next",
+      "start": "Visit Island",
+      "skip_tutorial": "Maybe Later",
+      "replay_tutorial": "Replay Introduction",
+      "reset": "Start Over",
+      "reset_final": "Erase and Restart",
+      "keep_playing": "Keep Playing",
+      "open_notification_settings": "Device Notification Settings",
+      "clear_filter": "Show All",
+      "sort": "Sort",
+      "restore_default_theme": "Restore Default Look",
+      "help": "Help"
+    },
+    "labels": {
+      "wood": "Wood",
+      "stone": "Stone",
+      "gold": "Gold",
+      "island": "Little Island",
+      "sea": "Sea",
+      "port": "Port",
+      "residents": "Island Residents",
+      "workers": "Workers",
+      "vacant_room": "Vacant Room",
+      "occupied_room": "Occupied",
+      "contract_time_left": "Work Time Left",
+      "voyage_time_left": "Time to Return",
+      "next_destination": "Next Destination",
+      "current_destination": "Current Destination",
+      "cargo": "Loaded Cargo",
+      "base_cargo": "Basic Cargo",
+      "special_cargo": "Specialty Goods",
+      "purchase_cost": "Purchase Cost",
+      "estimated_sales": "Estimated Revenue",
+      "actual_sales": "Actual Revenue",
+      "net_result": "Trade Result",
+      "sale_price": "Sale Price",
+      "buy_price": "Purchase Price",
+      "route_duration": "Round-trip Time",
+      "encounter_chance": "Pirate Encounter Chance",
+      "win_if_encounter": "Win Chance on Encounter",
+      "cargo_loss": "Cargo Lost",
+      "returning_worker": "Returning Worker",
+      "work_period": "Work Duration",
+      "hire_cost": "Hiring Fee",
+      "budget_remaining": "Hiring Budget Left",
+      "capacity": "Storage Capacity",
+      "stored": "In Storage",
+      "unread": "Unread",
+      "read": "Read",
+      "main_story": "Main Story",
+      "side_story": "Character Stories",
+      "voyage_story": "Voyage News",
+      "past_records": "Past Records",
+      "newest": "Newest First",
+      "oldest": "Oldest First",
+      "all": "All",
+      "available": "Available",
+      "locked": "Not Yet Available",
+      "completed": "Complete",
+      "requirements": "Requirements",
+      "cost": "Resources Needed",
+      "owned": "Owned",
+      "shortage": "Shortfall",
+      "reward": "Rewards Received",
+      "cosmetic_only": "Cosmetic",
+      "season": "Seasonal Decorations",
+      "sound": "Sound",
+      "notification": "Notifications",
+      "progress": "Island Progress",
+      "version": "Version"
+    },
+    "screens": [
+      {
+        "id": "island",
+        "title": "Our Island",
+        "description": "Choose what to build and what needs doing.",
+        "hint": "Relax and watch the island on your home screen."
+      },
+      {
+        "id": "buildings",
+        "title": "Island Buildings",
+        "description": "Build and expand in the designated spaces.",
+        "hint": "There are up to {house_max} worker lodgings. The resident population stays the same."
+      },
+      {
+        "id": "warehouse",
+        "title": "Warehouse",
+        "description": "Store wood and stone separately.",
+        "hint": "Resources that cannot fit in a full warehouse are not included in your rewards."
+      },
+      {
+        "id": "ship",
+        "title": "Our Ship",
+        "description": "Grow your cargo hold, sails, and defenses.",
+        "hint": "Upgrades preserve your ship’s name and history."
+      },
+      {
+        "id": "routes",
+        "title": "Sea Routes",
+        "description": "Choose the port for your next voyage.",
+        "hint": "Route changes apply to the next departure, after the current voyage ends."
+      },
+      {
+        "id": "cargo",
+        "title": "Cargo for the Next Voyage",
+        "description": "Check your basic cargo and specialty goods.",
+        "hint": "Reserve specialty goods at departure. Load them at the visited port, then sell them to the contracted buyer’s ship back at the island."
+      },
+      {
+        "id": "workers",
+        "title": "Workers",
+        "description": "Check rooms and contract terms before welcoming a worker.",
+        "hint": "Work time begins when the worker reaches the island."
+      },
+      {
+        "id": "auto_hire",
+        "title": "Auto Hire",
+        "description": "Choose a port and budget to welcome workers into vacant rooms.",
+        "hint": "If the budget runs out, hiring pauses while production and voyages continue."
+      },
+      {
+        "id": "journal",
+        "title": "Voyage Journal",
+        "description": "Read stories gathered from the island and its ports.",
+        "hint": "Production and voyages continue while stories wait. Your records stay safe."
+      },
+      {
+        "id": "letters",
+        "title": "Mailbox",
+        "description": "Keep news from the people you have met.",
+        "hint": "You can reread letters even after their writers have left."
+      },
+      {
+        "id": "history",
+        "title": "Voyage History",
+        "description": "Review sales, encounters, and returns together.",
+        "hint": "The gold summary is the total of the details below."
+      },
+      {
+        "id": "decoration",
+        "title": "Island Decorations",
+        "description": "Change a little corner with the decorations you have collected.",
+        "hint": "Seasonal decorations do not affect performance."
+      },
+      {
+        "id": "market",
+        "title": "Homecoming Market",
+        "description": "A meeting place for goods and news from many ports.",
+        "hint": "Visitors return to their own ships and ports when the market closes."
+      },
+      {
+        "id": "settings",
+        "title": "Settings",
+        "description": "Set sound and notifications to suit you.",
+        "hint": "Production and voyages continue with notifications off."
+      }
+    ],
+    "building_copy": [
+      {
+        "id": "copy_house",
+        "name": "Worker Lodging",
+        "description": "A room for a visiting worker to stay in during a contract.",
+        "effect": "Workers per house: {workers_per_house}.",
+        "note": "Dan, Bori, and Haeon remain the island’s residents."
+      },
+      {
+        "id": "copy_warehouse",
+        "name": "Warehouse",
+        "description": "Keep your wood and stone out of the rain.",
+        "effect": "Store up to {capacity} of each resource.",
+        "note": "Gold and letters do not use this capacity."
+      },
+      {
+        "id": "copy_dock",
+        "name": "Dock",
+        "description": "A safe stopping place for supply boats and trading ships.",
+        "effect": "Trading ships depart and supplies arrive here.",
+        "note": "Voyages and pirate encounters run automatically."
+      },
+      {
+        "id": "copy_campfire",
+        "name": "Campfire",
+        "description": "A place for the three residents to sit and chat.",
+        "effect": "A warm light for the island’s evenings.",
+        "note": "There is no need to tend the fire yourself."
+      },
+      {
+        "id": "copy_field",
+        "name": "Small Field",
+        "description": "A place to grow ingredients and little everyday pleasures.",
+        "effect": "Active workers gather {bonus_percent}% more resources.",
+        "note": "There is no need to time watering or harvests."
+      },
+      {
+        "id": "copy_lighthouse",
+        "name": "Lighthouse",
+        "description": "A light that helps returning ships find the island.",
+        "effect": "Pirate encounter win chance increases by {bonus_points} percentage points.",
+        "note": "The effect is the same by day and night."
+      },
+      {
+        "id": "copy_market",
+        "name": "Market",
+        "description": "A small gathering of goods, repairs, and letters.",
+        "effect": "Sales earn {bonus_percent}% more.",
+        "note": "New visitors do not become permanent residents."
+      }
+    ],
+    "empty_states": [
+      {
+        "id": "journal_empty",
+        "title": "No journal entries yet",
+        "body": "Start your first task on the island, and the records will begin to grow.",
+        "action": "Visit Island"
+      },
+      {
+        "id": "journal_filter_empty",
+        "title": "No records in this category yet",
+        "body": "Browse another category or wait for the next voyage.",
+        "action": "Show All"
+      },
+      {
+        "id": "letters_empty",
+        "title": "No letters yet",
+        "body": "People you meet at the ports will send news with passing ships.",
+        "action": null
+      },
+      {
+        "id": "workers_none",
+        "title": "No workers are staying here",
+        "body": "Prepare a vacant room and choose a new contract at a port.",
+        "action": "View Contract"
+      },
+      {
+        "id": "no_vacancy",
+        "title": "Every room has a guest",
+        "body": "You can welcome another worker after a contract ends and a room becomes free.",
+        "action": null
+      },
+      {
+        "id": "roster_empty",
+        "title": "No contracts available right now",
+        "body": "Check the noticeboard again on your next port visit.",
+        "action": null
+      },
+      {
+        "id": "no_dock",
+        "title": "Your ship needs a dock",
+        "body": "Build a dock to start trading voyages between ports.",
+        "action": "Build"
+      },
+      {
+        "id": "no_new_routes",
+        "title": "No new routes are ready yet",
+        "body": "Upgrade your ship and follow the news to open more routes.",
+        "action": "View Requirements"
+      },
+      {
+        "id": "no_specialty",
+        "title": "Basic cargo for this voyage",
+        "body": "Connect with new ports to choose specialty goods too.",
+        "action": null
+      },
+      {
+        "id": "no_cargo",
+        "title": "Gathering the next cargo",
+        "body": "The ship will depart automatically when the cargo is ready.",
+        "action": null
+      },
+      {
+        "id": "no_history",
+        "title": "Waiting for the first voyage",
+        "body": "Trade and return results will appear here.",
+        "action": null
+      },
+      {
+        "id": "no_decorations",
+        "title": "Using the default decorations",
+        "body": "Find new decorations as you follow voyages and stories.",
+        "action": null
+      },
+      {
+        "id": "no_unread",
+        "title": "You have read all the news",
+        "body": "There is no hurry when the next story arrives.",
+        "action": "View Past Records"
+      },
+      {
+        "id": "market_locked",
+        "title": "A place for a future market",
+        "body": "Build connections with new ports to open a market here.",
+        "action": "View Requirements"
+      }
+    ],
+    "tutorial": {
+      "show_once": true,
+      "skippable": true,
+      "replay_available": true,
+      "blocks_simulation": false,
+      "scenes": [
+        {
+          "id": "tutorial_01",
+          "order": 1,
+          "title": "A Little Island in Your Pocket",
+          "body": "Dan, Bori, and Haeon gather resources and care for the island. Enjoy its moving scenery and news on your home screen.",
+          "focus": "island_scene",
+          "button": "Next",
+          "requires_action": false
+        },
+        {
+          "id": "tutorial_02",
+          "order": 2,
+          "title": "Make Room for What You Need",
+          "body": "Choose and build structures in the app. Houses are temporary lodgings for visiting workers.",
+          "focus": "buildings",
+          "button": "Next",
+          "requires_action": false
+        },
+        {
+          "id": "tutorial_03",
+          "order": 3,
+          "title": "The Ship Finds Its Way",
+          "body": "Once the dock is ready, your ship loads cargo and heads to a port. Read the trade and pirate encounter results when news returns.",
+          "focus": "dock",
+          "button": "Next",
+          "requires_action": false
+        },
+        {
+          "id": "tutorial_04",
+          "order": 4,
+          "title": "The News Can Wait",
+          "body": "Away rewards accumulate for up to {away_cap} hours. Stories stay in your journal, and the island keeps moving whether you read them or not.",
+          "focus": "journal",
+          "button": "Visit Island",
+          "requires_action": false
+        }
+      ]
+    },
+    "settings": [
+      {
+        "id": "sound_effects",
+        "label": "Sound Effects",
+        "description": "Hear footsteps and the little sounds of the harbor.",
+        "default": false,
+        "on": "On",
+        "off": "Off"
+      },
+      {
+        "id": "ambient_audio",
+        "label": "Sea Ambience",
+        "description": "Hear a gentle sea while viewing the island in the app.",
+        "default": false,
+        "on": "On",
+        "off": "Off",
+        "wallpaper_audio": false
+      },
+      {
+        "id": "notifications",
+        "label": "News Notifications",
+        "description": "Receive return and storage news only when you want it.",
+        "default": false,
+        "on": "On",
+        "off": "Off",
+        "permission_intro": "Turn on notifications to receive selected news without opening the app.",
+        "permission_declined": "Notifications are off. The island keeps moving.",
+        "permission_missing": "Allow notifications for this app in your device settings.",
+        "permission_button": "Device Notification Settings"
+      },
+      {
+        "id": "notification_returns",
+        "label": "Return News",
+        "description": "Get a quiet summary of several voyage results.",
+        "default": false
+      },
+      {
+        "id": "notification_storage",
+        "label": "Storage News",
+        "description": "Receive one notification when the warehouse becomes full.",
+        "default": false
+      },
+      {
+        "id": "quiet_hours",
+        "label": "Quiet Hours",
+        "description": "No notifications during your chosen hours.",
+        "default": true,
+        "start_hour": 22,
+        "end_hour": 9
+      },
+      {
+        "id": "motion_reduced",
+        "label": "Reduce Motion",
+        "description": "Keep waves and sparkles more subdued.",
+        "default": false
+      },
+      {
+        "id": "replay_intro",
+        "label": "Replay Introduction",
+        "description": "Take another look at how to care for your island."
+      },
+      {
+        "id": "reset_progress",
+        "label": "Start Over",
+        "description": "Erase this device’s saved island progress and begin again."
+      }
+    ],
+    "dialogs": [
+      {
+        "id": "reset_first",
+        "title": "Start the island over?",
+        "body": "This device’s progress will be erased, including resources, buildings, ship growth, voyage records, and read stories.",
+        "confirm": "Continue to Confirmation",
+        "cancel": "Keep Playing"
+      },
+      {
+        "id": "reset_final",
+        "title": "Erase all progress?",
+        "body": "This screen cannot restore erased progress. You will start again on a new island’s first day.",
+        "confirm": "Erase and Restart",
+        "cancel": "Cancel",
+        "destructive": true
+      },
+      {
+        "id": "pause_voyage",
+        "title": "Pause the next departure?",
+        "body": "The ship currently at sea will return as planned, then wait at the dock.",
+        "confirm": "Pause Next Departure",
+        "cancel": "Keep Sailing"
+      },
+      {
+        "id": "change_route",
+        "title": "Change the next route?",
+        "body": "Finish the current voyage, then sail to the selected port on the next departure.",
+        "confirm": "Change Route",
+        "cancel": "Cancel"
+      },
+      {
+        "id": "hire_worker",
+        "title": "Start a new contract?",
+        "body": "Hiring {worker} costs {wage} gold. The contract lasts {work_hours} hours from arrival at the island.",
+        "confirm": "Hire",
+        "cancel": "Cancel"
+      },
+      {
+        "id": "auto_hire_stop",
+        "title": "Turn off auto hiring?",
+        "body": "Existing contracts continue. New contracts will no longer be started automatically at ports.",
+        "confirm": "Turn Off Auto Hire",
+        "cancel": "Cancel"
+      },
+      {
+        "id": "set_wallpaper",
+        "title": "See the island on your home screen?",
+        "body": "Choose Little Island as your wallpaper on the next screen. Build and select routes here in the app.",
+        "confirm": "Choose Wallpaper",
+        "cancel": "Later"
+      },
+      {
+        "id": "buy_specialty",
+        "title": "Take specialty goods on the next voyage?",
+        "body": "Reserve {cargo} {goods} for {gold} gold. Load them at the port, then sell them to the contracted buyer’s ship on return. You may lose some specialty cargo to pirates on the way home.",
+        "confirm": "Choose This Cargo",
+        "cancel": "Cancel"
+      }
+    ],
+    "notices": [
+      {
+        "id": "resource_shortage",
+        "text": "Not enough resources yet. Check again when you have gathered more."
+      },
+      {
+        "id": "gold_shortage",
+        "text": "Not enough gold. Wait for the next trade result."
+      },
+      {
+        "id": "feature_not_ready",
+        "text": "This feature is planned for a later part of the story."
+      },
+      {
+        "id": "already_built",
+        "text": "This structure is already built."
+      },
+      {
+        "id": "max_level",
+        "text": "This is the final stage currently available."
+      },
+      {
+        "id": "hire_already_reserved",
+        "text": "A worker is already booked on the returning ship."
+      },
+      {
+        "id": "worker_contract_active",
+        "text": "The current contract continues for its agreed duration."
+      },
+      {
+        "id": "saved",
+        "text": "Your changes have been saved."
+      },
+      {
+        "id": "saving_failed",
+        "text": "Could not save your changes. Please try again shortly."
+      },
+      {
+        "id": "journal_load_failed",
+        "text": "Could not load the story. Your island progress is unchanged."
+      },
+      {
+        "id": "journal_restore_read",
+        "text": "You can reopen earlier stories at any time."
+      },
+      {
+        "id": "sale_estimate",
+        "text": "This is an estimate. Actual quantities and trade results may change the revenue."
+      },
+      {
+        "id": "specialty_budget_rule",
+        "text": "Only reserve whole units that fit the budget. If none are affordable, continue trading wood and stone without specialty goods."
+      },
+      {
+        "id": "offline_cap",
+        "text": "Away rewards cover up to {away_cap} hours. Your stories remain saved even after a long absence."
+      },
+      {
+        "id": "capacity_per_resource",
+        "text": "Storage capacity applies separately to wood and stone."
+      },
+      {
+        "id": "story_read_optional",
+        "text": "Production and voyages continue whether you read the stories or not."
+      },
+      {
+        "id": "first_worker",
+        "text": "Yeoul is your first worker. After that, choose contracts at unlocked ports."
+      },
+      {
+        "id": "notification_disabled",
+        "text": "Production and voyages continue with notifications off."
+      },
+      {
+        "id": "notification_sent_once",
+        "text": "News is grouped so the same update does not keep alerting you."
+      },
+      {
+        "id": "season_cosmetic",
+        "text": "Seasonal decorations do not change rewards or production speed."
+      },
+      {
+        "id": "story_storm",
+        "text": "The storm story follows its recorded sequence. Your login times do not change the ending."
+      },
+      {
+        "id": "ending_continue",
+        "text": "The main story is complete. Trading, decorating, and new letters continue."
+      },
+      {
+        "id": "trade_settlement_phases",
+        "text": "Sell wood and stone at the visited port. Deliver specialty goods to the contracted buyer’s ship and receive payment after returning home."
+      },
+      {
+        "id": "combat_reward_on_return",
+        "text": "Combat rewards are recorded when the outcome is decided and paid once when the ship returns."
+      }
+    ],
+    "interpolation": {
+      "rule": "Fill numbers from actual game values. Contract figures use the terms agreed for that contract, not the current price list.",
+      "keys": [
+        "away_cap",
+        "bonus_percent",
+        "bonus_points",
+        "capacity",
+        "cargo",
+        "gold",
+        "goods",
+        "house_max",
+        "wage",
+        "work_hours",
+        "worker",
+        "workers_per_house"
+      ]
+    },
+    "layout": {
+      "decision_surface": "app",
+      "wallpaper_is_passive": true,
+      "dialog_covers_wallpaper": false,
+      "story_default": "Show the title and a two-line summary; expand to read the body.",
+      "button_text_must_not_include_implementation_terms": true
+    }
+  },
+  "result_cards": {
+    "schema_version": 1,
+    "rendering": {
+      "title_max_chars": 25,
+      "line_max_chars": 25,
+      "integer_short_max_chars": 6,
+      "number_format": "금화의 소수 보관·표시 버림은 01_economy.money 규칙을 따른다. 홈에서는 만·억 단위로 짧게 표시하고 정확한 정산 값은 앱 상세에 보여 준다. 순증감은 부호를 포함해 한 번만 포맷한다.",
+      "unknown_placeholder": "변수를 채울 수 없는 카드는 표시하지 않는다. 없는 값을 0이나 임의 문장으로 대체하지 않는다.",
+      "optional_surface_note": "화면에 카드를 표시하는 것은 정산과 별개다. 카드가 생략되어도 기록과 지급 상태는 유지한다."
+    },
+    "placeholders": [
+      {
+        "key": "gold",
+        "type": "number",
+        "display_max_chars": 6,
+        "description": "판매액·보상액처럼 비음수인 금화 수입 또는 예약 비용의 절대값. 카드 amount_source를 따른다. 전투 보상은 귀항 전까지 미지급이다. 지갑 순증감에는 gold_delta를 사용한다.",
+        "minimum": 0
+      },
+      {
+        "key": "resources",
+        "type": "number",
+        "display_max_chars": 6,
+        "description": "이번 정산에서 창고에 실제로 보관한 나무와 돌 합계. 버린 초과분은 포함하지 않는다."
+      },
+      {
+        "key": "wood",
+        "type": "number",
+        "display_max_chars": 6,
+        "description": "실제로 얻거나 판매한 나무 수량."
+      },
+      {
+        "key": "stone",
+        "type": "number",
+        "display_max_chars": 6,
+        "description": "실제로 얻거나 판매한 돌 수량."
+      },
+      {
+        "key": "cargo",
+        "type": "number",
+        "display_max_chars": 6,
+        "description": "카드 사건의 화물 수량. 특산물 예약은 실제 정수 예약량, 판매는 손실 반영 후 인도한 실제 수량."
+      },
+      {
+        "key": "lost_cargo",
+        "type": "number",
+        "display_max_chars": 6,
+        "description": "전투 정산으로 확정된 손실 수량."
+      },
+      {
+        "key": "count",
+        "type": "integer",
+        "display_max_chars": 4,
+        "description": "한 묶음에 포함된 사건 또는 편지 수."
+      },
+      {
+        "key": "hours",
+        "type": "number",
+        "display_max_chars": 4,
+        "description": "실제 적용한 부재 보상 시간."
+      },
+      {
+        "key": "away_cap",
+        "type": "number",
+        "display_max_chars": 4,
+        "description": "설정된 부재 보상 상한 시간."
+      },
+      {
+        "key": "duration",
+        "type": "string",
+        "display_max_chars": 6,
+        "description": "남은 시간의 짧은 표시."
+      },
+      {
+        "key": "worker",
+        "type": "string",
+        "display_max_chars": 4,
+        "description": "대상 계약 알바 이름."
+      },
+      {
+        "key": "port",
+        "type": "string",
+        "display_max_chars": 8,
+        "description": "항구 이름."
+      },
+      {
+        "key": "building",
+        "type": "string",
+        "display_max_chars": 8,
+        "description": "건물 이름."
+      },
+      {
+        "key": "level",
+        "type": "integer",
+        "display_max_chars": 2,
+        "description": "현재 강화 또는 창고 단계."
+      },
+      {
+        "key": "capacity",
+        "type": "integer",
+        "display_max_chars": 6,
+        "description": "해당 자원의 보관 상한."
+      },
+      {
+        "key": "wage",
+        "type": "number",
+        "display_max_chars": 6,
+        "description": "해당 계약 고용비."
+      },
+      {
+        "key": "work_hours",
+        "type": "number",
+        "display_max_chars": 4,
+        "description": "해당 계약의 근무 시간."
+      },
+      {
+        "key": "goods",
+        "type": "string",
+        "display_max_chars": 6,
+        "description": "특산물 또는 수집품의 짧은 표시 이름."
+      },
+      {
+        "key": "season",
+        "type": "string",
+        "display_max_chars": 2,
+        "description": "현재 장식 계절 이름."
+      },
+      {
+        "key": "story_no",
+        "type": "integer",
+        "display_max_chars": 3,
+        "description": "해당 본편 또는 외전 표시 번호."
+      },
+      {
+        "key": "voyage_count",
+        "type": "integer",
+        "display_max_chars": 4,
+        "description": "이번 부재 정산의 완료 항해 수."
+      },
+      {
+        "key": "budget",
+        "type": "number",
+        "display_max_chars": 6,
+        "description": "자동 고용에 남은 예산."
+      },
+      {
+        "key": "price",
+        "type": "number",
+        "display_max_chars": 6,
+        "description": "확정 거래 단가."
+      },
+      {
+        "key": "loss_percent",
+        "type": "number",
+        "display_max_chars": 3,
+        "description": "이번 화물 손실률의 퍼센트 표시."
+      },
+      {
+        "key": "home_news",
+        "type": "string",
+        "display_max_chars": 25,
+        "description": "해금된 이야기 또는 항해 사건의 검증된 한 줄 소식."
+      },
+      {
+        "key": "gold_delta",
+        "type": "number",
+        "display_max_chars": 7,
+        "description": "정산 구간 지갑의 실제 순증감. 양수·음수·0을 모두 허용한다. 숫자 원자료에 부호 포함 축약 포맷을 한 번 적용하며 카드에 +를 덧붙이지 않는다.",
+        "formatter": "signed_compact_number",
+        "positive_example": "+240",
+        "negative_example": "−24",
+        "zero_example": "0"
+      },
+      {
+        "key": "overflow_resources",
+        "type": "integer",
+        "display_max_chars": 6,
+        "description": "해당 보급 사건에서 창고 한도를 넘어 실제로 보관하지 못한 나무와 돌의 합계. resources와 분리한다.",
+        "minimum": 0
+      }
+    ],
+    "aggregation": {
+      "max_wallpaper_cards_per_open": 1,
+      "max_supplementary_home_news": 1,
+      "merge_by": "settlement_id",
+      "primary_priority": [
+        "away_summary",
+        "return_group",
+        "ship_return",
+        "worker_arrive",
+        "worker_leave",
+        "pirate_lose",
+        "pirate_win"
+      ],
+      "economy_total_rule": "부재 요약은 정산 원장의 실제 증감 합계. 하위 판매·전투·귀항 금화를 다시 더하지 않는다.",
+      "story_rule": "새 일지는 짧은 소식 한 줄만 덧붙이고 본문은 앱 안에 보관. 여러 외전은 편지 수로 묶는다.",
+      "low_priority_rule": "창고·보급·생활 사건이 반복되면 최신 요약 한 건으로 합친다. 앱 기록은 모두 유지한다.",
+      "payout_source": "게임 정산 원장. 전투 결과 원장의 확정 보상은 귀항 전까지 미지급 상태로 표시한다.",
+      "payout_on_show": false,
+      "payout_on_dismiss": false,
+      "payout_on_read": false,
+      "auto_dismiss_seconds": 8,
+      "dismiss_preserves_records": true,
+      "story_storm_rule": "폭풍 본편은 고정 이야기 카드다. 일반 전투 확률, 부재 시간, 추가 피해 정산과 연결하지 않는다.",
+      "trade_phase_rule": "기본 나무·돌은 방문항 판매 시 한 번 지급한다. 특산물은 출항 시 정수 가능 수량을 선결제 예약하고 방문항에서 선적한 뒤 귀항 시 작은 섬의 계약 수령선에 남은 수량을 인도하여 한 번 지급한다.",
+      "combat_phase_rule": "전투 결과 카드에는 확정 보상만 기록한다. 금화는 귀항 정산 때 한 번 지급하며, 전투 카드 표시 시 잔액을 바꾸지 않는다.",
+      "specialty_budget_rule": "예약량은 요청량·짐칸 한도·예산으로 살 수 있는 정수 수량의 최솟값. 양수 축소는 specialty_budget_low, 0개는 specialty_budget_empty 카드로 구분하며 기본 화물 항해는 계속된다.",
+      "signed_amount_rule": "금화 순증감은 gold_delta의 부호 포함 표시를 그대로 넣는다. +{gold_delta}처럼 부호를 두 번 붙이지 않는다. gold는 순수 수입·보상 또는 비용 절대값에만 쓴다.",
+      "overflow_rule": "보관 성공량 resources와 버린 양 overflow_resources는 별도 수량이다. 같은 공급량에서 각각 계산하고 요약에서 섞지 않는다.",
+      "specialty_loaded_rule": "specialty_bought 카드는 방문 생산항에서 실제 선적 완료 후에만 표시한다. 출항 선결제 시점에는 이 카드를 발행하지 않고 선결제 금화 내역만 기록한다."
+    },
+    "cards": [
+      {
+        "id": "card_away_summary",
+        "event": "away_summary",
+        "title": "While You Were Away",
+        "line": "Gold {gold_delta} · Resources +{resources}",
+        "unlock": "start",
+        "priority": 100,
+        "group": "away",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "gold_delta",
+          "resources"
+        ],
+        "payout": null,
+        "button": "View Details",
+        "amount_state": "realized_wallet_delta",
+        "amount_source": "away_wallet_delta",
+        "amount_note": "인정된 부재 구간 전체의 실제 지갑 증감. 판매·보상·특산물 예약비·고용비 등 확정 입출금을 한 번씩 합친 값."
+      },
+      {
+        "id": "card_away_voyages",
+        "event": "away_voyages",
+        "title": "Voyage News Collected",
+        "line": "Voyages completed: {voyage_count}",
+        "unlock": "sail_1",
+        "priority": 92,
+        "group": "away",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "voyage_count"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_away_no_change",
+        "event": "away_no_change",
+        "title": "Welcome Back",
+        "line": "Your saved records are still here.",
+        "unlock": "start",
+        "priority": 20,
+        "group": "away",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_away_cap_reached",
+        "event": "away_cap_reached",
+        "title": "Away Rewards Tallied",
+        "line": "Rewards cover up to {away_cap} hours.",
+        "unlock": "start",
+        "priority": 30,
+        "group": "away",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "away_cap"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_pirate_win",
+        "event": "pirate_win",
+        "title": "Pirate Encounter Over",
+        "line": "Crew safe · Return reward {gold}",
+        "unlock": "pirate_1",
+        "priority": 85,
+        "group": "combat",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "gold"
+        ],
+        "payout": null,
+        "button": "View Details",
+        "amount_state": "pending_until_voyage_return",
+        "amount_source": "pending_combat_reward",
+        "display_phase": "combat_result_recorded"
+      },
+      {
+        "id": "card_pirate_lose",
+        "event": "pirate_lose",
+        "title": "Sailing with What Remains",
+        "line": "Crew safe · Cargo -{lost_cargo}",
+        "unlock": "pirate_1",
+        "priority": 86,
+        "group": "combat",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "lost_cargo"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_pirate_no_encounter",
+        "event": "pirate_no_encounter",
+        "title": "Smooth Sailing",
+        "line": "This stretch of sea was quiet.",
+        "unlock": "sail_1",
+        "priority": 15,
+        "group": "combat",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_port_arrive",
+        "event": "port_arrive",
+        "title": "Arrived at Port",
+        "line": "Unloading cargo at {port}.",
+        "unlock": "sail_1",
+        "priority": 60,
+        "group": "voyage",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "port"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_sale_complete",
+        "event": "sale_complete",
+        "title": "Basic Cargo Sold",
+        "line": "Wood and stone sales: +{gold} gold",
+        "unlock": "sale_1",
+        "priority": 75,
+        "group": "voyage",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "gold"
+        ],
+        "payout": null,
+        "button": "View Details",
+        "amount_state": "credited_at_port",
+        "amount_source": "base_cargo_sale_revenue",
+        "display_phase": "port_base_cargo_sale"
+      },
+      {
+        "id": "card_sale_empty",
+        "event": "sale_empty",
+        "title": "Preparing the Next Trade",
+        "line": "There was no cargo to sell this time.",
+        "unlock": "sail_1",
+        "priority": 40,
+        "group": "voyage",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_ship_depart",
+        "event": "ship_depart",
+        "title": "The Ship Has Departed",
+        "line": "Sailing the route to {port}.",
+        "unlock": "sail_1",
+        "priority": 50,
+        "group": "voyage",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "port"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_ship_return",
+        "event": "ship_return",
+        "title": "The Ship Is Home",
+        "line": "Gold {gold_delta} · Cargo {cargo}",
+        "unlock": "voyages_1",
+        "priority": 90,
+        "group": "voyage",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "cargo",
+          "gold_delta"
+        ],
+        "payout": null,
+        "button": "View Details",
+        "amount_state": "realized_return_wallet_delta",
+        "amount_source": "return_wallet_delta",
+        "amount_note": "이번 귀항 시점에 실제 지갑에 반영된 입출금 합계. 방문항에서 이미 반영한 기본 화물 판매액과 출항 선결제는 제외한다."
+      },
+      {
+        "id": "card_voyage_wait_cargo",
+        "event": "voyage_wait_cargo",
+        "title": "Gathering the Next Cargo",
+        "line": "The ship will depart when ready.",
+        "unlock": "dock",
+        "priority": 25,
+        "group": "voyage",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_voyage_paused",
+        "event": "voyage_paused",
+        "title": "Resting at the Dock",
+        "line": "Resume voyages in the app.",
+        "unlock": "dock",
+        "priority": 20,
+        "group": "voyage",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_route_changed",
+        "event": "route_changed",
+        "title": "Next Route Set",
+        "line": "Next destination: {port}",
+        "unlock": "sail_1",
+        "priority": 35,
+        "group": "voyage",
+        "surface": "app",
+        "required_placeholders": [
+          "port"
+        ],
+        "payout": null,
+        "button": null
+      },
+      {
+        "id": "card_worker_hired",
+        "event": "worker_hired",
+        "title": "A New Helping Hand",
+        "line": "{worker} · Hiring fee: {wage} gold",
+        "unlock": "sale_1",
+        "priority": 70,
+        "group": "worker",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "wage",
+          "worker"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_worker_arrive",
+        "event": "worker_arrive",
+        "title": "A Worker Has Arrived",
+        "line": "{worker} · Work time: {work_hours} hours",
+        "unlock": "worker_arrive_1",
+        "priority": 88,
+        "group": "worker",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "work_hours",
+          "worker"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_worker_leave",
+        "event": "worker_leave",
+        "title": "Contract Completed",
+        "line": "Wishing {worker} well on the next job.",
+        "unlock": "worker_leave_1",
+        "priority": 89,
+        "group": "worker",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "worker"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_worker_room_full",
+        "event": "worker_room_full",
+        "title": "All Lodgings Are Occupied",
+        "line": "Welcome a worker when a room opens.",
+        "unlock": "house_1",
+        "priority": 35,
+        "group": "worker",
+        "surface": "app",
+        "required_placeholders": [],
+        "payout": null,
+        "button": null
+      },
+      {
+        "id": "card_worker_budget_low",
+        "event": "worker_budget_low",
+        "title": "Check the Hiring Budget",
+        "line": "Budget left: {budget} gold",
+        "unlock": "house_1",
+        "priority": 45,
+        "group": "worker",
+        "surface": "app",
+        "required_placeholders": [
+          "budget"
+        ],
+        "payout": null,
+        "button": null
+      },
+      {
+        "id": "card_worker_return_visit",
+        "event": "worker_return_visit",
+        "title": "A Familiar Face Returns",
+        "line": "A new contract with {worker} begins.",
+        "unlock": "worker_arrive_1",
+        "priority": 82,
+        "group": "worker",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "worker"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_auto_hire_enabled",
+        "event": "auto_hire_enabled",
+        "title": "Auto Hire Is On",
+        "line": "Welcome workers within your budget.",
+        "unlock": "house_1",
+        "priority": 30,
+        "group": "worker",
+        "surface": "app",
+        "required_placeholders": [],
+        "payout": null,
+        "button": null
+      },
+      {
+        "id": "card_auto_hire_disabled",
+        "event": "auto_hire_disabled",
+        "title": "Auto Hire Is Off",
+        "line": "Existing contracts continue.",
+        "unlock": "house_1",
+        "priority": 30,
+        "group": "worker",
+        "surface": "app",
+        "required_placeholders": [],
+        "payout": null,
+        "button": null
+      },
+      {
+        "id": "card_storage_full",
+        "event": "storage_full",
+        "title": "The Warehouse Is Full",
+        "line": "Review cargo plans and expansions.",
+        "unlock": "first_gather",
+        "priority": 55,
+        "group": "storage",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_warehouse_expanded",
+        "event": "warehouse_expanded",
+        "title": "Warehouse Expanded",
+        "line": "Capacity per resource: {capacity}",
+        "unlock": "store_1",
+        "priority": 70,
+        "group": "building",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "capacity"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_resource_gathered",
+        "event": "resource_gathered",
+        "title": "Resources Gathered",
+        "line": "Wood +{wood} · Stone +{stone}",
+        "unlock": "first_gather",
+        "priority": 25,
+        "group": "storage",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "stone",
+          "wood"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_supply_arrive",
+        "event": "supply_arrive",
+        "title": "The Supply Boat Is Here",
+        "line": "Wood +{wood} · Stone +{stone}",
+        "unlock": "dock",
+        "priority": 40,
+        "group": "storage",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "stone",
+          "wood"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_supply_overflow",
+        "event": "supply_overflow",
+        "title": "Stored What Would Fit",
+        "line": "Excluded overflow: {overflow_resources}",
+        "unlock": "dock",
+        "priority": 35,
+        "group": "storage",
+        "surface": "app",
+        "required_placeholders": [
+          "overflow_resources"
+        ],
+        "payout": null,
+        "button": null
+      },
+      {
+        "id": "card_building_complete",
+        "event": "building_complete",
+        "title": "A New Place Is Ready",
+        "line": "{building} completed",
+        "unlock": "start",
+        "priority": 75,
+        "group": "building",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "building"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_ship_upgraded",
+        "event": "ship_upgraded",
+        "title": "Our Ship Has Grown",
+        "line": "Ship upgrade to stage {level} complete",
+        "unlock": "ship_2",
+        "priority": 78,
+        "group": "building",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "level"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_port_unlocked",
+        "event": "port_unlocked",
+        "title": "A New Port Connected",
+        "line": "The route to {port} is now available.",
+        "unlock": "ship_2",
+        "priority": 78,
+        "group": "building",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "port"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_lighthouse_lit",
+        "event": "lighthouse_lit",
+        "title": "The Lighthouse Is Lit",
+        "line": "Ships can see the island’s signal.",
+        "unlock": "lighthouse",
+        "priority": 80,
+        "group": "building",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_market_open",
+        "event": "market_open",
+        "title": "The Island Market Is Open",
+        "line": "Goods and news arrive from many ports.",
+        "unlock": "market",
+        "priority": 80,
+        "group": "building",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_field_ready",
+        "event": "field_ready",
+        "title": "A Small Field Is Ready",
+        "line": "A little help for each working day.",
+        "unlock": "main_15",
+        "priority": 65,
+        "group": "building",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_new_main_story",
+        "event": "new_main_story",
+        "title": "A New Journal Entry",
+        "line": "Chapter {story_no} · Read it later, too.",
+        "unlock": "start",
+        "priority": 48,
+        "group": "story",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "story_no"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_new_side_story",
+        "event": "new_side_story",
+        "title": "A Letter Has Arrived",
+        "line": "Side story {story_no} has been saved.",
+        "unlock": "start",
+        "priority": 42,
+        "group": "story",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "story_no"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_letters_bundle",
+        "event": "letters_bundle",
+        "title": "News in the Mailbox",
+        "line": "New letters: {count}",
+        "unlock": "main_04",
+        "priority": 44,
+        "group": "story",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "count"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_story_home_news",
+        "event": "story_home_news",
+        "title": "News from the Island",
+        "line": "{home_news}",
+        "unlock": "start",
+        "priority": 47,
+        "group": "story",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "home_news"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_journal_caught_up",
+        "event": "journal_caught_up",
+        "title": "All Caught Up",
+        "line": "The next news will wait in the journal.",
+        "unlock": "start",
+        "priority": 15,
+        "group": "story",
+        "surface": "app",
+        "required_placeholders": [],
+        "payout": null,
+        "button": null
+      },
+      {
+        "id": "card_voyage_flavor",
+        "event": "voyage_flavor",
+        "title": "On This Voyage",
+        "line": "{home_news}",
+        "unlock": "sail_1",
+        "priority": 38,
+        "group": "story",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "home_news"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_specialty_bought",
+        "event": "specialty_bought",
+        "title": "Reserved Goods Loaded",
+        "line": "{goods} ×{cargo} · Loading complete",
+        "unlock": "ship_2",
+        "priority": 45,
+        "group": "trade",
+        "surface": "app",
+        "required_placeholders": [
+          "cargo",
+          "goods"
+        ],
+        "payout": null,
+        "button": null,
+        "amount_state": "no_additional_payment_on_loading",
+        "amount_source": "prepaid_contract_cost_reference",
+        "display_phase": "port_specialty_loaded",
+        "event_condition": "reserved_quantity > 0 and loaded_quantity > 0 and loading_completed",
+        "amount_note": "방문 생산항에서 예약한 특산물의 실제 선적이 끝났을 때만 발행한다. 출항 시 예약비를 이미 냈으므로 이 사건은 추가 지출을 만들지 않는다."
+      },
+      {
+        "id": "card_specialty_budget_low",
+        "event": "specialty_budget_low",
+        "title": "Fewer Specialty Goods",
+        "line": "Reserved {cargo} within your budget.",
+        "unlock": "ship_2",
+        "priority": 40,
+        "group": "trade",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "cargo"
+        ],
+        "payout": null,
+        "button": "View Details",
+        "display_phase": "departure_contract_prepaid",
+        "event_condition": "reserved_quantity > 0 and reserved_quantity < requested_quantity"
+      },
+      {
+        "id": "card_specialty_sold",
+        "event": "specialty_sold",
+        "title": "Specialty Goods Sold",
+        "line": "{goods} sold · Gold +{gold}",
+        "unlock": "ship_2",
+        "priority": 65,
+        "group": "trade",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "gold",
+          "goods"
+        ],
+        "payout": null,
+        "button": "View Details",
+        "amount_state": "credited_at_home_return",
+        "amount_source": "surviving_specialty_sale_revenue",
+        "display_phase": "home_return_contract_delivery"
+      },
+      {
+        "id": "card_season_changed",
+        "event": "season_changed",
+        "title": "A Change of Decorations",
+        "line": "The island wears the colors of {season}.",
+        "unlock": "start",
+        "priority": 20,
+        "group": "season",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "season"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_festival_open",
+        "event": "festival_open",
+        "title": "The Homecoming Fair Is Open",
+        "line": "Ports exchange greetings once again.",
+        "unlock": "main_59",
+        "priority": 65,
+        "group": "season",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_storm_story",
+        "event": "storm_story",
+        "title": "News from the Ports",
+        "line": "The storm’s story has been saved.",
+        "unlock": "main_50",
+        "priority": 50,
+        "group": "story",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_treasure_found",
+        "event": "treasure_found",
+        "title": "Old Warehouse Records Found",
+        "line": "Confirmed reward: +{gold} gold",
+        "unlock": "main_34",
+        "priority": 68,
+        "group": "story",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "gold"
+        ],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_main_ending",
+        "event": "main_ending",
+        "title": "More Places to Come Home To",
+        "line": "The story ends. The voyages continue.",
+        "unlock": "ending",
+        "priority": 80,
+        "group": "story",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_postgame_story",
+        "event": "postgame_story",
+        "title": "A Letter for the Next Season",
+        "line": "A new story is saved in the journal.",
+        "unlock": "ending",
+        "priority": 48,
+        "group": "story",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details"
+      },
+      {
+        "id": "card_cosmetic_unlocked",
+        "event": "cosmetic_unlocked",
+        "title": "New Decoration Collected",
+        "line": "{goods} · Choose it in Decorations.",
+        "unlock": "start",
+        "priority": 45,
+        "group": "collection",
+        "surface": "app",
+        "required_placeholders": [
+          "goods"
+        ],
+        "payout": null,
+        "button": null
+      },
+      {
+        "id": "card_trade_price_changed",
+        "event": "trade_price_changed",
+        "title": "Check the Next Trade Price",
+        "line": "Price for this trade: {price} gold",
+        "unlock": "ship_2",
+        "priority": 25,
+        "group": "trade",
+        "surface": "app",
+        "required_placeholders": [
+          "price"
+        ],
+        "payout": null,
+        "button": null
+      },
+      {
+        "id": "card_return_group",
+        "event": "return_group",
+        "title": "Homecoming News Collected",
+        "line": "Returns: {count} · Gold {gold_delta}",
+        "unlock": "voyages_1",
+        "priority": 94,
+        "group": "away",
+        "surface": "wallpaper",
+        "required_placeholders": [
+          "count",
+          "gold_delta"
+        ],
+        "payout": null,
+        "button": "View Details",
+        "amount_state": "realized_return_wallet_deltas",
+        "amount_source": "sum_return_wallet_delta",
+        "amount_note": "대상 귀항 시점에 실제 반영된 금화 증감의 합계. 방문항 기본 판매와 출항 예약비를 이 값에 중복 합산하지 않는다. 전체 부재 증감은 away_summary에서 확인한다."
+      },
+      {
+        "id": "card_specialty_budget_empty",
+        "event": "specialty_budget_empty",
+        "title": "Sailing Without Specialties",
+        "line": "Wood and stone trading continues.",
+        "unlock": "ship_2",
+        "priority": 40,
+        "group": "trade",
+        "surface": "wallpaper",
+        "required_placeholders": [],
+        "payout": null,
+        "button": "View Details",
+        "display_phase": "departure_contract_quote",
+        "event_condition": "requested_quantity > 0 and reserved_quantity == 0"
+      }
+    ],
+    "source_rendering_limits": {
+      "title_max_chars": 25,
+      "line_max_chars": 25,
+      "integer_short_max_chars": 6
+    },
+    "localization_rendering": {
+      "wrap_before_truncating": true,
+      "preserve_placeholders": true,
+      "use_locale_number_format": true,
+      "compact_number_units": [
+        "K",
+        "M",
+        "B"
+      ],
+      "signed_delta_formatted_once": true,
+      "name_substitution_uses_english_glossary": true,
+      "layout_test_required": true
+    }
+  },
+  "store": {
+    "app_name": "Little Island",
+    "one_line_pitch": "A home-screen island where ships return and people’s stories gather.",
+    "release_profiles": [
+      {
+        "id": "build_5_core",
+        "status": "copy_draft_for_reported_existing_features",
+        "ready_to_publish": false,
+        "public_copy_omits_unimplemented_story": true,
+        "requires_verified_features": [
+          "live_wallpaper",
+          "resident_gathering",
+          "building_screen",
+          "auto_voyage",
+          "auto_pirates",
+          "worker_recruitment",
+          "return_result_card",
+          "away_progress_calculation"
+        ],
+        "main_episode_count": 0,
+        "title": "Little Island",
+        "short_description": "A cozy pixel island on your home screen, with gathering and automatic sea trade.",
+        "full_description": "Watch a little island’s day unfold on your phone’s home screen.\n\nLittle Island is an Android live wallpaper game where residents gather resources and ships make trading voyages. Enjoy the island and sea on your home screen, then open the app to build and check your progress.\n\nGather wood and stone to prepare houses, a warehouse, and a dock. Ships depart from the dock, sell their cargo at a port, and return home. Pirate encounters resolve automatically, with the results recorded for you.\n\nWith a vacant lodging, you can welcome a worker to help. Workers gather resources alongside the residents for their agreed contract, then leave for their next destination.\n\nWhen you return, a results card shows the progress made while you were away. Discover a little island that keeps moving without constant tapping.\n\nThis game uses Android live wallpaper. Follow the in-app guidance to apply the wallpaper and build on your island.",
+        "character_counts": {
+          "title": 13,
+          "short_description": 80,
+          "full_description": 927
+        }
+      },
+      {
+        "id": "part_1_release",
+        "status": "recommended_first_story_release_after_implementation",
+        "ready_to_publish": false,
+        "requires_verified_features": [
+          "live_wallpaper",
+          "resident_gathering",
+          "building_screen",
+          "auto_voyage",
+          "auto_pirates",
+          "worker_recruitment",
+          "return_result_card",
+          "away_progress_calculation",
+          "journal_screen",
+          "story_unlocks",
+          "story_archive"
+        ],
+        "main_episode_count": 10,
+        "title": "Little Island",
+        "short_description": "Grow an island, send trading ships, and collect the stories they bring home.",
+        "full_description": "A little island has appeared on your phone’s home screen.\nDan gathers wood, Bori prepares a place for visitors, and Haeon writes down news from returning ships. The island’s day goes on, even during a brief glance.\n\nLittle Island is an idle island-life game you can enjoy as a live wallpaper. Watch residents and ships on your home screen, then open the app to build and read the records you have gathered.\n\nThe feeling of a ship coming home\nGather wood and stone to build a dock and send out a trading ship. It sells cargo at a port, then returns to the island. Pirate encounters at sea resolve automatically. Check the results at your own pace when the ship comes home.\n\nA place for guests to rest\nPrepare a vacant room to welcome a worker. Visitors help for their agreed contract, then head to another port. Small rooms, cups, and lights on the pier gather stories of their own.\n\nA journal to open when you like\nFrom the first light to the first trade and the first guest, island life finds its way into the journal. Read a quick update or open the full story when you have time. Production and voyages continue either way.\n\nA place that welcomes your own pace\nThere is no need to keep tapping or watching. Check the results of your time away when you return. Enjoy the island on your home screen, and open the app whenever you want to make a choice.\n\nJoin the island’s first voyage.\n\nThis game uses Android live wallpaper. Follow the in-app guidance to apply the wallpaper, build, and browse your records.",
+        "character_counts": {
+          "title": 13,
+          "short_description": 76,
+          "full_description": 1509
+        }
+      },
+      {
+        "id": "full_story_release",
+        "status": "use_only_after_full_feature_implementation",
+        "ready_to_publish": false,
+        "requires_verified_features": [
+          "live_wallpaper",
+          "journal_screen",
+          "story_unlocks",
+          "story_archive",
+          "all_ports",
+          "all_ship_levels",
+          "lighthouse",
+          "market",
+          "worker_revisit",
+          "seasonal_cosmetics",
+          "postgame_stories"
+        ],
+        "main_episode_count": 60,
+        "side_story_count": 18,
+        "voyage_event_count": 30,
+        "postgame_episode_count": 36,
+        "title": "Little Island",
+        "short_description": "Connect distant ports through idle sea trade and stories on your home screen.",
+        "full_description": "Light a lantern on a little island.\nShips come home, letters arrive, and stories connect faraway ports.\n\nLittle Island is an idle island-life game for your Android home screen. Care for the island where Dan, Bori, and Haeon live, send automatic trading voyages, and meet the ports of the Yeoul Sea. Build and choose routes in the app; enjoy the island’s scenery and brief news on your home screen.\n\nTrade begins with an old boat\nLoad the wood and stone you have gathered and set out to sea. Discover different goods and trading partners at each port. Improve the cargo hold and sails of your own ship to reach wider routes. Pirate encounters resolve automatically and are recorded with the return results.\n\nChanges that stay with the island\nWhat began with spare rooms, a warehouse, and a dock grows to include a market and a lighthouse. Visiting workers stay for their agreed contracts and leave according to their own schedules. However the island grows, everyday life with Dan, Bori, and Haeon continues.\n\nThe mystery of a port erased from the map\nA blue cord around a crate, an old boarding pass, a letter from far away. Ordinary trade leads to broken sea routes and promises between people. Read the main story, character side stories, and small voyage encounters whenever you like.\n\nStories on your own schedule\nProduction and voyages continue while the journal stays closed. Unread letters do not disappear, and reading late does not change the main story’s ending. Return to find the news and results that have gathered.\n\nLife after coming home\nAfter the story ends, collect seasonal decorations, enjoy harbor markets, and receive letters from returning visitors. Continue to the next voyage without losing your island or starting your ship’s growth over.\n\nBring a sea full of places to return to onto the home screen you visit each day.\n\nThis game uses Android live wallpaper. Follow the in-app guidance to apply the wallpaper, build, select routes, and browse your records.",
+        "character_counts": {
+          "title": 13,
+          "short_description": 77,
+          "full_description": 1983
+        }
+      }
+    ],
+    "default_profile": "part_1_release",
+    "ready_to_publish": false,
+    "profile_selection_rule": "Use only the profile whose features have been implemented and verified in the release build. Translating a profile does not make it publish-ready.",
+    "feature_graphic": {
+      "id": "feature_returning_boat",
+      "headline": "Little Island",
+      "supporting_line": "Another ship is coming home today."
+    },
+    "screenshots": [
+      {
+        "id": "store_01",
+        "order": 1,
+        "caption": "A Little Island Lives on Your Home Screen",
+        "alt_text": "Residents work on a small home-screen island while a boat moves beside the pier.",
+        "capture_surface": "live_wallpaper",
+        "required_features": [
+          "live_wallpaper",
+          "resident_gathering",
+          "dock_rendering"
+        ],
+        "launch_scope": "core",
+        "in_game_state": {
+          "unlock": "dock"
+        }
+      },
+      {
+        "id": "store_02",
+        "order": 2,
+        "caption": "Your Ship Trades on Its Own",
+        "alt_text": "A ship at sea, its destination, and progress toward its return.",
+        "capture_surface": "sea_scene",
+        "required_features": [
+          "auto_voyage",
+          "sea_scene"
+        ],
+        "launch_scope": "core",
+        "in_game_state": {
+          "unlock": "sail_1"
+        }
+      },
+      {
+        "id": "store_03",
+        "order": 3,
+        "caption": "News Awaits Your Return",
+        "alt_text": "A return-results card showing gold, resources, and voyage results together.",
+        "capture_surface": "return_result_card",
+        "required_features": [
+          "return_result_card",
+          "away_progress_calculation"
+        ],
+        "launch_scope": "core",
+        "in_game_state": {
+          "unlock": "voyages_1"
+        }
+      },
+      {
+        "id": "store_04",
+        "order": 4,
+        "caption": "People Who Help and Rest a While",
+        "alt_text": "The app’s worker contract and lodging status screen.",
+        "capture_surface": "worker_and_lodging_screen",
+        "required_features": [
+          "worker_recruitment",
+          "worker_contract_view",
+          "lodging_view"
+        ],
+        "launch_scope": "core_with_worker_view",
+        "in_game_state": {
+          "unlock": "worker_arrive_1"
+        }
+      },
+      {
+        "id": "store_05",
+        "order": 5,
+        "caption": "Island Stories, Whenever You Like",
+        "alt_text": "Journal titles and summaries with an expanded story.",
+        "capture_surface": "voyage_journal",
+        "required_features": [
+          "journal_screen",
+          "story_unlocks",
+          "story_archive"
+        ],
+        "launch_scope": "part_1_ready",
+        "in_game_state": {
+          "unlock": "main_04"
+        },
+        "build_5_fallback": {
+          "caption": "Grow Your Island, One Step at a Time",
+          "capture_surface": "building_screen",
+          "required_features": [
+            "building_screen"
+          ]
+        }
+      }
+    ],
+    "notifications": [
+      {
+        "id": "daily_digest",
+        "event": "daily_digest",
+        "title": "Your News Is Here",
+        "line": "News from the ship and island has arrived.",
+        "channel": "summary",
+        "available_as_option": true,
+        "enabled_by_default": false,
+        "requires_global_opt_in": true,
+        "delivery": "coalesced",
+        "deep_link": "history",
+        "setting_id": "notification_returns",
+        "requires_system_permission": true
+      },
+      {
+        "id": "ship_return",
+        "event": "ship_return",
+        "title": "The Ship Is Home",
+        "line": "Your return news is ready to read.",
+        "channel": "voyage",
+        "available_as_option": true,
+        "enabled_by_default": false,
+        "requires_global_opt_in": true,
+        "delivery": "coalesced",
+        "deep_link": "history",
+        "setting_id": "notification_returns",
+        "requires_system_permission": true
+      },
+      {
+        "id": "storage_full",
+        "event": "storage_full",
+        "title": "The Warehouse Is Full",
+        "line": "Your gathered resources are ready to use.",
+        "channel": "storage",
+        "available_as_option": true,
+        "enabled_by_default": false,
+        "requires_global_opt_in": true,
+        "delivery": "coalesced",
+        "deep_link": "warehouse",
+        "setting_id": "notification_storage",
+        "requires_system_permission": true
+      },
+      {
+        "id": "worker_arrive",
+        "event": "worker_arrive",
+        "title": "A Guest Has Arrived",
+        "line": "{worker_name}’s contract has begun.",
+        "channel": "worker",
+        "available_as_option": false,
+        "enabled_by_default": false,
+        "requires_global_opt_in": true,
+        "delivery": "coalesced",
+        "deep_link": "workers",
+        "setting_id": null,
+        "activation": "Activate only after adding an explicit opt-in setting for this notification type.",
+        "requires_system_permission": true
+      },
+      {
+        "id": "worker_leave",
+        "event": "worker_leave",
+        "title": "Contract Completed",
+        "line": "{worker_name}’s contract has ended.",
+        "channel": "worker",
+        "available_as_option": false,
+        "enabled_by_default": false,
+        "requires_global_opt_in": true,
+        "delivery": "coalesced",
+        "deep_link": "workers",
+        "setting_id": null,
+        "activation": "Activate only after adding an explicit opt-in setting for this notification type.",
+        "requires_system_permission": true
+      },
+      {
+        "id": "new_journal",
+        "event": "new_journal",
+        "title": "A New Journal Entry",
+        "line": "A new story has been added to the journal.",
+        "channel": "story",
+        "available_as_option": false,
+        "enabled_by_default": false,
+        "requires_global_opt_in": true,
+        "delivery": "coalesced",
+        "deep_link": "journal",
+        "setting_id": null,
+        "activation": "Activate only after adding an explicit opt-in setting for this notification type.",
+        "requires_system_permission": true
+      },
+      {
+        "id": "letters",
+        "event": "letters",
+        "title": "Letters Have Arrived",
+        "line": "Letters waiting to be read: {count}",
+        "channel": "story",
+        "available_as_option": false,
+        "enabled_by_default": false,
+        "requires_global_opt_in": true,
+        "delivery": "coalesced",
+        "deep_link": "letters",
+        "setting_id": null,
+        "activation": "Activate only after adding an explicit opt-in setting for this notification type.",
+        "requires_system_permission": true
+      },
+      {
+        "id": "port_open",
+        "event": "port_open",
+        "title": "A New Port Is Open",
+        "line": "You can now choose a new route.",
+        "channel": "progression",
+        "available_as_option": false,
+        "enabled_by_default": false,
+        "requires_global_opt_in": true,
+        "delivery": "coalesced",
+        "deep_link": "routes",
+        "setting_id": null,
+        "activation": "Activate only after adding an explicit opt-in setting for this notification type.",
+        "requires_system_permission": true
+      }
+    ],
+    "notification_policy": {
+      "recommendation": "선택 기능으로 제공하되 처음에는 모두 끈다. 배가 자주 돌아오는 게임이므로 매 귀항마다 알림을 보내지 않는다.",
+      "global_enabled_by_default": false,
+      "exact_delivery_time_promised": false,
+      "background_delivery_verified": false,
+      "activation_rule": "사용자가 설정에서 해당 알림을 켰을 때만 필요한 시스템 알림 허용 안내를 연결한다. 전달 기능을 검증하기 전에는 옵션을 숨긴다.",
+      "daily_max": 2,
+      "minimum_gap_hours": 6,
+      "quiet_hours_local": {
+        "enabled_by_default": true,
+        "setting_id": "quiet_hours",
+        "start_hour": 22,
+        "end_hour": 9,
+        "timezone_mode": "device_local",
+        "initial_timezone": "Asia/Seoul",
+        "start_inclusive": true,
+        "end_exclusive": true,
+        "cross_midnight": true,
+        "daily_counter_timezone": "device_local"
+      },
+      "coalesce_by": "latest_game_state",
+      "replace_older_same_channel": true,
+      "expire_pending_on_open": true,
+      "skip_if_app_open": true,
+      "skip_if_wallpaper_visible": true,
+      "repeat_storage_notice": "가득 찬 상태로 바뀌었을 때만 후보가 된다. 계속 가득 차 있으면 다시 알리지 않는다.",
+      "long_absence": "미접속 기간만으로 알림을 추가하지 않는다. 복귀하지 않으면 손실이 생긴다는 문구를 쓰지 않는다.",
+      "priority": [
+        "daily_digest",
+        "storage_full",
+        "ship_return",
+        "new_journal",
+        "letters",
+        "worker_arrive",
+        "worker_leave",
+        "port_open"
+      ],
+      "manual_settings_copy": {
+        "global_title": "News Notifications",
+        "global_description": "Receive return and storage news only when you want it.",
+        "frequency": "Up to {daily_max} times a day",
+        "quiet_hours": "Quiet from {start_hour}:00 to {end_hour}:00.",
+        "returns_title": "Return News",
+        "returns_description": "Get a quiet summary of several voyage results.",
+        "storage_title": "Storage News",
+        "storage_description": "Receive one notification when the warehouse becomes full.",
+        "quiet_hours_title": "Quiet Hours",
+        "quiet_hours_description": "No notifications during your chosen hours.",
+        "permission_intro": "Turn on notifications to receive selected news without opening the app.",
+        "permission_declined": "Notifications are off. The island keeps moving.",
+        "permission_missing": "Allow notifications for this app in your device settings."
+      },
+      "parameter_types": {
+        "daily_max": "integer",
+        "start_hour": "integer",
+        "end_hour": "integer",
+        "worker_name": "string",
+        "count": "integer"
+      },
+      "worker_arrive_template_rule": "고용 계약이 귀항 도착 후 실제로 시작됐을 때만 보낸다.",
+      "worker_arrive_fallback": "A helping hand has arrived.",
+      "settings_binding": {
+        "global": "notifications",
+        "return_and_digest": "notification_returns",
+        "storage": "notification_storage",
+        "quiet_hours": "quiet_hours"
+      },
+      "permission_denied_behavior": {
+        "effective_notifications_enabled": false,
+        "block_any_game_feature": false,
+        "production_continues": true,
+        "auto_voyage_continues": true,
+        "worker_contracts_continue": true,
+        "away_progress_continues": true,
+        "story_progress_continues": true,
+        "request_again_automatically": false,
+        "message": "Notifications are off. The island keeps moving.",
+        "open_settings_button": "Device Notification Settings"
+      },
+      "digest_deduplication": "귀항 소식 설정에서 귀항과 묶음 요약을 함께 다룬다. 같은 결과를 귀항 알림과 요약 알림으로 두 번 보내지 않는다.",
+      "settings_without_implementation": "알림 전달 기능을 검증한 뒤 10_app_copy.json의 소식 알림, 귀항 소식, 창고 소식 설정을 연결한다. 별도 설정이 없는 인물·이야기·항구 알림은 숨긴 후보 문구로만 둔다."
+    }
+  },
+  "localization_notes": {
+    "locale": "en",
+    "app_name": "Little Island",
+    "source_ui_snapshot": "09_result_cards.json; 10_app_copy.json; 14_release.json, retrieved 2026-11-08",
+    "scope": "All user-facing strings in the three source documents. Developer-only planning prose is not a translation target; original result-card metadata is retained for structural fidelity.",
+    "profiles_not_merged": true,
+    "placeholder_tokens_unchanged": true,
+    "numeric_game_data_unchanged": true,
+    "korean_character_limits_are_not_english_limits": true,
+    "layout_validation": "Test English wrapping on the actual build; do not truncate parameter tokens or blindly apply Korean 18/25-character limits.",
+    "worker_term": "Worker for island contracts; Crew for promoted sailors.",
+    "source_rename": "Use Little Island for the app name; the story title remains a separate narrative title.",
+    "supplementary_order4_ui": false,
+    "dictionary_context": "Use ui_by_id when an exact Korean string has more than one context-specific English translation.",
+    "canonical_glossary": {
+      "app_name": "Little Island",
+      "ship_name": "Homeward",
+      "captain": "Seorin",
+      "sea": "Yeoul Sea",
+      "ports": [
+        "Haesol",
+        "Saltflat",
+        "Pottery",
+        "Windneck",
+        "Pineshade",
+        "Redanchor",
+        "Fogferry",
+        "Glasscape",
+        "Reedbay",
+        "Paperwater",
+        "Whitesail"
+      ],
+      "ui_terms": {
+        "짓기": "Build",
+        "부두": "Dock",
+        "창고": "Warehouse",
+        "등대": "Lighthouse",
+        "장터": "Market",
+        "알바": "Worker",
+        "선원": "Crew"
+      },
+      "usage_note": "Use Dock as the building label; pier is acceptable descriptive wording in story prose. Homeward and Seorin do not occur in the source UI display strings. Yeoul Sea occurs in the full-story store profile; the English core does not name the sea."
+    },
+    "probability_unit": "pp = percentage points; relative bonuses use %.",
+    "fallback": "Look up stable IDs first. If an English entry is missing, retain the existing Korean source text rather than displaying an ID or an empty label.",
+    "narrative_scope": "Main 60 and side 18: titles and summaries only. Full story bodies are outside this translation order.",
+    "source_files": [
+      "08_home_lines.json",
+      "09_result_cards.json",
+      "10_app_copy.json",
+      "14_release.json",
+      "19_ship_parts.json",
+      "20_crew.json",
+      "story.json"
+    ],
+    "integration_status": "Data delivery only; English UI must be connected and layout-tested in the current app build."
+  }
+}

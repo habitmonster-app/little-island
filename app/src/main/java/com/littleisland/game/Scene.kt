@@ -258,10 +258,55 @@ class Scene {
     var talkWho = 0; private set
     var talkT = 0f; private set
 
+    /** 지금 말하는 사람 이름 (주민 또는 선원) */
+    var talkName = ""; private set
+    private var talkCrew: String? = null                  // 선원이 말하면 그 id
+    private val crewHead = HashMap<String, Pair<Float, Float>>()   // 이번 장면에서 그린 선원 머리 위치
+    private var crewSeen = 0f                             // 선원이 화면에 보인 지 몇 초
+    private val pairQueue = ArrayDeque<Pair<String, String>>()     // 짝 대사 남은 줄 (선원 id, 대사)
+    private var pairIds: List<String> = emptyList()
+
+    private fun say(id: String, line: String) {
+        talkCrew = id; talkName = Fleet.crewOf(id)?.name ?: ""; talkText = line; talkT = 4f
+    }
+
+    /** 항해 중 갑판 위 선원이 한마디. 싸울 땐 싸움 대사, 짝이 같이 타면 가끔 셋이 주고받는 대사 */
+    private fun crewTalk(): Boolean {
+        val v = Game.voy ?: return false
+        if (v.crew.isEmpty() || crewSeen > .3f) return false
+        val u = pirateU()
+        val fight = u >= 0f && u < pA / (pA + .035f)
+        if (fight) {
+            val id = v.crew.random(); val l = Fleet.voices[id]?.fight?.randomOrNull() ?: return false
+            say(id, l); return true
+        }
+        val pr = Fleet.pairs.filter { p -> p.ids.all { it in v.crew } }
+        if (pr.isNotEmpty() && Random.nextInt(3) == 0) {
+            val p = pr.random()
+            pairIds = p.ids; pairQueue.clear()
+            for (k in p.lines.indices) pairQueue.addLast((p.speakers.getOrNull(k) ?: p.ids[0]) to p.lines[k])
+            val (id, l) = pairQueue.removeFirst(); say(id, l); return true
+        }
+        val id = v.crew.random(); val l = Fleet.voices[id]?.deck?.randomOrNull() ?: return false
+        say(id, l); return true
+    }
+
     private fun updateTalk(dt: Float) {
-        if (talkT > 0f) { talkT -= dt; if (talkT <= 0f) talkText = null }
+        crewSeen += dt
+        if (talkT > 0f) { talkT -= dt; if (talkT <= 0f) { talkText = null; talkCrew = null } }
+        // 짝 대사는 세 줄을 이어서. 도중에 배치가 바뀌면 그만
+        if (talkT <= 0f && pairQueue.isNotEmpty()) {
+            val crew = Game.voy?.crew ?: emptyList()
+            if (crewSeen > .3f || !pairIds.all { it in crew }) pairQueue.clear()
+            else { val (id, l) = pairQueue.removeFirst(); say(id, l); talkT = 3.5f; return }
+        }
         talkWait -= dt
-        if (talkWait > 0f || people.size < 3 || islandOffset() == null) return
+        if (talkWait > 0f) return
+        val island = people.size >= 3 && islandOffset() != null
+        if (crewSeen <= .3f && (!island || Random.nextBoolean())) {
+            if (crewTalk()) { talkWait = 18f + Random.nextFloat() * 20f; return }
+        }
+        if (!island) return
         talkWait = 25f + Random.nextFloat() * 30f
         val h = hourNow()
         val now = System.currentTimeMillis()
@@ -276,11 +321,12 @@ class Scene {
         }
         val who = Random.nextInt(3)
         val line = Story.pickLine(NAMES[who], time) ?: Story.pickLine(NAMES[who], "day") ?: return
-        talkWho = who; talkText = line; talkT = 5f
+        talkWho = who; talkCrew = null; talkName = NAMES[who]; talkText = line; talkT = 5f
     }
 
     /** 말하는 주민의 머리 위치 (그림 좌표). 섬이 화면에 없으면 null */
     fun talkPos(): Pair<Float, Float>? {
+        talkCrew?.let { id -> return if (crewSeen > .3f) null else crewHead[id] }
         val o = islandOffset() ?: return null
         val v = people.getOrNull(talkWho) ?: return null
         val x = v.x + o
@@ -429,9 +475,9 @@ class Scene {
         val bg = aget(name, 360) ?: return
         val a = alpha.coerceIn(0, 255)
         // 그림의 수평선(높이 48%)을 화면 수평선에 맞추고, 위아래 남는 곳은 그림 맨 위·맨 아래 색으로 채운다
-        // 그림의 파도 띠(높이 47~51%)가 배·항구가 떠 있는 물선(WL)에 끝나도록 맞춘다
+        // 그림의 수면(높이 정확히 50%)을 배·항구가 떠 있는 물선(WL)에 맞춘다
         val bw = bg.width / SS.toFloat(); val bh = bg.height / SS.toFloat()
-        val top = WL + 2 - bh * .51f
+        val top = WL - bh * .5f
         val bottom = top + bh
         p.color = bg.getPixel(bg.width / 2, 1) or (0xff shl 24); p.alpha = a; c.drawRect(0f, 0f, W.toFloat(), top + 1, p)
         p.color = bg.getPixel(bg.width / 2, bg.height - 2) or (0xff shl 24); p.alpha = a; c.drawRect(0f, bottom - 1, W.toFloat(), H.toFloat(), p)
@@ -702,6 +748,32 @@ class Scene {
     /** 배 위 선원: 항해 중엔 키·밧줄, 해적과 싸울 땐 대포, 항구와 승리 뒤엔 환호 */
     private val DECK = 9f
     private val deckX = floatArrayOf(-.20f, .16f, -.02f, .30f, -.34f)
+    // 배 그림(128칸) 안의 장식 자리: 돛대 꼭대기, 뱃머리 끝, 큰 돛 가운데, 갑판 장식 자리 (배 단계별)
+    private val MAST = arrayOf(intArrayOf(60, 40), intArrayOf(63, 22), intArrayOf(55, 25), intArrayOf(66, 23))
+    private val BOW = arrayOf(intArrayOf(98, 97), intArrayOf(106, 92), intArrayOf(112, 94), intArrayOf(116, 95))
+    private val SAIL = arrayOf(intArrayOf(70, 70), intArrayOf(76, 56), intArrayOf(66, 60), intArrayOf(74, 60))
+    private val DECKP = arrayOf(intArrayOf(40, 96), intArrayOf(40, 76), intArrayOf(36, 73), intArrayOf(31, 78))
+
+    /** 배 꾸미기: 단 장식을 배 그림 위에 겹쳐 그린다 (파란 끈은 가리지 않게) */
+    private fun shipDeco(x: Float, bottom: Float, sw: Float, lv: Int, time: Float) {
+        if (Game.decoOn.isEmpty()) return
+        val i = (lv - 1).coerceIn(0, 3)
+        fun px(cx: Int) = x + (cx / 128f - .5f) * sw
+        fun py(cy: Int) = bottom - (1 - cy / 128f) * sw
+        for ((slot, id) in Game.decoOn) {
+            val d = Fleet.deco(id) ?: continue
+            when (slot) {
+                "sail" -> Art.sub("ship_deco", 4, 4, d.icon, .24f, .34f, .80f, .74f, 9 * SS)?.let {
+                    Art.draw(c, it, px(SAIL[i][0]), py(SAIL[i][1]) + 3f) }
+                "flag" -> Art.sub("ship_deco", 4, 4, d.icon, .32f, .14f, .94f, .68f, 10 * SS)?.let {
+                    val wave = if ((floor(time * 3) % 2).toInt() == 0) 0f else 1f
+                    Art.draw(c, it, px(MAST[i][0]) + 5.5f, py(MAST[i][1]) + 6f + wave) }
+                "figurehead" -> acell("ship_deco", 4, 4, d.icon, 10)?.let { Art.draw(c, it, px(BOW[i][0]), py(BOW[i][1]) + 4f) }
+                "deck" -> acell("ship_deco", 4, 4, d.icon, 9)?.let { Art.draw(c, it, px(DECKP[i][0]), py(DECKP[i][1])) }
+            }
+        }
+    }
+
     private fun deckCrew(x: Float, y: Float, w: Float, time: Float) {
         val v = Game.voy ?: return
         if (v.crew.isEmpty()) return
@@ -715,7 +787,9 @@ class Scene {
             val bm = acell(cd.sheet, 4, 6, cd.row * 4 + pose, 18) ?: continue
             val bob = if (pose == 0 && (floor(time * 2 + i) % 2).toInt() == 1) 1f else 0f
             Art.draw(c, bm, x + deckX[i % deckX.size] * w, y - DECK + bob)
+            crewHead[id] = (x + deckX[i % deckX.size] * w) to (y - DECK - 15)
         }
+        crewSeen = 0f
     }
 
     private fun ourShip(x: Float, time: Float) {
@@ -723,7 +797,7 @@ class Scene {
         val y = WL + (sin(time * 1.8f) * 1.2f).roundToInt()
         val sw = 54 + (lv - 1) * 8
         val sb = acell("ship_stages", 4, 4, (lv - 1) * 4 + Game.lookStage(), sw) ?: acell("ships", 4, 1, lv - 1, sw)
-        if (sb != null) { Art.draw(c, sb, x, y + 5); deckCrew(x, y, sw.toFloat(), time); return }
+        if (sb != null) { Art.draw(c, sb, x, y + 5); shipDeco(x, y + 5f, sw.toFloat(), lv, time); deckCrew(x, y, sw.toFloat(), time); return }
         val len = 30f + (lv - 1) * 7f
         val hull = col("#6D513A"); val hullL = col("#A78355")
         for (i in 0 until 7) r(x - len / 2 + i, y - 4 + i, len - i * 2 + (if (i < 3) 4f else 0f), 1f, if (i < 2) hullL else hull)

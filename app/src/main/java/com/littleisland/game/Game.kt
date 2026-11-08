@@ -59,6 +59,8 @@ object Game {
     val aboard = ArrayList<String>()                   // 다음 출항에 탈 선원
     private val crewLv = HashMap<String, Int>()
     private val crewXp = HashMap<String, Int>()
+    val decoOwned = LinkedHashSet<String>()             // 가진 배 장식
+    val decoOn = HashMap<String, String>()               // 자리(flag/figurehead/sail/deck) → 단 장식
     var levelUps = 0                                   // 화면 연출용 (Scene이 0으로 돌림)
 
     fun partLevel(id: String) = parts[id] ?: 0
@@ -108,6 +110,10 @@ object Game {
         f.isEmpty() || f == "start" -> true
         f.startsWith("voyages_") -> voyages >= (f.removePrefix("voyages_").toIntOrNull() ?: Int.MAX_VALUE)
         f.startsWith("parts_") -> minPart() >= (f.removePrefix("parts_").toIntOrNull() ?: Int.MAX_VALUE)
+        // 선원 이야기: 승진했으면 crew_<id>_promote, 레벨이 닿으면 crew_<id>_lv5 / _lv10 (지난 것도 소급해서 열림)
+        f.startsWith("crew_") && f.endsWith("_promote") -> f.removePrefix("crew_").removeSuffix("_promote") in promoted
+        f.startsWith("crew_") && "_lv" in f -> f.removePrefix("crew_").substringBeforeLast("_lv").let { id ->
+            id in promoted && crewLevel(id) >= (f.substringAfterLast("_lv").toIntOrNull() ?: Int.MAX_VALUE) }
         else -> f in flags
     }
     fun hasAll(l: List<String>) = l.all { has(it) }
@@ -126,7 +132,7 @@ object Game {
     val log = ArrayList<String>()
     private fun card(t: String, m: String) {
         cards.addLast(t to m); while (cards.size > 8) cards.removeFirst()
-        log.add(0, t + " " + m); while (log.size > 6) log.removeAt(log.size - 1)
+        log.add(0, t + " " + m.replace("\n", " ")); while (log.size > 6) log.removeAt(log.size - 1)
     }
 
     // 이야기 자리표시자용
@@ -179,6 +185,8 @@ object Game {
         promoted.clear(); sp.getString("promoted", "")!!.split(",").filter { it.isNotEmpty() }.forEach { promoted.add(it) }
         aboard.clear(); sp.getString("aboard", "")!!.split(",").filter { it.isNotEmpty() && it in promoted }.forEach { aboard.add(it) }
         sp.getString("crewLv", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewLv[k] = v.toIntOrNull() ?: 1 }
+        decoOwned.clear(); sp.getString("decoOwned", "")!!.split(",").filter { it.isNotEmpty() }.forEach { decoOwned.add(it) }
+        decoOn.clear(); sp.getString("decoOn", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); if (v in decoOwned) decoOn[k] = v }
         sp.getString("crewXp", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewXp[k] = v.toIntOrNull() ?: 0 }
         // 항해
         voy = null
@@ -199,6 +207,8 @@ object Game {
         if (shipLevel >= 2) flags.add("ship_2")
         if (shipLevel >= 3) flags.add("ship_3")
         if (shipLevel >= 4) flags.add("ship_4")
+        if (lighthouse) flags.add("lighthouse")
+        if (market) flags.add("market")
         storyDirty = true
     }
 
@@ -221,6 +231,7 @@ object Game {
             putString("parts", parts.entries.joinToString(",") { it.key + ":" + it.value })
             putString("promoted", promoted.joinToString(",")); putString("aboard", aboard.joinToString(","))
             putString("crewLv", crewLv.entries.joinToString(",") { it.key + ":" + it.value })
+            putString("decoOwned", decoOwned.joinToString(",")); putString("decoOn", decoOn.entries.joinToString(",") { it.key + ":" + it.value })
             putString("crewXp", crewXp.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
             if (v == null) putLong("v_start", 0L) else {
@@ -456,12 +467,14 @@ object Game {
                 levelUps++
                 val c = Fleet.crewOf(id)
                 val sk = c?.skills?.firstOrNull { it.level in (before + 1)..lv }
-                card("선원 레벨 업!", (c?.name ?: "선원") + " Lv" + lv + (sk?.let { " · 새 스킬 " + it.name } ?: ""))
+                val say = Fleet.voices[id]?.levelUp?.takeIf { it.isNotEmpty() }
+                card("선원 레벨 업!", (c?.name ?: "선원") + " Lv" + lv + (sk?.let { " · 새 스킬 " + it.name } ?: "") + (say?.let { "\n“$it”" } ?: ""))
             }
         }
         rollEvent(v)
         // 11화부터는 귀항할 때마다 최대 한 화씩
         Story.refresh(true).forEach { announce(it) }
+        checkDeco()
         if (isOpen("main_60")) flag("ending")
         save()
     }
@@ -504,6 +517,7 @@ object Game {
     fun checkStory() {
         if (!storyDirty) return
         storyDirty = false
+        checkDeco()
         val got = Story.refresh(false).filter { it.kind != Story.VOYAGE }
         if (got.isEmpty()) return
         if (got.size == 1) announce(got[0])
@@ -570,6 +584,42 @@ object Game {
         save(); return true
     }
 
+    // ---------- 배 꾸미기 ----------
+    fun decoReady(d: Fleet.Deco) = d.conds.all { c ->
+        when (c.type) {
+            "game_flag" -> has(c.key)
+            "counter_at_least" -> (if (c.key == "treasures") treasures else voyages) >= c.value
+            "any_promoted_crew_level_at_least" -> promoted.any { crewLevel(it) >= c.value }
+            else -> false
+        }
+    }
+    /** 조건이 된 무료 장식을 준다 (지난 기록도 소급). 그 자리가 비어 있으면 바로 단다 */
+    fun checkDeco() {
+        for (d in Fleet.decos) {
+            if (!d.auto || d.id in decoOwned || !decoReady(d)) continue
+            decoOwned.add(d.id)
+            if (decoOn[d.slot] == null) decoOn[d.slot] = d.id
+            card("배 장식을 얻었어요", Fleet.slotName(d.slot) + " · " + d.name)
+        }
+    }
+    @Synchronized fun buyDeco(id: String): Boolean {
+        val d = Fleet.deco(id) ?: return false
+        if (d.auto || id in decoOwned || !decoReady(d) || goldC < d.gold * 100L) return false
+        goldC -= d.gold * 100L; decoOwned.add(id); decoOn[d.slot] = id
+        save(); return true
+    }
+    @Synchronized fun setDeco(slot: String, id: String?): Boolean {
+        if (id == null) decoOn.remove(slot) else { if (id !in decoOwned) return false; decoOn[slot] = id }
+        save(); return true
+    }
+    /** 달려 있으면 떼고, 아니면 그 자리에 단다 */
+    @Synchronized fun toggleDeco(id: String): Boolean {
+        val d = Fleet.deco(id) ?: return false
+        if (id !in decoOwned) return false
+        if (decoOn[d.slot] == id) decoOn.remove(d.slot) else decoOn[d.slot] = id
+        save(); return true
+    }
+
     // ---------- 선원 ----------
     fun canPromote(id: String) = id !in promoted && completedOf(id) >= Fleet.promoteContracts && workers.none { it.id == id } &&
         (Fleet.crewOf(id)?.let { has(it.unlock) } ?: false)
@@ -579,6 +629,7 @@ object Game {
         promoted.add(id); crewLv[id] = 1; crewXp[id] = 0
         if (aboard.size < slots()) aboard.add(id)
         card("새 선원!", (Fleet.crewOf(id)?.name ?: "") + "이(가) 선원이 됐어요")
+        storyDirty = true
         save(); return true
     }
     @Synchronized fun toggleAboard(id: String): Boolean {
@@ -667,7 +718,7 @@ object Game {
         wood = 12; stone = 4; goldC = 0; houses = 0; warehouse = 0; dock = false; field = false; lighthouse = false; market = false
         shipLevel = 1; route = "port_haesol"; supplyT = 0f; voy = null; voyages = 0; workers.clear(); completed.clear()
         flags.clear(); opened.clear(); read.clear(); eventLast.clear(); lastEvent = ""; cards.clear(); log.clear(); report = null
-        parts.clear(); promoted.clear(); aboard.clear(); crewLv.clear(); crewXp.clear()
+        parts.clear(); promoted.clear(); aboard.clear(); crewLv.clear(); crewXp.clear(); decoOwned.clear(); decoOn.clear()
         storyDirty = true
         save()
     }

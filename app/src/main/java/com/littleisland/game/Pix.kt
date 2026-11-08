@@ -335,10 +335,11 @@ object Pix {
                 "part" -> Art.cell("part_icons", 4, 2, idx, px)
                 "skill" -> Art.cell("skill_icons", 4, 4, idx, px)
                 "face" -> Art.cell("worker_portraits", 4, 3, idx, px)
+                "deco" -> Art.cell("ship_deco", 4, 4, idx, px)
                 else -> null
             }
             if (bm != null) { blit(c, bm, x, y, 10 * s, alpha); return }
-            return icon(c, when (name.substring(0, ci)) { "face" -> "person"; "part" -> "ship"; else -> "book" }, x, y, s, alpha)
+            return icon(c, when (name.substring(0, ci)) { "face" -> "person"; "part", "deco" -> "ship"; else -> "book" }, x, y, s, alpha)
         }
         val k = iconOrder.indexOf(name)
         if (k >= 0) Art.cell("icons", 4, 4, k, (10 * s * hi(c)).toInt())?.let { blit(c, it, x, y, 10 * s, alpha); return }

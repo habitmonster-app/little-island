@@ -1,0 +1,640 @@
+{
+  "schema_version": 1,
+  "app_name": "리틀 아일랜드",
+  "design_status": "order5_integration_data",
+  "items": [
+    {
+      "id": "flag_red",
+      "slot": "flag",
+      "name": "첫 출항 깃발",
+      "icon_index": 0,
+      "how_to_get": "sail_1",
+      "desc": "처음 바다에 나선 날의 붉은 깃발",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "sail_1"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 0,
+        "tint": null
+      },
+      "how_to_get_text": "첫 출항 완료"
+    },
+    {
+      "id": "flag_blue",
+      "slot": "flag",
+      "name": "서른 번의 바람",
+      "icon_index": 1,
+      "how_to_get": "voyages_30",
+      "desc": "서른 번 돌아온 배의 파란 깃발",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "counter_at_least",
+            "counter": "voyages",
+            "value": 30
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 1,
+        "tint": null
+      },
+      "how_to_get_text": "항해 30회 완료"
+    },
+    {
+      "id": "flag_yellow_wave",
+      "slot": "flag",
+      "name": "소금빛 물결 깃발",
+      "icon_index": 2,
+      "how_to_get": "port_saltflat + gold 500",
+      "desc": "노란 바탕을 가로지르는 푸른 물결",
+      "effect": null,
+      "acquisition": {
+        "mode": "manual_purchase",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "port_saltflat"
+          }
+        ],
+        "cost": {
+          "gold": 500
+        },
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 2,
+        "tint": null
+      },
+      "how_to_get_text": "소금여울 해금 후 500금화로 구매"
+    },
+    {
+      "id": "flag_green_diamond",
+      "slot": "flag",
+      "name": "함께 오른 깃발",
+      "icon_index": 3,
+      "how_to_get": "crew_lv5_any",
+      "desc": "첫 숙련 선원을 기념하는 초록 깃발",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "any_promoted_crew_level_at_least",
+            "level": 5
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 3,
+        "tint": null
+      },
+      "how_to_get_text": "선원 한 명이 Lv5 달성"
+    },
+    {
+      "id": "figurehead_gull",
+      "slot": "figurehead",
+      "name": "웃는 갈매기",
+      "icon_index": 4,
+      "how_to_get": "voyages_10",
+      "desc": "먼 부두를 먼저 바라보는 갈매기",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "counter_at_least",
+            "counter": "voyages",
+            "value": 10
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 4,
+        "tint": null
+      },
+      "how_to_get_text": "항해 10회 완료"
+    },
+    {
+      "id": "figurehead_fish",
+      "slot": "figurehead",
+      "name": "주홍 물고기",
+      "icon_index": 5,
+      "how_to_get": "port_fogferry",
+      "desc": "안개 밖 물길을 헤엄치는 물고기",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "port_fogferry"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 5,
+        "tint": null
+      },
+      "how_to_get_text": "안개나루 해금"
+    },
+    {
+      "id": "figurehead_star",
+      "slot": "figurehead",
+      "name": "보물별",
+      "icon_index": 6,
+      "how_to_get": "treasure_3",
+      "desc": "세 번의 보물 귀항을 기억하는 별",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "counter_at_least",
+            "counter": "treasures",
+            "value": 3
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 6,
+        "tint": null
+      },
+      "how_to_get_text": "보물 귀항 3회 완료"
+    },
+    {
+      "id": "figurehead_lantern",
+      "slot": "figurehead",
+      "name": "뱃머리 등불",
+      "icon_index": 7,
+      "how_to_get": "lighthouse",
+      "desc": "돌아오는 물길을 향한 작은 불빛",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "lighthouse"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 7,
+        "tint": null
+      },
+      "how_to_get_text": "등대 건설"
+    },
+    {
+      "id": "sail_blue_stripe",
+      "slot": "sail",
+      "name": "파란 한 줄",
+      "icon_index": 8,
+      "how_to_get": "ship_2",
+      "desc": "크림색 돛에 두른 파란 띠",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "ship_2"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 8,
+        "tint": null
+      },
+      "how_to_get_text": "배 2단계 달성"
+    },
+    {
+      "id": "sail_sun",
+      "slot": "sail",
+      "name": "아침 해 돛",
+      "icon_index": 9,
+      "how_to_get": "port_windneck + gold 500",
+      "desc": "돛 한가운데에 담은 따뜻한 해",
+      "effect": null,
+      "acquisition": {
+        "mode": "manual_purchase",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "port_windneck"
+          }
+        ],
+        "cost": {
+          "gold": 500
+        },
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 9,
+        "tint": null
+      },
+      "how_to_get_text": "바람목 해금 후 500금화로 구매"
+    },
+    {
+      "id": "sail_leaf",
+      "slot": "sail",
+      "name": "솔그늘 잎새 돛",
+      "icon_index": 10,
+      "how_to_get": "port_pineshade",
+      "desc": "바람을 따라 기운 초록 잎 무늬",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "port_pineshade"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 10,
+        "tint": null
+      },
+      "how_to_get_text": "솔그늘항 해금"
+    },
+    {
+      "id": "sail_waves",
+      "slot": "sail",
+      "name": "금빛 물결 돛",
+      "icon_index": 11,
+      "how_to_get": "voyages_100",
+      "desc": "백 번의 귀항을 잇는 물결 무늬",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "counter_at_least",
+            "counter": "voyages",
+            "value": 100
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 11,
+        "tint": null
+      },
+      "how_to_get_text": "항해 100회 완료"
+    },
+    {
+      "id": "deck_bell",
+      "slot": "deck",
+      "name": "귀항 종",
+      "icon_index": 12,
+      "how_to_get": "voyages_20",
+      "desc": "갑판 한켠에 달아 둔 작은 종",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "counter_at_least",
+            "counter": "voyages",
+            "value": 20
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 12,
+        "tint": null
+      },
+      "how_to_get_text": "항해 20회 완료"
+    },
+    {
+      "id": "deck_lantern",
+      "slot": "deck",
+      "name": "갑판 등잔",
+      "icon_index": 13,
+      "how_to_get": "port_glasscape + gold 500",
+      "desc": "유리창 너머로 번지는 노란 불빛",
+      "effect": null,
+      "acquisition": {
+        "mode": "manual_purchase",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "port_glasscape"
+          }
+        ],
+        "cost": {
+          "gold": 500
+        },
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 13,
+        "tint": null
+      },
+      "how_to_get_text": "유리곶 해금 후 500금화로 구매"
+    },
+    {
+      "id": "deck_flowerpot",
+      "slot": "deck",
+      "name": "시장 꽃화분",
+      "icon_index": 14,
+      "how_to_get": "market",
+      "desc": "시장 첫날 데려온 세 송이 꽃",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "market"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 14,
+        "tint": null
+      },
+      "how_to_get_text": "시장 건설"
+    },
+    {
+      "id": "deck_spyglass",
+      "slot": "deck",
+      "name": "멀리 보는 망원경",
+      "icon_index": 15,
+      "how_to_get": "crew_lv10_any",
+      "desc": "숙련 선원과 함께 고른 갑판 장식",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "any_promoted_crew_level_at_least",
+            "level": 10
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco.png",
+        "source_index": 15,
+        "tint": null
+      },
+      "how_to_get_text": "선원 한 명이 Lv10 달성"
+    }
+  ],
+  "slots": [
+    "flag",
+    "figurehead",
+    "sail",
+    "deck"
+  ],
+  "equipment_rules": {
+    "max_per_slot": 1,
+    "initial_equipment": {
+      "flag": null,
+      "figurehead": null,
+      "sail": null,
+      "deck": null
+    },
+    "only_owned_items": true,
+    "allow_unequip": true,
+    "equip_cost": null,
+    "unequip_cost": null,
+    "replace_same_slot_without_destroying_old_item": true,
+    "same_item_in_multiple_slots": false,
+    "stat_effect": null,
+    "bonuses_from_set_or_rarity": false,
+    "affects_ship_parts": false,
+    "affects_crew_slots_or_skills": false,
+    "affects_pirate_probability": false,
+    "affects_voyage_duration_or_rewards": false,
+    "no_durability_or_consumption": true,
+    "ownership": "permanent_per_save",
+    "settings_location": "app",
+    "changes_during_voyage": "외형 선택만 갱신하며 출항 스냅샷의 수치나 이미 정산한 결과는 바꾸지 않는다."
+  },
+  "condition_contract": {
+    "evaluation": "all_of의 모든 조건을 충족해야 한다. how_to_get은 표시·이해용 요약이며 조건 파싱에는 사용하지 않는다.",
+    "game_flag": {
+      "source": "기존 Game.has / story unlock 누적 완료 상태",
+      "comparison": "key가 완료 상태이면 참",
+      "known_keys_used": [
+        "sail_1",
+        "ship_2",
+        "port_saltflat",
+        "port_fogferry",
+        "port_windneck",
+        "port_pineshade",
+        "port_glasscape",
+        "lighthouse",
+        "market"
+      ],
+      "story_read_required": false
+    },
+    "counter_at_least": {
+      "source": "저장된 정상 정산 누적 카운터",
+      "comparison": "stored_counter >= value",
+      "known_counters": {
+        "voyages": "정상 귀항 정산을 완료한 누적 항해 횟수",
+        "treasures": "기존 보물 탐색 후 귀항 때 treasurePending을 정산하여 증가한 누적 treasures 값"
+      },
+      "exclude_from_treasures": [
+        "보물 주머니 항해 사건 voy_21의 금화 보상",
+        "보물상자 그림 보기",
+        "결과 카드 다시 열기",
+        "장식 재선택"
+      ]
+    },
+    "any_promoted_crew_level_at_least": {
+      "source": "20_crew.json 규칙으로 승진·성장한 저장된 선원 명단",
+      "comparison": "승진한 12명 중 level >= 요청 level인 선원이 한 명 이상",
+      "bench_counts": true,
+      "equipped_now_required": false,
+      "worker_contract_count_is_not_crew_level": true,
+      "seorin_counts": false,
+      "maximum_level": 10
+    },
+    "display_aliases": {
+      "voyages_10": {
+        "counter": "voyages",
+        "value": 10
+      },
+      "voyages_20": {
+        "counter": "voyages",
+        "value": 20
+      },
+      "voyages_30": {
+        "counter": "voyages",
+        "value": 30
+      },
+      "voyages_100": {
+        "counter": "voyages",
+        "value": 100
+      },
+      "treasure_3": {
+        "counter": "treasures",
+        "value": 3
+      },
+      "crew_lv5_any": {
+        "type": "any_promoted_crew_level_at_least",
+        "level": 5
+      },
+      "crew_lv10_any": {
+        "type": "any_promoted_crew_level_at_least",
+        "level": 10
+      }
+    },
+    "alias_note": "treasure_3 및 crew_lv5_any/crew_lv10_any는 이 데이터의 설명용 별칭이다. 기존 Game.has에 이미 구현된 키라고 가정하지 않고 위 구조화 조건으로 평가한다."
+  },
+  "acquisition_rules": {
+    "automatic_grant": "조건을 충족한 무료 장식은 첫 출항·귀항·배 단계 승급·선원 성장·항구 및 시설 해금 정산 후 소장 목록에 한 번 추가한다. 별도 접속 시간이나 이야기 읽음을 요구하지 않는다.",
+    "manual_purchase": "조건을 충족한 유료 장식은 앱의 구매 확인 후에만 구입한다. 잔액과 미소장 상태를 다시 확인하고 금화 차감과 소장을 하나의 저장 트랜잭션으로 확정한다.",
+    "gold_unit": "cost.gold는 정수 금화이며 wallet cents에서는 cost.gold * 100을 차감한다.",
+    "insufficient_gold": "소장 목록과 잔액을 모두 유지한다. 음수 잔액이나 자동 빚을 만들지 않는다.",
+    "no_auto_spending": true,
+    "repeat_purchase_of_owned_item": "이미 소장한 장식은 다시 차감하지 않고 소장 상태를 유지한다.",
+    "duplicate_grant": "이미 소장했으면 아무 보상도 추가하지 않는다. 중복 금화·자원으로 바꾸지 않는다.",
+    "idempotency_key": "save_id + cosmetic_item_id",
+    "ownership_write_is_atomic": true,
+    "no_random_loot": true,
+    "no_time_limited_loss": true,
+    "free_items_purchase_price": null,
+    "reevaluate_after": [
+      "first_departure",
+      "voyage_settlement",
+      "ship_stage_upgrade",
+      "crew_promotion_or_levelup",
+      "port_unlock",
+      "building_unlock",
+      "save_migration"
+    ]
+  },
+  "offline_and_migration": {
+    "progress_source": "기존 최대 8시간 부재 보상 계산에서 실제 정산된 voyages/treasures 및 20_crew.json 규칙으로 지급된 선원 경험치 결과만 사용한다.",
+    "not_based_on": "접속하지 않은 전체 실시간, 결과 카드 조회 횟수, 이야기 조회 횟수",
+    "existing_save": "처음 연결할 때 기존 카운터·완료 플래그·승진 선원 레벨로 무료 조건을 재평가하고 미소장 항목만 한 번 지급한다.",
+    "existing_ownership": "이미 소장하고 장착한 항목은 유지한다. 과거 조건을 충족했다는 이유로 유료 항목을 자동 구매하지 않는다.",
+    "unsupported_item_id": "알 수 없는 저장 ID는 소장 기록에서 보존하되 그리기를 생략한다. 지원되는 장식으로 임의 변경하거나 비용을 청구하지 않는다.",
+    "save_fields": [
+      "owned_cosmetic_ids",
+      "equipped_cosmetics_by_slot",
+      "cosmetic_grant_ledger"
+    ]
+  },
+  "rendering": {
+    "source_sheet": "art/ship_deco.png",
+    "sheet_already_provided": true,
+    "sheet_in_this_order_zip": false,
+    "sheet_size": [
+      1024,
+      1024
+    ],
+    "grid": {
+      "columns": 4,
+      "rows": 4,
+      "cell_width": 256,
+      "cell_height": 256
+    },
+    "index_base": 0,
+    "index_order": "row_major",
+    "background_key": "#FF00FF",
+    "sampling": "nearest_neighbor",
+    "orientation": "배가 오른쪽을 향할 때의 장식 기준",
+    "slot_rows": {
+      "flag": 0,
+      "figurehead": 1,
+      "sail": 2,
+      "deck": 3
+    },
+    "slot_meanings": {
+      "flag": "기존 장식용 깃발의 무늬를 선택한 아이콘에 맞춰 교체",
+      "figurehead": "선수의 장식 자리 한 곳에 표시",
+      "sail": "기존 돛의 무늬를 바꾸며 돛대 수·돛 면적·속도는 유지",
+      "deck": "갑판의 장식 자리 한 곳에 표시"
+    },
+    "base_art_compatibility": "ship_stages.png의 4개 큰 배 단계와 4개 외형 단계 모두에 같은 선택을 유지한다.",
+    "always_preserve": [
+      "선수의 파란 끈",
+      "배 이름과 기존 이름표",
+      "현재 배 큰 단계",
+      "부품 강화 레벨과 강화 실루엣"
+    ],
+    "blue_cord_visibility": "뱃머리 장식을 달아도 파란 끈을 가리지 않도록 연결 지점을 옮기거나 장식을 축소한다.",
+    "source_sheet_usage": "16칸은 장식 선택 아이콘이다. 돛·깃발 아이콘의 나무 받침과 봉까지 배 위에 그대로 겹치지 않는다. 실제 장착 그림은 해당 무늬/장식을 배의 지정 위치에 맞춰 연결한다.",
+    "layout_status": "배 크기별 최종 오버레이 위치는 실제 앱 화면에서 검수해야 함",
+    "light_and_sound": "등불·등잔·종·망원경은 장식이며 항로 해금·탐색·소리 또는 능력 효과를 추가하지 않는다."
+  },
+  "source_files": [
+    "ASTRA_ORDER_5.md (첨부 MHT에서 추출한 주문)",
+    "ship_deco.png",
+    "ART2_MANIFEST.json",
+    "02_ships.json",
+    "03_ports.json",
+    "story.json",
+    "20_crew.json",
+    "Game.kt (기존 카운터 의미 확인용, 수정 없음)"
+  ],
+  "validation": {
+    "item_count": 16,
+    "slot_counts": {
+      "flag": 4,
+      "figurehead": 4,
+      "sail": 4,
+      "deck": 4
+    },
+    "all_effects_null": true,
+    "all_ids_unique": true,
+    "all_icon_indices_unique": true,
+    "existing_program_changed": false,
+    "device_rendering_tested": false
+  }
+}
