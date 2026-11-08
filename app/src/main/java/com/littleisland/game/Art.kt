@@ -27,6 +27,7 @@ object Art {
         try {
             val b = c.assets.open("art/$name.png").use { BitmapFactory.decodeStream(it) } ?: return@getOrPut null
             val m = b.copy(Bitmap.Config.ARGB_8888, true)
+            m.setHasAlpha(true)   // 색 수가 적은 png는 '불투명'으로 읽혀서, 지운 곳이 까맣게 나올 수 있다
             val px = IntArray(m.width * m.height)
             m.getPixels(px, 0, m.width, 0, 0, m.width, m.height)
             for (i in px.indices) {
@@ -44,7 +45,7 @@ object Art {
     fun get(name: String, w: Int): Bitmap? = cache.getOrPut("$name@$w") {
         val b = load(name) ?: return@getOrPut null
         val h = (b.height * w / b.width.toFloat()).toInt().coerceAtLeast(1)
-        Bitmap.createScaledBitmap(b, w, h, true).also { clean(it) }
+        mutable(Bitmap.createScaledBitmap(b, w, h, true)).also { clean(it) }
     }
 
     /** 격자 그림(cols x rows)에서 한 칸을 가로 w도트로 */
@@ -54,8 +55,10 @@ object Art {
         val cx = (idx % cols) * cw; val cy = (idx / cols) * ch
         val part = Bitmap.createBitmap(b, cx, cy, cw, ch)
         val h = (ch * w / cw.toFloat()).toInt().coerceAtLeast(1)
-        Bitmap.createScaledBitmap(part, w, h, true).also { clean(it) }
+        mutable(Bitmap.createScaledBitmap(part, w, h, true)).also { clean(it) }
     }
+
+    private fun mutable(b: Bitmap): Bitmap = (if (b.isMutable) b else b.copy(Bitmap.Config.ARGB_8888, true)).also { it.setHasAlpha(true) }
 
     /** 줄이면서 생긴 반투명 가장자리를 또렷하게 */
     private fun clean(b: Bitmap) {
