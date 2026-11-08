@@ -1,0 +1,1307 @@
+{
+  "schema_version": 1,
+  "design_status": "order10_additional_training_data_v1",
+  "training_puzzle": {
+    "kind": "짐칸 맞추기",
+    "kind_id": "cargo_swap_grid",
+    "legacy_kind_id": "cargo_swap_2x3",
+    "rules": "위쪽 그림과 같은 짐을 모아요.\n다른 상자 둘을 눌러 바꿔요.\n60초 안에 네 번까지 바꿔요.\n짧게 풀수록 쪽지를 더 받아요.\n하루 세 번 도전할 수 있어요.",
+    "plays_per_day": 3,
+    "reward_tickets": [
+      1,
+      3
+    ],
+    "failure_reward_tickets": 0,
+    "timer_seconds": 60,
+    "max_swaps": 4,
+    "intended_solution_taps": [
+      2,
+      8
+    ],
+    "maximum_effective_swap_taps": 8,
+    "board_profiles": {
+      "6": {
+        "rows": 2,
+        "columns": 3,
+        "index_order": "row_major",
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "crate_types": [
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "each_type_count": 2,
+        "column_headers": [
+          "wood",
+          "stone",
+          "grain"
+        ]
+      },
+      "9": {
+        "rows": 3,
+        "columns": 3,
+        "index_order": "row_major",
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "crate_types": [
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "each_type_count": 3,
+        "column_headers": [
+          "wood",
+          "stone",
+          "grain"
+        ]
+      }
+    },
+    "board_rules": {
+      "profile_key": "string(length(puzzle.initial))",
+      "rows_formula": "length(puzzle.initial) / 3",
+      "columns": 3,
+      "cell_index_formula": "row * 3 + column",
+      "accepted_lengths": [
+        6,
+        9
+      ],
+      "goal_source": "선택한 puzzle.target을 정답으로 사용한다. 화면 크기나 이전 문제의 target을 재사용하지 않는다.",
+      "no_blank_cell": true,
+      "validation": "initial과 target의 길이 및 종류별 개수가 같아야 한다. 배열 길이는6 또는9만 허용한다. 잘못된 데이터는 새 도전을 차감하기 전에 제외한다.",
+      "layout": "두 판 모두3열이며 행 수만2 또는3이다. 9칸도 세 번째 행 전체가 보이고 누를 수 있게 훈련 영역 높이를 맞춘다.",
+      "serialization": "attempt에 puzzle_id·initial/target 길이·현재 board·swaps_used·시작 시각·누적 경과시간을 함께 보관한다."
+    },
+    "assets": {
+      "file": "art/training_crates.png",
+      "source_order": 8,
+      "sprite_indices": {
+        "wood": 0,
+        "stone": 1,
+        "grain": 2
+      },
+      "unused_index": 3,
+      "unused_reason": "네 번째 빈 갑판 칸은 이 교환 퍼즐에서 사용하지 않는다. 빈칸 밀기 규칙을 추가하지 않는다.",
+      "crate_display": "실제 창고 자원 수량과 무관한 연습 그림이다. 종류를 아이콘으로 표시한다."
+    },
+    "interaction": {
+      "first_tap": "칸 하나를 선택 표시한다.",
+      "second_tap": "다른 종류의 상자가 있는 칸을 누르면 두 칸을 교환하고 swaps_used를 1 늘린다.",
+      "same_cell": "선택을 취소하며 횟수는 늘리지 않는다.",
+      "same_type": "교환하지 않고 선택을 해제한다. 횟수는 늘리지 않으며 시간은 계속 흐른다.",
+      "adjacency_required": false,
+      "drag_required": false,
+      "resource_cost": 0,
+      "action_order": "먼저 60초 만료 여부를 검사한다. 유효한 교환 후 정답을 검사하고, 정답이 아니면서 4회를 썼으면 실패로 확정한다.",
+      "fourth_swap_can_succeed": true,
+      "at_exactly_60_seconds": "만료로 처리한다."
+    },
+    "scoring": {
+      "optimal_source": "선택된 문제의 optimal_swaps",
+      "success_reward": "3 if swaps_used == optimal_swaps else 2 if swaps_used == optimal_swaps + 1 else 1",
+      "score_uses_timer": false,
+      "no_speed_bonus": true,
+      "on_timeout_or_unsolved_at_move_limit": 0,
+      "max_daily_tickets": 9,
+      "gold_reward": 0,
+      "crew_xp_reward": 0
+    },
+    "puzzles": [
+      {
+        "id": "training_cargo_10",
+        "initial": [
+          "wood",
+          "stone",
+          "grain",
+          "grain",
+          "stone",
+          "wood"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 1,
+        "solution_swaps": [
+          [
+            3,
+            5
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_11",
+        "initial": [
+          "wood",
+          "stone",
+          "wood",
+          "grain",
+          "stone",
+          "grain"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 1,
+        "solution_swaps": [
+          [
+            2,
+            3
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_12",
+        "initial": [
+          "stone",
+          "stone",
+          "grain",
+          "wood",
+          "wood",
+          "grain"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 1,
+        "solution_swaps": [
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_13",
+        "initial": [
+          "grain",
+          "wood",
+          "grain",
+          "stone",
+          "stone",
+          "wood"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 2,
+        "solution_swaps": [
+          [
+            1,
+            3
+          ],
+          [
+            0,
+            5
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_14",
+        "initial": [
+          "grain",
+          "grain",
+          "wood",
+          "wood",
+          "stone",
+          "stone"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 2,
+        "solution_swaps": [
+          [
+            1,
+            5
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_15",
+        "initial": [
+          "wood",
+          "wood",
+          "stone",
+          "grain",
+          "stone",
+          "grain"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 2,
+        "solution_swaps": [
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            2
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_16",
+        "initial": [
+          "wood",
+          "stone",
+          "wood",
+          "grain",
+          "grain",
+          "stone"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 2,
+        "solution_swaps": [
+          [
+            4,
+            5
+          ],
+          [
+            2,
+            3
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_17",
+        "initial": [
+          "grain",
+          "stone",
+          "stone",
+          "wood",
+          "wood",
+          "grain"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 2,
+        "solution_swaps": [
+          [
+            2,
+            4
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_18",
+        "initial": [
+          "stone",
+          "grain",
+          "wood",
+          "grain",
+          "wood",
+          "stone"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 3,
+        "solution_swaps": [
+          [
+            2,
+            3
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_19",
+        "initial": [
+          "grain",
+          "wood",
+          "wood",
+          "stone",
+          "grain",
+          "stone"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 3,
+        "solution_swaps": [
+          [
+            4,
+            5
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_20",
+        "initial": [
+          "grain",
+          "stone",
+          "stone",
+          "grain",
+          "wood",
+          "wood"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 3,
+        "solution_swaps": [
+          [
+            3,
+            5
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_21",
+        "initial": [
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "wood",
+          "grain"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 3,
+        "solution_swaps": [
+          [
+            3,
+            4
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_22",
+        "initial": [
+          "stone",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "grain"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 3,
+        "solution_swaps": [
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_23",
+        "initial": [
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 4,
+        "solution_swaps": [
+          [
+            3,
+            5
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_24",
+        "initial": [
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 4,
+        "solution_swaps": [
+          [
+            4,
+            5
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_25",
+        "initial": [
+          "wood",
+          "stone",
+          "grain",
+          "grain",
+          "stone",
+          "stone",
+          "wood",
+          "grain",
+          "wood"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 2,
+        "solution_swaps": [
+          [
+            5,
+            7
+          ],
+          [
+            3,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_26",
+        "initial": [
+          "wood",
+          "stone",
+          "stone",
+          "wood",
+          "grain",
+          "grain",
+          "stone",
+          "wood",
+          "grain"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 2,
+        "solution_swaps": [
+          [
+            6,
+            7
+          ],
+          [
+            2,
+            4
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_27",
+        "initial": [
+          "wood",
+          "grain",
+          "grain",
+          "stone",
+          "wood",
+          "grain",
+          "wood",
+          "stone",
+          "stone"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 2,
+        "solution_swaps": [
+          [
+            3,
+            4
+          ],
+          [
+            1,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_28",
+        "initial": [
+          "stone",
+          "wood",
+          "grain",
+          "wood",
+          "grain",
+          "grain",
+          "stone",
+          "stone",
+          "wood"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 3,
+        "solution_swaps": [
+          [
+            4,
+            8
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_29",
+        "initial": [
+          "wood",
+          "grain",
+          "wood",
+          "wood",
+          "stone",
+          "grain",
+          "stone",
+          "grain",
+          "stone"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 3,
+        "solution_swaps": [
+          [
+            7,
+            8
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            1,
+            2
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_30",
+        "initial": [
+          "wood",
+          "wood",
+          "grain",
+          "grain",
+          "stone",
+          "wood",
+          "grain",
+          "stone",
+          "stone"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 3,
+        "solution_swaps": [
+          [
+            5,
+            6
+          ],
+          [
+            3,
+            8
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_31",
+        "initial": [
+          "stone",
+          "wood",
+          "wood",
+          "stone",
+          "stone",
+          "grain",
+          "grain",
+          "wood",
+          "grain"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 3,
+        "solution_swaps": [
+          [
+            3,
+            7
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_32",
+        "initial": [
+          "grain",
+          "grain",
+          "stone",
+          "wood",
+          "grain",
+          "stone",
+          "wood",
+          "stone",
+          "wood"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 3,
+        "solution_swaps": [
+          [
+            4,
+            5
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            0,
+            8
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_33",
+        "initial": [
+          "stone",
+          "stone",
+          "grain",
+          "stone",
+          "wood",
+          "wood",
+          "wood",
+          "grain",
+          "grain"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 3,
+        "solution_swaps": [
+          [
+            3,
+            7
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_34",
+        "initial": [
+          "grain",
+          "grain",
+          "grain",
+          "stone",
+          "stone",
+          "wood",
+          "stone",
+          "wood",
+          "wood"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 4,
+        "solution_swaps": [
+          [
+            6,
+            7
+          ],
+          [
+            1,
+            8
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            0,
+            5
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_35",
+        "initial": [
+          "stone",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "grain",
+          "wood",
+          "grain",
+          "stone"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 4,
+        "solution_swaps": [
+          [
+            7,
+            8
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_36",
+        "initial": [
+          "grain",
+          "stone",
+          "wood",
+          "wood",
+          "grain",
+          "stone",
+          "grain",
+          "wood",
+          "stone"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 4,
+        "solution_swaps": [
+          [
+            6,
+            8
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_37",
+        "initial": [
+          "stone",
+          "grain",
+          "wood",
+          "grain",
+          "wood",
+          "wood",
+          "stone",
+          "stone",
+          "grain"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 4,
+        "solution_swaps": [
+          [
+            4,
+            6
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_38",
+        "initial": [
+          "wood",
+          "wood",
+          "stone",
+          "stone",
+          "grain",
+          "stone",
+          "grain",
+          "grain",
+          "wood"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 4,
+        "solution_swaps": [
+          [
+            6,
+            8
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      },
+      {
+        "id": "training_cargo_39",
+        "initial": [
+          "grain",
+          "stone",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "wood",
+          "wood",
+          "grain"
+        ],
+        "target": [
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain",
+          "wood",
+          "stone",
+          "grain"
+        ],
+        "optimal_swaps": 4,
+        "solution_swaps": [
+          [
+            5,
+            7
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      }
+    ],
+    "selection_rules": {
+      "additional_bank_size": 30,
+      "existing_bank_size": 9,
+      "bank_size": 39,
+      "preselect_per_day": 3,
+      "distinct_puzzles_per_day": true,
+      "method": "28의 기존9개와34의 신규30개를 ID로 병합해39개를 만든다. 아직 발급하지 않은 새 날짜에 날짜 키·save_id로39개 ID를 한 번 섞어 앞3개를 저장한다. 판형이나 난도에 별도 가중치를 주지 않는다.",
+      "same_bank_for_both_sizes": true,
+      "additional_plays_for_3x3": 0,
+      "reroll_on_open": false,
+      "reroll_on_update": false,
+      "puzzle_state_saved": true,
+      "current_day_migration": "업데이트 전에 오늘 문제3개와 사용 횟수를 저장했다면 그날은 그대로 사용한다. 아직 시작하지 않은 선택 문제도 바꾸지 않는다. 신규39개 풀은 다음 미발급 날짜부터 사용한다.",
+      "active_attempt_migration": "진행 중인6칸 문제의 배치·정답·횟수·60초 제한을 그대로 복원한다. 새판형으로 바꾸거나 도전 횟수를 추가하지 않는다.",
+      "solutions_are_validation_data": "solution_swaps는 정적 검수와 선택적 힌트 연결을 위한 정답 데이터다. 기본 플레이 화면에 자동 표시하지 않는다."
+    },
+    "attempt_rules": {
+      "max_active": 1,
+      "consume_daily_play_at": "도전 시작 버튼을 눌러 새 attempt_id·문제·시작 시각을 저장할 때 1회 차감한다.",
+      "start_has_no_payment": true,
+      "close_and_reopen": "활성 attempt_id의 같은 문제·배치·교환 횟수·남은 시간을 복원한다. 새 문제나 새 일일 횟수를 주지 않는다.",
+      "time_runs_in_background": true,
+      "elapsed_clock": "동일 실행에서는 monotonic elapsed를 사용한다. 재시작 시에는 저장된 누적 경과시간과 저장된 시작 시각 이후의 비음수 실제 경과를 비교해 큰 값을 사용한다. 기기 시각이 뒤로 가도 남은 시간이 늘어나지 않는다.",
+      "abandon": "도전한 횟수는 돌려주지 않는다. 성공 보상 없이 종료하고 다음 남은 도전에서만 새 문제를 연다.",
+      "retry_failed_puzzle": "확정된 실패를 다시 열어 보상을 받을 수 없다. 남은 일일 도전은 저장된 다음 문제를 사용한다.",
+      "reward_once_key": "save_id + training_attempt_id + reward",
+      "result_reopen": "저장된 결과만 보여 주며 쪽지와 도전 횟수를 다시 변경하지 않는다."
+    },
+    "day_rules": {
+      "timezone": "기능 최초 사용 시 기기의 IANA 시간대를 저장하고 이후 훈련 날짜 키 계산에 그대로 사용한다.",
+      "day_key": "YYYY-MM-DD in saved training_timezone",
+      "reset_at": "저장된 시간대의 자정 이후 처음 확인한 새 날짜",
+      "forward_day": "관측 날짜가 마지막 도전 날짜보다 클 때 새 날짜의 도전 3회와 문제 3개를 초기화한다. 건너뛴 날짜의 횟수는 쌓지 않는다.",
+      "backward_day": "관측 날짜가 저장된 최근 날짜보다 이전이면 최근 날짜의 사용 횟수를 유지한다. 날짜를 되돌려 횟수를 복원하지 않는다.",
+      "timezone_changes": "기기 시간대 변경만으로 저장된 훈련 시간대를 바꾸거나 도전 횟수를 초기화하지 않는다.",
+      "midnight_active_attempt": "진행 중 도전은 시작한 날짜의 attempt로 유지한다. 새 날짜의 3회를 소비하지 않으며 실제 60초 제한은 계속 적용한다.",
+      "local_clock_limit": "서버 시간 검증이 없는 로컬 저장 규칙이다. 임의의 미래 시각 변경까지 완전히 차단한다고 보장하지 않는다."
+    },
+    "integration_rules": {
+      "item_shape": "각 퍼즐은28.training_puzzle.puzzles와 같은5개 키만 사용한다: id,initial,target,optimal_swaps,solution_swaps.",
+      "kind_id_alias": "새 레이아웃 이름은cargo_swap_grid이다. 구형 저장의cargo_swap_2x3도 같은 훈련으로 읽고, 실제 행수는 선택한 배열 길이에서 구한다. 종류 이름 변경으로 별도 도전권이나 보상 저장소를 만들지 않는다.",
+      "replaces_fixed_board_descriptor": "28.training_puzzle.board의고정2행 설명과intended_solution_taps 상한6만 새판형에 맞게 대체한다. max_swaps4·일일3회·60초·보상식은 바꾸지 않는다.",
+      "ordinary_cargo_pack_unchanged": "31의cargo_pack인 기존 짐 정리 퍼즐과 별개의 선원 훈련이다. 여기의 성공을cargo_pack으로도 세지 않는다.",
+      "daily_training_counter": "기존과 같은training_attempt_id의첫성공 확정에서31.training_clear에한번 전달한다. 보상쪽지 수량·정답조회·결과 재열기는 추가 성공이 아니다.",
+      "counter_event_timestamp": "온라인 성공 판정이 확정된 시각을 이벤트 시각으로 사용한다. 날짜를 넘긴 도전은 시작 날짜의훈련횟수를 쓰지만 주문 진행은31의발급·시각 규칙을 따른다.",
+      "no_new_resource_cost": true,
+      "original_code_changed": false,
+      "actual_build35_tested": false,
+      "developer_metadata_hidden": "앱 설명창에는rules의5줄만 보여준다. 선택·저장·BFS 검증 설명은 사용자 화면에 그대로 출력하지 않는다."
+    }
+  },
+  "validation_reference": {
+    "method": "Breadth-first search from each target over every swap of two unequal crate types; duplicate crate types are indistinguishable.",
+    "board_state_spaces": {
+      "2x3": {
+        "all_distinct_states": 90,
+        "full_minimum_distance_distribution": {
+          "0": 1,
+          "1": 12,
+          "2": 43,
+          "3": 32,
+          "4": 2
+        },
+        "new_puzzles": 15,
+        "new_minimum_distance_distribution": {
+          "1": 3,
+          "2": 5,
+          "3": 5,
+          "4": 2
+        },
+        "maximum_distance_in_entire_state_space": 4
+      },
+      "3x3": {
+        "all_distinct_states": 1680,
+        "full_minimum_distance_distribution": {
+          "0": 1,
+          "1": 27,
+          "2": 243,
+          "3": 705,
+          "4": 594,
+          "5": 108,
+          "6": 2
+        },
+        "new_puzzles": 15,
+        "new_minimum_distance_distribution": {
+          "2": 3,
+          "3": 6,
+          "4": 6
+        },
+        "maximum_distance_in_entire_state_space": 6
+      }
+    },
+    "new_puzzles_only": true,
+    "app_runtime_tested": false
+  }
+}

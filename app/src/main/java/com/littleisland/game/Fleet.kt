@@ -94,6 +94,7 @@ object Fleet {
         loadMissions(c)
         loadOrder7(c)
         loadOrder9(c)
+        loadOrder10(c)
         try {
             val d = JSONObject(c.assets.open("19_ship_parts.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
             val ps = d.getJSONArray("parts")
@@ -175,6 +176,33 @@ object Fleet {
     var weeklyTickets = 10; private set
     var weeklyGold = 500; private set
     fun order(id: String) = orders.firstOrNull { it.id == id }
+    /** 33_crew_sea_events.json: 그 선원이 탔을 때 가끔 생기는 작은 일 (귀항 카드 한 줄 + 머리 위 감정) */
+    class CrewEvent(val id: String, val crew: String, val minLv: Int, val title: String, val line: String, val emote: String, val kind: String, val value: Int)
+    val crewEvents = ArrayList<CrewEvent>()
+    var crewEvChance = .25f; private set
+    val EMOTES = listOf("heart", "note", "sweat", "star", "zzz", "surprise", "question", "angry")
+    fun crewEvent(id: String?) = crewEvents.firstOrNull { it.id == id }
+    private fun loadOrder10(c: Context) {
+        try {
+            val d = json(c, "33_crew_sea_events.json")
+            crewEvChance = d.optDouble("chance_per_voyage", .25).toFloat()
+            val a = d.getJSONArray("events")
+            for (i in 0 until a.length()) {
+                val x = a.getJSONObject(i); val e = x.optJSONObject("effect") ?: JSONObject()
+                crewEvents.add(CrewEvent(x.getString("id"), x.optString("crew"), x.optInt("min_crew_level", 1), x.optString("card_title"), x.optString("card_line"),
+                    x.optString("emote", "heart"), e.optString("kind", "none"), e.optInt("value")))
+            }
+        } catch (e: Exception) { }
+        // 34_training_puzzles_2.json: 훈련 퍼즐 30개 더 (3×3 판 포함)
+        try {
+            val pz = json(c, "34_training_puzzles_2.json").optJSONObject("training_puzzle")?.optJSONArray("puzzles")
+            fun strs(a: org.json.JSONArray) = (0 until a.length()).map { a.getString(it) }
+            if (pz != null) for (i in 0 until pz.length()) { val x = pz.getJSONObject(i)
+                if (trainings.any { it.id == x.getString("id") }) continue
+                trainings.add(Training(x.getString("id"), strs(x.getJSONArray("initial")), strs(x.getJSONArray("target")), x.optInt("optimal_swaps", 1))) }
+        } catch (e: Exception) { }
+    }
+
     private fun loadOrder9(c: Context) {
         try {
             val d = json(c, "31_daily_orders.json")

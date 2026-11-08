@@ -156,7 +156,7 @@ object Game {
     val log = ArrayList<String>()
     private fun card(t: String, m: String) {
         cards.addLast(t to m); while (cards.size > 8) cards.removeFirst()
-        log.add(0, t + " " + m.replace("\n", " ")); while (log.size > 6) log.removeAt(log.size - 1)
+        log.add(0, t.replace(Regex("\u0001\\d*\u0001"), "") + " " + m.replace("\n", " ")); while (log.size > 6) log.removeAt(log.size - 1)
     }
 
     // 이야기 자리표시자용
@@ -214,7 +214,7 @@ object Game {
         tickets = sp.getInt("tickets", 0); pity = sp.getInt("pity", 0)
         charmLv.clear(); sp.getString("charmLv", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); charmLv[k] = v.toIntOrNull() ?: 1 }
         charmOn.clear(); sp.getString("charmOn", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); if (v in charmLv) charmOn[k] = v }
-        ordDay = sp.getLong("ordDay", -1L); ordIds = sp.getString("ordIds", "")!!.split(",").filter { it.isNotEmpty() }
+        cevId = sp.getString("cevId", null); ordDay = sp.getLong("ordDay", -1L); ordIds = sp.getString("ordIds", "")!!.split(",").filter { it.isNotEmpty() }
         ordProg.clear(); sp.getString("ordProg", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); ordProg[k] = v.toIntOrNull() ?: 0 }
         ordDone.clear(); sp.getString("ordDone", "")!!.split(",").filter { it.isNotEmpty() }.forEach { ordDone.add(it) }
         weekStart = sp.getLong("weekStart", -1L); weekCount = sp.getInt("weekCount", 0); weekGot = sp.getBoolean("weekGot", false)
@@ -271,7 +271,7 @@ object Game {
             putString("bossWins", bossWins.joinToString(",")); putString("souvOwned", souvOwned.joinToString(",")); putString("milesDone", milesDone.joinToString(","))
             putInt("tickets", tickets); putInt("pity", pity)
             putString("charmLv", charmLv.entries.joinToString(",") { it.key + ":" + it.value }); putString("charmOn", charmOn.entries.joinToString(",") { it.key + ":" + it.value })
-            putLong("ordDay", ordDay); putString("ordIds", ordIds.joinToString(",")); putString("ordProg", ordProg.entries.joinToString(",") { it.key + ":" + it.value })
+            putString("cevId", cevId); putLong("ordDay", ordDay); putString("ordIds", ordIds.joinToString(",")); putString("ordProg", ordProg.entries.joinToString(",") { it.key + ":" + it.value })
             putString("ordDone", ordDone.joinToString(",")); putLong("weekStart", weekStart); putInt("weekCount", weekCount); putBoolean("weekGot", weekGot)
             putLong("trainDay", trainDay); putInt("trainLeft", trainLeft); putString("trainSet", trainSet.joinToString(","))
             putString("missionQ", missionQ); putString("missionsDone", missionsDone.joinToString(","))
@@ -291,6 +291,32 @@ object Game {
     // 시뮬레이션
 
     /** 화면이 그려지는 동안 매 프레임 부른다. */
+    // ---------- 선원 항해 사건 ----------
+    var cevId: String? = null; private set          // 이번 항해에 생길 선원 사건 (귀항 때 정산)
+    private fun rollCrewEvent(crew: List<String>) {
+        cevId = null
+        if (Fleet.crewEvents.isEmpty() || Random.nextFloat() >= Fleet.crewEvChance) return
+        val ok = crew.filter { id -> Fleet.crewEvents.any { it.crew == id && crewLevel(id) >= it.minLv } }
+        if (ok.isEmpty()) return
+        val who = ok.random()
+        cevId = Fleet.crewEvents.filter { it.crew == who && crewLevel(who) >= it.minLv }.random().id
+    }
+    private fun settleCrewEvent() {
+        val e = Fleet.crewEvent(cevId) ?: return
+        cevId = null
+        val got = when (e.kind) {
+            "gold" -> { goldC += e.value * 100L; "금화 +" + e.value }
+            "wood" -> { add(e.value, 0); "나무 +" + e.value }
+            "stone" -> { add(0, e.value); "돌 +" + e.value }
+            "crew_xp" -> { giveXp(e.crew, e.value); (Fleet.crewOf(e.crew)?.name ?: "") + " 경험치 +" + e.value }
+            "tickets" -> { tickets += e.value; "쪽지 +" + e.value }
+            else -> ""
+        }
+        val pi = Data.workers.indexOfFirst { it.id == e.crew }
+        // 제목 앞의 \u0001번호\u0001은 카드에 선원 배지를 붙이라는 표시
+        card((if (pi >= 0) "\u0001" + pi + "\u0001" else "") + e.title, e.line + (if (got.isNotEmpty()) "\n" + got else ""))
+    }
+
     // ---------- 오늘의 주문 ----------
     var ordDay = -1L; private set
     var ordIds: List<String> = emptyList(); private set
@@ -463,6 +489,7 @@ object Game {
         // 특별 항해: 예약한 임무가 아직 조건에 맞으면 이번 한 번만 그 항구로 (평소 항로 설정은 그대로)
         val m = Fleet.mission(missionQ)?.takeIf { missionMissing(it, crew).isEmpty() }
         missionQ = null
+        rollCrewEvent(crew)
         if (m != null) Data.ports.firstOrNull { it.id == m.port }?.let { p = it }
         val cw = min(wood, loadW(crew)); val cs = min(stone, loadS(crew))
         wood -= cw; stone -= cs
@@ -587,6 +614,7 @@ object Game {
         for (id in v.crew) giveXp(id, Fleet.xpPerVoyage)
         tickets++
         bump("voyage_return")
+        settleCrewEvent()
         Fleet.boss(v.pirate)?.let { b -> if (v.encounter && v.win && bossWins.add(b.id)) {
             goldC += b.rewardGold * 100L; if (b.rewardMaps > 0) mapPieces += b.rewardMaps
             flag(b.storyId)

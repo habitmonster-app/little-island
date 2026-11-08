@@ -155,6 +155,27 @@ class Scene {
         return t
     }
 
+    // ---------- 지나가는 바다 동물 (장식) ----------
+    private class Critter(val kind: Int, var x: Float, var t: Float)
+    private var critter: Critter? = null
+    private var critterWait = 20f + Random.nextFloat() * 40f
+    private fun updateCritter(dt: Float) {
+        critter?.let { cr -> cr.t += dt; cr.x -= dt * (if (cr.kind == 2) 7f else if (cr.kind == 1) 9f else 16f); if (cr.x < -30f) critter = null }
+        if (critter == null) {
+            critterWait -= dt
+            if (critterWait <= 0f) { critterWait = 60f + Random.nextFloat() * 90f; critter = Critter(Random.nextInt(4), W + 24f, 0f) }
+        }
+    }
+    fun spawnCritter(kind: Int, x: Float, t: Float) { critter = Critter(kind, x, t) }
+    private fun drawCritter() {
+        val cr = critter ?: return
+        val fr = (floor(cr.t * (if (cr.kind == 1) 1.6f else 3f)) % 4).toInt()
+        // 칸 가운데가 수면. 칸 크기 36도트 → 아래 끝을 수면 + 18에 맞춘다 (먼 바다라 약간 위)
+        val sz = if (cr.kind == 1) 54 else 36          // 고래는 크게
+        val bm = acell("sea_creatures", 4, 4, cr.kind * 4 + fr, sz) ?: return
+        Art.draw(c, bm, cr.x, WL + 2 + sz / 2f)
+    }
+
     private fun updateFloaters(dt: Float) {
         floatWait -= dt
         if (floatWait <= 0f && floaters.size < 2) {
@@ -402,6 +423,7 @@ class Scene {
         updatePeople(dt)
         updateTalk(dt)
         updateFloaters(dt)
+        updateCritter(dt)
         if (sailing()) scroll += dt * 16f
         if (Game.levelUps > 0) { pops.add(Pop(dockX - 10, GROUND - 30, "선원 레벨 업!", 3.5f, true)); Game.levelUps = 0 }
         if (Game.arrived > 0) { pops.add(Pop(dockX, GROUND - 24, "알바 도착", 3f)); Game.arrived = 0 }
@@ -436,6 +458,7 @@ class Scene {
         val po = portOffset()
         if (io != null) island(time, io)
         if (po != null) port(time, po)
+        drawCritter()
         pirates(time)
         shipX()?.let { ourShip(it, time) }
         drawFloaters(time)
@@ -818,6 +841,11 @@ class Scene {
             val bob = if (pose == 0 && (floor(time * 2 + i) % 2).toInt() == 1) 1f else 0f
             Art.draw(c, bm, x + deckX[i % deckX.size] * w, y - deckH() + bob)
             crewHead[id] = (x + deckX[i % deckX.size] * w) to (y - deckH() - 15)
+            // 선원 사건: 항해 62~74% 사이에 그 선원 머리 위에 감정 말풍선
+            Fleet.crewEvent(Game.cevId)?.takeIf { it.crew == id && f in .62f..(.74f) }?.let { e ->
+                acell("crew_emotes", 4, 2, Fleet.EMOTES.indexOf(e.emote).coerceAtLeast(0), 14)?.let { em ->
+                    Art.draw(c, em, x + deckX[i % deckX.size] * w + 4, y - deckH() - 14 + sin(time * 4f) * .8f) }
+            }
         }
         crewSeen = 0f
     }

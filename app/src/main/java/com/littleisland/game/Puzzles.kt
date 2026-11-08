@@ -218,7 +218,7 @@ class CargoPuzzleView(ctx: Context, val onSolved: () -> Unit) : View(ctx) {
  * 위 줄 표시처럼 칸마다 같은 종류가 오게 하면 성공. 교환 횟수와 시간에 제한이 있다.
  */
 class TrainingPuzzleView(ctx: Context, val t: Fleet.Training, val maxSwaps: Int, val onEnd: (ok: Boolean, swaps: Int) -> Unit) : View(ctx) {
-    private val cols = 3; private val rows = 2
+    private val cols = 3; private val rows = (t.initial.size + 2) / 3
     private val board = t.initial.toMutableList()
     var swaps = 0; private set
     private var sel = -1
@@ -233,8 +233,8 @@ class TrainingPuzzleView(ctx: Context, val t: Fleet.Training, val maxSwaps: Int,
     fun solved() = board == t.target
     fun timeUp() { if (!over) { over = true; invalidate(); onEnd(false, swaps) } }
 
-    override fun onMeasure(w: Int, h: Int) { val s = MeasureSpec.getSize(w); setMeasuredDimension(s, (s * 1.0f).toInt()) }
-    private fun cs() = width / (cols + .6f)
+    override fun onMeasure(w: Int, h: Int) { val s = MeasureSpec.getSize(w); setMeasuredDimension(s, (s * (if (rows > 2) 1.15f else 1.0f)).toInt()) }
+    private fun cs() = width / (cols + (if (rows > 2) 1.1f else .6f))
     private fun x0() = (width - cols * cs()) / 2f
     private fun y0() = cs() * .75f
 

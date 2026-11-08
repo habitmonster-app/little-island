@@ -1,0 +1,1051 @@
+{
+  "schema_version": 1,
+  "coordinates": "top-left; zero-based row-major; source_rect=[x,y,width,height]",
+  "sampling": "nearest neighbor",
+  "sheets": [
+    {
+      "file": "art/sea_creatures.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "direction": "right_to_left",
+      "cells": [
+        {
+          "index": 0,
+          "animal": "dolphin",
+          "frame": 0,
+          "pose": "submerged_back",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            50,
+            81,
+            197,
+            129
+          ],
+          "technical_export": {
+            "source_row_band": [
+              0,
+              256
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 167,
+            "no_drawing_or_pose_changes": true
+          },
+          "visible_contact_bottom_y": 128
+        },
+        {
+          "index": 1,
+          "animal": "dolphin",
+          "frame": 1,
+          "pose": "breach",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            58,
+            46,
+            204,
+            129
+          ],
+          "technical_export": {
+            "source_row_band": [
+              0,
+              256
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 167,
+            "no_drawing_or_pose_changes": true
+          },
+          "visible_contact_bottom_y": 128
+        },
+        {
+          "index": 2,
+          "animal": "dolphin",
+          "frame": 2,
+          "pose": "jump_peak",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            54,
+            16,
+            199,
+            118
+          ],
+          "technical_export": {
+            "source_row_band": [
+              0,
+              256
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 167,
+            "no_drawing_or_pose_changes": true
+          }
+        },
+        {
+          "index": 3,
+          "animal": "dolphin",
+          "frame": 3,
+          "pose": "dive",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            54,
+            35,
+            198,
+            129
+          ],
+          "technical_export": {
+            "source_row_band": [
+              0,
+              256
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 167,
+            "no_drawing_or_pose_changes": true
+          },
+          "visible_contact_bottom_y": 128
+        },
+        {
+          "index": 4,
+          "animal": "whale",
+          "frame": 0,
+          "pose": "back",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            50,
+            83,
+            195,
+            129
+          ],
+          "technical_export": {
+            "source_row_band": [
+              256,
+              512
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 147,
+            "no_drawing_or_pose_changes": true
+          },
+          "visible_contact_bottom_y": 128
+        },
+        {
+          "index": 5,
+          "animal": "whale",
+          "frame": 1,
+          "pose": "short_spout",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            50,
+            58,
+            196,
+            129
+          ],
+          "technical_export": {
+            "source_row_band": [
+              256,
+              512
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 147,
+            "no_drawing_or_pose_changes": true
+          },
+          "visible_contact_bottom_y": 128
+        },
+        {
+          "index": 6,
+          "animal": "whale",
+          "frame": 2,
+          "pose": "tall_spout",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            51,
+            13,
+            196,
+            129
+          ],
+          "technical_export": {
+            "source_row_band": [
+              256,
+              512
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 147,
+            "no_drawing_or_pose_changes": true
+          },
+          "visible_contact_bottom_y": 128
+        },
+        {
+          "index": 7,
+          "animal": "whale",
+          "frame": 3,
+          "pose": "tail",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            58,
+            55,
+            204,
+            129
+          ],
+          "technical_export": {
+            "source_row_band": [
+              256,
+              512
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 147,
+            "no_drawing_or_pose_changes": true
+          },
+          "visible_contact_bottom_y": 128
+        },
+        {
+          "index": 8,
+          "animal": "turtle",
+          "frame": 0,
+          "pose": "flipper_forward_down",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            42,
+            84,
+            216,
+            180
+          ],
+          "technical_export": {
+            "source_row_band": [
+              512,
+              720
+            ],
+            "common_row_scale": 1.0,
+            "source_anchor_y": 96,
+            "no_drawing_or_pose_changes": true
+          }
+        },
+        {
+          "index": 9,
+          "animal": "turtle",
+          "frame": 1,
+          "pose": "flipper_back",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            42,
+            84,
+            219,
+            171
+          ],
+          "technical_export": {
+            "source_row_band": [
+              512,
+              720
+            ],
+            "common_row_scale": 1.0,
+            "source_anchor_y": 96,
+            "no_drawing_or_pose_changes": true
+          }
+        },
+        {
+          "index": 10,
+          "animal": "turtle",
+          "frame": 2,
+          "pose": "flipper_forward_up",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            37,
+            84,
+            216,
+            168
+          ],
+          "technical_export": {
+            "source_row_band": [
+              512,
+              720
+            ],
+            "common_row_scale": 1.0,
+            "source_anchor_y": 96,
+            "no_drawing_or_pose_changes": true
+          }
+        },
+        {
+          "index": 11,
+          "animal": "turtle",
+          "frame": 3,
+          "pose": "flipper_down",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            43,
+            84,
+            219,
+            180
+          ],
+          "technical_export": {
+            "source_row_band": [
+              512,
+              720
+            ],
+            "common_row_scale": 1.0,
+            "source_anchor_y": 96,
+            "no_drawing_or_pose_changes": true
+          }
+        },
+        {
+          "index": 12,
+          "animal": "flying_fish",
+          "frame": 0,
+          "pose": "glide_low",
+          "source_rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            56,
+            38,
+            201,
+            125
+          ],
+          "technical_export": {
+            "source_row_band": [
+              720,
+              1024
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 128,
+            "no_drawing_or_pose_changes": true
+          }
+        },
+        {
+          "index": 13,
+          "animal": "flying_fish",
+          "frame": 1,
+          "pose": "glide_rising",
+          "source_rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            54,
+            22,
+            200,
+            125
+          ],
+          "technical_export": {
+            "source_row_band": [
+              720,
+              1024
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 128,
+            "no_drawing_or_pose_changes": true
+          }
+        },
+        {
+          "index": 14,
+          "animal": "flying_fish",
+          "frame": 2,
+          "pose": "glide_high",
+          "source_rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            56,
+            15,
+            201,
+            124
+          ],
+          "technical_export": {
+            "source_row_band": [
+              720,
+              1024
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 128,
+            "no_drawing_or_pose_changes": true
+          }
+        },
+        {
+          "index": 15,
+          "animal": "flying_fish",
+          "frame": 3,
+          "pose": "glide_falling",
+          "source_rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "waterline_anchor": [
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            55,
+            28,
+            203,
+            126
+          ],
+          "technical_export": {
+            "source_row_band": [
+              720,
+              1024
+            ],
+            "common_row_scale": 0.8,
+            "source_anchor_y": 128,
+            "no_drawing_or_pose_changes": true
+          }
+        }
+      ],
+      "sha256": "9051d66856100f9094a518d6fc2c90def48755fde175669ac994bac82ffd2892",
+      "bytes": 241585,
+      "animation": {
+        "anchor_rule": "Place local (128,128) at the existing sea surface; do not bottom-align foreground bounding boxes.",
+        "rows": [
+          {
+            "animal": "dolphin",
+            "row": 0,
+            "frames": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "frame_duration_ms": [
+              180,
+              150,
+              210,
+              180
+            ],
+            "loop": true
+          },
+          {
+            "animal": "whale",
+            "row": 1,
+            "frames": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "frame_duration_ms": [
+              380,
+              220,
+              340,
+              380
+            ],
+            "loop": true
+          },
+          {
+            "animal": "turtle",
+            "row": 2,
+            "frames": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "frame_duration_ms": [
+              180,
+              180,
+              180,
+              180
+            ],
+            "loop": true
+          },
+          {
+            "animal": "flying_fish",
+            "row": 3,
+            "frames": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "frame_duration_ms": [
+              150,
+              150,
+              150,
+              150
+            ],
+            "loop": true
+          }
+        ],
+        "translation": "Translate the entire anchored cell toward decreasing screen X. Do not mirror. Screen travel speed and spawn frequency follow existing scene policy.",
+        "gameplay_effect": "none; decorative only",
+        "offline": "Do not queue a backlog of decorative appearances while away."
+      }
+    },
+    {
+      "file": "art/crew_emotes.png",
+      "size": [
+        512,
+        256
+      ],
+      "grid": [
+        4,
+        2
+      ],
+      "cell": [
+        128,
+        128
+      ],
+      "background_key": "#FF00FF",
+      "cells": [
+        {
+          "index": 0,
+          "id": "heart",
+          "source_rect": [
+            0,
+            0,
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            10,
+            5,
+            118,
+            117
+          ],
+          "bottom_anchor": [
+            64,
+            116
+          ]
+        },
+        {
+          "index": 1,
+          "id": "note",
+          "source_rect": [
+            128,
+            0,
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            10,
+            5,
+            118,
+            117
+          ],
+          "bottom_anchor": [
+            64,
+            116
+          ]
+        },
+        {
+          "index": 2,
+          "id": "sweat",
+          "source_rect": [
+            256,
+            0,
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            10,
+            5,
+            118,
+            117
+          ],
+          "bottom_anchor": [
+            64,
+            116
+          ]
+        },
+        {
+          "index": 3,
+          "id": "star",
+          "source_rect": [
+            384,
+            0,
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            10,
+            5,
+            118,
+            117
+          ],
+          "bottom_anchor": [
+            64,
+            116
+          ]
+        },
+        {
+          "index": 4,
+          "id": "zzz",
+          "source_rect": [
+            0,
+            128,
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            10,
+            6,
+            118,
+            117
+          ],
+          "bottom_anchor": [
+            64,
+            116
+          ]
+        },
+        {
+          "index": 5,
+          "id": "surprise",
+          "source_rect": [
+            128,
+            128,
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            10,
+            6,
+            118,
+            117
+          ],
+          "bottom_anchor": [
+            64,
+            116
+          ]
+        },
+        {
+          "index": 6,
+          "id": "question",
+          "source_rect": [
+            256,
+            128,
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            10,
+            6,
+            118,
+            117
+          ],
+          "bottom_anchor": [
+            64,
+            116
+          ]
+        },
+        {
+          "index": 7,
+          "id": "angry",
+          "source_rect": [
+            384,
+            128,
+            128,
+            128
+          ],
+          "foreground_bbox": [
+            10,
+            6,
+            118,
+            117
+          ],
+          "bottom_anchor": [
+            64,
+            116
+          ]
+        }
+      ],
+      "sha256": "fb00aac536d42e033aca17a744918cfd027f026299c145d2cc04ebea84ea8442",
+      "bytes": 105872
+    },
+    {
+      "file": "art/crew_event_badge.png",
+      "size": [
+        1024,
+        768
+      ],
+      "grid": [
+        4,
+        3
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "cells": [
+        {
+          "index": 0,
+          "id": "yeoul",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 1,
+          "id": "mungi",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 2,
+          "id": "sori",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 3,
+          "id": "nuri",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 4,
+          "id": "bada",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 5,
+          "id": "geonu",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 6,
+          "id": "dori",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 7,
+          "id": "haneul",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 8,
+          "id": "bityeo",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 9,
+          "id": "deul",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 10,
+          "id": "saei",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 11,
+          "id": "onyu",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "bottom_anchor": [
+            128,
+            239
+          ]
+        }
+      ],
+      "sha256": "7046bac01ad719b1c7eeeff6cc69d73852f4b031973e3db6d301ddc2b28ce74f",
+      "bytes": 866739
+    }
+  ],
+  "limits": [
+    "Data and art export verified; no build-35 application execution.",
+    "Animal movement uses four discrete frames; smooth screen translation must be connected by the app."
+  ]
+}

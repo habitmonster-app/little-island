@@ -240,6 +240,8 @@ class IslandWallpaperService : WallpaperService() {
         }
 
         /** 다시 화면을 켰을 때, 비운 동안 모인 자원을 양피지 카드로 몇 초 보여준다. */
+        private val badgeSrc = android.graphics.Rect(); private val badgeDst = android.graphics.RectF()
+        private val badgePaint = Paint().apply { isFilterBitmap = false }
         private fun drawCard(cv: Canvas) {
             val r = card ?: return
             if (cardT <= 0f) { card = null; return }
@@ -255,11 +257,25 @@ class IslandWallpaperService : WallpaperService() {
             cardTitle.textSize = 20 * d; cardText.textSize = 16 * d
             // 긴 문장은 카드 안에 들어가게 글씨를 줄인다
             fun fit(p: Paint, t: String, size: Float) { p.textSize = size; while (p.measureText(t) > w - 24 * d && p.textSize > 9 * d) p.textSize -= 1 }
-            fit(cardTitle, r.first, 20 * d)
-            cv.drawText(r.first, x + w / 2, y + h * .36f, cardTitle)
-            fit(cardText, r.second, 16 * d)
-            cv.drawText(r.second, x + w / 2, y + h * .62f, cardText)
-            if (r.third.isNotEmpty()) { fit(cardText, r.third, 16 * d); cv.drawText(r.third, x + w / 2, y + h * .85f, cardText) }
+            // 선원 사건 카드: 제목 앞 \u0001번호\u0001 → 왼쪽에 선원 얼굴 배지
+            var title = r.first; var tx = x + w / 2; var tw = w
+            if (title.startsWith("\u0001")) {
+                val k = title.indexOf('\u0001', 1)
+                val idx = title.substring(1, maxOf(1, k)).toIntOrNull() ?: -1
+                title = title.substring(k + 1)
+                val bs = h * .78f
+                Art.cell("crew_event_badge", 4, 3, idx, bs.toInt())?.let { bm ->
+                    badgeSrc.set(0, 0, bm.width, bm.height); badgeDst.set(x + 10 * d, y + (h - bs) / 2, x + 10 * d + bs, y + (h + bs) / 2)
+                    badgePaint.alpha = (255 * a).toInt(); cv.drawBitmap(bm, badgeSrc, badgeDst, badgePaint)
+                    tx = x + 10 * d + bs + (w - 10 * d - bs) / 2; tw = w - 10 * d - bs
+                }
+            }
+            fun fit2(p: Paint, t: String, size: Float) { p.textSize = size; while (p.measureText(t) > tw - 24 * d && p.textSize > 9 * d) p.textSize -= 1 }
+            fit2(cardTitle, title, 20 * d)
+            cv.drawText(title, tx, y + h * .36f, cardTitle)
+            fit2(cardText, r.second, 16 * d)
+            cv.drawText(r.second, tx, y + h * .62f, cardText)
+            if (r.third.isNotEmpty()) { fit2(cardText, r.third, 16 * d); cv.drawText(r.third, tx, y + h * .85f, cardText) }
         }
     }
 }
