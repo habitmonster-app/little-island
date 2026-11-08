@@ -215,7 +215,7 @@ class MainActivity : Activity(), AppUi.Host {
         val scene = Scene()
         private val app = AppUi(scene, host)
         var running = false
-        private val paint = Paint().apply { isFilterBitmap = false }
+        private val paint = Paint().apply { isFilterBitmap = true }
         private val src = Rect(); private val dst = Rect()
         private var last = SystemClock.uptimeMillis()
         private var scale = 1f

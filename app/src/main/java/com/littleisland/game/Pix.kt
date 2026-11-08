@@ -22,6 +22,14 @@ object Pix {
     }
 
     private val tp = Paint().apply { isAntiAlias = false }
+    /** 앱 화면은 읽기 쉬운 보통 글꼴(휴대폰 기본 한글 글꼴)로 쓴다. 홈 화면 장면은 도트 글꼴 그대로 */
+    private val cleanTL = ThreadLocal.withInitial { false }
+    fun clean(on: Boolean) = cleanTL.set(on)
+    private val sans: Typeface by lazy { Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD) }
+    private fun font(size: Int) {
+        if (cleanTL.get()) { tp.typeface = sans; tp.isAntiAlias = true; tp.textSize = size * 1.05f }
+        else { tp.typeface = if (size >= 12) big else small; tp.isAntiAlias = false; tp.textSize = size.toFloat() }
+    }
     private val p = Paint().apply { isAntiAlias = false }
 
     fun col(h: String) = Color.parseColor(h)
@@ -31,15 +39,15 @@ object Pix {
 
     /** 글자. size 12 = 큰 글꼴, 10 = 작은 글꼴. outline이면 어두운 테두리 */
     @Synchronized fun text(c: Canvas, s: String, x: Float, y: Float, size: Int, color: Int, align: Paint.Align = Paint.Align.LEFT, outline: Boolean = false) {
-        tp.typeface = if (size >= 12) big else small
-        tp.textSize = size.toFloat(); tp.textAlign = align
+        font(size); tp.textAlign = align
         if (outline) {
             tp.color = INK
-            for ((dx, dy) in listOf(-1 to 0, 1 to 0, 0 to -1, 0 to 1, 1 to 1)) c.drawText(s, x + dx, y + dy, tp)
+            val o = if (cleanTL.get()) .6f else 1f
+            for ((dx, dy) in listOf(-1 to 0, 1 to 0, 0 to -1, 0 to 1, 1 to 1)) c.drawText(s, x + dx * o, y + dy * o, tp)
         }
         tp.color = color; c.drawText(s, x, y, tp)
     }
-    @Synchronized fun width(s: String, size: Int): Float { tp.typeface = if (size >= 12) big else small; tp.textSize = size.toFloat(); return tp.measureText(s) }
+    @Synchronized fun width(s: String, size: Int): Float { font(size); return tp.measureText(s) }
 
     /** 폭에 맞게 줄을 나눈다 (한글은 글자 단위로도 끊는다) */
     @Synchronized fun wrap(s: String, size: Int, maxW: Float): List<String> {
