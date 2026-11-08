@@ -1,0 +1,594 @@
+{
+  "schema_version": 1,
+  "index_order": "row_major",
+  "sampling": "nearest_neighbor",
+  "files": {
+    "ship_deco_on.png": {
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "items": [
+        {
+          "id": "flag_red",
+          "index": 0,
+          "slot": "flag",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            0,
+            60,
+            184,
+            190
+          ],
+          "anchor_local": [
+            0,
+            128
+          ]
+        },
+        {
+          "id": "flag_blue",
+          "index": 1,
+          "slot": "flag",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            0,
+            62,
+            184,
+            195
+          ],
+          "anchor_local": [
+            0,
+            128
+          ]
+        },
+        {
+          "id": "flag_yellow_wave",
+          "index": 2,
+          "slot": "flag",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            0,
+            58,
+            184,
+            191
+          ],
+          "anchor_local": [
+            0,
+            128
+          ]
+        },
+        {
+          "id": "flag_green_diamond",
+          "index": 3,
+          "slot": "flag",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            0,
+            54,
+            184,
+            188
+          ],
+          "anchor_local": [
+            0,
+            128
+          ]
+        },
+        {
+          "id": "figurehead_gull",
+          "index": 4,
+          "slot": "figurehead",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            36,
+            96,
+            220,
+            248
+          ],
+          "anchor_local": [
+            128,
+            248
+          ]
+        },
+        {
+          "id": "figurehead_fish",
+          "index": 5,
+          "slot": "figurehead",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            36,
+            107,
+            220,
+            248
+          ],
+          "anchor_local": [
+            128,
+            248
+          ]
+        },
+        {
+          "id": "figurehead_star",
+          "index": 6,
+          "slot": "figurehead",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            36,
+            86,
+            220,
+            248
+          ],
+          "anchor_local": [
+            128,
+            248
+          ]
+        },
+        {
+          "id": "figurehead_lantern",
+          "index": 7,
+          "slot": "figurehead",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            71,
+            64,
+            184,
+            248
+          ],
+          "anchor_local": [
+            128,
+            248
+          ]
+        },
+        {
+          "id": "sail_blue_stripe",
+          "index": 8,
+          "slot": "sail",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            36,
+            102,
+            220,
+            154
+          ],
+          "anchor_local": [
+            128,
+            128
+          ]
+        },
+        {
+          "id": "sail_sun",
+          "index": 9,
+          "slot": "sail",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            38,
+            46,
+            218,
+            210
+          ],
+          "anchor_local": [
+            128,
+            128
+          ]
+        },
+        {
+          "id": "sail_leaf",
+          "index": 10,
+          "slot": "sail",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            50,
+            46,
+            206,
+            210
+          ],
+          "anchor_local": [
+            128,
+            128
+          ]
+        },
+        {
+          "id": "sail_waves",
+          "index": 11,
+          "slot": "sail",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            36,
+            63,
+            220,
+            192
+          ],
+          "anchor_local": [
+            128,
+            128
+          ]
+        },
+        {
+          "id": "deck_bell",
+          "index": 12,
+          "slot": "deck",
+          "source_rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            73,
+            120,
+            182,
+            248
+          ],
+          "anchor_local": [
+            128,
+            248
+          ]
+        },
+        {
+          "id": "deck_lantern",
+          "index": 13,
+          "slot": "deck",
+          "source_rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            85,
+            120,
+            170,
+            248
+          ],
+          "anchor_local": [
+            128,
+            248
+          ]
+        },
+        {
+          "id": "deck_flowerpot",
+          "index": 14,
+          "slot": "deck",
+          "source_rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            66,
+            120,
+            189,
+            248
+          ],
+          "anchor_local": [
+            128,
+            248
+          ]
+        },
+        {
+          "id": "deck_spyglass",
+          "index": 15,
+          "slot": "deck",
+          "source_rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "content_bbox_local": [
+            66,
+            120,
+            189,
+            248
+          ],
+          "anchor_local": [
+            128,
+            248
+          ]
+        }
+      ],
+      "attachment_note": "깃발은 왼쪽 부착점, 뱃머리·갑판은 아래 부착점, 돛 무늬는 중심점에 맞춘다. 배 단계에 맞게 별도 축소하고 파란 끈을 가리지 않는다.",
+      "bytes": 354617,
+      "pure_magenta_verified": true
+    },
+    "crew_story_art.png": {
+      "size": [
+        1536,
+        1536
+      ],
+      "grid": [
+        4,
+        3
+      ],
+      "cell_size": [
+        384,
+        512
+      ],
+      "background_key": null,
+      "items": [
+        {
+          "worker_id": "yeoul",
+          "index": 0,
+          "source_rect": [
+            0,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "worker_id": "mungi",
+          "index": 1,
+          "source_rect": [
+            384,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "worker_id": "sori",
+          "index": 2,
+          "source_rect": [
+            768,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "worker_id": "nuri",
+          "index": 3,
+          "source_rect": [
+            1152,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "worker_id": "bada",
+          "index": 4,
+          "source_rect": [
+            0,
+            512,
+            384,
+            512
+          ]
+        },
+        {
+          "worker_id": "geonu",
+          "index": 5,
+          "source_rect": [
+            384,
+            512,
+            384,
+            512
+          ]
+        },
+        {
+          "worker_id": "dori",
+          "index": 6,
+          "source_rect": [
+            768,
+            512,
+            384,
+            512
+          ]
+        },
+        {
+          "worker_id": "haneul",
+          "index": 7,
+          "source_rect": [
+            1152,
+            512,
+            384,
+            512
+          ]
+        },
+        {
+          "worker_id": "bityeo",
+          "index": 8,
+          "source_rect": [
+            0,
+            1024,
+            384,
+            512
+          ]
+        },
+        {
+          "worker_id": "deul",
+          "index": 9,
+          "source_rect": [
+            384,
+            1024,
+            384,
+            512
+          ]
+        },
+        {
+          "worker_id": "saei",
+          "index": 10,
+          "source_rect": [
+            768,
+            1024,
+            384,
+            512
+          ]
+        },
+        {
+          "worker_id": "onyu",
+          "index": 11,
+          "source_rect": [
+            1152,
+            1024,
+            384,
+            512
+          ]
+        }
+      ],
+      "bytes": 3139582
+    },
+    "ship_stage5.png": {
+      "size": [
+        512,
+        128
+      ],
+      "grid": [
+        4,
+        1
+      ],
+      "cell_size": [
+        128,
+        128
+      ],
+      "background_key": "#FF00FF",
+      "ship_level": 5,
+      "items": [
+        {
+          "look_stage": 0,
+          "source_rect": [
+            0,
+            0,
+            128,
+            128
+          ],
+          "content_bbox_local": [
+            5,
+            13,
+            123,
+            124
+          ],
+          "waterline_y": 123
+        },
+        {
+          "look_stage": 1,
+          "source_rect": [
+            128,
+            0,
+            128,
+            128
+          ],
+          "content_bbox_local": [
+            5,
+            12,
+            122,
+            124
+          ],
+          "waterline_y": 123
+        },
+        {
+          "look_stage": 2,
+          "source_rect": [
+            256,
+            0,
+            128,
+            128
+          ],
+          "content_bbox_local": [
+            5,
+            13,
+            122,
+            124
+          ],
+          "waterline_y": 123
+        },
+        {
+          "look_stage": 3,
+          "source_rect": [
+            384,
+            0,
+            128,
+            128
+          ],
+          "content_bbox_local": [
+            5,
+            6,
+            123,
+            124
+          ],
+          "waterline_y": 123
+        }
+      ],
+      "columns": [
+        "기본 크림색 돛",
+        "덧댄 돛",
+        "청록 테두리 돛",
+        "청록 테두리 돛·대포·빨간 깃발"
+      ],
+      "normalized_waterline": 0.9609375,
+      "source_row": 0,
+      "legacy_sheet_unchanged": true,
+      "bytes": 73443,
+      "pure_magenta_verified": true
+    }
+  }
+}

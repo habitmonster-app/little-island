@@ -59,6 +59,8 @@ object Game {
     val aboard = ArrayList<String>()                   // 다음 출항에 탈 선원
     private val crewLv = HashMap<String, Int>()
     private val crewXp = HashMap<String, Int>()
+    var missionQ: String? = null; private set          // 다음 출항에 할 특별 항해
+    val missionsDone = LinkedHashSet<String>()           // 성공한 특별 항해
     val decoOwned = LinkedHashSet<String>()             // 가진 배 장식
     val decoOn = HashMap<String, String>()               // 자리(flag/figurehead/sail/deck) → 단 장식
     var levelUps = 0                                   // 화면 연출용 (Scene이 0으로 돌림)
@@ -82,7 +84,7 @@ object Game {
     // ---------- 항해 ----------
     class Voyage(var start: Long, val dur: Float, val port: String, var cw: Int, var cs: Int, val encounter: Boolean,
                  val pirate: String?, val win: Boolean, var step: Int, var rewardC: Long, var hire: String?, var saleC: Long,
-                 val crew: List<String> = emptyList())
+                 val crew: List<String> = emptyList(), val mission: String? = null)
     var voy: Voyage? = null; private set
     var voyages = 0; private set
     var mapPieces = 0; private set            // 홈 화면 톡 기믹으로 모으는 지도 조각
@@ -185,6 +187,8 @@ object Game {
         promoted.clear(); sp.getString("promoted", "")!!.split(",").filter { it.isNotEmpty() }.forEach { promoted.add(it) }
         aboard.clear(); sp.getString("aboard", "")!!.split(",").filter { it.isNotEmpty() && it in promoted }.forEach { aboard.add(it) }
         sp.getString("crewLv", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewLv[k] = v.toIntOrNull() ?: 1 }
+        missionQ = sp.getString("missionQ", null)
+        missionsDone.clear(); sp.getString("missionsDone", "")!!.split(",").filter { it.isNotEmpty() }.forEach { missionsDone.add(it) }
         decoOwned.clear(); sp.getString("decoOwned", "")!!.split(",").filter { it.isNotEmpty() }.forEach { decoOwned.add(it) }
         decoOn.clear(); sp.getString("decoOn", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); if (v in decoOwned) decoOn[k] = v }
         sp.getString("crewXp", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewXp[k] = v.toIntOrNull() ?: 0 }
@@ -195,7 +199,7 @@ object Game {
             if (st != 0L) voy = Voyage(st, sp.getFloat("v_dur", 720f), sp.getString("v_port", route)!!, sp.getInt("v_cw", 0), sp.getInt("v_cs", 0),
                 sp.getBoolean("v_enc", false), sp.getString("v_pirate", null), sp.getBoolean("v_win", true), sp.getInt("v_step", 0),
                 sp.getLong("v_reward", 0L), sp.getString("v_hire", null), sp.getLong("v_sale", 0L),
-                sp.getString("v_crew", "")!!.split(",").filter { it.isNotEmpty() })
+                sp.getString("v_crew", "")!!.split(",").filter { it.isNotEmpty() }, sp.getString("v_mission", null))
         } else if (sp.getLong("voyStart", 0L) != 0L) {
             // 빌드 5~6의 진행 중 항해는 정산만 하고 마친다
             goldC += sp.getInt("voyGold", 0) * 100L
@@ -207,6 +211,7 @@ object Game {
         if (shipLevel >= 2) flags.add("ship_2")
         if (shipLevel >= 3) flags.add("ship_3")
         if (shipLevel >= 4) flags.add("ship_4")
+        if (shipLevel >= 5) flags.add("ship_5")
         if (lighthouse) flags.add("lighthouse")
         if (market) flags.add("market")
         storyDirty = true
@@ -231,13 +236,14 @@ object Game {
             putString("parts", parts.entries.joinToString(",") { it.key + ":" + it.value })
             putString("promoted", promoted.joinToString(",")); putString("aboard", aboard.joinToString(","))
             putString("crewLv", crewLv.entries.joinToString(",") { it.key + ":" + it.value })
+            putString("missionQ", missionQ); putString("missionsDone", missionsDone.joinToString(","))
             putString("decoOwned", decoOwned.joinToString(",")); putString("decoOn", decoOn.entries.joinToString(",") { it.key + ":" + it.value })
             putString("crewXp", crewXp.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
             if (v == null) putLong("v_start", 0L) else {
                 putLong("v_start", v.start); putFloat("v_dur", v.dur); putString("v_port", v.port); putInt("v_cw", v.cw); putInt("v_cs", v.cs)
                 putBoolean("v_enc", v.encounter); putString("v_pirate", v.pirate); putBoolean("v_win", v.win); putInt("v_step", v.step)
-                putLong("v_reward", v.rewardC); putString("v_hire", v.hire); putLong("v_sale", v.saleC); putString("v_crew", v.crew.joinToString(","))
+                putLong("v_reward", v.rewardC); putString("v_hire", v.hire); putLong("v_sale", v.saleC); putString("v_crew", v.crew.joinToString(",")); putString("v_mission", v.mission)
             }
             apply()
         }
@@ -358,12 +364,16 @@ object Game {
         var p = port()
         if (!routeOk(p)) { route = "port_haesol"; p = port() }
         val crew = aboard.filter { it in promoted }.take(slots())
+        // 특별 항해: 예약한 임무가 아직 조건에 맞으면 이번 한 번만 그 항구로 (평소 항로 설정은 그대로)
+        val m = Fleet.mission(missionQ)?.takeIf { missionMissing(it, crew).isEmpty() }
+        missionQ = null
+        if (m != null) Data.ports.firstOrNull { it.id == m.port }?.let { p = it }
         val cw = min(wood, loadW(crew)); val cs = min(stone, loadS(crew))
         wood -= cw; stone -= cs
         flag("sail_1")
         // 해적: 첫 조우는 반드시, 그 뒤는 항구 위험도만큼
         val forced = !has("pirate_1") && !has("main_53")
-        val enc = forced || Random.nextFloat() < p.risk
+        val enc = forced || Random.nextFloat() < p.risk + (m?.pirateAdd ?: 0f)
         var pirate: Data.Pirate? = null
         if (enc) {
             pirate = if (forced) Data.pirate("hook_minor") else {
@@ -373,7 +383,9 @@ object Game {
             }
         }
         val win = pirate?.let { Random.nextFloat() < winChance(it, crew) } ?: true
-        voy = Voyage(t, voyageSeconds(p, crew), p.id, cw, cs, pirate != null, pirate?.id, win, 0, 0L, null, 0L, crew)
+        val sec = voyageSeconds(p, crew).let { if (m == null) it else ceil(it * m.durMult).coerceIn(Data.minSeconds, Data.maxSeconds) }
+        voy = Voyage(t, sec, p.id, cw, cs, pirate != null, pirate?.id, win, 0, 0L, null, 0L, crew, m?.id)
+        if (m != null) card("특별 항해 출발", (Fleet.crewOf(m.crew)?.name ?: "") + " · " + m.title)
         storyDirty = true
         save()
     }
@@ -456,9 +468,21 @@ object Game {
         voy = null
         lastReturnAt = t
         card("배가 돌아왔어요", line)
-        for (id in v.crew) {
-            var lv = crewLevel(id); if (lv >= Fleet.maxCrewLevel) continue
-            var xp = crewXp(id) + Fleet.xpPerVoyage
+        for (id in v.crew) giveXp(id, Fleet.xpPerVoyage)
+        Fleet.mission(v.mission)?.let { settleMission(it, v) }
+        rollEvent(v)
+        // 11화부터는 귀항할 때마다 최대 한 화씩
+        Story.refresh(true).forEach { announce(it) }
+        checkDeco()
+        if (isOpen("main_60")) flag("ending")
+        save()
+    }
+
+    /** 선원 경험치: 단계별로 깎으며 레벨을 올리고, Lv10이면 남는 건 버린다 */
+    private fun giveXp(id: String, amount: Int) {
+        run {
+            var lv = crewLevel(id); if (lv >= Fleet.maxCrewLevel) return
+            var xp = crewXp(id) + amount
             val before = lv
             while (lv < Fleet.maxCrewLevel && xp >= (Fleet.xpTo.getOrNull(lv - 1) ?: Int.MAX_VALUE)) { xp -= Fleet.xpTo[lv - 1]; lv++ }
             if (lv >= Fleet.maxCrewLevel) xp = 0
@@ -471,12 +495,43 @@ object Game {
                 card("선원 레벨 업!", (c?.name ?: "선원") + " Lv" + lv + (sk?.let { " · 새 스킬 " + it.name } ?: "") + (say?.let { "\n“$it”" } ?: ""))
             }
         }
-        rollEvent(v)
-        // 11화부터는 귀항할 때마다 최대 한 화씩
-        Story.refresh(true).forEach { announce(it) }
-        checkDeco()
-        if (isOpen("main_60")) flag("ending")
-        save()
+    }
+
+    // ---------- 선원 특별 항해 ----------
+    /** 아직 못 채운 조건들 (비어 있으면 출발 가능). ids는 태울 선원 */
+    fun missionMissing(m: Fleet.Mission, ids: List<String> = aboard.filter { it in promoted }.take(slots())): List<String> {
+        val out = ArrayList<String>()
+        val name = Fleet.crewOf(m.crew)?.name ?: m.crew
+        if (m.crew !in promoted) out.add(name + " 승진")
+        if (crewLevel(m.crew) < m.crewLv) out.add(name + " Lv" + m.crewLv)
+        for (a in m.aboard) if (a !in ids) out.add((Fleet.crewOf(a)?.name ?: a) + " 탑승")
+        for ((k, v) in m.parts) if (partLevel(k) < v) out.add((Fleet.part(k)?.name ?: k) + " Lv" + v)
+        if (shipLevel < m.shipLv) out.add("배 " + m.shipLv + "단계")
+        val p = Data.ports.firstOrNull { it.id == m.port }
+        if (p == null || !routeOk(p)) out.add((p?.name ?: m.port) + " 항로")
+        if (m.flag != null && !has(m.flag)) out.add("이야기 진행")
+        if (m.prev != null && m.prev !in missionsDone) out.add("앞 임무 성공")
+        return out
+    }
+    @Synchronized fun queueMission(id: String?): Boolean {
+        if (id != null) { val m = Fleet.mission(id) ?: return false; if (id in missionsDone || missionMissing(m).isNotEmpty()) return false }
+        missionQ = id; save(); return true
+    }
+    private fun settleMission(m: Fleet.Mission, v: Voyage) {
+        val ok = !m.mustWin || !v.encounter || v.win
+        if (!ok) { card("특별 항해 · " + m.title, "다시 준비해 출항할 수 있어요."); return }
+        if (m.id in missionsDone) { card("특별 항해 · " + m.title, "다시 다녀왔어요."); return }
+        missionsDone.add(m.id)
+        goldC += m.gold * 100L
+        if (m.wood > 0 || m.stone > 0) add(m.wood, m.stone)
+        if (m.maps > 0) mapPieces += m.maps
+        if (m.xp > 0) giveXp(m.crew, m.xp)
+        m.cosmetic?.let { if (Fleet.deco(it) != null && decoOwned.add(it) && decoOn[Fleet.deco(it)!!.slot] == null) decoOn[Fleet.deco(it)!!.slot] = it }
+        val got = listOfNotNull(m.gold.takeIf { it > 0 }?.let { "금화 +$it" }, m.wood.takeIf { it > 0 }?.let { "나무 +$it" },
+            m.stone.takeIf { it > 0 }?.let { "돌 +$it" }, m.maps.takeIf { it > 0 }?.let { "지도 조각 +$it" },
+            m.xp.takeIf { it > 0 }?.let { (Fleet.crewOf(m.crew)?.name ?: "") + " 경험치 +$it" })
+        card("특별 항해 성공!", m.resultCard + "\n" + got.joinToString(", "))
+        flag(m.id)
     }
 
     private fun rollEvent(v: Voyage) {
@@ -718,7 +773,7 @@ object Game {
         wood = 12; stone = 4; goldC = 0; houses = 0; warehouse = 0; dock = false; field = false; lighthouse = false; market = false
         shipLevel = 1; route = "port_haesol"; supplyT = 0f; voy = null; voyages = 0; workers.clear(); completed.clear()
         flags.clear(); opened.clear(); read.clear(); eventLast.clear(); lastEvent = ""; cards.clear(); log.clear(); report = null
-        parts.clear(); promoted.clear(); aboard.clear(); crewLv.clear(); crewXp.clear(); decoOwned.clear(); decoOn.clear()
+        parts.clear(); promoted.clear(); aboard.clear(); crewLv.clear(); crewXp.clear(); decoOwned.clear(); decoOn.clear(); missionQ = null; missionsDone.clear()
         storyDirty = true
         save()
     }

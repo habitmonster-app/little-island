@@ -10,7 +10,7 @@ import org.json.JSONObject
  */
 object Story {
     class Entry(val id: String, val kind: Int, val label: String, val title: String, val unlock: String,
-                val after: String?, val summary: String, val body: String, val news: String)
+                val after: String?, val summary: String, val body: String, val news: String, val art: Int = -1)
     class Line(val who: String, val time: String, val text: String, val unlock: String)
 
     const val MAIN = 0; const val SIDE = 1; const val VOYAGE = 2; const val CREW = 3
@@ -66,9 +66,19 @@ object Story {
                     val sid = s.getString("id")
                     val sum = s.optString("summary")
                     entries.add(Entry(sid, CREW, "선원 " + (names[id] ?: id) + " · " + tag, s.optString("title"), sid, null,
-                        sum, s.optString("body"), sum.substringBefore("\n")))
+                        sum, s.optString("body"), sum.substringBefore("\n"), names.keys.indexOf(id)))
                 }
             }
+            // 특별 항해 이야기 (23_crew_missions.json): 첫 성공 때 열림
+            try {
+                val ms = JSONObject(c.assets.open("23_crew_missions.json").bufferedReader(Charsets.UTF_8).use { it.readText() }).getJSONArray("missions")
+                for (i in 0 until ms.length()) {
+                    val m = ms.getJSONObject(i); val st = m.optJSONObject("story") ?: continue
+                    val id = m.getString("id"); val who = m.optString("crew")
+                    entries.add(Entry(id, CREW, "특별 항해 · " + (names[who] ?: who), st.optString("title"), id, null,
+                        m.optString("summary"), st.optString("body"), m.optString("result_card"), st.optJSONObject("art")?.optInt("index", -1) ?: names.keys.indexOf(who)))
+                }
+            } catch (e: Exception) { }
         } catch (e: Exception) { }
     }
 

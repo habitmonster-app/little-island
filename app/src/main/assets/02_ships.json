@@ -1,184 +1,240 @@
 {
-  "schema_version": 1,
-  "ships": [
-    {
-      "level": 1,
-      "name": "귀항호 · 첫 돛",
-      "unlock": "start",
-      "cargo_wood": 20,
-      "cargo_stone": 10,
-      "cargo_special": 0,
-      "speed": 1.0,
-      "pirate_win": 0.7,
-      "upgrade_cost": null,
-      "upgrade_requires": [],
-      "requires_previous_level": 0,
-      "look": "낡은 꿀갈색 선체. 상아색 삼각 돛 한 장에 작은 덧댐, 선수 파란 끈. 낮은 짐칸과 나무 상자 둘.",
-      "sprite_id": "ship_1",
-      "size": [
-        28,
-        22
-      ],
-      "mast_count": 1,
-      "cannon_count": 0,
-      "palette": [
-        "#785136",
-        "#C49A62",
-        "#F4E6B8",
-        "#3B8F91"
-      ],
-      "carry_forward": [
-        "ship_name",
-        "blue_cord",
-        "keepsake_nameplate",
-        "cosmetic_collection"
-      ],
-      "home_news": "첫 교역선이 준비됐어요."
-    },
-    {
-      "level": 2,
-      "name": "귀항호 · 넓어진 갑판",
-      "unlock": "ship_2",
-      "cargo_wood": 40,
-      "cargo_stone": 20,
-      "cargo_special": 8,
-      "speed": 1.1,
-      "pirate_win": 0.77,
-      "upgrade_cost": {
-        "gold": 1800,
-        "wood": 120,
-        "stone": 60
-      },
-      "upgrade_requires": [
-        "main_10"
-      ],
-      "requires_previous_level": 1,
-      "look": "기존 선체 옆에 새 판재를 덧대 폭을 넓힘. 상아색 큰 돛 한 장, 청록색 돛 테두리, 선수 소형 방어포 하나와 덮개 달린 짐칸.",
-      "sprite_id": "ship_2",
-      "size": [
-        36,
-        29
-      ],
-      "mast_count": 1,
-      "cannon_count": 1,
-      "palette": [
-        "#785136",
-        "#C49A62",
-        "#F4E6B8",
-        "#3B8F91"
-      ],
-      "carry_forward": [
-        "ship_name",
-        "blue_cord",
-        "keepsake_nameplate",
-        "cosmetic_collection"
-      ],
-      "home_news": "배의 짐칸이 넓어졌어요."
-    },
-    {
-      "level": 3,
-      "name": "귀항호 · 잇는 돛",
-      "unlock": "ship_3",
-      "cargo_wood": 75,
-      "cargo_stone": 40,
-      "cargo_special": 20,
-      "speed": 1.25,
-      "pirate_win": 0.84,
-      "upgrade_cost": {
-        "gold": 30000,
-        "wood": 280,
-        "stone": 220
-      },
-      "upgrade_requires": [
-        "main_35",
-        "port_pineshade"
-      ],
-      "requires_previous_level": 2,
-      "look": "앞뒤 돛대 두 개에 크기가 다른 상아색 돛. 청록색 덧댐과 파란 매듭을 남김. 양옆 짧은 방어포 각 하나, 목재 보강띠와 신호등.",
-      "sprite_id": "ship_3",
-      "size": [
-        44,
-        35
-      ],
-      "mast_count": 2,
-      "cannon_count": 2,
-      "palette": [
-        "#785136",
-        "#C49A62",
-        "#F4E6B8",
-        "#3B8F91"
-      ],
-      "carry_forward": [
-        "ship_name",
-        "blue_cord",
-        "keepsake_nameplate",
-        "cosmetic_collection"
-      ],
-      "home_news": "여러 항구를 잇는 배가 됐어요."
-    },
-    {
-      "level": 4,
-      "name": "귀항호 · 돌아오는 바다",
-      "unlock": "ship_4",
-      "cargo_wood": 120,
-      "cargo_stone": 60,
-      "cargo_special": 36,
-      "speed": 1.4,
-      "pirate_win": 0.9,
-      "upgrade_cost": {
-        "gold": 100000,
-        "wood": 400,
-        "stone": 350
-      },
-      "upgrade_requires": [
-        "main_47"
-      ],
-      "requires_previous_level": 3,
-      "look": "두 돛대와 보조 앞돛, 크림색 천에 청록색 좁은 띠. 넓어진 선미 갑판, 금빛 테두리의 오래된 이름표, 낮은 방어포 둘, 선수 파란 끈은 그대로.",
-      "sprite_id": "ship_4",
-      "size": [
-        52,
-        40
-      ],
-      "mast_count": 2,
-      "cannon_count": 2,
-      "palette": [
-        "#785136",
-        "#C49A62",
-        "#F4E6B8",
-        "#3B8F91"
-      ],
-      "carry_forward": [
-        "ship_name",
-        "blue_cord",
-        "keepsake_nameplate",
-        "cosmetic_collection"
-      ],
-      "home_news": "먼 항로를 도울 배가 됐어요."
-    }
-  ],
-  "rules": {
-    "cargo_capacity_unit": "integer_units_per_type",
-    "cargo_special_is_additional": true,
-    "launch_minimum_cargo": {
-      "wood": 1,
-      "stone": 0
-    },
-    "partial_load_allowed": true,
-    "speed_is_duration_divisor": true,
-    "duration_formula": "ceil(base_seconds * port.distance / ship.speed)",
-    "upgrade_applies": "next_departure",
-    "in_flight_stats": "snapshot_at_departure",
-    "upgrade_keeps_ship_identity": true,
-    "cannon_is_automatic": true,
-    "requires_manual_combat": false,
-    "degrade_on_loss": false,
-    "upgrade_cost_source": "02_ships.json ships.upgrade_cost; 01 progression must match",
-    "nominal_minutes_at_haesol": [
-      12,
-      10.92,
-      9.6,
-      8.58
-    ]
+ "schema_version": 1,
+ "ships": [
+  {
+   "level": 1,
+   "name": "귀항호 · 첫 돛",
+   "unlock": "start",
+   "cargo_wood": 20,
+   "cargo_stone": 10,
+   "cargo_special": 0,
+   "speed": 1.0,
+   "pirate_win": 0.7,
+   "upgrade_cost": null,
+   "upgrade_requires": [],
+   "requires_previous_level": 0,
+   "look": "낡은 꿀갈색 선체. 상아색 삼각 돛 한 장에 작은 덧댐, 선수 파란 끈. 낮은 짐칸과 나무 상자 둘.",
+   "sprite_id": "ship_1",
+   "size": [
+    28,
+    22
+   ],
+   "mast_count": 1,
+   "cannon_count": 0,
+   "palette": [
+    "#785136",
+    "#C49A62",
+    "#F4E6B8",
+    "#3B8F91"
+   ],
+   "carry_forward": [
+    "ship_name",
+    "blue_cord",
+    "keepsake_nameplate",
+    "cosmetic_collection"
+   ],
+   "home_news": "첫 교역선이 준비됐어요."
+  },
+  {
+   "level": 2,
+   "name": "귀항호 · 넓어진 갑판",
+   "unlock": "ship_2",
+   "cargo_wood": 40,
+   "cargo_stone": 20,
+   "cargo_special": 8,
+   "speed": 1.1,
+   "pirate_win": 0.77,
+   "upgrade_cost": {
+    "gold": 1800,
+    "wood": 120,
+    "stone": 60
+   },
+   "upgrade_requires": [
+    "main_10"
+   ],
+   "requires_previous_level": 1,
+   "look": "기존 선체 옆에 새 판재를 덧대 폭을 넓힘. 상아색 큰 돛 한 장, 청록색 돛 테두리, 선수 소형 방어포 하나와 덮개 달린 짐칸.",
+   "sprite_id": "ship_2",
+   "size": [
+    36,
+    29
+   ],
+   "mast_count": 1,
+   "cannon_count": 1,
+   "palette": [
+    "#785136",
+    "#C49A62",
+    "#F4E6B8",
+    "#3B8F91"
+   ],
+   "carry_forward": [
+    "ship_name",
+    "blue_cord",
+    "keepsake_nameplate",
+    "cosmetic_collection"
+   ],
+   "home_news": "배의 짐칸이 넓어졌어요."
+  },
+  {
+   "level": 3,
+   "name": "귀항호 · 잇는 돛",
+   "unlock": "ship_3",
+   "cargo_wood": 75,
+   "cargo_stone": 40,
+   "cargo_special": 20,
+   "speed": 1.25,
+   "pirate_win": 0.84,
+   "upgrade_cost": {
+    "gold": 30000,
+    "wood": 280,
+    "stone": 220
+   },
+   "upgrade_requires": [
+    "main_35",
+    "port_pineshade"
+   ],
+   "requires_previous_level": 2,
+   "look": "앞뒤 돛대 두 개에 크기가 다른 상아색 돛. 청록색 덧댐과 파란 매듭을 남김. 양옆 짧은 방어포 각 하나, 목재 보강띠와 신호등.",
+   "sprite_id": "ship_3",
+   "size": [
+    44,
+    35
+   ],
+   "mast_count": 2,
+   "cannon_count": 2,
+   "palette": [
+    "#785136",
+    "#C49A62",
+    "#F4E6B8",
+    "#3B8F91"
+   ],
+   "carry_forward": [
+    "ship_name",
+    "blue_cord",
+    "keepsake_nameplate",
+    "cosmetic_collection"
+   ],
+   "home_news": "여러 항구를 잇는 배가 됐어요."
+  },
+  {
+   "level": 4,
+   "name": "귀항호 · 돌아오는 바다",
+   "unlock": "ship_4",
+   "cargo_wood": 120,
+   "cargo_stone": 60,
+   "cargo_special": 36,
+   "speed": 1.4,
+   "pirate_win": 0.9,
+   "upgrade_cost": {
+    "gold": 100000,
+    "wood": 400,
+    "stone": 350
+   },
+   "upgrade_requires": [
+    "main_47"
+   ],
+   "requires_previous_level": 3,
+   "look": "두 돛대와 보조 앞돛, 크림색 천에 청록색 좁은 띠. 넓어진 선미 갑판, 금빛 테두리의 오래된 이름표, 낮은 방어포 둘, 선수 파란 끈은 그대로.",
+   "sprite_id": "ship_4",
+   "size": [
+    52,
+    40
+   ],
+   "mast_count": 2,
+   "cannon_count": 2,
+   "palette": [
+    "#785136",
+    "#C49A62",
+    "#F4E6B8",
+    "#3B8F91"
+   ],
+   "carry_forward": [
+    "ship_name",
+    "blue_cord",
+    "keepsake_nameplate",
+    "cosmetic_collection"
+   ],
+   "home_news": "먼 항로를 도울 배가 됐어요."
+  },
+  {
+   "level": 5,
+   "name": "귀항호 · 함께 가는 바다",
+   "unlock": "ship_5",
+   "cargo_wood": 150,
+   "cargo_stone": 75,
+   "cargo_special": 45,
+   "speed": 1.45,
+   "pirate_win": 0.9,
+   "upgrade_cost": {
+    "gold": 180000,
+    "wood": 600,
+    "stone": 500
+   },
+   "upgrade_requires": [
+    "ship_4"
+   ],
+   "requires_previous_level": 4,
+   "look": "세 돛대와 두 층 선실을 갖춘 마지막 큰 배. 선실의 초록 지붕, 꿀갈색 선체와 금빛 장식, 크림색 돛이 넓은 갑판을 감싼다. 오래된 이름표와 선수의 파란 끈은 그대로 남긴다.",
+   "sprite_id": "ship_5",
+   "size": [
+    60,
+    46
+   ],
+   "mast_count": 3,
+   "cannon_count": 2,
+   "palette": [
+    "#785136",
+    "#C49A62",
+    "#F4E6B8",
+    "#3B8F91",
+    "#D4A64F"
+   ],
+   "carry_forward": [
+    "ship_name",
+    "blue_cord",
+    "keepsake_nameplate",
+    "cosmetic_collection",
+    "part_levels",
+    "crew_levels_and_xp",
+    "crew_assignments",
+    "equipped_cosmetics"
+   ],
+   "home_news": "여섯 선원이 함께 탈 배가 됐어요.",
+   "desc": "여섯 선원이 함께 항구를 잇는 마지막 큰 배예요. 짐칸이 넓어지고 세 번째 돛대가 올라가요.",
+   "crew_slots": 6,
+   "upgrade_requires_parts": {
+    "hull": 20,
+    "sail": 20,
+    "cannon": 20,
+    "helm": 20
+   },
+   "upgrade_requires_building_levels": {
+    "warehouse": 3
+   }
   }
+ ],
+ "rules": {
+  "cargo_capacity_unit": "integer_units_per_type",
+  "cargo_special_is_additional": true,
+  "launch_minimum_cargo": {
+   "wood": 1,
+   "stone": 0
+  },
+  "partial_load_allowed": true,
+  "speed_is_duration_divisor": true,
+  "duration_formula": "ceil(base_seconds * port.distance / ship.speed)",
+  "upgrade_applies": "next_departure",
+  "in_flight_stats": "snapshot_at_departure",
+  "upgrade_keeps_ship_identity": true,
+  "cannon_is_automatic": true,
+  "requires_manual_combat": false,
+  "degrade_on_loss": false,
+  "upgrade_cost_source": "02_ships.json ships.upgrade_cost; 01 progression must match",
+  "nominal_minutes_at_haesol": [
+   12,
+   10.92,
+   9.6,
+   8.58
+  ]
+ }
 }

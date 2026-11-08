@@ -1,0 +1,627 @@
+{
+  "schema_version": 1,
+  "design_status": "order6_additive_data_proposal_v1",
+  "app_name": "리틀 아일랜드",
+  "ships": [
+    {
+      "level": 5,
+      "name": "귀항호 · 함께 가는 바다",
+      "unlock": "ship_5",
+      "cargo_wood": 150,
+      "cargo_stone": 75,
+      "cargo_special": 45,
+      "speed": 1.45,
+      "pirate_win": 0.9,
+      "upgrade_cost": {
+        "gold": 180000,
+        "wood": 600,
+        "stone": 500
+      },
+      "upgrade_requires": [
+        "ship_4"
+      ],
+      "requires_previous_level": 4,
+      "look": "세 돛대와 두 층 선실을 갖춘 마지막 큰 배. 선실의 초록 지붕, 꿀갈색 선체와 금빛 장식, 크림색 돛이 넓은 갑판을 감싼다. 오래된 이름표와 선수의 파란 끈은 그대로 남긴다.",
+      "sprite_id": "ship_5",
+      "size": [
+        60,
+        46
+      ],
+      "mast_count": 3,
+      "cannon_count": 2,
+      "palette": [
+        "#785136",
+        "#C49A62",
+        "#F4E6B8",
+        "#3B8F91",
+        "#D4A64F"
+      ],
+      "carry_forward": [
+        "ship_name",
+        "blue_cord",
+        "keepsake_nameplate",
+        "cosmetic_collection",
+        "part_levels",
+        "crew_levels_and_xp",
+        "crew_assignments",
+        "equipped_cosmetics"
+      ],
+      "home_news": "여섯 선원이 함께 탈 배가 됐어요.",
+      "desc": "여섯 선원이 함께 항구를 잇는 마지막 큰 배예요. 짐칸이 넓어지고 세 번째 돛대가 올라가요.",
+      "crew_slots": 6,
+      "upgrade_requires_parts": {
+        "hull": 20,
+        "sail": 20,
+        "cannon": 20,
+        "helm": 20
+      },
+      "upgrade_requires_building_levels": {
+        "warehouse": 3
+      }
+    }
+  ],
+  "max_ship_level": 5,
+  "parts": [
+    {
+      "id": "hull",
+      "name": "선체",
+      "stat": "cargo_bonus",
+      "desc": "짐칸이 넓어져요",
+      "icon_index": 0,
+      "levels": [
+        {
+          "level": 21,
+          "value": 1.05,
+          "cost": {
+            "gold": 20000,
+            "wood": 380,
+            "stone": 133
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 22,
+          "value": 1.1,
+          "cost": {
+            "gold": 26000,
+            "wood": 410,
+            "stone": 144
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 23,
+          "value": 1.15,
+          "cost": {
+            "gold": 34000,
+            "wood": 440,
+            "stone": 154
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 24,
+          "value": 1.2,
+          "cost": {
+            "gold": 44000,
+            "wood": 470,
+            "stone": 164
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 25,
+          "value": 1.25,
+          "cost": {
+            "gold": 56000,
+            "wood": 500,
+            "stone": 175
+          },
+          "requires_ship_level": 5
+        }
+      ]
+    },
+    {
+      "id": "sail",
+      "name": "돛",
+      "stat": "speed_bonus",
+      "desc": "왕복 항해 시간이 짧아져요",
+      "icon_index": 1,
+      "levels": [
+        {
+          "level": 21,
+          "value": 0.21,
+          "cost": {
+            "gold": 20000,
+            "wood": 304,
+            "stone": 76
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 22,
+          "value": 0.22,
+          "cost": {
+            "gold": 26000,
+            "wood": 328,
+            "stone": 82
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 23,
+          "value": 0.23,
+          "cost": {
+            "gold": 34000,
+            "wood": 352,
+            "stone": 88
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 24,
+          "value": 0.24,
+          "cost": {
+            "gold": 44000,
+            "wood": 376,
+            "stone": 94
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 25,
+          "value": 0.25,
+          "cost": {
+            "gold": 56000,
+            "wood": 400,
+            "stone": 100
+          },
+          "requires_ship_level": 5
+        }
+      ]
+    },
+    {
+      "id": "cannon",
+      "name": "대포",
+      "stat": "pirate_win_bonus",
+      "desc": "해적을 따돌릴 확률이 올라요",
+      "icon_index": 2,
+      "levels": [
+        {
+          "level": 21,
+          "value": 0.084,
+          "cost": {
+            "gold": 22000,
+            "wood": 228,
+            "stone": 304
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 22,
+          "value": 0.088,
+          "cost": {
+            "gold": 28600,
+            "wood": 246,
+            "stone": 328
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 23,
+          "value": 0.092,
+          "cost": {
+            "gold": 37400,
+            "wood": 264,
+            "stone": 352
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 24,
+          "value": 0.096,
+          "cost": {
+            "gold": 48400,
+            "wood": 282,
+            "stone": 376
+          },
+          "requires_ship_level": 5
+        },
+        {
+          "level": 25,
+          "value": 0.1,
+          "cost": {
+            "gold": 61600,
+            "wood": 300,
+            "stone": 400
+          },
+          "requires_ship_level": 5
+        }
+      ]
+    },
+    {
+      "id": "helm",
+      "name": "키",
+      "stat": "event_good_bonus",
+      "desc": "좋은 항해 소식이 늘고 짐을 더 잘 지켜요",
+      "icon_index": 3,
+      "levels": [
+        {
+          "level": 21,
+          "value": 0.05,
+          "cost": {
+            "gold": 18000,
+            "wood": 228,
+            "stone": 152
+          },
+          "requires_ship_level": 5,
+          "secondary_effects": {
+            "bad_event_loss_reduction": 0.1
+          }
+        },
+        {
+          "level": 22,
+          "value": 0.05,
+          "cost": {
+            "gold": 23400,
+            "wood": 246,
+            "stone": 164
+          },
+          "requires_ship_level": 5,
+          "secondary_effects": {
+            "bad_event_loss_reduction": 0.1
+          }
+        },
+        {
+          "level": 23,
+          "value": 0.05,
+          "cost": {
+            "gold": 30600,
+            "wood": 264,
+            "stone": 176
+          },
+          "requires_ship_level": 5,
+          "secondary_effects": {
+            "bad_event_loss_reduction": 0.1
+          }
+        },
+        {
+          "level": 24,
+          "value": 0.05,
+          "cost": {
+            "gold": 39600,
+            "wood": 282,
+            "stone": 188
+          },
+          "requires_ship_level": 5,
+          "secondary_effects": {
+            "bad_event_loss_reduction": 0.1
+          }
+        },
+        {
+          "level": 25,
+          "value": 0.05,
+          "cost": {
+            "gold": 50400,
+            "wood": 300,
+            "stone": 200
+          },
+          "requires_ship_level": 5,
+          "secondary_effects": {
+            "bad_event_loss_reduction": 0.1
+          }
+        }
+      ]
+    }
+  ],
+  "max_level": 25,
+  "max_level_scope": "ship_parts",
+  "max_level_per_ship_level": {
+    "1": 5,
+    "2": 10,
+    "3": 15,
+    "4": 20,
+    "5": 25
+  },
+  "ship_upgrade_needs_parts_level": {
+    "2": 5,
+    "3": 10,
+    "4": 15,
+    "5": 20
+  },
+  "slots_by_ship_level": {
+    "1": 2,
+    "2": 3,
+    "3": 4,
+    "4": 5,
+    "5": 6
+  },
+  "effect_rules": {
+    "units": "0.05 means 5%; probability bonuses are additive probability points, 0.01 = 1%p",
+    "source_of_crew_caps": "20_crew.json.effect_caps; the caps include pair synergies",
+    "cargo_bonus": {
+      "scope": [
+        "cargo_wood",
+        "cargo_stone",
+        "cargo_special"
+      ],
+      "combined_cap": 1.35,
+      "formula": "floor(base_capacity * (1 + min(1.35, hull.value + capped_crew.cargo_bonus)))",
+      "zero_base_stays_zero": true,
+      "never_creates_free_cargo": true,
+      "load_after_capacity": "실제 보유량·특산물 예산·해금 조건 안에서만 적재한다."
+    },
+    "speed_bonus": {
+      "meaning": "왕복 시간 감소율",
+      "combined_cap": 0.35,
+      "formula": "clamp(ceil(base_seconds * port.distance / ship.speed * (1 - min(0.35, sail.value + capped_crew.speed_bonus))), 480, 1800)",
+      "minimum_duration_seconds": 480,
+      "maximum_duration_seconds": 1800,
+      "event_times": "최종 왕복 시간에 기존 event_fractions를 곱한다.",
+      "minimum_tooltip": "이 항로는 최소 항해 시간에 도달했어요."
+    },
+    "pirate_win_bonus": {
+      "formula": "clamp(ship.pirate_win - 0.1 * (pirate.power - 1) + lighthouse_bonus + capped_active_island_worker_bonus + cannon.value + capped_crew.pirate_win_bonus, 0.35, 0.97)",
+      "island_worker_cap": 0.02,
+      "lighthouse_bonus": 0.03,
+      "minimum": 0.35,
+      "maximum": 0.97,
+      "changes_encounter_probability": false,
+      "story_fixed_fights_affected": false
+    },
+    "event_good_bonus": {
+      "adapter": "20_crew.json.event_selection_adapter",
+      "scope": "적격 보상 사건이 있을 때, 항해 한 번당 좋은 사건 확률에 더하는 확률값",
+      "part_max": 0.05,
+      "does_not_change_event_reward_amount": true
+    },
+    "bad_event_loss_reduction": {
+      "meaning": "나쁜 항해 결과의 화물 손실률을 상대적으로 줄이는 비율",
+      "part_max": 0.1,
+      "combined_cap": 0.5,
+      "formula": "effective_loss_fraction = base_loss_fraction * (1 - min(0.5, helm.secondary_effects.bad_event_loss_reduction + capped_crew.repair_after_loss))",
+      "current_scope": "06_pirates.json의 일반 해적 패배에 따른 현재 적재 화물 손실만",
+      "remaining_formula": "floor(current_onboard_quantity * (1 - effective_loss_fraction))",
+      "legacy_flavor_events_have_negative_damage": false,
+      "future_negative_events": "새 음수 사건 데이터가 명시적으로 추가될 때만 같은 경감률을 연결한다. 현재 null 사건에 손실을 만들지 않는다.",
+      "never_changes": [
+        "이미 판매한 짐",
+        "특산물 선결제 금액",
+        "주민이나 선원의 상태",
+        "본편 51~57화의 고정 폭풍 결과"
+      ]
+    }
+  },
+  "crew_effect_caps": {
+    "cargo_bonus": 0.35,
+    "speed_bonus": 0.15,
+    "pirate_win_bonus": 0.1,
+    "sale_bonus": 0.15,
+    "event_good_bonus": 0.1,
+    "repair_after_loss": 0.35,
+    "treasure_find_bonus": 0.1,
+    "wood_price_bonus": 0.1,
+    "stone_price_bonus": 0.1
+  },
+  "economy_progression_append": {
+    "unlock": "ship_5",
+    "requires": [
+      "ship_4"
+    ],
+    "cost": {
+      "gold": 180000,
+      "wood": 600,
+      "stone": 500
+    },
+    "requires_building_levels": {
+      "warehouse": 3
+    },
+    "requires_parts_at_least": {
+      "hull": 20,
+      "sail": 20,
+      "cannon": 20,
+      "helm": 20
+    },
+    "purchase_mode": "app_one_time",
+    "required_for_main_ending": false
+  },
+  "look_stages_patch": {
+    "threshold_by_ship_level": {
+      "5": 23
+    },
+    "threshold_comparison": "part.level >= threshold_by_ship_level[ship_level]",
+    "column_formula": "min(3, count(parts whose level >= current_threshold))",
+    "four_qualified_parts_column": 3,
+    "sprite_by_ship_level": {
+      "5": "art/ship_stage5.png"
+    },
+    "stage5_sheet": {
+      "rows": 1,
+      "columns": 4,
+      "sheet_size": [
+        512,
+        128
+      ],
+      "cell_size": [
+        128,
+        128
+      ],
+      "row": 0,
+      "bottom_anchor_y_in_cell": 123,
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor"
+    },
+    "stage5_column_names": [
+      "기본",
+      "덧댄 돛",
+      "청록 테두리 돛",
+      "대포와 빨간 깃발"
+    ],
+    "existing_stage1_to4": {
+      "sprite": "art/ship_stages.png",
+      "rows": 4,
+      "columns": 4,
+      "sheet_size": [
+        1024,
+        1024
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "row_formula": "ship_level - 1",
+      "bottom_anchor_y_in_cell": 247,
+      "changed": false
+    },
+    "scale_note": "5단계는 별도 128px 칸이다. 기존 256px 칸과 원본 픽셀 크기가 다르므로 실제 표시 크기와 수면 기준점을 먼저 맞춘다. 5단계에 기존 시트의 5번째 행을 조회하지 않는다.",
+    "waterline_normalization": "stage5의 y=123을 화면 수면에 맞춘다. stage1~4는 기존 y=247을 각각 같은 화면 수면에 맞춘다.",
+    "same_row_same_ship_size": true,
+    "on_major_upgrade": "부품 Lv20은 그대로 두고 새 기준 23으로 외형 열을 다시 계산하므로 5단계 첫 모습은 0열이다.",
+    "emblem_and_deco_layer": "22_ship_cosmetics.json 소장·장착 ID는 그대로 유지한다. 외형 단계 위에 art/ship_deco_on.png를 올리며 선수 파란 끈을 가리지 않는다.",
+    "column3_does_not_require_helm_23": true
+  },
+  "upgrade_rules": {
+    "requirements_logic": "ALL",
+    "major_upgrade_checks": [
+      "현재 배 4단계",
+      "hull, sail, cannon, helm 각각 Lv20 이상",
+      "창고 3단계 이상",
+      "금화 180000, 나무 600, 돌 500 이상"
+    ],
+    "cost_is_paid_once": true,
+    "gold_cost_unit": "integer_gold; debit wallet cents by cost.gold * 100",
+    "resources_debited_atomically": true,
+    "major_upgrade_idempotency_key": "save_id + ship_level_5",
+    "parts_idempotency_key": "save_id + part_id + target_level",
+    "must_buy_parts_in_order": true,
+    "maximum_part_level": 25,
+    "value_semantics": "현재 부품 레벨의 누적 총 효과. 1레벨부터 현재까지 values를 합산하지 않는다.",
+    "skip_levels": false,
+    "success_probability": 1,
+    "failure": false,
+    "downgrade": false,
+    "effects_apply": "next_departure",
+    "in_flight_voyage_uses_existing_snapshot": true,
+    "new_crew_slot_selection": "기존 배치된 최대 5명을 유지하며 여섯째 칸은 비워 둔다. 선원을 자동 승진·배치하지 않는다.",
+    "crew_max_level_unchanged": 10,
+    "crew_skills_and_synergies_unchanged": true,
+    "upgrade_required_for_story_ending": false,
+    "must_keep": [
+      "ship_name",
+      "blue_cord",
+      "keepsake_nameplate",
+      "owned_cosmetic_ids",
+      "equipped_cosmetics_by_slot",
+      "part_levels",
+      "crew_levels_and_xp",
+      "crew_assignments"
+    ],
+    "never_retroactively_recalculate_rewards": true,
+    "effect_preview": "현재 편성 기준 실제 전후 값과 상한을 표시한다. 상한으로 실제 효과가 늘지 않는 강화는 증가한다고 표시하지 않는다."
+  },
+  "cap_explanations": {
+    "unchanged": "effect_rules와 crew_effect_caps는 기존 19/20 파일 값을 그대로 복사했다. 새 단계에서도 합산 순서와 모든 상한을 바꾸지 않는다.",
+    "hull": "Lv25의 선체 단독 값은 1.25다. 선원/짝 보너스 합산 뒤 기존 1.35 상한을 적용하므로 화물형 편성에서는 일부 상승분이 상한에 걸릴 수 있다.",
+    "sail": "Lv25 돛은 0.25이며 선원 합산 0.35 및 왕복 480~1800초 제한을 유지한다. 짧은 항로는 이미 최소 시간일 수 있다.",
+    "cannon": "Lv25 대포 단독 승률 가산은 0.10이다. 최종 해적 승률은 기존 0.35~0.97 범위이고 강한 해적의 power 감산도 유지한다.",
+    "helm": {
+      "stat_value_unchanged_from_level": 20,
+      "levels": [
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "event_good_bonus": 0.05,
+      "bad_event_loss_reduction": 0.1,
+      "reason": "키는 Lv20에서 기존 개별 상한에 이미 도달한다. 21~25에서 상한이나 효과 종류를 추가하지 않는다.",
+      "upgrade_kind": "optional_visual_maintenance",
+      "player_notice": "키 효과는 이미 최대예요. 이후 정비는 레벨과 외형 진행만 올려요.",
+      "numeric_effect_increase": false,
+      "required_for_any_mission": false,
+      "required_for_story_ending": false,
+      "required_for_stage5_unlock_above_level20": false,
+      "required_for_final_look": false,
+      "final_look_alternative": "선체·돛·대포를 각각 23 이상으로 올리면 키 20을 유지해도 마지막 외형인 3열에 도달한다.",
+      "purchase_optional": true,
+      "do_not_label_as_combat_upgrade": true
+    }
+  },
+  "merge_contract": {
+    "mode": "additive_by_stable_id",
+    "targets": [
+      {
+        "file": "02_ships.json",
+        "action": "append ships entry where level=5; preserve entries 1..4"
+      },
+      {
+        "file": "01_economy.json",
+        "action": "append economy_progression_append by unlock=ship_5; keep all prior progression values"
+      },
+      {
+        "file": "19_ship_parts.json",
+        "action": "append each parts[id].levels 21..25; set max_level=25; merge max_level_per_ship_level, ship_upgrade_needs_parts_level, and look_stages_patch"
+      },
+      {
+        "file": "20_crew.json",
+        "action": "merge slots_by_ship_level; retain all crew values, caps and event_selection_adapter; update max_active_synergies_with_6_slots to 3"
+      }
+    ],
+    "no_duplicate_append": "일치하는 level 또는 unlock 또는 (part_id, level)이 이미 있으면 동일한 값은 재추가하지 않는다. 다른 값이면 기존 파일을 조용히 덮지 않고 통합 시 비교한다.",
+    "old_values_unchanged": "배 1~4단계, 부품 1~20레벨, 선원 스킬·경험치·계약·임무·기존 해금은 수정하지 않는다.",
+    "effect_rule_reuse": "새 상한을 만들지 않고 이 파일의 effect_rules가 기존 19와 같은지 확인한 뒤 기존 계산기를 재사용한다.",
+    "requires_parts_mapping": "ships[0].upgrade_requires_parts, ship_upgrade_needs_parts_level[5], economy_progression_append.requires_parts_at_least는 같은 전제의 세 표기다. 비용은 세 번이 아니라 하나의 승급 작업에서 한 번만 차감한다.",
+    "zero_level_note": "19의 zero_level_record 문구는 1~25로 갱신하되 0레벨 효과는 계속 0이다.",
+    "ship_rules_note": "02의 nominal_minutes_at_haesol 배열을 유지해 사용하는 앱이라면 5단계 무부품 기준 720/1.45/60 값(약 8.28분)을 덧붙인다. 실항해는 기존 최소 480초와 부품·선원 계산을 적용한다.",
+    "old_migration_note": "기존 order4 이주를 재실행하거나 선원/부품 무료 레벨을 다시 주지 않는다. 기존 저장과 진행 중 출항 스냅샷을 보존한다."
+  },
+  "source_files": {
+    "02_ships.json": "e5c9bd461ee62f56209841e542065537286ede5e10ce1a4bf19a11739d218840",
+    "01_economy.json": "b67093d940440b4892304249897a6c1fe7bc6b6dcb8789eb0d3e30fe5e5dcd42",
+    "03_ports.json": "3c45e2bf3c5cecc61743e31c39c476cf6d4304b7a6a32678f752a904b0e2e01c",
+    "04_buildings.json": "8d96e7b92162065ba01976ab9a8f05de660419331d8a20ac94932862fabf3c32",
+    "19_ship_parts.json": "e1e7f1f3f62a16097d545540cf601d907a6a46d51b5e6e809e406a5a5147ec5b",
+    "20_crew.json": "f43b6bcaa84dde0d5db2c38a4c61f44dc25710738366cc461102c9e4f09e72e7"
+  },
+  "balance_notes": {
+    "scope": "이번 파일은 5단계와 Lv21~25의 신규 제안값만 담는다. 요청에서 보류한 18번 전체 수치 재조정은 수행하지 않는다.",
+    "playtest_status": "정적 제약·상한 검사 완료 후 전달하며 실제 build-25~26 기기 통합과 장기 플레이 검증은 별도다.",
+    "base_cargo_increase_from_stage4": 0.25,
+    "base_speed_from_stage4": [
+      1.4,
+      1.45
+    ],
+    "base_pirate_win_from_stage4": [
+      0.9,
+      0.9
+    ],
+    "warehouse_requirement": {
+      "level": 3,
+      "capacity_per_resource": 900,
+      "ship_upgrade_wood": 600,
+      "ship_upgrade_stone": 500
+    },
+    "max_active_synergies_with_6_slots": 3,
+    "crew_cap_order": "선원 해금 스킬 합산 → 활성 짝 효과 합산 → 기존 선원 상한 → 부품과 결합 → 기존 최종 상한",
+    "all_6_crew_level10_is_upper_bound": "선원 스킬은 모두 비음수 가산이므로 모든 6명 편성을 전원 Lv10으로 검사하면 더 낮은 레벨의 효과 상한도 포함한다.",
+    "no_free_cargo": "늘어난 용량은 보유 자원을 자동 생성하지 않는다. 현재 보유량과 특산물 구매 예산으로만 채운다.",
+    "estimate_not_committed": "실제 소비 자원·접속 간격·빈 짐칸·항로가 달라 달성 일수는 확정하지 않는다."
+  },
+  "validation": {
+    "status": "passed",
+    "ship_entries": 1,
+    "part_extension_rows": 20,
+    "crew_slots": 6,
+    "all_level10_6_person_teams_tested": 924,
+    "maximum_active_pairs": 3,
+    "three_pair_teams": 20,
+    "effect_rules_exactly_preserved": true,
+    "crew_caps_exactly_preserved": true,
+    "all_material_costs_fit_required_warehouse": true,
+    "helm_levels21_to25_numerically_unchanged": true,
+    "source_files_unchanged": true,
+    "all_extension_upgrade_gold": 720000,
+    "app_runtime_tested": false
+  }
+}

@@ -130,6 +130,13 @@ class MainActivity : Activity(), AppUi.Host {
                 })
             }
         }
+        // 선원 이야기·특별 항해는 그 선원 그림을 위에
+        if (e.art >= 0) Art.cell("crew_story_art", 4, 3, e.art, 384)?.let { bm ->
+            box.addView(ImageView(this).apply {
+                setImageDrawable(android.graphics.drawable.BitmapDrawable(resources, bm).apply { paint.isFilterBitmap = false }); adjustViewBounds = true; scaleType = ImageView.ScaleType.FIT_CENTER
+                setPadding((60 * dp).toInt(), (8 * dp).toInt(), (60 * dp).toInt(), 0)
+            })
+        }
         box.addView(tv)
         AlertDialog.Builder(this).setTitle(e.label + " · " + e.title).setView(ScrollView(this).apply { addView(box) })
             .setPositiveButton("목록") { _, _ -> openJournal() }

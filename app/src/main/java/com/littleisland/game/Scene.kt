@@ -287,6 +287,8 @@ class Scene {
             for (k in p.lines.indices) pairQueue.addLast((p.speakers.getOrNull(k) ?: p.ids[0]) to p.lines[k])
             val (id, l) = pairQueue.removeFirst(); say(id, l); return true
         }
+        // 특별 항해 중이면 주인공 선원이 임무 대사를 자주 한다
+        Fleet.mission(v.mission)?.let { m -> if (m.crew in v.crew && m.homeLine.isNotEmpty() && Random.nextBoolean()) { say(m.crew, m.homeLine); return true } }
         val id = v.crew.random(); val l = Fleet.voices[id]?.deck?.randomOrNull() ?: return false
         say(id, l); return true
     }
@@ -747,31 +749,54 @@ class Scene {
     // ---------- 우리 배 ----------
     /** 배 위 선원: 항해 중엔 키·밧줄, 해적과 싸울 땐 대포, 항구와 승리 뒤엔 환호 */
     private val DECK = 9f
-    private val deckX = floatArrayOf(-.20f, .16f, -.02f, .30f, -.34f)
+    private fun deckH() = if (Game.shipLevel >= 5) 15f else DECK   // 5단계 배는 갑판이 높다
+    private val deckX = floatArrayOf(-.20f, .16f, -.02f, .30f, -.34f, .07f)
     // 배 그림(128칸) 안의 장식 자리: 돛대 꼭대기, 뱃머리 끝, 큰 돛 가운데, 갑판 장식 자리 (배 단계별)
-    private val MAST = arrayOf(intArrayOf(60, 40), intArrayOf(63, 22), intArrayOf(55, 25), intArrayOf(66, 23))
-    private val MAST3 = arrayOf(intArrayOf(58, 30), intArrayOf(60, 16), intArrayOf(56, 20), intArrayOf(64, 15))   // 깃대가 있는 모양의 깃대 꼭대기
-    private val BOW = arrayOf(intArrayOf(98, 97), intArrayOf(106, 92), intArrayOf(112, 94), intArrayOf(116, 95))
-    private val SAIL = arrayOf(intArrayOf(70, 70), intArrayOf(76, 56), intArrayOf(66, 60), intArrayOf(74, 60))
-    private val DECKP = arrayOf(intArrayOf(40, 96), intArrayOf(40, 76), intArrayOf(36, 73), intArrayOf(31, 78))
+    // 1~4단계는 ship_stages.png, 5단계는 ship_stage5.png (같은 128칸, 같은 물선)
+    private val MAST = arrayOf(intArrayOf(60, 40), intArrayOf(63, 22), intArrayOf(55, 25), intArrayOf(66, 23), intArrayOf(64, 13))
+    private val MAST3 = arrayOf(intArrayOf(58, 30), intArrayOf(60, 16), intArrayOf(56, 20), intArrayOf(64, 15), intArrayOf(62, 6))   // 깃대가 있는 모양의 깃대 꼭대기
+    private val BOW = arrayOf(intArrayOf(98, 97), intArrayOf(106, 92), intArrayOf(112, 94), intArrayOf(116, 95), intArrayOf(121, 83))
+    private val SAIL = arrayOf(intArrayOf(70, 70), intArrayOf(76, 56), intArrayOf(66, 60), intArrayOf(74, 60), intArrayOf(73, 44))
+    private val DECKP = arrayOf(intArrayOf(40, 96), intArrayOf(40, 76), intArrayOf(36, 73), intArrayOf(31, 78), intArrayOf(22, 65))
 
-    /** 배 꾸미기: 단 장식을 배 그림 위에 겹쳐 그린다 (파란 끈은 가리지 않게) */
+    /** 이 단계 배 그림 한 칸 (5단계는 따로 된 시트) */
+    private fun shipCell(lv: Int, look: Int, sw: Int, cutFlag: Boolean): android.graphics.Bitmap? {
+        val five = lv >= 5
+        val sheet = if (five) "ship_stage5" else "ship_stages"
+        val rows = if (five) 1 else 4
+        val idx = if (five) look else (lv - 1) * 4 + look
+        if (cutFlag && look == 3) {
+            val t = MAST3[(lv - 1).coerceIn(0, 4)]
+            Art.cellCut(sheet, 4, rows, idx, sw * SS, t[0] + 6, t[1] + 1, t[0] + 34, t[1] + 18)?.let { return it }
+        }
+        return acell(sheet, 4, rows, idx, sw)
+    }
+
+    /** 배 꾸미기: 단 장식을 배 그림 위에 겹쳐 그린다 (ship_deco_on: 배에 붙이는 모양. 없으면 아이콘 시트에서 잘라 씀) */
     private fun shipDeco(x: Float, bottom: Float, sw: Float, lv: Int, time: Float) {
         if (Game.decoOn.isEmpty()) return
-        val i = (lv - 1).coerceIn(0, 3)
+        val i = (lv - 1).coerceIn(0, 4)
+        val on = Art.has("ship_deco_on")
         fun px(cx: Int) = x + (cx / 128f - .5f) * sw
         fun py(cy: Int) = bottom - (1 - cy / 128f) * sw
         for ((slot, id) in Game.decoOn) {
             val d = Fleet.deco(id) ?: continue
             when (slot) {
-                "sail" -> Art.sub("ship_deco", 4, 4, d.icon, .24f, .34f, .80f, .74f, 9 * SS)?.let {
-                    Art.draw(c, it, px(SAIL[i][0]), py(SAIL[i][1]) + 3f) }
-                "flag" -> Art.sub("ship_deco", 4, 4, d.icon, .32f, .14f, .94f, .68f, 10 * SS)?.let {
+                // 무늬 가운데(칸 가운데)를 큰 돛 가운데에
+                "sail" -> (if (on) acell("ship_deco_on", 4, 4, d.icon, 12) else Art.sub("ship_deco", 4, 4, d.icon, .24f, .34f, .80f, .74f, 9 * SS))?.let {
+                    Art.draw(c, it, px(SAIL[i][0]), py(SAIL[i][1]) + (if (on) 6f else 3f)) }
+                // 깃발 천의 왼쪽 가운데(칸 왼쪽 가운데)를 깃대 꼭대기 옆에
+                "flag" -> {
                     val wave = if ((floor(time * 3) % 2).toInt() == 0) 0f else 1f
                     val m = if (Game.lookStage() == 3) intArrayOf(MAST3[i][0] + 3, MAST3[i][1] + 1) else MAST[i]
-                    Art.draw(c, it, px(m[0]) + 5.5f, py(m[1]) + 6f + wave) }
-                "figurehead" -> acell("ship_deco", 4, 4, d.icon, 10)?.let { Art.draw(c, it, px(BOW[i][0]), py(BOW[i][1]) + 4f) }
-                "deck" -> acell("ship_deco", 4, 4, d.icon, 9)?.let { Art.draw(c, it, px(DECKP[i][0]), py(DECKP[i][1])) }
+                    if (on) acell("ship_deco_on", 4, 4, d.icon, 14)?.let { Art.draw(c, it, px(m[0]) + 1f + 7f, py(m[1]) + 3f + 7f + wave) }
+                    else Art.sub("ship_deco", 4, 4, d.icon, .32f, .14f, .94f, .68f, 10 * SS)?.let { Art.draw(c, it, px(m[0]) + 5.5f, py(m[1]) + 6f + wave) }
+                }
+                // 뱃머리·갑판 물건은 칸 아래 가운데가 붙는 곳
+                "figurehead" -> (if (on) acell("ship_deco_on", 4, 4, d.icon, 13) else acell("ship_deco", 4, 4, d.icon, 10))?.let {
+                    Art.draw(c, it, px(BOW[i][0]), py(BOW[i][1]) + 4f) }
+                "deck" -> (if (on) acell("ship_deco_on", 4, 4, d.icon, 16) else acell("ship_deco", 4, 4, d.icon, 9))?.let {
+                    Art.draw(c, it, px(DECKP[i][0]), py(DECKP[i][1]) + (if (on) .5f else 0f)) }
             }
         }
     }
@@ -788,8 +813,8 @@ class Scene {
             val pose = when { cheer -> 3; fight -> if (i % 2 == 0) 2 else 0; i == 0 -> 1; else -> 0 }
             val bm = acell(cd.sheet, 4, 6, cd.row * 4 + pose, 18) ?: continue
             val bob = if (pose == 0 && (floor(time * 2 + i) % 2).toInt() == 1) 1f else 0f
-            Art.draw(c, bm, x + deckX[i % deckX.size] * w, y - DECK + bob)
-            crewHead[id] = (x + deckX[i % deckX.size] * w) to (y - DECK - 15)
+            Art.draw(c, bm, x + deckX[i % deckX.size] * w, y - deckH() + bob)
+            crewHead[id] = (x + deckX[i % deckX.size] * w) to (y - deckH() - 15)
         }
         crewSeen = 0f
     }
@@ -800,10 +825,8 @@ class Scene {
         val sw = 54 + (lv - 1) * 8
         val look = Game.lookStage()
         // 장식 깃발을 달면 4번째 모양의 원래 빨간 깃발은 지우고 그린다 (겹치지 않게)
-        val t3 = MAST3[(lv - 1).coerceIn(0, 3)]
-        val sb = (if (look == 3 && Game.decoOn["flag"] != null)
-                Art.cellCut("ship_stages", 4, 4, (lv - 1) * 4 + 3, sw * SS, t3[0] + 6, t3[1] + 1, t3[0] + 34, t3[1] + 18) else null)
-            ?: acell("ship_stages", 4, 4, (lv - 1) * 4 + look, sw) ?: acell("ships", 4, 1, lv - 1, sw)
+        val sb = shipCell(lv, look, sw, Game.decoOn["flag"] != null)
+            ?: acell("ships", 4, 1, lv - 1, sw)
         if (sb != null) { Art.draw(c, sb, x, y + 5); shipDeco(x, y + 5f, sw.toFloat(), lv, time); deckCrew(x, y, sw.toFloat(), time); return }
         val len = 30f + (lv - 1) * 7f
         val hull = col("#6D513A"); val hullL = col("#A78355")

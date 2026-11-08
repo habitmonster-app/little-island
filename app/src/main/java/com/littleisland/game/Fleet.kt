@@ -37,6 +37,16 @@ object Fleet {
     class Deco(val id: String, val slot: String, val name: String, val icon: Int, val desc: String, val howText: String,
                val auto: Boolean, val gold: Int, val conds: List<Cond>)
     val decos = ArrayList<Deco>()
+    /** 23_crew_missions.json: 선원 특별 항해 (선원마다 2개) */
+    class Mission(val id: String, val crew: String, val title: String, val summary: String,
+                  val crewLv: Int, val aboard: List<String>, val parts: Map<String, Int>, val shipLv: Int, val port: String,
+                  val flag: String?, val prev: String?, val durMult: Float, val pirateAdd: Float, val mustWin: Boolean,
+                  val gold: Int, val wood: Int, val stone: Int, val maps: Int, val xp: Int, val cosmetic: String?,
+                  val homeLine: String, val resultCard: String)
+    val missions = ArrayList<Mission>()
+    fun mission(id: String?) = missions.firstOrNull { it.id == id }
+    /** 선원 이야기 그림 칸 (20_crew 순서와 같다) */
+    fun artIndex(crewId: String) = crew.indexOfFirst { it.id == crewId }
     val SLOTS = listOf("flag", "figurehead", "sail", "deck")
     fun slotName(s: String) = when (s) { "flag" -> "깃발"; "figurehead" -> "뱃머리"; "sail" -> "돛 무늬"; else -> "갑판" }
     fun deco(id: String) = decos.firstOrNull { it.id == id }
@@ -46,6 +56,7 @@ object Fleet {
     fun load(c: Context) {
         if (loaded) return
         loaded = true
+        loadMissions(c)
         try {
             val d = JSONObject(c.assets.open("19_ship_parts.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
             val ps = d.getJSONArray("parts")
@@ -110,6 +121,27 @@ object Fleet {
                     Cond(o.optString("type"), o.optString("key", o.optString("counter")), o.optInt("value", o.optInt("level"))) }
                 decos.add(Deco(x.getString("id"), x.optString("slot"), x.optString("name"), x.optInt("icon_index", i), x.optString("desc"),
                     x.optString("how_to_get_text"), a.optString("mode") != "manual_purchase", a.optJSONObject("cost")?.optInt("gold") ?: 0, conds))
+            }
+        } catch (e: Exception) { }
+    }
+
+    private fun loadMissions(c: Context) {
+        try {
+            val d = JSONObject(c.assets.open("23_crew_missions.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
+            val a = d.getJSONArray("missions")
+            fun nul(o: JSONObject, k: String) = if (o.isNull(k)) null else o.optString(k).takeIf { it.isNotEmpty() }
+            for (i in 0 until a.length()) {
+                val m = a.getJSONObject(i); val r = m.optJSONObject("requires") ?: JSONObject()
+                val v = m.optJSONObject("voyage") ?: JSONObject(); val w = m.optJSONObject("reward") ?: JSONObject()
+                val ab = r.optJSONArray("crew_aboard")
+                val pa = HashMap<String, Int>(); r.optJSONObject("parts_at_least")?.let { o -> o.keys().forEach { k -> pa[k] = o.getInt(k) } }
+                missions.add(Mission(m.getString("id"), m.getString("crew"), m.optString("title"), m.optString("summary"),
+                    r.optInt("crew_level_at_least", 1), if (ab == null) emptyList() else (0 until ab.length()).map { ab.getString(it) }, pa,
+                    r.optInt("ship_level_at_least", 1), r.optString("port", "port_haesol"), nul(r, "game_flag"), nul(r, "previous_mission_id"),
+                    v.optDouble("duration_mult", 1.0).toFloat(), v.optDouble("pirate_chance_add", 0.0).toFloat(),
+                    m.optString("success_rule_id") == "win_if_encountered",
+                    w.optInt("gold"), w.optInt("wood"), w.optInt("stone"), w.optInt("map_pieces"), w.optInt("crew_xp"), nul(w, "cosmetic_id"),
+                    m.optString("home_line"), m.optString("result_card")))
             }
         } catch (e: Exception) { }
     }

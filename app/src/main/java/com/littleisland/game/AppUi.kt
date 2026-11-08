@@ -99,13 +99,17 @@ class AppUi(val scene: Scene, val host: Host) {
                     val now = if (lv > 0) Fleet.partText(p, Game.partValue(p.id)) else "아직 없음"
                     val cap = Fleet.maxLevel(Game.shipLevel)
                     val head = p.name + " Lv" + lv + " · " + p.desc + "\n지금: " + now
-                    l.add(if (n == null) Tile("part:" + p.icon, p.name + " Lv" + lv, if (lv >= 20) "최고" else "배 키우면 더", St.DONE,
-                            head + "\n\n배 " + Game.shipLevel + "단계에서는 Lv" + cap + "까지 올려요." + (if (lv < 20) " 배를 다음 단계로 고치면 더 올릴 수 있어요." else ""))
+                    val top = p.levels.size
+                    // 키는 Lv20에서 효과가 이미 최대. 그 뒤는 레벨과 배 모습만 오른다
+                    val maxed = lv > 0 && p.levels.getOrNull(lv)?.let { it.value <= p.levels[lv - 1].value } == true
+                    val note = if (maxed) "\n효과는 이미 최대예요. 이후 정비는 레벨과 배 모습만 올려요." else ""
+                    l.add(if (n == null) Tile("part:" + p.icon, p.name + " Lv" + lv, if (lv >= top) "최고" else "배 키우면 더", St.DONE,
+                            head + "\n\n배 " + Game.shipLevel + "단계에서는 Lv" + cap + "까지 올려요." + (if (lv < top) " 배를 다음 단계로 고치면 더 올릴 수 있어요." else ""))
                         else Tile("part:" + p.icon, p.name + " Lv" + lv, if (Game.canPay(n.cost)) "올리기!" else Fleet.partText(p, Game.partValue(p.id)),
-                            if (Game.canPay(n.cost)) St.READY else St.NORMAL, head + "\n다음: " + Fleet.partText(p, n.value) + "\n\n배 " + Game.shipLevel + "단계 최대 Lv" + cap,
+                            if (Game.canPay(n.cost)) St.READY else St.NORMAL, head + "\n다음: " + Fleet.partText(p, n.value) + note + "\n\n배 " + Game.shipLevel + "단계 최대 Lv" + cap,
                             n.cost, "올리기", { Game.buyPart(p.id) }, p.name + " Lv" + (lv + 1) + "!"))
                 }
-                for (lv in 1..4) {
+                for (lv in 1..Data.ships.size) {
                     val s = Data.ship(lv)
                     val info = "짐 나무 " + s.cargoW + " · 돌 " + s.cargoS + "\n속도 " + fmt(s.speed) + " · 해적 대응 " + (s.pirateWin * 100).toInt() + "%"
                     when {
@@ -127,6 +131,26 @@ class AppUi(val scene: Scene, val host: Host) {
                 l.add(Tile("ship", "배 상태", "짐 " + Game.LOAD_W + "/" + Game.LOAD_S, St.NORMAL,
                     Game.ship().name + "\n짐: 나무 " + Game.LOAD_W + " · 돌 " + Game.LOAD_S + "\n항해 시간 -" + Fleet.pct(Game.speedCut()) +
                     " (" + (Game.voyageSeconds() / 60).toInt() + "분)\n선원 " + Game.aboard.size + "/" + Game.slots() + "명 탑승"))
+                // 선원 특별 항해: 승진한 선원마다 아직 못 한 다음 임무 하나
+                for (cr in Fleet.crew) {
+                    if (cr.id !in Game.promoted) continue
+                    val m = Fleet.missions.firstOrNull { it.crew == cr.id && it.id !in Game.missionsDone } ?: continue
+                    val face = "face:" + cr.portrait
+                    val port = Data.ports.firstOrNull { it.id == m.port }?.name ?: m.port
+                    val rw = listOfNotNull(m.gold.takeIf { it > 0 }?.let { "금화 $it" }, m.wood.takeIf { it > 0 }?.let { "나무 $it" },
+                        m.stone.takeIf { it > 0 }?.let { "돌 $it" }, m.maps.takeIf { it > 0 }?.let { "지도 조각 $it" }, m.xp.takeIf { it > 0 }?.let { cr.name + " 경험치 $it" })
+                    val info = "특별 항해 · " + cr.name + "\n" + m.summary + "\n\n가는 곳: " + port + "\n시간: 평소의 " + Math.round(m.durMult * 100) + "%" +
+                        (if (m.pirateAdd > 0f) " · 해적 +" + Math.round(m.pirateAdd * 100) + "%p" else "") +
+                        "\n성공: " + (if (m.mustWin) "해적을 만나면 이겨야 해요" else "무사히 돌아오면 성공") + "\n첫 성공 보상: " + rw.joinToString(", ") + "\n이야기 한 편이 열려요."
+                    val miss = Game.missionMissing(m)
+                    l.add(when {
+                        Game.voy?.mission == m.id -> Tile(face, m.title, "항해 중", St.ON, info)
+                        Game.missionQ == m.id -> Tile(face, m.title, "다음 출항", St.ON, info + "\n\n다음 출항 한 번만 " + port + "(으)로 가요. 평소 항로는 그대로예요.",
+                            null, "취소", { Game.queueMission(null) }, "특별 항해를 취소했어요")
+                        miss.isEmpty() -> Tile(face, m.title, "특별 항해!", St.READY, info, null, "예약하기", { Game.queueMission(m.id) }, m.title + " · 다음 출항에 떠나요")
+                        else -> Tile(face, m.title, "준비 중", St.LOCKED, info + "\n\n필요: " + miss.joinToString(", "))
+                    })
+                }
                 // 배 꾸미기: 자리마다 한 칸. 누르면 가진 장식을 차례로 바꿔 달기 (모양만 바뀌고 능력치는 그대로)
                 for (slot in Fleet.SLOTS) {
                     val all = Fleet.decos.filter { it.slot == slot }
@@ -285,8 +309,10 @@ class AppUi(val scene: Scene, val host: Host) {
         val by = H - 22f
         k.rect(c, 20f, by, W - 40f, 18f, k.INK); k.rect(c, 21f, by + 1, W - 42f, 16f, k.col("#5d3a1f")); k.rect(c, 21f, by + 1, W - 42f, 1f, k.col("#a87444"))
         val items = listOf("wood" to Game.wood.toString(), "stone" to Game.stone.toString(), "gold" to "%,d".format(Game.gold), "map" to Game.mapPieces.toString())
+        // 금화는 자리를 넓게 (5단계 배는 18만 금화라 숫자가 길다)
+        val gap = floatArrayOf(34f, 34f, 60f, 0f)
         var x = 26f
-        for ((ic, v) in items) { k.icon(c, ic, x, by + 4, 1f); k.text(c, v, x + 12, by + 13, 10, k.GOLD); x += 38 }
+        for ((i, iv) in items.withIndex()) { val (ic, v) = iv; k.icon(c, ic, x, by + 4, 1f); k.text(c, v, x + 12, by + 13, 10, k.GOLD); x += gap[i] }
         popup?.let { drawPopup(it) }
     }
 

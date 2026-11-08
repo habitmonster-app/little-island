@@ -1,831 +1,832 @@
 {
-  "schema_version": 1,
-  "design_status": "order4_integration_proposal_v1",
-  "source_worker_file": "05_workers.json",
-  "slots_by_ship_level": {
-    "1": 2,
-    "2": 3,
-    "3": 4,
-    "4": 5
-  },
-  "promote_rule": {
-    "completed_contracts": 2,
-    "cost_gold": 200,
-    "completed_contracts_scope": "worker_id별 누적 정상 계약 완료 횟수",
-    "required_worker_state": "계약 종료 처리 완료, 이동 중 아님, 아직 승진하지 않음",
-    "requires_port_unlocked": true,
-    "requires_original_worker_unlock": true,
-    "requires_empty_house": false,
-    "requires_story_read": false,
-    "charge_once": true,
-    "manual_confirm_in_app": true,
-    "automatic_promotion": false,
-    "automatic_equip_if_slot_free": true,
-    "full_slots": "승진은 가능하며 대기 선원 명단에 남긴다.",
-    "roster_persistence": "영구 해금; 재승진 비용 없음",
-    "cancel_or_expired_tail": "중도 취소는 계약 완료로 세지 않는다. 부재 보상 초과 구간의 정상 종료는 기존 계약 시계 규칙으로 한 번만 처리한다.",
-    "duplicate_key": "save_id + crew_promote + worker_id",
-    "gold_cost_unit": "integer_gold; debit wallet cents by cost_gold * 100"
-  },
-  "xp_per_voyage": 10,
-  "xp_to_next": [
-    30,
-    60,
-    100,
-    150,
-    220,
-    300,
-    400,
-    520,
-    660
-  ],
-  "max_level": 10,
-  "crew": [
+ "schema_version": 1,
+ "design_status": "order4_integration_proposal_v1",
+ "source_worker_file": "05_workers.json",
+ "slots_by_ship_level": {
+  "1": 2,
+  "2": 3,
+  "3": 4,
+  "4": 5,
+  "5": 6
+ },
+ "promote_rule": {
+  "completed_contracts": 2,
+  "cost_gold": 200,
+  "completed_contracts_scope": "worker_id별 누적 정상 계약 완료 횟수",
+  "required_worker_state": "계약 종료 처리 완료, 이동 중 아님, 아직 승진하지 않음",
+  "requires_port_unlocked": true,
+  "requires_original_worker_unlock": true,
+  "requires_empty_house": false,
+  "requires_story_read": false,
+  "charge_once": true,
+  "manual_confirm_in_app": true,
+  "automatic_promotion": false,
+  "automatic_equip_if_slot_free": true,
+  "full_slots": "승진은 가능하며 대기 선원 명단에 남긴다.",
+  "roster_persistence": "영구 해금; 재승진 비용 없음",
+  "cancel_or_expired_tail": "중도 취소는 계약 완료로 세지 않는다. 부재 보상 초과 구간의 정상 종료는 기존 계약 시계 규칙으로 한 번만 처리한다.",
+  "duplicate_key": "save_id + crew_promote + worker_id",
+  "gold_cost_unit": "integer_gold; debit wallet cents by cost_gold * 100"
+ },
+ "xp_per_voyage": 10,
+ "xp_to_next": [
+  30,
+  60,
+  100,
+  150,
+  220,
+  300,
+  400,
+  520,
+  660
+ ],
+ "max_level": 10,
+ "crew": [
+  {
+   "worker_id": "yeoul",
+   "name": "여울",
+   "crew_role": "갑판장",
+   "role_desc": "매듭과 갑판 작업을 맡아요",
+   "unlock": "start",
+   "skills": [
     {
-      "worker_id": "yeoul",
-      "name": "여울",
-      "crew_role": "갑판장",
-      "role_desc": "매듭과 갑판 작업을 맡아요",
-      "unlock": "start",
-      "skills": [
-        {
-          "level": 1,
-          "id": "tight_knots",
-          "name": "단단한 매듭",
-          "effect": "cargo_bonus",
-          "value": 0.05,
-          "desc": "짐을 5% 더 실어요",
-          "icon_index": 0
-        },
-        {
-          "level": 5,
-          "id": "balanced_deck",
-          "name": "고른 짐칸",
-          "effect": "cargo_bonus",
-          "value": 0.08,
-          "desc": "짐을 8% 더 실어요",
-          "icon_index": 0
-        },
-        {
-          "level": 10,
-          "id": "steady_orders",
-          "name": "침착한 구령",
-          "effect": "pirate_win_bonus",
-          "value": 0.015,
-          "desc": "해적 승률이 1.5%p 올라요",
-          "icon_index": 15
-        }
-      ],
-      "deck_line": "매듭은 제가 묶어 둘게요.",
-      "deck_sprite": "art/crew_deck_a.png",
-      "deck_row": 0,
-      "portrait_index": 0,
-      "initial_level": 1,
-      "initial_xp": 0
+     "level": 1,
+     "id": "tight_knots",
+     "name": "단단한 매듭",
+     "effect": "cargo_bonus",
+     "value": 0.05,
+     "desc": "짐을 5% 더 실어요",
+     "icon_index": 0
     },
     {
-      "worker_id": "mungi",
-      "name": "문기",
-      "crew_role": "포술장",
-      "role_desc": "돌을 고르던 눈으로 대포를 살펴요",
-      "unlock": "start",
-      "skills": [
-        {
-          "level": 1,
-          "id": "measured_cannon",
-          "name": "정확한 포각",
-          "effect": "pirate_win_bonus",
-          "value": 0.02,
-          "desc": "해적 승률이 2%p 올라요",
-          "icon_index": 2
-        },
-        {
-          "level": 5,
-          "id": "stone_grading",
-          "name": "돌의 결",
-          "effect": "stone_price_bonus",
-          "value": 0.03,
-          "desc": "돌 판매 수입이 3% 늘어요",
-          "icon_index": 8
-        },
-        {
-          "level": 10,
-          "id": "warning_volley",
-          "name": "길을 여는 포성",
-          "effect": "pirate_win_bonus",
-          "value": 0.03,
-          "desc": "해적 승률이 3%p 올라요",
-          "icon_index": 2
-        }
-      ],
-      "deck_line": "대포는 낮게, 짐은 단단히 고정했어요.",
-      "deck_sprite": "art/crew_deck_a.png",
-      "deck_row": 1,
-      "portrait_index": 1,
-      "initial_level": 1,
-      "initial_xp": 0
+     "level": 5,
+     "id": "balanced_deck",
+     "name": "고른 짐칸",
+     "effect": "cargo_bonus",
+     "value": 0.08,
+     "desc": "짐을 8% 더 실어요",
+     "icon_index": 0
     },
     {
-      "worker_id": "sori",
-      "name": "소리",
-      "crew_role": "보급 담당",
-      "role_desc": "젖지 않게 물자를 챙겨요",
-      "unlock": "port_saltflat",
-      "skills": [
-        {
-          "level": 1,
-          "id": "dry_wrapping",
-          "name": "마른 포대",
-          "effect": "repair_after_loss",
-          "value": 0.04,
-          "desc": "해적 패배 시 화물 손실률을 4% 줄여요",
-          "icon_index": 12
-        },
-        {
-          "level": 5,
-          "id": "spare_supplies",
-          "name": "여분의 준비",
-          "effect": "event_good_bonus",
-          "value": 0.015,
-          "desc": "좋은 사건 확률이 1.5%p 올라요",
-          "icon_index": 4
-        },
-        {
-          "level": 10,
-          "id": "folded_stores",
-          "name": "빈틈없는 보급",
-          "effect": "cargo_bonus",
-          "value": 0.08,
-          "desc": "짐을 8% 더 실어요",
-          "icon_index": 0
-        }
-      ],
-      "deck_line": "남은 포대도 쓸모가 있을 거예요.",
-      "deck_sprite": "art/crew_deck_a.png",
-      "deck_row": 2,
-      "portrait_index": 2,
-      "initial_level": 1,
-      "initial_xp": 0
-    },
-    {
-      "worker_id": "nuri",
-      "name": "누리",
-      "crew_role": "화물 관리인",
-      "role_desc": "깨지기 쉬운 짐을 나눠 실어요",
-      "unlock": "port_pottery",
-      "skills": [
-        {
-          "level": 1,
-          "id": "fitted_crates",
-          "name": "맞춤 칸막이",
-          "effect": "cargo_bonus",
-          "value": 0.06,
-          "desc": "짐을 6% 더 실어요",
-          "icon_index": 0
-        },
-        {
-          "level": 5,
-          "id": "padded_cargo",
-          "name": "완충 포장",
-          "effect": "repair_after_loss",
-          "value": 0.06,
-          "desc": "해적 패배 시 화물 손실률을 6% 줄여요",
-          "icon_index": 12
-        },
-        {
-          "level": 10,
-          "id": "clean_delivery",
-          "name": "반듯한 인도",
-          "effect": "sale_bonus",
-          "value": 0.03,
-          "desc": "화물 판매 수입이 3% 늘어요",
-          "icon_index": 3
-        }
-      ],
-      "deck_line": "칸막이 사이에 딱 맞게 들어갔네요.",
-      "deck_sprite": "art/crew_deck_a.png",
-      "deck_row": 3,
-      "portrait_index": 3,
-      "initial_level": 1,
-      "initial_xp": 0
-    },
-    {
-      "worker_id": "bada",
-      "name": "바다",
-      "crew_role": "돛지기",
-      "role_desc": "돛천과 바람을 살펴요",
-      "unlock": "port_windneck",
-      "skills": [
-        {
-          "level": 1,
-          "id": "trim_sail",
-          "name": "돛 다듬기",
-          "effect": "speed_bonus",
-          "value": 0.02,
-          "desc": "왕복 항해 시간이 2% 줄어요",
-          "icon_index": 1
-        },
-        {
-          "level": 5,
-          "id": "read_gust",
-          "name": "바람 읽기",
-          "effect": "speed_bonus",
-          "value": 0.03,
-          "desc": "왕복 항해 시간이 3% 줄어요",
-          "icon_index": 1
-        },
-        {
-          "level": 10,
-          "id": "sound_stitch",
-          "name": "튼튼한 바느질",
-          "effect": "repair_after_loss",
-          "value": 0.06,
-          "desc": "해적 패배 시 화물 손실률을 6% 줄여요",
-          "icon_index": 5
-        }
-      ],
-      "deck_line": "돛끝이 가볍게 움직여요.",
-      "deck_sprite": "art/crew_deck_a.png",
-      "deck_row": 4,
-      "portrait_index": 4,
-      "initial_level": 1,
-      "initial_xp": 0
-    },
-    {
-      "worker_id": "geonu",
-      "name": "건우",
-      "crew_role": "선박 목수",
-      "role_desc": "판재와 이음새를 점검해요",
-      "unlock": "port_pineshade",
-      "skills": [
-        {
-          "level": 1,
-          "id": "braced_planks",
-          "name": "덧댄 판재",
-          "effect": "repair_after_loss",
-          "value": 0.05,
-          "desc": "해적 패배 시 화물 손실률을 5% 줄여요",
-          "icon_index": 5
-        },
-        {
-          "level": 5,
-          "id": "timber_eye",
-          "name": "목재 보는 눈",
-          "effect": "wood_price_bonus",
-          "value": 0.04,
-          "desc": "나무 판매 수입이 4% 늘어요",
-          "icon_index": 7
-        },
-        {
-          "level": 10,
-          "id": "kept_cargo",
-          "name": "끝까지 지킨 짐",
-          "effect": "repair_after_loss",
-          "value": 0.08,
-          "desc": "해적 패배 시 화물 손실률을 8% 줄여요",
-          "icon_index": 5
-        }
-      ],
-      "deck_line": "손본 이음새가 오늘도 든든하네요.",
-      "deck_sprite": "art/crew_deck_a.png",
-      "deck_row": 5,
-      "portrait_index": 5,
-      "initial_level": 1,
-      "initial_xp": 0
-    },
-    {
-      "worker_id": "dori",
-      "name": "도리",
-      "crew_role": "조타수",
-      "role_desc": "키와 밧줄로 안전한 물길을 잡아요",
-      "unlock": "port_redanchor",
-      "skills": [
-        {
-          "level": 1,
-          "id": "smooth_helm",
-          "name": "부드러운 키",
-          "effect": "speed_bonus",
-          "value": 0.02,
-          "desc": "왕복 항해 시간이 2% 줄어요",
-          "icon_index": 9
-        },
-        {
-          "level": 5,
-          "id": "safe_turn",
-          "name": "안전한 선회",
-          "effect": "pirate_win_bonus",
-          "value": 0.02,
-          "desc": "해적 승률이 2%p 올라요",
-          "icon_index": 9
-        },
-        {
-          "level": 10,
-          "id": "known_current",
-          "name": "익숙한 물살",
-          "effect": "speed_bonus",
-          "value": 0.04,
-          "desc": "왕복 항해 시간이 4% 줄어요",
-          "icon_index": 1
-        }
-      ],
-      "deck_line": "물살을 보고 천천히 키를 돌릴게요.",
-      "deck_sprite": "art/crew_deck_b.png",
-      "deck_row": 0,
-      "portrait_index": 6,
-      "initial_level": 1,
-      "initial_xp": 0
-    },
-    {
-      "worker_id": "haneul",
-      "name": "하늘",
-      "crew_role": "항해 통신원",
-      "role_desc": "편지와 항구 소식을 이어 줘요",
-      "unlock": "port_fogferry",
-      "skills": [
-        {
-          "level": 1,
-          "id": "open_letters",
-          "name": "열어 둔 소식",
-          "effect": "event_good_bonus",
-          "value": 0.015,
-          "desc": "좋은 사건 확률이 1.5%p 올라요",
-          "icon_index": 14
-        },
-        {
-          "level": 5,
-          "id": "trusted_contact",
-          "name": "믿음직한 연락",
-          "effect": "sale_bonus",
-          "value": 0.02,
-          "desc": "화물 판매 수입이 2% 늘어요",
-          "icon_index": 15
-        },
-        {
-          "level": 10,
-          "id": "clear_signals",
-          "name": "또렷한 신호",
-          "effect": "event_good_bonus",
-          "value": 0.025,
-          "desc": "좋은 사건 확률이 2.5%p 올라요",
-          "icon_index": 13
-        }
-      ],
-      "deck_line": "좋은 소식부터 차례로 전할게요.",
-      "deck_sprite": "art/crew_deck_b.png",
-      "deck_row": 1,
-      "portrait_index": 7,
-      "initial_level": 1,
-      "initial_xp": 0
-    },
-    {
-      "worker_id": "bityeo",
-      "name": "빛여",
-      "crew_role": "망루지기",
-      "role_desc": "빛과 먼바다의 작은 물건을 찾아요",
-      "unlock": "port_glasscape",
-      "skills": [
-        {
-          "level": 1,
-          "id": "bright_glint",
-          "name": "작은 반짝임",
-          "effect": "treasure_find_bonus",
-          "value": 0.02,
-          "desc": "보물 주머니 사건 확률이 2%p 올라요",
-          "icon_index": 10
-        },
-        {
-          "level": 5,
-          "id": "early_watch",
-          "name": "먼 돛 살피기",
-          "effect": "pirate_win_bonus",
-          "value": 0.015,
-          "desc": "해적 승률이 1.5%p 올라요",
-          "icon_index": 10
-        },
-        {
-          "level": 10,
-          "id": "treasure_watch",
-          "name": "빛을 좇는 눈",
-          "effect": "treasure_find_bonus",
-          "value": 0.035,
-          "desc": "보물 주머니 사건 확률이 3.5%p 올라요",
-          "icon_index": 6
-        }
-      ],
-      "deck_line": "반짝이는 게 보여요. 천천히 살펴봐요.",
-      "deck_sprite": "art/crew_deck_b.png",
-      "deck_row": 2,
-      "portrait_index": 8,
-      "initial_level": 1,
-      "initial_xp": 0
-    },
-    {
-      "worker_id": "deul",
-      "name": "들",
-      "crew_role": "갑판 요리사",
-      "role_desc": "짧은 식사 시간도 든든하게 챙겨요",
-      "unlock": "port_reedbay",
-      "skills": [
-        {
-          "level": 1,
-          "id": "packed_meals",
-          "name": "알뜰한 식량함",
-          "effect": "cargo_bonus",
-          "value": 0.04,
-          "desc": "짐을 4% 더 실어요",
-          "icon_index": 11
-        },
-        {
-          "level": 5,
-          "id": "timely_meal",
-          "name": "때맞춘 한 끼",
-          "effect": "speed_bonus",
-          "value": 0.02,
-          "desc": "왕복 항해 시간이 2% 줄어요",
-          "icon_index": 11
-        },
-        {
-          "level": 10,
-          "id": "warm_table",
-          "name": "따뜻한 식탁",
-          "effect": "event_good_bonus",
-          "value": 0.025,
-          "desc": "좋은 사건 확률이 2.5%p 올라요",
-          "icon_index": 4
-        }
-      ],
-      "deck_line": "한 끼 먹고 나면 손에 힘이 날 거예요.",
-      "deck_sprite": "art/crew_deck_b.png",
-      "deck_row": 3,
-      "portrait_index": 9,
-      "initial_level": 1,
-      "initial_xp": 0
-    },
-    {
-      "worker_id": "saei",
-      "name": "새이",
-      "crew_role": "교역사",
-      "role_desc": "가격과 거래표를 꼼꼼히 확인해요",
-      "unlock": "port_paperwater",
-      "skills": [
-        {
-          "level": 1,
-          "id": "honest_ledger",
-          "name": "반듯한 장부",
-          "effect": "sale_bonus",
-          "value": 0.02,
-          "desc": "화물 판매 수입이 2% 늘어요",
-          "icon_index": 3
-        },
-        {
-          "level": 5,
-          "id": "timber_quote",
-          "name": "목재 거래표",
-          "effect": "wood_price_bonus",
-          "value": 0.04,
-          "desc": "나무 판매 수입이 4% 늘어요",
-          "icon_index": 7
-        },
-        {
-          "level": 10,
-          "id": "stone_quote",
-          "name": "돌 거래표",
-          "effect": "stone_price_bonus",
-          "value": 0.06,
-          "desc": "돌 판매 수입이 6% 늘어요",
-          "icon_index": 8
-        }
-      ],
-      "deck_line": "빠진 줄 없이 거래표를 맞췄어요.",
-      "deck_sprite": "art/crew_deck_b.png",
-      "deck_row": 4,
-      "portrait_index": 10,
-      "initial_level": 1,
-      "initial_xp": 0
-    },
-    {
-      "worker_id": "onyu",
-      "name": "온유",
-      "crew_role": "안전 관리인",
-      "role_desc": "출항과 귀항의 점검을 맡아요",
-      "unlock": "port_whitesail",
-      "skills": [
-        {
-          "level": 1,
-          "id": "checked_lashings",
-          "name": "출항 점검",
-          "effect": "repair_after_loss",
-          "value": 0.05,
-          "desc": "해적 패배 시 화물 손실률을 5% 줄여요",
-          "icon_index": 12
-        },
-        {
-          "level": 5,
-          "id": "safe_response",
-          "name": "차분한 대응",
-          "effect": "pirate_win_bonus",
-          "value": 0.02,
-          "desc": "해적 승률이 2%p 올라요",
-          "icon_index": 2
-        },
-        {
-          "level": 10,
-          "id": "return_check",
-          "name": "귀항 확인",
-          "effect": "event_good_bonus",
-          "value": 0.03,
-          "desc": "좋은 사건 확률이 3%p 올라요",
-          "icon_index": 13
-        }
-      ],
-      "deck_line": "모두 무사해요. 남은 짐을 확인할게요.",
-      "deck_sprite": "art/crew_deck_b.png",
-      "deck_row": 5,
-      "portrait_index": 11,
-      "initial_level": 1,
-      "initial_xp": 0
+     "level": 10,
+     "id": "steady_orders",
+     "name": "침착한 구령",
+     "effect": "pirate_win_bonus",
+     "value": 0.015,
+     "desc": "해적 승률이 1.5%p 올라요",
+     "icon_index": 15
     }
-  ],
-  "effects_list": [
-    "cargo_bonus",
-    "speed_bonus",
-    "pirate_win_bonus",
-    "sale_bonus",
-    "event_good_bonus",
-    "repair_after_loss",
-    "treasure_find_bonus",
-    "wood_price_bonus",
-    "stone_price_bonus"
-  ],
-  "effect_caps": {
-    "cargo_bonus": 0.35,
-    "speed_bonus": 0.15,
-    "pirate_win_bonus": 0.1,
-    "sale_bonus": 0.15,
-    "event_good_bonus": 0.1,
-    "repair_after_loss": 0.35,
-    "treasure_find_bonus": 0.1,
-    "wood_price_bonus": 0.1,
-    "stone_price_bonus": 0.1
+   ],
+   "deck_line": "매듭은 제가 묶어 둘게요.",
+   "deck_sprite": "art/crew_deck_a.png",
+   "deck_row": 0,
+   "portrait_index": 0,
+   "initial_level": 1,
+   "initial_xp": 0
   },
-  "synergy": [
+  {
+   "worker_id": "mungi",
+   "name": "문기",
+   "crew_role": "포술장",
+   "role_desc": "돌을 고르던 눈으로 대포를 살펴요",
+   "unlock": "start",
+   "skills": [
     {
-      "id": "knots_and_current",
-      "ids": [
-        "yeoul",
-        "dori"
-      ],
-      "name": "매듭과 물길",
-      "effect": "cargo_bonus",
-      "value": 0.05,
-      "desc": "함께 타면 짐을 5% 더 실어요"
+     "level": 1,
+     "id": "measured_cannon",
+     "name": "정확한 포각",
+     "effect": "pirate_win_bonus",
+     "value": 0.02,
+     "desc": "해적 승률이 2%p 올라요",
+     "icon_index": 2
     },
     {
-      "id": "safe_cannon",
-      "ids": [
-        "mungi",
-        "onyu"
-      ],
-      "name": "안전한 포성",
-      "effect": "pirate_win_bonus",
-      "value": 0.02,
-      "desc": "함께 타면 해적 승률이 2%p 올라요"
+     "level": 5,
+     "id": "stone_grading",
+     "name": "돌의 결",
+     "effect": "stone_price_bonus",
+     "value": 0.03,
+     "desc": "돌 판매 수입이 3% 늘어요",
+     "icon_index": 8
     },
     {
-      "id": "hearty_table",
-      "ids": [
-        "sori",
-        "deul"
-      ],
-      "name": "든든한 식탁",
-      "effect": "event_good_bonus",
-      "value": 0.02,
-      "desc": "함께 타면 좋은 사건 확률이 2%p 올라요"
-    },
-    {
-      "id": "careful_trade",
-      "ids": [
-        "nuri",
-        "saei"
-      ],
-      "name": "꼼꼼한 거래",
-      "effect": "sale_bonus",
-      "value": 0.03,
-      "desc": "함께 타면 화물 판매 수입이 3% 늘어요"
-    },
-    {
-      "id": "wind_letters",
-      "ids": [
-        "bada",
-        "haneul"
-      ],
-      "name": "바람의 소식",
-      "effect": "speed_bonus",
-      "value": 0.02,
-      "desc": "함께 타면 왕복 항해 시간이 2% 줄어요"
-    },
-    {
-      "id": "craft_and_watch",
-      "ids": [
-        "geonu",
-        "bityeo"
-      ],
-      "name": "손질과 살핌",
-      "effect": "repair_after_loss",
-      "value": 0.05,
-      "desc": "함께 타면 해적 패배 시 화물 손실률을 5% 줄여요"
+     "level": 10,
+     "id": "warning_volley",
+     "name": "길을 여는 포성",
+     "effect": "pirate_win_bonus",
+     "value": 0.03,
+     "desc": "해적 승률이 3%p 올라요",
+     "icon_index": 2
     }
-  ],
-  "assignment_rules": {
-    "permanent_residents_stay_on_island": [
-      "단",
-      "보리",
-      "해온"
-    ],
-    "seorin": {
-      "playable_crew": false,
-      "uses_slot": false,
-      "role": "이야기 속 고정 선장",
-      "stat_bonus": 0,
-      "reason": "처음부터 항해를 이끄는 기존 서사를 유지한다. 배치 가능한 선원 12명과 별도로 등장한다."
+   ],
+   "deck_line": "대포는 낮게, 짐은 단단히 고정했어요.",
+   "deck_sprite": "art/crew_deck_a.png",
+   "deck_row": 1,
+   "portrait_index": 1,
+   "initial_level": 1,
+   "initial_xp": 0
+  },
+  {
+   "worker_id": "sori",
+   "name": "소리",
+   "crew_role": "보급 담당",
+   "role_desc": "젖지 않게 물자를 챙겨요",
+   "unlock": "port_saltflat",
+   "skills": [
+    {
+     "level": 1,
+     "id": "dry_wrapping",
+     "name": "마른 포대",
+     "effect": "repair_after_loss",
+     "value": 0.04,
+     "desc": "해적 패배 시 화물 손실률을 4% 줄여요",
+     "icon_index": 12
     },
-    "promoted_worker_housing": "선원은 섬 인구와 알바 숙소 칸에 포함하지 않는다.",
-    "promoted_worker_future_hire": "승진한 인물은 일반 알바 고용 후보에서 제외한다.",
-    "promoted_worker_island_production": 0,
-    "bench_production": 0,
-    "bench_xp": 0,
-    "contract_bonus_after_promotion": "승진한 본인의 기존 알바 채집·판매·해적 효과를 중복 적용하지 않는다.",
-    "other_active_island_workers": "승진하지 않은 현재 계약 알바의 기존 효과는 기존 상한 안에서 별도로 유지한다.",
-    "preserve_old_cosmetics_and_completed_contract_count": true,
-    "unfinished_contract": "근무 중인 계약을 강제로 끊거나 승진 명목으로 완료 처리하지 않는다.",
-    "promotion_optional": "5회·10회 계약 기념품을 먼저 얻고 싶다면 승진 전에 계약을 더 이어 갈 수 있다.",
-    "duplicate_worker_on_ship": false,
-    "max_selected_equals_ship_slots": true,
-    "changes_apply": "next_departure",
-    "in_flight_crew": "출항 시 명단·레벨·스킬·시너지를 스냅샷으로 고정한다.",
-    "changed_selection_during_voyage": "현재 항해는 그대로 마치고 다음 출항 명단으로 저장한다. 귀항 경험치는 출항 명단에 준다.",
-    "failure_message": "짐을 잃었어요",
-    "injury": false,
-    "death": false,
-    "crew_loss": false,
-    "hospital": false,
-    "repair_fee": 0,
-    "ship_hp_system": false
-  },
-  "xp_rules": {
-    "array_index": "xp_to_next[current_level - 1]; current_level 1~9만 조회",
-    "threshold_semantics": "다음 한 레벨로 올라가는 데 필요한 경험치이며 누적 임계값 배열이 아니다.",
-    "grant_on": "credited voyage_return_settlement",
-    "eligible": "출항 스냅샷에 포함된 승진 선원 각각",
-    "victory_required": false,
-    "sale_profit_required": false,
-    "for_each_return": true,
-    "level_up_loop": "xp += 10; while level < 10 and xp >= xp_to_next[level-1]: xp -= xp_to_next[level-1]; level += 1",
-    "level_10_xp": 0,
-    "max_level_overflow": "10레벨 도달 뒤 남거나 새로 얻는 경험치는 저장하지 않는다.",
-    "unlock_skills": "현재 선원 레벨 이하인 모든 스킬을 자동으로 연다. 별도 금화·재료·스킬 포인트 없음.",
-    "new_skills_apply": "다음 출항 스냅샷부터 적용; 방금 끝난 항해 보상을 재계산하지 않는다.",
-    "offline": "01_economy.json의 최대 28800초 부재 보상 시뮬레이션 안에서 실제 완료한 항해만 같은 규칙으로 경험치를 준다.",
-    "incomplete_voyage": "부분 항해에는 경험치를 주지 않고 남은 시간을 다음 시뮬레이션으로 넘긴다.",
-    "uncredited_tail": 0,
-    "login_bonus_xp": 0,
-    "retroactive_xp_for_old_voyages": 0,
-    "idempotency_key": "save_id + voyage_sequence + crew_xp + worker_id",
-    "card_reopen_xp": 0
-  },
-  "stacking_rules": {
-    "skill_values": "서로 다른 해금 스킬은 모두 활성화하며 같은 effect 값을 더한다. 레벨 5 스킬이 레벨 1 스킬을 대체하지 않는다.",
-    "synergy_activation": "같은 출항 명단에 ids의 두 선원이 모두 있을 때 한 번 적용한다. 선원 레벨과 배치 순서는 무관하다.",
-    "synergy_on_bench": false,
-    "duplicate_synergy": false,
-    "aggregation_order": [
-      "출항 선원들의 해금 스킬을 effect별 합산",
-      "활성 짝 보너스를 같은 effect에 합산",
-      "effect_caps를 한 번 적용",
-      "19_ship_parts.json의 부품 현재값 및 기존 배·섬 알바·건물 효과와 결합"
-    ],
-    "probability_unit": "0.01 = 1%p; cargo/speed/sale/repair bonuses use relative fractions",
-    "repair_after_loss": "이름은 기존 요청 키를 유지한다. 치료·체력 회복이 아니라 패배 시 화물 손실률을 낮추는 자동 안전 조치다.",
-    "part_and_crew_shared_rules": "용량·시간·해적 승률·손실률의 최종 계산은 19_ship_parts.json.effect_rules를 사용한다.",
-    "sale_formula": "payout_cents = floor(sum(each_surviving_cargo_line.quantity * price_in_cents * (1 + market_bonus + capped_island_worker_sale_bonus + capped_crew.sale_bonus + per_resource_bonus)))",
-    "per_resource_bonus": {
-      "wood": "capped_crew.wood_price_bonus",
-      "stone": "capped_crew.stone_price_bonus",
-      "all_specialty_resources": 0
+    {
+     "level": 5,
+     "id": "spare_supplies",
+     "name": "여분의 준비",
+     "effect": "event_good_bonus",
+     "value": 0.015,
+     "desc": "좋은 사건 확률이 1.5%p 올라요",
+     "icon_index": 4
     },
-    "sale_island_worker_cap": 0.06,
-    "sale_scope": "실제 살아남아 판매한 나무·돌·특산물의 판매대금만. 매입 비용은 할인하지 않는다.",
-    "sale_exclusions": [
-      "해적 승리 금화",
-      "항해 사건 보상",
-      "고정 보물 보상",
-      "부재 카드 총액에 대한 재곱"
-    ],
-    "sales_use_departure_snapshot": true,
-    "double_credit_prevention": "기본 화물은 항구에서 한 번, 특산물은 귀항에서 한 번만 정산한다."
+    {
+     "level": 10,
+     "id": "folded_stores",
+     "name": "빈틈없는 보급",
+     "effect": "cargo_bonus",
+     "value": 0.08,
+     "desc": "짐을 8% 더 실어요",
+     "icon_index": 0
+    }
+   ],
+   "deck_line": "남은 포대도 쓸모가 있을 거예요.",
+   "deck_sprite": "art/crew_deck_a.png",
+   "deck_row": 2,
+   "portrait_index": 2,
+   "initial_level": 1,
+   "initial_xp": 0
   },
-  "event_selection_adapter": {
-    "base_source": "07_voyage_event_effects.json",
-    "base_event_chance": 0.35,
-    "changes": "기존 사건의 조건·가중치·보상·쿨다운은 유지하고, 출항 시 키·선원 효과만 선택 확률에 더한다.",
-    "eligibility": "07의 전체 적격 검사 후, 실제 귀항 때 보상 사건 후보가 있는지 확인한다.",
-    "positive_event_ids": [
-      "voy_15",
-      "voy_21"
-    ],
-    "treasure_event_ids": [
-      "voy_21"
-    ],
-    "null_effect_is_positive": false,
-    "eligible_pool_empty": "사건 없음; 추가 금화나 대체 사건을 만들지 않는다.",
-    "base_probability_per_event": "0.35 * event.weight / sum(eligible.weight)",
-    "good_bonus_formula": "min(0.15, helm.value + capped_crew.event_good_bonus)",
-    "good_bonus_distribution": "적격 positive_event_ids가 있으면 good_bonus를 해당 후보끼리의 가중치 비율로 배분하여 기존 확률에 더한다. 없으면 이번 항해에서는 이 보너스를 사용하지 않는다.",
-    "treasure_bonus_distribution": "voy_21이 적격이면 capped_crew.treasure_find_bonus를 그 사건 확률에 더한다. 쿨다운·해금 조건을 무시하지 않는다.",
-    "no_event_probability": "1 - sum(final_probability_per_event)",
-    "maximum_total_event_probability": 0.6,
-    "draw_method": "서로 배타적인 사건별 누적 확률과 사건 없음 칸으로 한 번 추첨한다.",
-    "max_events_per_return": 1,
-    "no_reward_multiplier": true,
-    "no_extra_treasure_resource": true,
-    "scope_exclusions": [
-      "본편 33~34화의 고정 보물",
-      "본편 51~57화의 고정 폭풍",
-      "해적 조우 확률",
-      "지난 항해 보상 재추첨"
-    ],
-    "seed_and_settlement": "기존 voyage_id 및 flavor_event 키를 유지하고, 선택 결과·효과·경험치를 귀항 장부에 한 번 확정한다.",
-    "snapshot": "보너스 값은 출항 시점, 사건 적격 여부는 기존 규칙대로 귀항 시점",
-    "tooltip": "해당 좋은 사건이 열려 있고 재발생 대기 중이 아닐 때 적용돼요."
-  },
-  "art_mapping": {
-    "crew_deck_columns": [
-      "rope",
-      "wheel",
-      "cannon",
-      "cheer"
-    ],
-    "crew_deck_grid": {
-      "rows": 6,
-      "columns": 4
+  {
+   "worker_id": "nuri",
+   "name": "누리",
+   "crew_role": "화물 관리인",
+   "role_desc": "깨지기 쉬운 짐을 나눠 실어요",
+   "unlock": "port_pottery",
+   "skills": [
+    {
+     "level": 1,
+     "id": "fitted_crates",
+     "name": "맞춤 칸막이",
+     "effect": "cargo_bonus",
+     "value": 0.06,
+     "desc": "짐을 6% 더 실어요",
+     "icon_index": 0
     },
-    "worker_portraits": "art/worker_portraits.png",
-    "worker_portraits_grid": {
-      "rows": 3,
-      "columns": 4
+    {
+     "level": 5,
+     "id": "padded_cargo",
+     "name": "완충 포장",
+     "effect": "repair_after_loss",
+     "value": 0.06,
+     "desc": "해적 패배 시 화물 손실률을 6% 줄여요",
+     "icon_index": 12
     },
-    "part_icons": "art/part_icons.png",
-    "part_icon_order": [
-      "hull",
-      "sail",
-      "cannon",
-      "helm",
-      "crew_slot",
-      "upgrade",
-      "skill",
-      "level_star"
-    ],
-    "skill_icons": "art/skill_icons.png",
-    "skill_icon_order": [
-      "rope",
-      "wind",
-      "cannonball",
-      "coins",
-      "clover",
-      "hammer_plank",
-      "treasure",
-      "log",
-      "stone",
-      "compass",
-      "spyglass",
-      "cooking_pot",
-      "bandage",
-      "lantern",
-      "map",
-      "handshake"
-    ],
-    "index_base": 0,
-    "order": "row_major_left_to_right_top_to_bottom",
-    "bandage_icon_meaning": "화물 포장·보호; 선원 부상 상태를 뜻하지 않는다."
+    {
+     "level": 10,
+     "id": "clean_delivery",
+     "name": "반듯한 인도",
+     "effect": "sale_bonus",
+     "value": 0.03,
+     "desc": "화물 판매 수입이 3% 늘어요",
+     "icon_index": 3
+    }
+   ],
+   "deck_line": "칸막이 사이에 딱 맞게 들어갔네요.",
+   "deck_sprite": "art/crew_deck_a.png",
+   "deck_row": 3,
+   "portrait_index": 3,
+   "initial_level": 1,
+   "initial_xp": 0
   },
-  "save_migration": {
-    "run_once_key": "order4_crew_v1",
-    "preexisting_workers": "저장된 실제 완료 계약 횟수를 읽는다. 값이 없으면 0이며 과거 항해 횟수로 계약 횟수를 추정하지 않는다.",
-    "preexisting_promotions": "기존 승진 기록이 없으면 모두 미승진. 비용을 자동 차감하거나 승진을 임의로 부여하지 않는다.",
-    "preserve": "이미 저장된 선원 레벨·경험치·대기 명단·배치 예약은 그대로 유지한다."
+  {
+   "worker_id": "bada",
+   "name": "바다",
+   "crew_role": "돛지기",
+   "role_desc": "돛천과 바람을 살펴요",
+   "unlock": "port_windneck",
+   "skills": [
+    {
+     "level": 1,
+     "id": "trim_sail",
+     "name": "돛 다듬기",
+     "effect": "speed_bonus",
+     "value": 0.02,
+     "desc": "왕복 항해 시간이 2% 줄어요",
+     "icon_index": 1
+    },
+    {
+     "level": 5,
+     "id": "read_gust",
+     "name": "바람 읽기",
+     "effect": "speed_bonus",
+     "value": 0.03,
+     "desc": "왕복 항해 시간이 3% 줄어요",
+     "icon_index": 1
+    },
+    {
+     "level": 10,
+     "id": "sound_stitch",
+     "name": "튼튼한 바느질",
+     "effect": "repair_after_loss",
+     "value": 0.06,
+     "desc": "해적 패배 시 화물 손실률을 6% 줄여요",
+     "icon_index": 5
+    }
+   ],
+   "deck_line": "돛끝이 가볍게 움직여요.",
+   "deck_sprite": "art/crew_deck_a.png",
+   "deck_row": 4,
+   "portrait_index": 4,
+   "initial_level": 1,
+   "initial_xp": 0
   },
-  "balance_notes": {
-    "promotion_min_completed_work_hours": 12,
-    "first_promotion_gold": 200,
-    "promotion_timing": "같은 알바의 6시간 계약 두 번이 정상 종료되어야 하므로 순수 근무만 12시간이다. 두 번째 고용 및 왕복·확인 시간에 따라 실제 첫 승진은 더 늦어질 수 있다.",
-    "separation_of_early_and_long_progression": "초반 몇 분 간격 성장은 부품이 담당하고, 선원은 계약을 거쳐 장기적으로 성장한다.",
-    "voyages_from_level_1_to_5": 34,
-    "voyages_from_level_1_to_10": 244,
-    "hours_from_level_1_to_5_at_12_minute_route": 6.8,
-    "hours_from_level_1_to_10_at_12_minute_route": 48.8,
-    "xp_estimate_assumptions": "승진 이후 모든 항해에 같은 선원이 탑승하고, 항해 대기·부재 한도 손실 없이 12분 왕복을 완료한다고 가정한다. 속도 강화와 항로에 따라 달라진다.",
-    "max_active_synergies_with_5_slots": 2,
-    "all_12_promoted": "알바 12명을 전부 승진시키면 일반 알바 채집은 없어지고 주민 3명과 기존 보급 생산이 남는다. 승진은 선택 사항이며 대기 선원이 자원을 자동 생산하지 않는다.",
-    "validation": "ID·레벨·확률 상한·모든 2~5인 편성 조합을 정적으로 검증한 수치. 실제 앱 통합과 플레이 검증은 아직 수행하지 않음."
+  {
+   "worker_id": "geonu",
+   "name": "건우",
+   "crew_role": "선박 목수",
+   "role_desc": "판재와 이음새를 점검해요",
+   "unlock": "port_pineshade",
+   "skills": [
+    {
+     "level": 1,
+     "id": "braced_planks",
+     "name": "덧댄 판재",
+     "effect": "repair_after_loss",
+     "value": 0.05,
+     "desc": "해적 패배 시 화물 손실률을 5% 줄여요",
+     "icon_index": 5
+    },
+    {
+     "level": 5,
+     "id": "timber_eye",
+     "name": "목재 보는 눈",
+     "effect": "wood_price_bonus",
+     "value": 0.04,
+     "desc": "나무 판매 수입이 4% 늘어요",
+     "icon_index": 7
+    },
+    {
+     "level": 10,
+     "id": "kept_cargo",
+     "name": "끝까지 지킨 짐",
+     "effect": "repair_after_loss",
+     "value": 0.08,
+     "desc": "해적 패배 시 화물 손실률을 8% 줄여요",
+     "icon_index": 5
+    }
+   ],
+   "deck_line": "손본 이음새가 오늘도 든든하네요.",
+   "deck_sprite": "art/crew_deck_a.png",
+   "deck_row": 5,
+   "portrait_index": 5,
+   "initial_level": 1,
+   "initial_xp": 0
+  },
+  {
+   "worker_id": "dori",
+   "name": "도리",
+   "crew_role": "조타수",
+   "role_desc": "키와 밧줄로 안전한 물길을 잡아요",
+   "unlock": "port_redanchor",
+   "skills": [
+    {
+     "level": 1,
+     "id": "smooth_helm",
+     "name": "부드러운 키",
+     "effect": "speed_bonus",
+     "value": 0.02,
+     "desc": "왕복 항해 시간이 2% 줄어요",
+     "icon_index": 9
+    },
+    {
+     "level": 5,
+     "id": "safe_turn",
+     "name": "안전한 선회",
+     "effect": "pirate_win_bonus",
+     "value": 0.02,
+     "desc": "해적 승률이 2%p 올라요",
+     "icon_index": 9
+    },
+    {
+     "level": 10,
+     "id": "known_current",
+     "name": "익숙한 물살",
+     "effect": "speed_bonus",
+     "value": 0.04,
+     "desc": "왕복 항해 시간이 4% 줄어요",
+     "icon_index": 1
+    }
+   ],
+   "deck_line": "물살을 보고 천천히 키를 돌릴게요.",
+   "deck_sprite": "art/crew_deck_b.png",
+   "deck_row": 0,
+   "portrait_index": 6,
+   "initial_level": 1,
+   "initial_xp": 0
+  },
+  {
+   "worker_id": "haneul",
+   "name": "하늘",
+   "crew_role": "항해 통신원",
+   "role_desc": "편지와 항구 소식을 이어 줘요",
+   "unlock": "port_fogferry",
+   "skills": [
+    {
+     "level": 1,
+     "id": "open_letters",
+     "name": "열어 둔 소식",
+     "effect": "event_good_bonus",
+     "value": 0.015,
+     "desc": "좋은 사건 확률이 1.5%p 올라요",
+     "icon_index": 14
+    },
+    {
+     "level": 5,
+     "id": "trusted_contact",
+     "name": "믿음직한 연락",
+     "effect": "sale_bonus",
+     "value": 0.02,
+     "desc": "화물 판매 수입이 2% 늘어요",
+     "icon_index": 15
+    },
+    {
+     "level": 10,
+     "id": "clear_signals",
+     "name": "또렷한 신호",
+     "effect": "event_good_bonus",
+     "value": 0.025,
+     "desc": "좋은 사건 확률이 2.5%p 올라요",
+     "icon_index": 13
+    }
+   ],
+   "deck_line": "좋은 소식부터 차례로 전할게요.",
+   "deck_sprite": "art/crew_deck_b.png",
+   "deck_row": 1,
+   "portrait_index": 7,
+   "initial_level": 1,
+   "initial_xp": 0
+  },
+  {
+   "worker_id": "bityeo",
+   "name": "빛여",
+   "crew_role": "망루지기",
+   "role_desc": "빛과 먼바다의 작은 물건을 찾아요",
+   "unlock": "port_glasscape",
+   "skills": [
+    {
+     "level": 1,
+     "id": "bright_glint",
+     "name": "작은 반짝임",
+     "effect": "treasure_find_bonus",
+     "value": 0.02,
+     "desc": "보물 주머니 사건 확률이 2%p 올라요",
+     "icon_index": 10
+    },
+    {
+     "level": 5,
+     "id": "early_watch",
+     "name": "먼 돛 살피기",
+     "effect": "pirate_win_bonus",
+     "value": 0.015,
+     "desc": "해적 승률이 1.5%p 올라요",
+     "icon_index": 10
+    },
+    {
+     "level": 10,
+     "id": "treasure_watch",
+     "name": "빛을 좇는 눈",
+     "effect": "treasure_find_bonus",
+     "value": 0.035,
+     "desc": "보물 주머니 사건 확률이 3.5%p 올라요",
+     "icon_index": 6
+    }
+   ],
+   "deck_line": "반짝이는 게 보여요. 천천히 살펴봐요.",
+   "deck_sprite": "art/crew_deck_b.png",
+   "deck_row": 2,
+   "portrait_index": 8,
+   "initial_level": 1,
+   "initial_xp": 0
+  },
+  {
+   "worker_id": "deul",
+   "name": "들",
+   "crew_role": "갑판 요리사",
+   "role_desc": "짧은 식사 시간도 든든하게 챙겨요",
+   "unlock": "port_reedbay",
+   "skills": [
+    {
+     "level": 1,
+     "id": "packed_meals",
+     "name": "알뜰한 식량함",
+     "effect": "cargo_bonus",
+     "value": 0.04,
+     "desc": "짐을 4% 더 실어요",
+     "icon_index": 11
+    },
+    {
+     "level": 5,
+     "id": "timely_meal",
+     "name": "때맞춘 한 끼",
+     "effect": "speed_bonus",
+     "value": 0.02,
+     "desc": "왕복 항해 시간이 2% 줄어요",
+     "icon_index": 11
+    },
+    {
+     "level": 10,
+     "id": "warm_table",
+     "name": "따뜻한 식탁",
+     "effect": "event_good_bonus",
+     "value": 0.025,
+     "desc": "좋은 사건 확률이 2.5%p 올라요",
+     "icon_index": 4
+    }
+   ],
+   "deck_line": "한 끼 먹고 나면 손에 힘이 날 거예요.",
+   "deck_sprite": "art/crew_deck_b.png",
+   "deck_row": 3,
+   "portrait_index": 9,
+   "initial_level": 1,
+   "initial_xp": 0
+  },
+  {
+   "worker_id": "saei",
+   "name": "새이",
+   "crew_role": "교역사",
+   "role_desc": "가격과 거래표를 꼼꼼히 확인해요",
+   "unlock": "port_paperwater",
+   "skills": [
+    {
+     "level": 1,
+     "id": "honest_ledger",
+     "name": "반듯한 장부",
+     "effect": "sale_bonus",
+     "value": 0.02,
+     "desc": "화물 판매 수입이 2% 늘어요",
+     "icon_index": 3
+    },
+    {
+     "level": 5,
+     "id": "timber_quote",
+     "name": "목재 거래표",
+     "effect": "wood_price_bonus",
+     "value": 0.04,
+     "desc": "나무 판매 수입이 4% 늘어요",
+     "icon_index": 7
+    },
+    {
+     "level": 10,
+     "id": "stone_quote",
+     "name": "돌 거래표",
+     "effect": "stone_price_bonus",
+     "value": 0.06,
+     "desc": "돌 판매 수입이 6% 늘어요",
+     "icon_index": 8
+    }
+   ],
+   "deck_line": "빠진 줄 없이 거래표를 맞췄어요.",
+   "deck_sprite": "art/crew_deck_b.png",
+   "deck_row": 4,
+   "portrait_index": 10,
+   "initial_level": 1,
+   "initial_xp": 0
+  },
+  {
+   "worker_id": "onyu",
+   "name": "온유",
+   "crew_role": "안전 관리인",
+   "role_desc": "출항과 귀항의 점검을 맡아요",
+   "unlock": "port_whitesail",
+   "skills": [
+    {
+     "level": 1,
+     "id": "checked_lashings",
+     "name": "출항 점검",
+     "effect": "repair_after_loss",
+     "value": 0.05,
+     "desc": "해적 패배 시 화물 손실률을 5% 줄여요",
+     "icon_index": 12
+    },
+    {
+     "level": 5,
+     "id": "safe_response",
+     "name": "차분한 대응",
+     "effect": "pirate_win_bonus",
+     "value": 0.02,
+     "desc": "해적 승률이 2%p 올라요",
+     "icon_index": 2
+    },
+    {
+     "level": 10,
+     "id": "return_check",
+     "name": "귀항 확인",
+     "effect": "event_good_bonus",
+     "value": 0.03,
+     "desc": "좋은 사건 확률이 3%p 올라요",
+     "icon_index": 13
+    }
+   ],
+   "deck_line": "모두 무사해요. 남은 짐을 확인할게요.",
+   "deck_sprite": "art/crew_deck_b.png",
+   "deck_row": 5,
+   "portrait_index": 11,
+   "initial_level": 1,
+   "initial_xp": 0
   }
+ ],
+ "effects_list": [
+  "cargo_bonus",
+  "speed_bonus",
+  "pirate_win_bonus",
+  "sale_bonus",
+  "event_good_bonus",
+  "repair_after_loss",
+  "treasure_find_bonus",
+  "wood_price_bonus",
+  "stone_price_bonus"
+ ],
+ "effect_caps": {
+  "cargo_bonus": 0.35,
+  "speed_bonus": 0.15,
+  "pirate_win_bonus": 0.1,
+  "sale_bonus": 0.15,
+  "event_good_bonus": 0.1,
+  "repair_after_loss": 0.35,
+  "treasure_find_bonus": 0.1,
+  "wood_price_bonus": 0.1,
+  "stone_price_bonus": 0.1
+ },
+ "synergy": [
+  {
+   "id": "knots_and_current",
+   "ids": [
+    "yeoul",
+    "dori"
+   ],
+   "name": "매듭과 물길",
+   "effect": "cargo_bonus",
+   "value": 0.05,
+   "desc": "함께 타면 짐을 5% 더 실어요"
+  },
+  {
+   "id": "safe_cannon",
+   "ids": [
+    "mungi",
+    "onyu"
+   ],
+   "name": "안전한 포성",
+   "effect": "pirate_win_bonus",
+   "value": 0.02,
+   "desc": "함께 타면 해적 승률이 2%p 올라요"
+  },
+  {
+   "id": "hearty_table",
+   "ids": [
+    "sori",
+    "deul"
+   ],
+   "name": "든든한 식탁",
+   "effect": "event_good_bonus",
+   "value": 0.02,
+   "desc": "함께 타면 좋은 사건 확률이 2%p 올라요"
+  },
+  {
+   "id": "careful_trade",
+   "ids": [
+    "nuri",
+    "saei"
+   ],
+   "name": "꼼꼼한 거래",
+   "effect": "sale_bonus",
+   "value": 0.03,
+   "desc": "함께 타면 화물 판매 수입이 3% 늘어요"
+  },
+  {
+   "id": "wind_letters",
+   "ids": [
+    "bada",
+    "haneul"
+   ],
+   "name": "바람의 소식",
+   "effect": "speed_bonus",
+   "value": 0.02,
+   "desc": "함께 타면 왕복 항해 시간이 2% 줄어요"
+  },
+  {
+   "id": "craft_and_watch",
+   "ids": [
+    "geonu",
+    "bityeo"
+   ],
+   "name": "손질과 살핌",
+   "effect": "repair_after_loss",
+   "value": 0.05,
+   "desc": "함께 타면 해적 패배 시 화물 손실률을 5% 줄여요"
+  }
+ ],
+ "assignment_rules": {
+  "permanent_residents_stay_on_island": [
+   "단",
+   "보리",
+   "해온"
+  ],
+  "seorin": {
+   "playable_crew": false,
+   "uses_slot": false,
+   "role": "이야기 속 고정 선장",
+   "stat_bonus": 0,
+   "reason": "처음부터 항해를 이끄는 기존 서사를 유지한다. 배치 가능한 선원 12명과 별도로 등장한다."
+  },
+  "promoted_worker_housing": "선원은 섬 인구와 알바 숙소 칸에 포함하지 않는다.",
+  "promoted_worker_future_hire": "승진한 인물은 일반 알바 고용 후보에서 제외한다.",
+  "promoted_worker_island_production": 0,
+  "bench_production": 0,
+  "bench_xp": 0,
+  "contract_bonus_after_promotion": "승진한 본인의 기존 알바 채집·판매·해적 효과를 중복 적용하지 않는다.",
+  "other_active_island_workers": "승진하지 않은 현재 계약 알바의 기존 효과는 기존 상한 안에서 별도로 유지한다.",
+  "preserve_old_cosmetics_and_completed_contract_count": true,
+  "unfinished_contract": "근무 중인 계약을 강제로 끊거나 승진 명목으로 완료 처리하지 않는다.",
+  "promotion_optional": "5회·10회 계약 기념품을 먼저 얻고 싶다면 승진 전에 계약을 더 이어 갈 수 있다.",
+  "duplicate_worker_on_ship": false,
+  "max_selected_equals_ship_slots": true,
+  "changes_apply": "next_departure",
+  "in_flight_crew": "출항 시 명단·레벨·스킬·시너지를 스냅샷으로 고정한다.",
+  "changed_selection_during_voyage": "현재 항해는 그대로 마치고 다음 출항 명단으로 저장한다. 귀항 경험치는 출항 명단에 준다.",
+  "failure_message": "짐을 잃었어요",
+  "injury": false,
+  "death": false,
+  "crew_loss": false,
+  "hospital": false,
+  "repair_fee": 0,
+  "ship_hp_system": false
+ },
+ "xp_rules": {
+  "array_index": "xp_to_next[current_level - 1]; current_level 1~9만 조회",
+  "threshold_semantics": "다음 한 레벨로 올라가는 데 필요한 경험치이며 누적 임계값 배열이 아니다.",
+  "grant_on": "credited voyage_return_settlement",
+  "eligible": "출항 스냅샷에 포함된 승진 선원 각각",
+  "victory_required": false,
+  "sale_profit_required": false,
+  "for_each_return": true,
+  "level_up_loop": "xp += 10; while level < 10 and xp >= xp_to_next[level-1]: xp -= xp_to_next[level-1]; level += 1",
+  "level_10_xp": 0,
+  "max_level_overflow": "10레벨 도달 뒤 남거나 새로 얻는 경험치는 저장하지 않는다.",
+  "unlock_skills": "현재 선원 레벨 이하인 모든 스킬을 자동으로 연다. 별도 금화·재료·스킬 포인트 없음.",
+  "new_skills_apply": "다음 출항 스냅샷부터 적용; 방금 끝난 항해 보상을 재계산하지 않는다.",
+  "offline": "01_economy.json의 최대 28800초 부재 보상 시뮬레이션 안에서 실제 완료한 항해만 같은 규칙으로 경험치를 준다.",
+  "incomplete_voyage": "부분 항해에는 경험치를 주지 않고 남은 시간을 다음 시뮬레이션으로 넘긴다.",
+  "uncredited_tail": 0,
+  "login_bonus_xp": 0,
+  "retroactive_xp_for_old_voyages": 0,
+  "idempotency_key": "save_id + voyage_sequence + crew_xp + worker_id",
+  "card_reopen_xp": 0
+ },
+ "stacking_rules": {
+  "skill_values": "서로 다른 해금 스킬은 모두 활성화하며 같은 effect 값을 더한다. 레벨 5 스킬이 레벨 1 스킬을 대체하지 않는다.",
+  "synergy_activation": "같은 출항 명단에 ids의 두 선원이 모두 있을 때 한 번 적용한다. 선원 레벨과 배치 순서는 무관하다.",
+  "synergy_on_bench": false,
+  "duplicate_synergy": false,
+  "aggregation_order": [
+   "출항 선원들의 해금 스킬을 effect별 합산",
+   "활성 짝 보너스를 같은 effect에 합산",
+   "effect_caps를 한 번 적용",
+   "19_ship_parts.json의 부품 현재값 및 기존 배·섬 알바·건물 효과와 결합"
+  ],
+  "probability_unit": "0.01 = 1%p; cargo/speed/sale/repair bonuses use relative fractions",
+  "repair_after_loss": "이름은 기존 요청 키를 유지한다. 치료·체력 회복이 아니라 패배 시 화물 손실률을 낮추는 자동 안전 조치다.",
+  "part_and_crew_shared_rules": "용량·시간·해적 승률·손실률의 최종 계산은 19_ship_parts.json.effect_rules를 사용한다.",
+  "sale_formula": "payout_cents = floor(sum(each_surviving_cargo_line.quantity * price_in_cents * (1 + market_bonus + capped_island_worker_sale_bonus + capped_crew.sale_bonus + per_resource_bonus)))",
+  "per_resource_bonus": {
+   "wood": "capped_crew.wood_price_bonus",
+   "stone": "capped_crew.stone_price_bonus",
+   "all_specialty_resources": 0
+  },
+  "sale_island_worker_cap": 0.06,
+  "sale_scope": "실제 살아남아 판매한 나무·돌·특산물의 판매대금만. 매입 비용은 할인하지 않는다.",
+  "sale_exclusions": [
+   "해적 승리 금화",
+   "항해 사건 보상",
+   "고정 보물 보상",
+   "부재 카드 총액에 대한 재곱"
+  ],
+  "sales_use_departure_snapshot": true,
+  "double_credit_prevention": "기본 화물은 항구에서 한 번, 특산물은 귀항에서 한 번만 정산한다."
+ },
+ "event_selection_adapter": {
+  "base_source": "07_voyage_event_effects.json",
+  "base_event_chance": 0.35,
+  "changes": "기존 사건의 조건·가중치·보상·쿨다운은 유지하고, 출항 시 키·선원 효과만 선택 확률에 더한다.",
+  "eligibility": "07의 전체 적격 검사 후, 실제 귀항 때 보상 사건 후보가 있는지 확인한다.",
+  "positive_event_ids": [
+   "voy_15",
+   "voy_21"
+  ],
+  "treasure_event_ids": [
+   "voy_21"
+  ],
+  "null_effect_is_positive": false,
+  "eligible_pool_empty": "사건 없음; 추가 금화나 대체 사건을 만들지 않는다.",
+  "base_probability_per_event": "0.35 * event.weight / sum(eligible.weight)",
+  "good_bonus_formula": "min(0.15, helm.value + capped_crew.event_good_bonus)",
+  "good_bonus_distribution": "적격 positive_event_ids가 있으면 good_bonus를 해당 후보끼리의 가중치 비율로 배분하여 기존 확률에 더한다. 없으면 이번 항해에서는 이 보너스를 사용하지 않는다.",
+  "treasure_bonus_distribution": "voy_21이 적격이면 capped_crew.treasure_find_bonus를 그 사건 확률에 더한다. 쿨다운·해금 조건을 무시하지 않는다.",
+  "no_event_probability": "1 - sum(final_probability_per_event)",
+  "maximum_total_event_probability": 0.6,
+  "draw_method": "서로 배타적인 사건별 누적 확률과 사건 없음 칸으로 한 번 추첨한다.",
+  "max_events_per_return": 1,
+  "no_reward_multiplier": true,
+  "no_extra_treasure_resource": true,
+  "scope_exclusions": [
+   "본편 33~34화의 고정 보물",
+   "본편 51~57화의 고정 폭풍",
+   "해적 조우 확률",
+   "지난 항해 보상 재추첨"
+  ],
+  "seed_and_settlement": "기존 voyage_id 및 flavor_event 키를 유지하고, 선택 결과·효과·경험치를 귀항 장부에 한 번 확정한다.",
+  "snapshot": "보너스 값은 출항 시점, 사건 적격 여부는 기존 규칙대로 귀항 시점",
+  "tooltip": "해당 좋은 사건이 열려 있고 재발생 대기 중이 아닐 때 적용돼요."
+ },
+ "art_mapping": {
+  "crew_deck_columns": [
+   "rope",
+   "wheel",
+   "cannon",
+   "cheer"
+  ],
+  "crew_deck_grid": {
+   "rows": 6,
+   "columns": 4
+  },
+  "worker_portraits": "art/worker_portraits.png",
+  "worker_portraits_grid": {
+   "rows": 3,
+   "columns": 4
+  },
+  "part_icons": "art/part_icons.png",
+  "part_icon_order": [
+   "hull",
+   "sail",
+   "cannon",
+   "helm",
+   "crew_slot",
+   "upgrade",
+   "skill",
+   "level_star"
+  ],
+  "skill_icons": "art/skill_icons.png",
+  "skill_icon_order": [
+   "rope",
+   "wind",
+   "cannonball",
+   "coins",
+   "clover",
+   "hammer_plank",
+   "treasure",
+   "log",
+   "stone",
+   "compass",
+   "spyglass",
+   "cooking_pot",
+   "bandage",
+   "lantern",
+   "map",
+   "handshake"
+  ],
+  "index_base": 0,
+  "order": "row_major_left_to_right_top_to_bottom",
+  "bandage_icon_meaning": "화물 포장·보호; 선원 부상 상태를 뜻하지 않는다."
+ },
+ "save_migration": {
+  "run_once_key": "order4_crew_v1",
+  "preexisting_workers": "저장된 실제 완료 계약 횟수를 읽는다. 값이 없으면 0이며 과거 항해 횟수로 계약 횟수를 추정하지 않는다.",
+  "preexisting_promotions": "기존 승진 기록이 없으면 모두 미승진. 비용을 자동 차감하거나 승진을 임의로 부여하지 않는다.",
+  "preserve": "이미 저장된 선원 레벨·경험치·대기 명단·배치 예약은 그대로 유지한다."
+ },
+ "balance_notes": {
+  "promotion_min_completed_work_hours": 12,
+  "first_promotion_gold": 200,
+  "promotion_timing": "같은 알바의 6시간 계약 두 번이 정상 종료되어야 하므로 순수 근무만 12시간이다. 두 번째 고용 및 왕복·확인 시간에 따라 실제 첫 승진은 더 늦어질 수 있다.",
+  "separation_of_early_and_long_progression": "초반 몇 분 간격 성장은 부품이 담당하고, 선원은 계약을 거쳐 장기적으로 성장한다.",
+  "voyages_from_level_1_to_5": 34,
+  "voyages_from_level_1_to_10": 244,
+  "hours_from_level_1_to_5_at_12_minute_route": 6.8,
+  "hours_from_level_1_to_10_at_12_minute_route": 48.8,
+  "xp_estimate_assumptions": "승진 이후 모든 항해에 같은 선원이 탑승하고, 항해 대기·부재 한도 손실 없이 12분 왕복을 완료한다고 가정한다. 속도 강화와 항로에 따라 달라진다.",
+  "max_active_synergies_with_5_slots": 2,
+  "all_12_promoted": "알바 12명을 전부 승진시키면 일반 알바 채집은 없어지고 주민 3명과 기존 보급 생산이 남는다. 승진은 선택 사항이며 대기 선원이 자원을 자동 생산하지 않는다.",
+  "validation": "ID·레벨·확률 상한·모든 2~5인 편성 조합을 정적으로 검증한 수치. 실제 앱 통합과 플레이 검증은 아직 수행하지 않음."
+ }
 }
