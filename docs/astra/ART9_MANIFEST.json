@@ -1,0 +1,1715 @@
+{
+  "schema_version": 1,
+  "order": 9,
+  "coordinates": "top-left origin; source_rect is x,y,width,height; row-major index",
+  "format": "PNG RGB, nearest-neighbor technical export",
+  "deck_use": "crew level >= 11; name 15 matches requested filename; existing app anchor stays unchanged",
+  "sheets": [
+    {
+      "file": "art/crew_deck_15_a.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "grid": [
+        4,
+        6
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background": "#FF00FF",
+      "reference": "crew_deck_a.png",
+      "cells": [
+        {
+          "index": 0,
+          "crew_id": "yeoul",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            33,
+            30,
+            250,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 1,
+          "crew_id": "yeoul",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            38,
+            32,
+            233,
+            254
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 2,
+          "crew_id": "yeoul",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 246,
+          "foreground_bbox": [
+            21,
+            30,
+            247,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 3,
+          "crew_id": "yeoul",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            38,
+            28,
+            199,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 4,
+          "crew_id": "mungi",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            46,
+            26,
+            250,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 5,
+          "crew_id": "mungi",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            46,
+            30,
+            233,
+            254
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 6,
+          "crew_id": "mungi",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            25,
+            28,
+            247,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 7,
+          "crew_id": "mungi",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            41,
+            27,
+            199,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 8,
+          "crew_id": "sori",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            41,
+            27,
+            250,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 9,
+          "crew_id": "sori",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            41,
+            27,
+            233,
+            253
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 10,
+          "crew_id": "sori",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            21,
+            28,
+            247,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 11,
+          "crew_id": "sori",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            39,
+            26,
+            199,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 12,
+          "crew_id": "nuri",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            43,
+            30,
+            250,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 13,
+          "crew_id": "nuri",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            39,
+            32,
+            233,
+            254
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 14,
+          "crew_id": "nuri",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            19,
+            33,
+            247,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 15,
+          "crew_id": "nuri",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            40,
+            31,
+            199,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 16,
+          "crew_id": "bada",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            1024,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            44,
+            26,
+            250,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 17,
+          "crew_id": "bada",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            1024,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            40,
+            28,
+            233,
+            254
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 18,
+          "crew_id": "bada",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            1024,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            20,
+            27,
+            247,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 19,
+          "crew_id": "bada",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            1024,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            41,
+            28,
+            199,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 20,
+          "crew_id": "geonu",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            1280,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            41,
+            25,
+            250,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 21,
+          "crew_id": "geonu",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            1280,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            38,
+            26,
+            233,
+            252
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 22,
+          "crew_id": "geonu",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            1280,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            21,
+            26,
+            247,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 23,
+          "crew_id": "geonu",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            1280,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            43,
+            25,
+            200,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        }
+      ],
+      "sha256": "961d71268bfb6e595e23797f9ce3ec3056cf301b59ae625e5e35308afc226da1",
+      "bytes": 1145261
+    },
+    {
+      "file": "art/crew_deck_15_b.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "grid": [
+        4,
+        6
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background": "#FF00FF",
+      "reference": "crew_deck_b.png",
+      "cells": [
+        {
+          "index": 0,
+          "crew_id": "dori",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            27,
+            24,
+            246,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 1,
+          "crew_id": "dori",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            29,
+            19,
+            222,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 2,
+          "crew_id": "dori",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 244,
+          "foreground_bbox": [
+            24,
+            23,
+            242,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 3,
+          "crew_id": "dori",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            34,
+            19,
+            199,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 4,
+          "crew_id": "haneul",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            32,
+            17,
+            246,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 5,
+          "crew_id": "haneul",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            30,
+            16,
+            222,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 6,
+          "crew_id": "haneul",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 244,
+          "foreground_bbox": [
+            29,
+            17,
+            243,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 7,
+          "crew_id": "haneul",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            43,
+            16,
+            203,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 8,
+          "crew_id": "bityeo",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            27,
+            20,
+            245,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 9,
+          "crew_id": "bityeo",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            26,
+            14,
+            222,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 10,
+          "crew_id": "bityeo",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 244,
+          "foreground_bbox": [
+            16,
+            17,
+            244,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 11,
+          "crew_id": "bityeo",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            36,
+            18,
+            206,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 12,
+          "crew_id": "deul",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            37,
+            11,
+            246,
+            249
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 13,
+          "crew_id": "deul",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            29,
+            8,
+            222,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 14,
+          "crew_id": "deul",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 245,
+          "foreground_bbox": [
+            14,
+            6,
+            243,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 15,
+          "crew_id": "deul",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            45,
+            8,
+            199,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 16,
+          "crew_id": "saei",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            1024,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            37,
+            23,
+            245,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 17,
+          "crew_id": "saei",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            1024,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            33,
+            19,
+            220,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 18,
+          "crew_id": "saei",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            1024,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 244,
+          "foreground_bbox": [
+            18,
+            17,
+            242,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 19,
+          "crew_id": "saei",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            1024,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            0
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            45,
+            19,
+            207,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 20,
+          "crew_id": "onyu",
+          "pose": "pull_rope",
+          "source_rect": [
+            0,
+            1280,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            37,
+            17,
+            246,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 21,
+          "crew_id": "onyu",
+          "pose": "turn_wheel",
+          "source_rect": [
+            256,
+            1280,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            30,
+            13,
+            221,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 22,
+          "crew_id": "onyu",
+          "pose": "load_cannon",
+          "source_rect": [
+            512,
+            1280,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 245,
+          "foreground_bbox": [
+            26,
+            14,
+            242,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        },
+        {
+          "index": 23,
+          "crew_id": "onyu",
+          "pose": "cheer",
+          "source_rect": [
+            768,
+            1280,
+            256,
+            256
+          ],
+          "technical_translation": [
+            0,
+            1
+          ],
+          "reference_shoe_probe_x": [
+            40,
+            110
+          ],
+          "reference_shoe_probe_bottom_y": 247,
+          "foreground_bbox": [
+            46,
+            13,
+            199,
+            248
+          ],
+          "anchor_rule": "same source cell placement; match original shoe probe, do not align wheel support as feet"
+        }
+      ],
+      "sha256": "cb833dc1331a2fe718a6a61f433142c024b8ec0a2c96c5630e6a6a5d94e0ab51",
+      "bytes": 1224373
+    },
+    {
+      "file": "art/daily_icons.png",
+      "size": [
+        1024,
+        768
+      ],
+      "grid": [
+        4,
+        3
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background": "#FF00FF",
+      "cells": [
+        {
+          "index": 0,
+          "id": "daily_board",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            21,
+            240,
+            235
+          ]
+        },
+        {
+          "index": 1,
+          "id": "weekly_chest",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            27,
+            240,
+            228
+          ]
+        },
+        {
+          "index": 2,
+          "id": "voyage_return",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            48,
+            240,
+            207
+          ]
+        },
+        {
+          "index": 3,
+          "id": "pirate_win",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            23,
+            240,
+            232
+          ]
+        },
+        {
+          "index": 4,
+          "id": "boss_win",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            23,
+            240,
+            233
+          ]
+        },
+        {
+          "index": 5,
+          "id": "part_upgrade",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            18,
+            240,
+            238
+          ]
+        },
+        {
+          "index": 6,
+          "id": "souvenir_get",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            24,
+            240,
+            231
+          ]
+        },
+        {
+          "index": 7,
+          "id": "gacha_draw",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            19,
+            240,
+            237
+          ]
+        },
+        {
+          "index": 8,
+          "id": "training_clear",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            23,
+            240,
+            232
+          ]
+        },
+        {
+          "index": 9,
+          "id": "mission_clear",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            29,
+            240,
+            226
+          ]
+        },
+        {
+          "index": 10,
+          "id": "floater_pick",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            29,
+            240,
+            226
+          ]
+        },
+        {
+          "index": 11,
+          "id": "cargo_pack",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            23,
+            240,
+            233
+          ]
+        }
+      ],
+      "sha256": "b498a21aa397cf5deedeefcc84c2029b888e6be39799be9749d736c83cce61a2",
+      "bytes": 705011
+    },
+    {
+      "file": "art/crew_story_art_3.png",
+      "size": [
+        1536,
+        1536
+      ],
+      "grid": [
+        4,
+        3
+      ],
+      "cell": [
+        384,
+        512
+      ],
+      "background": "painted scene, no chroma key",
+      "cells": [
+        {
+          "index": 0,
+          "crew_id": "yeoul",
+          "item": "coiled_rope",
+          "source_rect": [
+            0,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 1,
+          "crew_id": "mungi",
+          "item": "cannon_brush",
+          "source_rect": [
+            384,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 2,
+          "crew_id": "sori",
+          "item": "ledger",
+          "source_rect": [
+            768,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 3,
+          "crew_id": "nuri",
+          "item": "cargo_tag",
+          "source_rect": [
+            1152,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 4,
+          "crew_id": "bada",
+          "item": "sailcloth",
+          "source_rect": [
+            0,
+            512,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 5,
+          "crew_id": "geonu",
+          "item": "hammer",
+          "source_rect": [
+            384,
+            512,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 6,
+          "crew_id": "dori",
+          "item": "wheel_handle",
+          "source_rect": [
+            768,
+            512,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 7,
+          "crew_id": "haneul",
+          "item": "letter",
+          "source_rect": [
+            1152,
+            512,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 8,
+          "crew_id": "bityeo",
+          "item": "spyglass",
+          "source_rect": [
+            0,
+            1024,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 9,
+          "crew_id": "deul",
+          "item": "ladle",
+          "source_rect": [
+            384,
+            1024,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 10,
+          "crew_id": "saei",
+          "item": "coin_pouch",
+          "source_rect": [
+            768,
+            1024,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 11,
+          "crew_id": "onyu",
+          "item": "life_ring",
+          "source_rect": [
+            1152,
+            1024,
+            384,
+            512
+          ]
+        }
+      ],
+      "sha256": "ccac124d141a6187851631d8f0c6b6d1eea62c7deaffee6f7b1c05efc06d4b79",
+      "bytes": 3118758
+    }
+  ],
+  "limitations": [
+    "AI-generated identity and pose continuity reviewed visually; not a claim of pixel-identical faces.",
+    "No build-33 runtime or actual app compositing was tested."
+  ]
+}

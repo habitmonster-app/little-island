@@ -33,7 +33,7 @@ class AppUi(val scene: Scene, val host: Host) {
                val cost: Data.Cost? = null, val btn: String? = null, val act: (() -> Boolean)? = null, val done: String? = null,
                val keep: Boolean = false)   // keep: 버튼을 눌러도 창을 닫지 않고 새 내용으로 (부품 연속 올리기)
 
-    private val tabs = listOf("store" to "짓기", "ship" to "배", "anchor" to "항로", "person" to "선원", "map" to "퍼즐", "book" to "일지", "gear" to "설정")
+    private val tabs = listOf("store" to "짓기", "ship" to "배", "anchor" to "항로", "person" to "선원", "map" to "할 일", "book" to "일지", "gear" to "설정")
     var tab = 0
     private var popup: Tile? = null
     var fxAt = 0L                        // 올리기 성공 반짝임 시작 시각
@@ -290,6 +290,18 @@ class AppUi(val scene: Scene, val host: Host) {
                     "먼 항구의 알바는 고용비가 더 들지만 솜씨가 좋아요.", null, if (Game.hireAny) "끄기" else "켜기", { Game.hireAny = !Game.hireAny; Game.save(); true }))
             }
             4 -> {
+                // 오늘의 항구 주문 3개 + 주간 상자
+                Game.ordCheckDay()
+                for (id in Game.ordIds) {
+                    val o = Fleet.order(id) ?: continue
+                    val done = id in Game.ordDone; val pr = Game.ordProg[id] ?: 0
+                    val rw = listOfNotNull(o.tickets.takeIf { it > 0 }?.let { "쪽지 $it" }, o.gold.takeIf { it > 0 }?.let { "금화 $it" }).joinToString(" · ")
+                    l.add(Tile("daily:" + o.icon, o.title, if (done) "완료" else "$pr/" + o.target, if (done) St.DONE else if (pr > 0) St.ON else St.NORMAL,
+                        o.short + "\n\n진행  $pr/" + o.target + "\n보상  " + rw + (if (done) "\n\n받았어요!" else "\n\n다 하면 바로 받아요. 내일 새 주문이 와요.")))
+                }
+                if (Game.ordIds.isNotEmpty()) l.add(Tile("daily:1", "주간 상자", if (Game.weekGot) "받음" else Game.weekCount.toString() + "/" + Fleet.weeklyGoal,
+                    if (Game.weekGot) St.DONE else St.NORMAL, "7일 동안 주문을 " + Fleet.weeklyGoal + "개 끝내면 열려요.\n\n보상  쪽지 " + Fleet.weeklyTickets + " · 금화 " + Fleet.weeklyGold +
+                        "\n남은 날  " + (7 - (Game.today() - Game.weekStart)).coerceIn(1, 7) + "일"))
                 val mp = Game.mapPieces
                 l.add(Tile("map", "보물 지도", "조각 $mp/" + Game.MAP_NEED, when { Game.treasurePending -> St.DONE; mp >= Game.MAP_NEED -> St.READY; else -> St.NORMAL },
                     when { Game.treasurePending -> "지도를 맞췄어요. 다음 항해에 보물섬에 들러요."

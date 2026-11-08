@@ -214,6 +214,10 @@ object Game {
         tickets = sp.getInt("tickets", 0); pity = sp.getInt("pity", 0)
         charmLv.clear(); sp.getString("charmLv", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); charmLv[k] = v.toIntOrNull() ?: 1 }
         charmOn.clear(); sp.getString("charmOn", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); if (v in charmLv) charmOn[k] = v }
+        ordDay = sp.getLong("ordDay", -1L); ordIds = sp.getString("ordIds", "")!!.split(",").filter { it.isNotEmpty() }
+        ordProg.clear(); sp.getString("ordProg", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); ordProg[k] = v.toIntOrNull() ?: 0 }
+        ordDone.clear(); sp.getString("ordDone", "")!!.split(",").filter { it.isNotEmpty() }.forEach { ordDone.add(it) }
+        weekStart = sp.getLong("weekStart", -1L); weekCount = sp.getInt("weekCount", 0); weekGot = sp.getBoolean("weekGot", false)
         trainDay = sp.getLong("trainDay", -1L); trainLeft = sp.getInt("trainLeft", 0); trainSet = sp.getString("trainSet", "")!!.split(",").filter { it.isNotEmpty() }
         missionQ = sp.getString("missionQ", null)
         missionsDone.clear(); sp.getString("missionsDone", "")!!.split(",").filter { it.isNotEmpty() }.forEach { missionsDone.add(it) }
@@ -267,6 +271,8 @@ object Game {
             putString("bossWins", bossWins.joinToString(",")); putString("souvOwned", souvOwned.joinToString(",")); putString("milesDone", milesDone.joinToString(","))
             putInt("tickets", tickets); putInt("pity", pity)
             putString("charmLv", charmLv.entries.joinToString(",") { it.key + ":" + it.value }); putString("charmOn", charmOn.entries.joinToString(",") { it.key + ":" + it.value })
+            putLong("ordDay", ordDay); putString("ordIds", ordIds.joinToString(",")); putString("ordProg", ordProg.entries.joinToString(",") { it.key + ":" + it.value })
+            putString("ordDone", ordDone.joinToString(",")); putLong("weekStart", weekStart); putInt("weekCount", weekCount); putBoolean("weekGot", weekGot)
             putLong("trainDay", trainDay); putInt("trainLeft", trainLeft); putString("trainSet", trainSet.joinToString(","))
             putString("missionQ", missionQ); putString("missionsDone", missionsDone.joinToString(","))
             putString("decoOwned", decoOwned.joinToString(",")); putString("decoOn", decoOn.entries.joinToString(",") { it.key + ":" + it.value })
@@ -285,6 +291,64 @@ object Game {
     // 시뮬레이션
 
     /** 화면이 그려지는 동안 매 프레임 부른다. */
+    // ---------- 오늘의 주문 ----------
+    var ordDay = -1L; private set
+    var ordIds: List<String> = emptyList(); private set
+    val ordProg = HashMap<String, Int>()
+    val ordDone = LinkedHashSet<String>()
+    var weekStart = -1L; private set
+    var weekCount = 0; private set
+    var weekGot = false; private set
+    /** 지금 할 수 없는 주문은 고르지 않는다 (부품이 다 최고, 기념품 다 모음 등) */
+    private fun orderOk(o: Fleet.Order): Boolean = shipLevel >= o.minShip && when (o.counter) {
+        "part_upgrade" -> Fleet.parts.any { partNext(it.id) != null }
+        "souvenir_get" -> souvOwned.size < Fleet.souvenirs.size
+        "mission_clear" -> Fleet.missions.any { it.id !in missionsDone && it.crew in promoted }
+        "boss_win" -> shipLevel >= 2 && bossWins.size < Fleet.bosses.size
+        "gacha_draw" -> Fleet.charms.isNotEmpty()
+        "training_clear" -> Fleet.trainings.isNotEmpty()
+        else -> true
+    }
+    fun ordCheckDay() {
+        if (Fleet.orders.isEmpty()) return
+        val d = today()
+        if (weekStart < 0 || d - weekStart >= 7 || d < weekStart) { weekStart = d; weekCount = 0; weekGot = false }
+        if (d == ordDay) return
+        ordDay = d; ordProg.clear(); ordDone.clear()
+        val rnd = java.util.Random(d * 31 + 7)
+        val pick = ArrayList<String>()
+        val diffs = listOf("easy", "normal", "hard")
+        for (k in 0 until Fleet.dailyCount) {
+            val want = diffs.getOrElse(k) { "easy" }
+            // 원하는 난도에 후보가 없으면 더 쉬운 난도로
+            val o = diffs.subList(0, diffs.indexOf(want) + 1).reversed().asSequence()
+                .map { df -> Fleet.orders.filter { it.diff == df && it.id !in pick && orderOk(it) } }
+                .firstOrNull { it.isNotEmpty() }?.let { it[rnd.nextInt(it.size)] } ?: continue
+            pick.add(o.id)
+        }
+        ordIds = pick
+        save()
+    }
+    /** 일이 하나 끝날 때마다: 오늘 주문 중 맞는 것의 진행을 올리고, 다 되면 바로 보상 */
+    @Synchronized fun bump(counter: String, n: Int = 1) {
+        ordCheckDay()
+        var changed = false
+        for (id in ordIds) {
+            val o = Fleet.order(id) ?: continue
+            if (o.counter != counter || id in ordDone) continue
+            ordProg[id] = min(o.target, (ordProg[id] ?: 0) + n); changed = true
+            if (ordProg[id]!! >= o.target) {
+                ordDone.add(id); tickets += o.tickets; goldC += o.gold * 100L; weekCount++
+                card("주문 완료! " + o.title, listOfNotNull(o.tickets.takeIf { it > 0 }?.let { "쪽지 +$it" }, o.gold.takeIf { it > 0 }?.let { "금화 +$it" }).joinToString(", "))
+                if (weekCount >= Fleet.weeklyGoal && !weekGot) {
+                    weekGot = true; tickets += Fleet.weeklyTickets; goldC += Fleet.weeklyGold * 100L
+                    card("주간 상자를 열었어요!", "쪽지 +" + Fleet.weeklyTickets + ", 금화 +" + Fleet.weeklyGold)
+                }
+            }
+        }
+        if (changed) save()
+    }
+
     @Synchronized fun tick(dt: Float) {
         advance(System.currentTimeMillis())
         saveT += dt
@@ -437,6 +501,7 @@ object Game {
                 val pr = Data.pirate(v.pirate ?: "") ?: Data.pirates.firstOrNull()
                 flag("pirate_1")
                 lastBattle = if (v.win) "pirate_win" else "pirate_lose"; lastBattleAt = t
+                if (v.win) { bump("pirate_win"); if (Fleet.boss(pr?.id) != null) bump("boss_win") }
                 val boss = Fleet.boss(pr?.id)
                 if (pr != null && boss != null) {
                     if (v.win) {
@@ -521,6 +586,7 @@ object Game {
         card("배가 돌아왔어요", line)
         for (id in v.crew) giveXp(id, Fleet.xpPerVoyage)
         tickets++
+        bump("voyage_return")
         Fleet.boss(v.pirate)?.let { b -> if (v.encounter && v.win && bossWins.add(b.id)) {
             goldC += b.rewardGold * 100L; if (b.rewardMaps > 0) mapPieces += b.rewardMaps
             flag(b.storyId)
@@ -578,7 +644,7 @@ object Game {
         val ok = !m.mustWin || !v.encounter || v.win
         if (!ok) { card("특별 항해 · " + m.title, "다시 준비해 출항할 수 있어요."); return }
         if (m.id in missionsDone) { card("특별 항해 · " + m.title, "다시 다녀왔어요."); return }
-        missionsDone.add(m.id)
+        missionsDone.add(m.id); bump("mission_clear")
         goldC += m.gold * 100L
         if (m.wood > 0 || m.stone > 0) add(m.wood, m.stone)
         if (m.maps > 0) mapPieces += m.maps
@@ -693,6 +759,7 @@ object Game {
         if (!pay(n.cost)) return false
         parts[id] = partLevel(id) + 1
         if (lookStage() > before) card("배가 달라졌어요", "부품을 손봐서 배 모습이 바뀌었어요")
+        bump("part_upgrade")
         save(); return true
     }
 
@@ -740,7 +807,7 @@ object Game {
         val left = all.filter { it.id !in souvOwned }
         if (left.isEmpty() || Random.nextFloat() >= (all.firstOrNull()?.chance ?: .2f)) return
         val s = left.random()
-        souvOwned.add(s.id)
+        souvOwned.add(s.id); bump("souvenir_get")
         card("기념품을 얻었어요", s.name + " · 도감 " + souvOwned.size + "/" + Fleet.souvenirs.size)
         checkMilestones()
     }
@@ -765,6 +832,7 @@ object Game {
     @Synchronized fun draw(gold: Boolean): Draw? {
         if (Fleet.charms.isEmpty() || !canDraw(gold)) return null
         if (gold) goldC -= Fleet.gachaGold * 100L else tickets -= Fleet.gachaTickets
+        bump("gacha_draw")
         val forced = pity >= Fleet.pityAt
         val rar = if (forced) "epic" else {
             val total = Fleet.rarityW.values.sum(); var r = Random.nextInt(total); var pick = "common"
@@ -795,7 +863,7 @@ object Game {
     }
 
     // ---------- 훈련 퍼즐 ----------
-    private fun today() = (System.currentTimeMillis() + java.util.TimeZone.getDefault().getOffset(System.currentTimeMillis())) / (24 * HOUR)
+    fun today() = (System.currentTimeMillis() + java.util.TimeZone.getDefault().getOffset(System.currentTimeMillis())) / (24 * HOUR)
     fun trainCheckDay() {
         val d = today()
         if (d != trainDay) {
@@ -815,7 +883,7 @@ object Game {
     /** 성공하면 교환 수에 따라 쪽지 3/2/1장 */
     @Synchronized fun trainDone(t: Fleet.Training, swaps: Int): Int {
         val n = when { swaps <= t.optimal -> 3; swaps == t.optimal + 1 -> 2; else -> 1 }
-        tickets += n; save(); return n
+        tickets += n; bump("training_clear"); save(); return n
     }
 
     // ---------- 선원 ----------
@@ -893,7 +961,7 @@ object Game {
 
     /** 홈 화면에서 떠다니는 물건을 톡 쳤을 때. 보상 글을 돌려준다. */
     @Synchronized fun pickUp(kind: Int): String {
-        finds++
+        finds++; bump("floater_pick")
         val lv = shipLevel
         val text = when (kind) {
             1 -> { val g = (20 + kotlin.random.Random.nextInt(21)) * lv; goldC += g * 100L; mapPieces++; "보물상자! 금화 +$g, 지도 조각 +1" }
@@ -905,7 +973,7 @@ object Game {
     }
 
     /** 지도 퍼즐을 다 맞췄을 때: 조각을 쓰고 다음 항해에 보물섬에 들른다 */
-    fun pack() { packed = true; save() }
+    fun pack() { packed = true; bump("cargo_pack"); save() }
 
     fun solveMap(): Boolean {
         if (mapPieces < MAP_NEED || treasurePending) return false
@@ -918,6 +986,7 @@ object Game {
         flags.clear(); opened.clear(); read.clear(); eventLast.clear(); lastEvent = ""; cards.clear(); log.clear(); report = null
         parts.clear(); promoted.clear(); aboard.clear(); crewLv.clear(); crewXp.clear(); decoOwned.clear(); decoOn.clear(); missionQ = null; missionsDone.clear()
         bossWins.clear(); souvOwned.clear(); milesDone.clear(); tickets = 0; charmLv.clear(); charmOn.clear(); pity = 0; trainDay = -1L; trainLeft = 0
+        ordDay = -1L; ordIds = emptyList(); ordProg.clear(); ordDone.clear(); weekStart = -1L; weekCount = 0; weekGot = false
         storyDirty = true
         save()
     }

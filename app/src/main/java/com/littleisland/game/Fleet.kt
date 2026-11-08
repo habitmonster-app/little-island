@@ -93,6 +93,7 @@ object Fleet {
         loaded = true
         loadMissions(c)
         loadOrder7(c)
+        loadOrder9(c)
         try {
             val d = JSONObject(c.assets.open("19_ship_parts.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
             val ps = d.getJSONArray("parts")
@@ -164,6 +165,29 @@ object Fleet {
 
     private fun json(c: Context, f: String) = JSONObject(c.assets.open(f).bufferedReader(Charsets.UTF_8).use { it.readText() })
     private fun strs(a: org.json.JSONArray?) = if (a == null) emptyList() else (0 until a.length()).map { a.getString(it) }
+
+    /** 31_daily_orders.json: 오늘의 항구 주문 (하루 3개, 7일에 15개면 주간 상자) */
+    class Order(val id: String, val counter: String, val target: Int, val diff: String, val title: String, val short: String,
+                val tickets: Int, val gold: Int, val minShip: Int, val icon: Int)
+    val orders = ArrayList<Order>()
+    var dailyCount = 3; private set
+    var weeklyGoal = 15; private set
+    var weeklyTickets = 10; private set
+    var weeklyGold = 500; private set
+    fun order(id: String) = orders.firstOrNull { it.id == id }
+    private fun loadOrder9(c: Context) {
+        try {
+            val d = json(c, "31_daily_orders.json")
+            dailyCount = d.optInt("daily_count", 3); weeklyGoal = d.optInt("weekly_goal", 15)
+            d.optJSONObject("weekly_reward")?.let { weeklyTickets = it.optInt("tickets", 10); weeklyGold = it.optInt("gold", 500) }
+            val a = d.getJSONArray("orders")
+            for (i in 0 until a.length()) {
+                val x = a.getJSONObject(i); val r = x.optJSONObject("reward") ?: JSONObject()
+                orders.add(Order(x.getString("id"), x.optString("counter"), x.optInt("target", 1), x.optString("difficulty", "easy"), x.optString("title"),
+                    x.optString("short"), r.optInt("tickets"), r.optInt("gold"), x.optInt("min_ship_level", 1), x.optInt("icon_index", 2)))
+            }
+        } catch (e: Exception) { }
+    }
 
     /** 29_short_texts.json: 설명 창에 쓰는 짧은 한 줄 (분류 → id → 글) */
     val short = HashMap<String, Map<String, String>>()
@@ -262,8 +286,8 @@ object Fleet {
     }
 
     private fun loadMissions(c: Context) {
-        try {
-            val d = JSONObject(c.assets.open("23_crew_missions.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
+        for (file in listOf("23_crew_missions.json", "32_crew_missions_3.json")) try {
+            val d = JSONObject(c.assets.open(file).bufferedReader(Charsets.UTF_8).use { it.readText() })
             val a = d.getJSONArray("missions")
             fun nul(o: JSONObject, k: String) = if (o.isNull(k)) null else o.optString(k).takeIf { it.isNotEmpty() }
             for (i in 0 until a.length()) {
@@ -271,6 +295,7 @@ object Fleet {
                 val v = m.optJSONObject("voyage") ?: JSONObject(); val w = m.optJSONObject("reward") ?: JSONObject()
                 val ab = r.optJSONArray("crew_aboard")
                 val pa = HashMap<String, Int>(); r.optJSONObject("parts_at_least")?.let { o -> o.keys().forEach { k -> pa[k] = o.getInt(k) } }
+                if (missions.any { it.id == m.getString("id") }) continue
                 missions.add(Mission(m.getString("id"), m.getString("crew"), m.optString("title"), m.optString("summary"),
                     r.optInt("crew_level_at_least", 1), if (ab == null) emptyList() else (0 until ab.length()).map { ab.getString(it) }, pa,
                     r.optInt("ship_level_at_least", 1), r.optString("port", "port_haesol"), nul(r, "game_flag"), nul(r, "previous_mission_id"),

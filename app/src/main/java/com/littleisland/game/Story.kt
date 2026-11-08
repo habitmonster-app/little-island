@@ -80,13 +80,13 @@ object Story {
                 }
             } catch (e: Exception) { }
             // 특별 항해 이야기 (23_crew_missions.json): 첫 성공 때 열림
-            try {
-                val ms = JSONObject(c.assets.open("23_crew_missions.json").bufferedReader(Charsets.UTF_8).use { it.readText() }).getJSONArray("missions")
+            for ((file, artBase) in listOf("23_crew_missions.json" to 0, "32_crew_missions_3.json" to 100)) try {
+                val ms = JSONObject(c.assets.open(file).bufferedReader(Charsets.UTF_8).use { it.readText() }).getJSONArray("missions")
                 for (i in 0 until ms.length()) {
                     val m = ms.getJSONObject(i); val st = m.optJSONObject("story") ?: continue
                     val id = m.getString("id"); val who = m.optString("crew")
                     entries.add(Entry(id, CREW, "특별 항해 · " + (names[who] ?: who), st.optString("title"), id, null,
-                        m.optString("summary"), st.optString("body"), m.optString("result_card"), st.optJSONObject("art")?.optInt("index", -1) ?: names.keys.indexOf(who)))
+                        m.optString("summary"), st.optString("body"), m.optString("result_card"), if (artBase > 0) artBase + names.keys.indexOf(who) else st.optJSONObject("art")?.optInt("index", -1) ?: names.keys.indexOf(who)))
                 }
             } catch (e: Exception) { }
         } catch (e: Exception) { }

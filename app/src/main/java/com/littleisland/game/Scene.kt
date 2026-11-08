@@ -812,7 +812,9 @@ class Scene {
         for ((i, id) in v.crew.withIndex()) {
             val cd = Fleet.crewOf(id) ?: continue
             val pose = when { cheer -> 3; fight -> if (i % 2 == 0) 2 else 0; i == 0 -> 1; else -> 0 }
-            val bm = acell(cd.sheet, 4, 6, cd.row * 4 + pose, 18) ?: continue
+            // Lv11부터는 코트 입은 갑판 그림
+            val sheet = if (Game.crewLevel(id) >= 11) cd.sheet.replace("crew_deck_", "crew_deck_15_") else cd.sheet
+            val bm = acell(sheet, 4, 6, cd.row * 4 + pose, 18) ?: acell(cd.sheet, 4, 6, cd.row * 4 + pose, 18) ?: continue
             val bob = if (pose == 0 && (floor(time * 2 + i) % 2).toInt() == 1) 1f else 0f
             Art.draw(c, bm, x + deckX[i % deckX.size] * w, y - deckH() + bob)
             crewHead[id] = (x + deckX[i % deckX.size] * w) to (y - deckH() - 15)
