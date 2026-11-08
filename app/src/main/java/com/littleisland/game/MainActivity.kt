@@ -18,6 +18,7 @@ import android.os.SystemClock
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -118,7 +119,19 @@ class MainActivity : Activity(), AppUi.Host {
             setLineSpacing(0f, 1.35f)
             setPadding((22 * dp).toInt(), (12 * dp).toInt(), (22 * dp).toInt(), (12 * dp).toInt())
         }
-        AlertDialog.Builder(this).setTitle(e.label + " · " + e.title).setView(ScrollView(this).apply { addView(tv) })
+        val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        if (e.kind == Story.MAIN) {
+            val part = e.label.substringBefore("부").trim().toIntOrNull() ?: 0
+            val pic = if (e.label.contains("60화")) "ending" else "part_$part"
+            Art.get(pic, 480)?.let { bm ->
+                box.addView(ImageView(this).apply {
+                    setImageBitmap(bm); adjustViewBounds = true; scaleType = ImageView.ScaleType.FIT_CENTER
+                    setPadding((16 * dp).toInt(), (8 * dp).toInt(), (16 * dp).toInt(), 0)
+                })
+            }
+        }
+        box.addView(tv)
+        AlertDialog.Builder(this).setTitle(e.label + " · " + e.title).setView(ScrollView(this).apply { addView(box) })
             .setPositiveButton("목록") { _, _ -> openJournal() }
             .setNegativeButton("닫기", null).show()
     }

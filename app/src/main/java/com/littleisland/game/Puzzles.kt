@@ -18,7 +18,7 @@ class MapPuzzleView(ctx: Context, val onSolved: () -> Unit) : View(ctx) {
     private val n = 3
     private val tiles = IntArray(n * n) { it }        // 칸 → 조각 번호, 마지막 번호가 빈칸
     private val blank = n * n - 1
-    private val art: Bitmap = drawMap()
+    private val art: Bitmap = Art.get("puzzle_map", 240) ?: drawMap()
     private val paint = Paint().apply { isFilterBitmap = false }
     private val line = Paint().apply { color = Color.parseColor("#4a2c16"); style = Paint.Style.STROKE }
     private val src = Rect(); private val dst = Rect()
@@ -175,7 +175,15 @@ class CargoPuzzleView(ctx: Context, val onSolved: () -> Unit) : View(ctx) {
     private fun place(i: Int, r0: Int, c0: Int) { at[i] = r0 to c0; for ((r, c) in pieces[i]) grid[(r0 + r) * cols + c0 + c] = i }
     private fun remove(i: Int) { at.remove(i); for (k in grid.indices) if (grid[k] == i) grid[k] = -1 }
 
+    private val crSrc = Rect(); private val crDst = Rect()
     private fun crate(cv: Canvas, x: Float, y: Float, s: Float, color: Int, hi: Boolean) {
+        val bm = Art.cell("crates", 4, 2, colors.indexOf(color).coerceAtLeast(0), 64)
+        if (bm != null) {
+            crSrc.set(0, 0, bm.width, bm.height); crDst.set((x + s * .02f).toInt(), (y + s * .02f).toInt(), (x + s * .98f).toInt(), (y + s * .98f).toInt())
+            cv.drawBitmap(bm, crSrc, crDst, null)
+            if (hi) { edge.strokeWidth = s * .08f; edge.color = Color.parseColor("#ffd36a"); cv.drawRect(x + s * .04f, y + s * .04f, x + s * .96f, y + s * .96f, edge) }
+            return
+        }
         p.color = color; cv.drawRect(x + s * .04f, y + s * .04f, x + s * .96f, y + s * .96f, p)
         p.color = Color.argb(70, 255, 255, 255); cv.drawRect(x + s * .04f, y + s * .04f, x + s * .96f, y + s * .2f, p)
         edge.strokeWidth = if (hi) s * .1f else s * .05f; edge.color = if (hi) Color.parseColor("#ffd36a") else Color.parseColor("#3a2412")
