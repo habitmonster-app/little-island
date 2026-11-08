@@ -257,16 +257,13 @@ class TrainingPuzzleView(ctx: Context, val t: Fleet.Training, val maxSwaps: Int,
     }
 
     private fun crate(cv: Canvas, kind: String, x: Float, y: Float, s: Float, hi: Boolean) {
-        val bm = Art.cell("crates", 4, 2, 0, 64)
+        val bm = Art.cell("training_crates", 4, 1, when (kind) { "stone" -> 1; "grain" -> 2; else -> 0 }, 128)
         if (bm != null) {
             crSrc.set(0, 0, bm.width, bm.height); crDst.set((x + s * .06f).toInt(), (y + s * .06f).toInt(), (x + s * .94f).toInt(), (y + s * .94f).toInt())
             cv.drawBitmap(bm, crSrc, crDst, null)
         } else {
             p.color = Color.parseColor("#b07a44"); cv.drawRect(x + s * .08f, y + s * .08f, x + s * .92f, y + s * .92f, p)
         }
-        // 무엇이 든 상자인지 가운데에 표시
-        p.color = Color.argb(235, 255, 244, 214); cv.drawCircle(x + s * .5f, y + s * .52f, s * .27f, p)
-        Pix.icon(cv, kindIcon[kind] ?: "wood", x + s * .3f, y + s * .32f, s * .04f)
         if (hi) { edge.strokeWidth = s * .08f; edge.color = Color.parseColor("#ffd36a"); cv.drawRect(x + s * .05f, y + s * .05f, x + s * .95f, y + s * .95f, edge) }
     }
 
@@ -276,7 +273,9 @@ class TrainingPuzzleView(ctx: Context, val t: Fleet.Training, val maxSwaps: Int,
         txt.textSize = s * .2f
         for (c in 0 until cols) {
             val k = t.target[c]
-            Pix.icon(cv, kindIcon[k] ?: "wood", x0 + c * s + s * .1f, y0 - s * .64f, s * .035f)
+            Art.cell("training_crates", 4, 1, when (k) { "stone" -> 1; "grain" -> 2; else -> 0 }, 128)?.let { bm ->
+                crSrc.set(0, 0, bm.width, bm.height); crDst.set((x0 + c * s + s * .05f).toInt(), (y0 - s * .7f).toInt(), (x0 + c * s + s * .45f).toInt(), (y0 - s * .3f).toInt())
+                cv.drawBitmap(bm, crSrc, crDst, null) } ?: Pix.icon(cv, kindIcon[k] ?: "wood", x0 + c * s + s * .1f, y0 - s * .64f, s * .035f)
             cv.drawText(kindName[k] ?: "", x0 + c * s + s * .7f, y0 - s * .3f, txt)
         }
         p.color = Color.parseColor("#5a3a1e"); cv.drawRect(x0 - s * .08f, y0 - s * .08f, x0 + cols * s + s * .08f, y0 + rows * s + s * .08f, p)

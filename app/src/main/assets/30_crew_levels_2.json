@@ -1,0 +1,492 @@
+{
+  "max_level": 15,
+  "xp_to_next_11_15": [
+    800,
+    850,
+    900,
+    950,
+    1000
+  ],
+  "skills": [
+    {
+      "crew": "yeoul",
+      "level": 12,
+      "id": "even_lashings",
+      "name": "고른 묶음",
+      "effect": "cargo_bonus",
+      "value": 0.02,
+      "short": "짐을 더 많이 실어요",
+      "icon_index": 0
+    },
+    {
+      "crew": "yeoul",
+      "level": 15,
+      "id": "roomy_deck",
+      "name": "넉넉한 갑판",
+      "effect": "cargo_bonus",
+      "value": 0.03,
+      "short": "짐을 더 많이 실어요",
+      "icon_index": 0
+    },
+    {
+      "crew": "mungi",
+      "level": 12,
+      "id": "steady_cannon",
+      "name": "흔들림 잡기",
+      "effect": "pirate_win_bonus",
+      "value": 0.02,
+      "short": "해적과 싸울 때 강해요",
+      "icon_index": 2
+    },
+    {
+      "crew": "mungi",
+      "level": 15,
+      "id": "ready_firing_angle",
+      "name": "빈틈없는 포각",
+      "effect": "pirate_win_bonus",
+      "value": 0.03,
+      "short": "해적과 싸울 때 강해요",
+      "icon_index": 2
+    },
+    {
+      "crew": "sori",
+      "level": 12,
+      "id": "layered_wrapping",
+      "name": "겹겹이 포장",
+      "effect": "repair_after_loss",
+      "value": 0.02,
+      "short": "져도 짐을 덜 잃어요",
+      "icon_index": 12
+    },
+    {
+      "crew": "sori",
+      "level": 15,
+      "id": "neat_provisions",
+      "name": "차곡차곡 보급",
+      "effect": "cargo_bonus",
+      "value": 0.03,
+      "short": "짐을 더 많이 실어요",
+      "icon_index": 0
+    },
+    {
+      "crew": "nuri",
+      "level": 12,
+      "id": "firm_dividers",
+      "name": "튼튼한 칸막이",
+      "effect": "repair_after_loss",
+      "value": 0.02,
+      "short": "져도 짐을 덜 잃어요",
+      "icon_index": 12
+    },
+    {
+      "crew": "nuri",
+      "level": 15,
+      "id": "hidden_cargo_space",
+      "name": "숨은 짐자리",
+      "effect": "cargo_bonus",
+      "value": 0.04,
+      "short": "짐을 더 많이 실어요",
+      "icon_index": 0
+    },
+    {
+      "crew": "bada",
+      "level": 12,
+      "id": "matched_breeze",
+      "name": "바람 맞추기",
+      "effect": "speed_bonus",
+      "value": 0.02,
+      "short": "항해를 더 빨리 마쳐요",
+      "icon_index": 1
+    },
+    {
+      "crew": "bada",
+      "level": 15,
+      "id": "double_sail_seam",
+      "name": "두 겹 돛솔기",
+      "effect": "repair_after_loss",
+      "value": 0.03,
+      "short": "져도 짐을 덜 잃어요",
+      "icon_index": 5
+    },
+    {
+      "crew": "geonu",
+      "level": 12,
+      "id": "chosen_woodgrain",
+      "name": "결 고르기",
+      "effect": "wood_price_bonus",
+      "value": 0.02,
+      "short": "나무를 더 좋은 값에 팔아요",
+      "icon_index": 7
+    },
+    {
+      "crew": "geonu",
+      "level": 15,
+      "id": "sealed_joints",
+      "name": "빈틈 막기",
+      "effect": "repair_after_loss",
+      "value": 0.03,
+      "short": "져도 짐을 덜 잃어요",
+      "icon_index": 5
+    },
+    {
+      "crew": "dori",
+      "level": 12,
+      "id": "riding_small_waves",
+      "name": "물결 타기",
+      "effect": "speed_bonus",
+      "value": 0.02,
+      "short": "항해를 더 빨리 마쳐요",
+      "icon_index": 9
+    },
+    {
+      "crew": "dori",
+      "level": 15,
+      "id": "straight_waterway",
+      "name": "곧은 물길",
+      "effect": "speed_bonus",
+      "value": 0.03,
+      "short": "항해를 더 빨리 마쳐요",
+      "icon_index": 1
+    },
+    {
+      "crew": "haneul",
+      "level": 12,
+      "id": "steady_flag_signals",
+      "name": "고른 깃발 신호",
+      "effect": "event_good_bonus",
+      "value": 0.02,
+      "short": "좋은 소식을 만나기 쉬워요",
+      "icon_index": 13
+    },
+    {
+      "crew": "haneul",
+      "level": 15,
+      "id": "lasting_contacts",
+      "name": "믿음 잇기",
+      "effect": "sale_bonus",
+      "value": 0.03,
+      "short": "짐을 더 좋은 값에 팔아요",
+      "icon_index": 15
+    },
+    {
+      "crew": "bityeo",
+      "level": 12,
+      "id": "horizon_scan",
+      "name": "수평선 살피기",
+      "effect": "treasure_find_bonus",
+      "value": 0.02,
+      "short": "보물 주머니를 찾기 쉬워요",
+      "icon_index": 10
+    },
+    {
+      "crew": "bityeo",
+      "level": 15,
+      "id": "faint_glint_search",
+      "name": "작은 빛 찾기",
+      "effect": "treasure_find_bonus",
+      "value": 0.02,
+      "short": "보물 주머니를 찾기 쉬워요",
+      "icon_index": 6
+    },
+    {
+      "crew": "deul",
+      "level": 12,
+      "id": "compact_food_stores",
+      "name": "알찬 식량 꾸림",
+      "effect": "cargo_bonus",
+      "value": 0.02,
+      "short": "짐을 더 많이 실어요",
+      "icon_index": 11
+    },
+    {
+      "crew": "deul",
+      "level": 15,
+      "id": "shared_supper",
+      "name": "함께한 한 끼",
+      "effect": "event_good_bonus",
+      "value": 0.03,
+      "short": "좋은 소식을 만나기 쉬워요",
+      "icon_index": 4
+    },
+    {
+      "crew": "saei",
+      "level": 12,
+      "id": "calm_bargain",
+      "name": "차분한 흥정",
+      "effect": "sale_bonus",
+      "value": 0.03,
+      "short": "짐을 더 좋은 값에 팔아요",
+      "icon_index": 3
+    },
+    {
+      "crew": "saei",
+      "level": 15,
+      "id": "fair_stone_price",
+      "name": "단단한 돌값",
+      "effect": "stone_price_bonus",
+      "value": 0.02,
+      "short": "돌을 더 좋은 값에 팔아요",
+      "icon_index": 8
+    },
+    {
+      "crew": "onyu",
+      "level": 12,
+      "id": "careful_rope_check",
+      "name": "꼼꼼한 밧줄",
+      "effect": "repair_after_loss",
+      "value": 0.03,
+      "short": "져도 짐을 덜 잃어요",
+      "icon_index": 12
+    },
+    {
+      "crew": "onyu",
+      "level": 15,
+      "id": "early_risk_watch",
+      "name": "미리 보는 위험",
+      "effect": "pirate_win_bonus",
+      "value": 0.02,
+      "short": "해적과 싸울 때 강해요",
+      "icon_index": 2
+    }
+  ],
+  "schema_version": 1,
+  "design_status": "order8_additive_data_proposal_v1",
+  "xp_transitions": [
+    {
+      "from_level": 10,
+      "to_level": 11,
+      "xp": 800
+    },
+    {
+      "from_level": 11,
+      "to_level": 12,
+      "xp": 850
+    },
+    {
+      "from_level": 12,
+      "to_level": 13,
+      "xp": 900
+    },
+    {
+      "from_level": 13,
+      "to_level": 14,
+      "xp": 950
+    },
+    {
+      "from_level": 14,
+      "to_level": 15,
+      "xp": 1000
+    }
+  ],
+  "xp_rules": {
+    "unit": "integer_xp",
+    "threshold_semantics": "각 다음 레벨의 비용. 누적 경험치가 아님.",
+    "array_index": "current_level 10~14: xp_to_next_11_15[current_level - 10]",
+    "existing_levels": "current_level 1~9: 20_crew.json.xp_to_next[current_level - 1] 유지",
+    "at_max_level": "current_level 15: 다음 비용을 조회하지 않고 xp=0",
+    "base_xp_per_voyage": 10,
+    "eligible": "출항 명단에 있던 승진 선원 각각",
+    "bench_xp": 0,
+    "grant_on": "credited voyage_return_settlement",
+    "victory_required": false,
+    "all_xp_uses_same_level_loop": true,
+    "level_up_loop": "xp += granted_xp; while level < 15 and xp >= next_cost(level): xp -= next_cost(level); level += 1; if level == 15: xp = 0",
+    "mission_xp": "23의 정규 귀항 XP를 먼저, 미션 첫 성공 주인공 XP를 다음에 같은 Lv15 공통 함수로 정산",
+    "mission_level_10_discard_rule_replaced": true,
+    "extra_mission_xp_unchanged": true,
+    "overflow_at_max": "Lv15 도달 뒤 남거나 새로 받은 경험치는 저장·환전하지 않음",
+    "daily_xp_limit": null,
+    "offline_max_credited_seconds": 28800,
+    "offline": "기존 인정 구간의 실제 귀항만 계산. 부분 항해의 남은 시간은 다음 구간에 이어감.",
+    "retroactive_xp_for_old_voyages": 0,
+    "retroactive_discarded_mission_xp": 0,
+    "idempotency_key": "save_id + voyage_sequence + crew_xp + worker_id",
+    "mission_idempotency": "23의 첫 성공 장부 유지; 완료 카드 재열기는 XP를 주지 않음",
+    "new_skills_apply": "다음 출항 스냅샷부터"
+  },
+  "skill_rules": {
+    "unlock_levels": [
+      12,
+      15
+    ],
+    "append_to": "20_crew.json.crew[worker_id].skills",
+    "join": "skill.crew == crew.worker_id",
+    "merge_key": "skill.id",
+    "replace_existing_skills": false,
+    "automatic_unlock": true,
+    "requires_ship_level": null,
+    "cost_gold": 0,
+    "cost_materials": 0,
+    "skill_points": 0,
+    "value_semantics": "새 스킬 하나의 가산값. 기존 스킬을 대체하거나 현재 총량에 다시 곱하지 않음.",
+    "allowed_effects": [
+      "cargo_bonus",
+      "speed_bonus",
+      "pirate_win_bonus",
+      "sale_bonus",
+      "event_good_bonus",
+      "repair_after_loss",
+      "treasure_find_bonus",
+      "wood_price_bonus",
+      "stone_price_bonus"
+    ],
+    "effect_caps": {
+      "cargo_bonus": 0.35,
+      "speed_bonus": 0.15,
+      "pirate_win_bonus": 0.1,
+      "sale_bonus": 0.15,
+      "event_good_bonus": 0.1,
+      "repair_after_loss": 0.35,
+      "treasure_find_bonus": 0.1,
+      "wood_price_bonus": 0.1,
+      "stone_price_bonus": 0.1
+    },
+    "aggregation_order": [
+      "승선한 선원의 기존·신규 해금 스킬을 효과별 합산",
+      "활성 짝 효과를 더함",
+      "28의 장착 부적 효과에 역할 배율을 적용해 더함",
+      "20의 effect_caps를 한 번 적용",
+      "19·24의 배·부품 결합식과 최종 상한 적용"
+    ],
+    "separate_cap_pool": false,
+    "same_skill_counted_once": true,
+    "probability_effects": [
+      "pirate_win_bonus",
+      "event_good_bonus",
+      "treasure_find_bonus"
+    ],
+    "probability_unit": "0.01 = 1%p",
+    "repair_after_loss": "화물 손실률 완화; 선원 치료나 선체 회복이 아님",
+    "skill_icons_file": "art/skill_icons.png",
+    "skill_icons_grid": [
+      4,
+      4
+    ],
+    "skill_icons_index_order": [
+      "rope",
+      "wind",
+      "cannonball",
+      "coins",
+      "clover",
+      "hammer_plank",
+      "treasure",
+      "log",
+      "stone",
+      "compass",
+      "spyglass",
+      "cooking_pot",
+      "bandage",
+      "lantern",
+      "map",
+      "handshake"
+    ],
+    "skills_short_source": "29.skills[id] 또는 이 파일 skills[].short",
+    "cap_display": "수치는 출항 편성·부적을 포함한 상한 적용 전후 차이로 계산. 이미 상한이면 증가 없음."
+  },
+  "portrait_rules": {
+    "switch_at_level": 11,
+    "condition": "promoted_crew && level >= 11",
+    "normal_file": "art/worker_portraits.png",
+    "upgraded_file": "art/crew_portraits_15.png",
+    "upgraded_sheet_size": [
+      1024,
+      768
+    ],
+    "grid": [
+      4,
+      3
+    ],
+    "cell_size": [
+      256,
+      256
+    ],
+    "index_by_worker_id": {
+      "yeoul": 0,
+      "mungi": 1,
+      "sori": 2,
+      "nuri": 3,
+      "bada": 4,
+      "geonu": 5,
+      "dori": 6,
+      "haneul": 7,
+      "bityeo": 8,
+      "deul": 9,
+      "saei": 10,
+      "onyu": 11
+    },
+    "same_index_as_original": true,
+    "portrait_changes_stats": false,
+    "deck_animation_changed": false
+  },
+  "migration": {
+    "version_key": "order8_crew_levels_v1",
+    "preserve": [
+      "선원 승진 상태",
+      "선원 레벨",
+      "현재 레벨의 미사용 XP",
+      "배치·대기 명단",
+      "부적 소장·레벨·장착",
+      "기존 스킬·짝 효과",
+      "진행 중 출항 스냅샷",
+      "미션 완료·보상 장부"
+    ],
+    "old_level_10": "기존 정상 저장의 Lv10·XP0을 유지하고 이후 귀항부터 새 비용800을 향해 누적",
+    "older_level_1_to_9": "기존 비용과 남은 XP 유지",
+    "already_migrated": "Lv11~15 진행을 초기화하지 않고 같은 ID로 추가 병합",
+    "past_discarded_xp": "이전 Lv10 상한에서 버린 XP는 기록이 없으므로 복원·추정하지 않음",
+    "next_return": "진행 중 항해는 기존 스냅샷으로 끝내고, 정상 귀항 XP는 새 공통 함수로 한 번 정산",
+    "unknown_saved_ids": "삭제·다른 보상 전환 없이 보존"
+  },
+  "pacing_reference": {
+    "kind": "계산 가정이며 실플레이 측정이 아님",
+    "target": "기준 시나리오에서 선원 한 명당 한 레벨 약 하루",
+    "ship_level": 5,
+    "ship_speed": 1.45,
+    "sail_level": 20,
+    "sail_time_reduction": 0.2,
+    "capped_crew_time_reduction": 0.05,
+    "port": "port_paperwater",
+    "port_distance": 1.8,
+    "round_trip_seconds": 671,
+    "checkins_per_day": 2,
+    "checkin_spacing_hours": 12,
+    "credited_hours_per_day": 16,
+    "same_crew_on_every_voyage": true,
+    "departure_wait_seconds": 0,
+    "one_time_mission_xp_included": false,
+    "ordinary_voyages_per_level": [
+      80,
+      85,
+      90,
+      95,
+      100
+    ],
+    "calendar_days_per_level": [
+      0.9319,
+      0.9902,
+      1.0484,
+      1.1067,
+      1.1649
+    ],
+    "sensitivity": "하루 한 번 확인해 8시간만 인정되면 약 두 배, 세 번 확인해 24시간 인정되면 약 삼분의 이. 항로·교대·자원 대기에 따라 달라짐."
+  },
+  "integration_notes": {
+    "original_code_changed": false,
+    "actual_build31_tested": false,
+    "ui_prose_source": "29의 짧은 설명과 skills[].short만 표시; 이 파일의 규칙 설명은 개발 연결용",
+    "replace_only": [
+      "20의 max_level 및 XP 상한 처리",
+      "23의 crew_xp_level_loop의 Lv10 초과 버림",
+      "Lv11 이상 얼굴 파일 선택"
+    ],
+    "preserve_existing_values": [
+      "Lv1~10 XP 비용",
+      "귀항 XP10",
+      "23의 미션 XP",
+      "20·24·28의 효과 상한",
+      "19·24의 부품·선박 수치"
+    ],
+    "no_daily_level_guarantee": true,
+    "no_economy_18_rebalance": true
+  }
+}

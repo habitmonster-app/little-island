@@ -12,7 +12,7 @@ object Fleet {
     class Part(val id: String, val name: String, val desc: String, val icon: Int, val levels: List<Level>)
     class Skill(val level: Int, val id: String, val name: String, val effect: String, val value: Float, val icon: Int, val desc: String)
     class Crew(val id: String, val name: String, val role: String, val roleDesc: String, val unlock: String,
-               val skills: List<Skill>, val line: String, val sheet: String, val row: Int, val portrait: Int)
+               var skills: List<Skill>, val line: String, val sheet: String, val row: Int, val portrait: Int)
     class Synergy(val a: String, val b: String, val name: String, val effect: String, val value: Float, val desc: String)
 
     val parts = ArrayList<Part>()
@@ -133,6 +133,7 @@ object Fleet {
                 synergies.add(Synergy(ids.getString(0), ids.getString(1), s.optString("name"), s.optString("effect"), s.getDouble("value").toFloat(), s.optString("desc")))
             }
         } catch (e: Exception) { }
+        loadOrder8(c)
         try {
             val d = JSONObject(c.assets.open("21_crew_stories.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
             fun strs(a: org.json.JSONArray?) = if (a == null) emptyList() else (0 until a.length()).map { a.getString(it) }
@@ -163,6 +164,35 @@ object Fleet {
 
     private fun json(c: Context, f: String) = JSONObject(c.assets.open(f).bufferedReader(Charsets.UTF_8).use { it.readText() })
     private fun strs(a: org.json.JSONArray?) = if (a == null) emptyList() else (0 until a.length()).map { a.getString(it) }
+
+    /** 29_short_texts.json: 설명 창에 쓰는 짧은 한 줄 (분류 → id → 글) */
+    val short = HashMap<String, Map<String, String>>()
+    fun short(kind: String, id: String?, fallback: String = ""): String = short[kind]?.get(id ?: "")?.takeIf { it.isNotBlank() } ?: fallback
+
+    /** 30_crew_levels_2.json: 선원 Lv11~15와 Lv12·Lv15 새 스킬. 20번 자료를 읽은 뒤에 덧붙인다 */
+    private fun loadOrder8(c: Context) {
+        try {
+            val d = json(c, "29_short_texts.json")
+            d.keys().forEach { k -> val o = d.optJSONObject(k) ?: return@forEach
+                val m = HashMap<String, String>(); o.keys().forEach { id -> m[id] = o.optString(id) }; short[k] = m }
+        } catch (e: Exception) { }
+        try {
+            val d = json(c, "30_crew_levels_2.json")
+            val add = d.optJSONArray("xp_to_next_11_15")
+            if (add != null && xpTo.size == maxCrewLevel - 1) {
+                xpTo = xpTo + (0 until add.length()).map { add.getInt(it) }
+                maxCrewLevel = d.optInt("max_level", maxCrewLevel)
+            }
+            val sk = d.optJSONArray("skills")
+            if (sk != null) for (i in 0 until sk.length()) {
+                val x = sk.getJSONObject(i)
+                val cr = crewOf(x.optString("crew")) ?: continue
+                if (cr.skills.any { it.id == x.optString("id") }) continue
+                cr.skills = (cr.skills + Skill(x.getInt("level"), x.optString("id"), x.optString("name"), x.optString("effect"),
+                    x.getDouble("value").toFloat(), x.optInt("icon_index"), x.optString("short"))).sortedBy { it.level }
+            }
+        } catch (e: Exception) { }
+    }
 
     private fun loadOrder7(c: Context) {
         try {

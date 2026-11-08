@@ -343,6 +343,8 @@ object Pix {
                 "part" -> Art.cell("part_icons", 4, 2, idx, px)
                 "skill" -> Art.cell("skill_icons", 4, 4, idx, px)
                 "face" -> Art.cell("worker_portraits", 4, 3, idx, px)
+                "face15" -> Art.cell("crew_portraits_15", 4, 3, idx, px)
+                "fx" -> Art.cell("upgrade_fx", 4, 1, idx, px)
                 "deco" -> Art.cell("ship_deco", 4, 4, idx, px)
                 "deco2" -> Art.cell("ship_deco_2", 4, 4, idx, px)
                 "souv" -> Art.cell("souvenir_icons", 6, 6, idx, px)
