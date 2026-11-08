@@ -1,0 +1,711 @@
+{
+  "schema_version": 1,
+  "design_status": "order7_integration_data",
+  "app_name": "리틀 아일랜드",
+  "bosses": [
+    {
+      "id": "boss_hook",
+      "name": "갈고리별호",
+      "captain": "규찬",
+      "min_ship_level": 2,
+      "unlock": "ship_2",
+      "ports": [
+        "port_haesol",
+        "port_saltflat",
+        "port_pottery",
+        "port_windneck"
+      ],
+      "chance": 0.04,
+      "power": 1.7,
+      "win_gold": [
+        60,
+        90
+      ],
+      "lose": 0.2,
+      "first_win_reward": {
+        "gold": 200,
+        "map_pieces": 1,
+        "cosmetic_id": "trophy_hook_flag"
+      },
+      "lines": {
+        "appear": "남색 돛을 따라와 봐!",
+        "lose": "오늘 별은 네 배에 달아.",
+        "win": "다음 물길에서 또 보자."
+      },
+      "crew_lines": {
+        "yeoul": "줄은 짧고 단단하게!",
+        "mungi": "표적보다 물길부터 봐요.",
+        "dori": "안쪽 길을 살필게요."
+      },
+      "story": {
+        "id": "story_boss_hook_first_win",
+        "title": "갈고리 끝의 별",
+        "body": "갈고리별호가 길을 비키자 규찬은 모자를 벗어 뱃전에 걸었다. 남색 돛 한가운데 달린 은빛 갈고리는 가까이서 보니 끝이 둥글었다. 서린이 낯익은 무늬를 잠깐 바라보자 규찬은 먼저 손을 저었다. “갈고리단과는 관계없어. 원래 우리 집 짐 내리는 도구였지.” 깃발 구석에는 작고 둥근 별도 하나 박혀 있었다.\n\n규찬은 귀항호가 자기 배를 돌아나온 방향을 손가락으로 다시 그렸다. 늘 바깥쪽만 살피느라 안쪽 물길을 내주었다는 것을 이제야 알았다고 했다. 서린은 대답 대신 느슨해진 모자 끈을 가리켰다. 규찬이 급히 잡은 모자는 바다로 가지 않고 그의 품에 떨어졌다.\n\n그는 승부의 표시로 접어 둔 깃발을 건넸다. 다음에는 별을 조금 더 크게 달아 오겠다고도 했다. 귀항호가 멀어질 때 남색 돛 아래에서 손이 한 번 더 흔들렸다. 규찬은 모자를 다시 썼고, 이번에는 턱 아래 끈부터 단단히 매었다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 0,
+      "captain_icon_index": 0,
+      "ship_art": {
+        "file": "art/pirate_bosses.png",
+        "source_rect": [
+          0,
+          0,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains.png",
+        "source_rect": [
+          0,
+          0,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "navy and brass gold",
+        "emblem": "a silver hook on navy sail",
+        "captain_look": "young man with short dark brown hair, friendly thick eyebrows, navy tricorn edged with brass and a tiny silver hook badge, navy coat with brass buttons, cream neckerchief, cheeky smile"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    },
+    {
+      "id": "boss_red_crab",
+      "name": "붉은집게호",
+      "captain": "홍미",
+      "min_ship_level": 2,
+      "unlock": "ship_2",
+      "ports": [
+        "port_haesol",
+        "port_saltflat",
+        "port_pottery",
+        "port_windneck"
+      ],
+      "chance": 0.04,
+      "power": 1.8,
+      "win_gold": [
+        70,
+        100
+      ],
+      "lose": 0.22,
+      "first_win_reward": {
+        "gold": 240,
+        "map_pieces": 1,
+        "cosmetic_id": "trophy_crab_flag"
+      },
+      "lines": {
+        "appear": "집게 사이로 지나가 봐!",
+        "lose": "집게를 조금 낮춰야겠네.",
+        "win": "다음엔 옆길도 살펴봐!"
+      },
+      "crew_lines": {
+        "nuri": "짐이 기울지 않게요.",
+        "onyu": "집게와 거리를 둘게요.",
+        "bada": "옆바람을 받겠습니다."
+      },
+      "story": {
+        "id": "story_boss_red_crab_first_win",
+        "title": "집게가 놓아 준 자리",
+        "body": "붉은집게호의 두 뱃전에는 집게처럼 생긴 붉은 장식이 달려 있었다. 홍미는 그 사이를 오가며 어느 쪽으로든 빠르게 돌 수 있다고 자랑했다. 그러나 귀항호가 짧게 방향을 바꾸자 장식 너머를 보려던 홍미는 두 번이나 같은 쪽을 돌아보았다. 마침내 승부를 인정한 그녀는 돛을 느슨하게 풀고 웃었다.\n\n서린은 뱃전 장식이 예쁘다고 말했다. 홍미는 이긴 배에서 그런 말을 들으니 더 얄밉다며 웃다가, 장식 하나를 손바닥으로 밀어 보았다. 조금만 낮춰도 앞쪽이 훨씬 잘 보였다. 그녀는 그 자리에 천 조각을 묶어 다음 정박 때 손볼 곳을 표시했다.\n\n귀항호에 건넬 깃발은 크림색 바탕에 빨간 게가 그려져 있었다. 홍미는 접힌 집게 끝을 펴서 건네며 이번에는 잘 보이는 곳에 달라고 했다. 헤어질 때 그녀는 자기 배의 장식 뒤에서 손을 흔들다가 한 걸음 옆으로 나왔다. 그제야 두 배에서 서로의 인사가 제대로 보였다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 1,
+      "captain_icon_index": 1,
+      "ship_art": {
+        "file": "art/pirate_bosses.png",
+        "source_rect": [
+          384,
+          0,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains.png",
+        "source_rect": [
+          256,
+          0,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "scarlet and cream",
+        "emblem": "a scarlet crab on cream sail",
+        "captain_look": "young woman with short curly auburn hair, cream captain hat with scarlet crab badge, scarlet coat with cream lapels, cheerful confident grin"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    },
+    {
+      "id": "boss_kraken",
+      "name": "먹물손호",
+      "captain": "묵우",
+      "min_ship_level": 3,
+      "unlock": "ship_3",
+      "ports": [
+        "port_pineshade",
+        "port_redanchor"
+      ],
+      "chance": 0.04,
+      "power": 1.9,
+      "win_gold": [
+        90,
+        125
+      ],
+      "lose": 0.23,
+      "first_win_reward": {
+        "gold": 320,
+        "map_pieces": 1,
+        "cosmetic_id": "trophy_kraken_bow"
+      },
+      "lines": {
+        "appear": "여덟 팔의 길을 찾아봐!",
+        "lose": "팔이 많아도 졌는걸.",
+        "win": "오늘은 내 손이 빨랐지!"
+      },
+      "crew_lines": {
+        "haneul": "신호는 하나씩 보낼게요.",
+        "sori": "필요한 상자만 꺼내요.",
+        "mungi": "차분히 구령을 맞춰요."
+      },
+      "story": {
+        "id": "story_boss_kraken_first_win",
+        "title": "먹물보다 오래 남는 것",
+        "body": "먹물손호의 돛에는 검은 문어가 커다랗게 그려져 있었다. 여덟 팔이 모두 다른 방향을 가리켜서 멀리서는 복잡한 항로표처럼 보였다. 묵우는 귀항호에 물길을 내준 뒤 그 문어를 올려다보았다. 오늘은 팔이 여덟 개여도 어느 쪽부터 움직여야 할지 헷갈렸다고 했다. 서린은 배의 키는 하나면 충분하다고 대답했다.\n\n묵우가 승리의 기념으로 내민 장식도 작은 문어였다. 검은 몸 아래 청록색 팔들이 둥글게 말려 있었다. 그는 받는 사람보다 먼저 장식을 이리저리 돌려 보며 가장 튼튼하게 걸리는 방향을 찾았다. 여덟 팔을 다 쓰지 않아도 두 팔만 잘 걸면 흔들리지 않았다.\n\n서린이 고개를 끄덕이자 묵우는 남은 팔들은 보기 좋게 두자고 했다. 두 배가 갈라진 뒤에도 그는 뱃머리에서 한동안 손을 흔들었다. 문어 장식이 놓인 상자에는 아주 작은 먹물 자국이 남았다. 닦아도 지워지지 않아, 귀항호는 그것을 장식이 온 날의 표시로 남겨 두었다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 2,
+      "captain_icon_index": 2,
+      "ship_art": {
+        "file": "art/pirate_bosses.png",
+        "source_rect": [
+          768,
+          0,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains.png",
+        "source_rect": [
+          512,
+          0,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "turquoise and black",
+        "emblem": "a friendly black octopus on turquoise sail",
+        "captain_look": "young man with wavy black hair, turquoise bandana with a small black octopus badge, black vest over a turquoise shirt, relaxed smiling eyes"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    },
+    {
+      "id": "boss_storm",
+      "name": "구름북호",
+      "captain": "우람",
+      "min_ship_level": 3,
+      "unlock": "ship_3",
+      "ports": [
+        "port_pineshade",
+        "port_redanchor"
+      ],
+      "chance": 0.04,
+      "power": 2.0,
+      "win_gold": [
+        100,
+        140
+      ],
+      "lose": 0.24,
+      "first_win_reward": {
+        "gold": 360,
+        "map_pieces": 1,
+        "cosmetic_id": "trophy_storm_bow"
+      },
+      "lines": {
+        "appear": "노란 신호를 놓치지 마!",
+        "lose": "네 신호가 더 또렷했어.",
+        "win": "구름 아래에서 또 만나!"
+      },
+      "crew_lines": {
+        "bityeo": "노란 신호가 보여요.",
+        "haneul": "응답은 짧게 보낼게요.",
+        "bada": "돛줄부터 확인할게요."
+      },
+      "story": {
+        "id": "story_boss_storm_first_win",
+        "title": "구름 밑의 노란 매듭",
+        "body": "하늘은 맑았지만 구름북호의 돛에는 커다란 회색 구름이 걸려 있었다. 우람은 바람이 바뀔 때마다 노란 목도리를 휘날리며 신호를 보냈다. 귀항호가 그 신호보다 먼저 물길을 찾아 나가자 그녀는 목도리를 내려놓았다. 지켜볼 사람이 너무 바쁘게 움직이면 신호도 잘 보이지 않는다는 것을 인정하는 데에는 오래 걸리지 않았다.\n\n서린은 노란 천이 회색 돛 앞에서 유난히 잘 보였다고 말했다. 우람은 목도리를 한 번 펼쳤다가 짧게 접었다. 꼭 길어야 눈에 띄는 것은 아니라며, 남은 끝을 작은 매듭으로 묶었다. 이번에는 바람이 불어도 천이 얼굴을 가리지 않았다.\n\n그녀가 건넨 장식은 작은 구름과 황동 번개였다. 우람은 이것만큼은 조용히 달려 있어도 제 몫을 할 거라고 했다. 귀항호가 돌아설 때 짧은 노란 신호가 또렷하게 올라왔다. 서린도 같은 높이로 답했다. 두 배 사이에는 한동안 설명할 말이 더 필요하지 않았다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 3,
+      "captain_icon_index": 3,
+      "ship_art": {
+        "file": "art/pirate_bosses.png",
+        "source_rect": [
+          1152,
+          0,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains.png",
+        "source_rect": [
+          768,
+          0,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "slate grey and yellow",
+        "emblem": "a grey storm cloud and yellow zigzag on pale slate sail",
+        "captain_look": "middle-aged woman with short silver grey curls, slate captain cap with yellow storm-cloud badge, slate coat and bright yellow scarf, warmly competitive grin"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    },
+    {
+      "id": "boss_coin",
+      "name": "금빛주머니호",
+      "captain": "금채",
+      "min_ship_level": 4,
+      "unlock": "ship_4",
+      "ports": [
+        "port_fogferry",
+        "port_glasscape"
+      ],
+      "chance": 0.04,
+      "power": 2.1,
+      "win_gold": [
+        125,
+        170
+      ],
+      "lose": 0.25,
+      "first_win_reward": {
+        "gold": 450,
+        "map_pieces": 2,
+        "cosmetic_id": "trophy_coin_sail"
+      },
+      "lines": {
+        "appear": "이번 간격은 계산했지!",
+        "lose": "바람 값은 빼먹었네.",
+        "win": "이번 장부는 내 차례야!"
+      },
+      "crew_lines": {
+        "saei": "계산보다 확인이 먼저죠.",
+        "nuri": "짐표도 다시 살폈어요.",
+        "deul": "물 한 모금씩 마셔요."
+      },
+      "story": {
+        "id": "story_boss_coin_first_win",
+        "title": "가장 작은 주머니",
+        "body": "금빛주머니호의 돛에는 아무 글자도 없는 금빛 동전이 그려져 있었다. 금채는 안경을 고쳐 쓰며 귀항호가 돌아나간 거리를 손가락으로 쟀다. 계산해 둔 간격보다 반 뼘쯤 넓었다고 했다. 서린이 반 뼘은 바람에게 물어야겠다고 하자 금채는 들고 있던 자를 내려놓고 처음으로 크게 웃었다.\n\n그녀는 크기가 다른 주머니 세 개를 꺼냈다. 큰 것에는 장부가, 가운데 것에는 줄자가 들어 있었다. 가장 작은 주머니에서 나온 것은 돛에 찍는 동전 무늬 천 조각이었다. 금채는 큰 주머니부터 열어야 폼이 날 줄 알았는데 정작 건넬 것은 마지막에 있었다며 어깨를 으쓱했다.\n\n서린은 접힌 천이 구겨지지 않게 빈 상자 뚜껑 안쪽에 끼웠다. 금채는 그 모습을 보고 작은 주머니에 딱 맞는 칸막이를 만들어야겠다고 했다. 다음 승부의 계산은 돌아가서 하기로 했다. 지금은 자와 장부가 서로 다른 주머니로 잘 돌아가는지 확인하는 일이 먼저였다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 4,
+      "captain_icon_index": 4,
+      "ship_art": {
+        "file": "art/pirate_bosses.png",
+        "source_rect": [
+          0,
+          512,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains.png",
+        "source_rect": [
+          0,
+          256,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "violet and gold",
+        "emblem": "a simple blank golden coin without skull on violet sail",
+        "captain_look": "young woman with dark plum hair in a low bun, violet tricorn with a blank round gold coin badge, violet coat with gold trim, round gold-rim spectacles, playful smile"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    },
+    {
+      "id": "boss_reef",
+      "name": "돌여울호",
+      "captain": "자갈",
+      "min_ship_level": 4,
+      "unlock": "ship_4",
+      "ports": [
+        "port_fogferry",
+        "port_glasscape"
+      ],
+      "chance": 0.04,
+      "power": 2.2,
+      "win_gold": [
+        140,
+        185
+      ],
+      "lose": 0.26,
+      "first_win_reward": {
+        "gold": 500,
+        "map_pieces": 2,
+        "cosmetic_id": "trophy_reef_sail"
+      },
+      "lines": {
+        "appear": "여울의 틈을 알아볼까?",
+        "lose": "돌보다 앞을 봐야겠어.",
+        "win": "다음엔 물결부터 살펴!"
+      },
+      "crew_lines": {
+        "geonu": "널빤지는 잘 버텨요.",
+        "dori": "여울 가장자리를 볼게요.",
+        "bityeo": "앞쪽 물결이 다릅니다."
+      },
+      "story": {
+        "id": "story_boss_reef_first_win",
+        "title": "돌이 기억한 물길",
+        "body": "돌여울호의 선장 자갈은 승부가 끝나자 손에 쥐고 있던 조약돌을 내려놓았다. 모서리가 닳은 회색 돌이었다. 그는 항구에서 쉬는 동안 생각할 일이 생기면 돌을 굴리는 버릇이 있다고 했다. 오늘은 귀항호가 좁은 물길을 통과하는 동안 손안의 돌만 너무 열심히 굴린 셈이었다.\n\n서린은 자갈이 내려놓은 돌을 잠깐 들여다보았다. 한쪽에 구릿빛 선이 세 개 그어져 있었다. 자갈은 자주 지나는 여울의 물결을 새긴 것이라며, 다른 사람 눈에는 그저 줄 셋일지도 모른다고 말했다. 서린은 익숙한 사람이 알아볼 수 있으면 충분하다고 답했다.\n\n자갈은 같은 모양을 그린 돛 장식을 귀항호에 건넸다. 돌은 주머니에 다시 넣었지만 손은 더 이상 주머니 안에서 움직이지 않았다. 두 배가 떨어지자 그는 이번에는 앞쪽 물길을 먼저 살폈다. 구릿빛 세 줄은 귀항호의 돛 위에서 곧게 펼쳐졌다. 같은 여울을 지나온 배끼리 알아볼 표식이 하나 생겼다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 5,
+      "captain_icon_index": 5,
+      "ship_art": {
+        "file": "art/pirate_bosses.png",
+        "source_rect": [
+          384,
+          512,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains.png",
+        "source_rect": [
+          256,
+          256,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "sand and copper",
+        "emblem": "a grey reef rock over copper ripples on sand sail",
+        "captain_look": "middle-aged man with a short sandy beard and dark brown cropped hair, sand-colored cap with copper reef badge, sand coat with copper buttons, friendly broad face"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    },
+    {
+      "id": "boss_moon",
+      "name": "달그림자호",
+      "captain": "달온",
+      "min_ship_level": 5,
+      "unlock": "ship_5",
+      "ports": [
+        "port_reedbay",
+        "port_paperwater",
+        "port_whitesail"
+      ],
+      "chance": 0.04,
+      "power": 2.3,
+      "win_gold": [
+        175,
+        225
+      ],
+      "lose": 0.28,
+      "first_win_reward": {
+        "gold": 620,
+        "map_pieces": 2,
+        "cosmetic_id": "trophy_moon_lantern"
+      },
+      "lines": {
+        "appear": "낮의 달도 따라올래?",
+        "lose": "오늘은 네 불빛이 앞서네.",
+        "win": "달이 바뀌면 다시 보자."
+      },
+      "crew_lines": {
+        "haneul": "등불 신호를 확인해요.",
+        "sori": "작은 등잔도 챙겼어요.",
+        "onyu": "갑판 통로는 비었어요."
+      },
+      "story": {
+        "id": "story_boss_moon_first_win",
+        "title": "낮에도 켜는 달",
+        "body": "달그림자호의 돛에는 대낮에도 선명한 은빛 초승달이 걸려 있었다. 달온은 귀항호에 물길을 내주고 작은 등잔의 손잡이를 살폈다. 불을 밝히지 않아도 어디에 걸었는지 금방 찾을 수 있도록 달 모양 고리를 달아 두었다고 했다. 서린은 햇빛 아래에서 더 잘 보이는 달도 있겠다며 웃었다.\n\n달온은 등잔을 건네기 전에 유리창을 천으로 한 번 닦았다. 바람을 피하려고 두껍게 감아 둔 끈이 손잡이를 가리고 있었다. 그녀는 매듭을 반대쪽으로 옮긴 뒤에야 만족한 듯 고개를 끄덕였다. 멀리서 보기 좋은 물건도 가까이에서 집기 편해야 한다는 말이 따라왔다.\n\n귀항호에서는 등잔이 흔들리지 않을 자리를 먼저 골랐다. 달온은 자기 배가 작아질 때까지 그쪽을 바라보다 손을 들었다. 저녁이 되자 작은 달 아래에 노란 불빛이 켜졌다. 새로운 항로가 생긴 것은 아니었지만, 늘 지나던 갑판에서 손을 뻗을 자리가 하나 더 또렷해졌다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 6,
+      "captain_icon_index": 6,
+      "ship_art": {
+        "file": "art/pirate_bosses.png",
+        "source_rect": [
+          768,
+          512,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains.png",
+        "source_rect": [
+          512,
+          256,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "indigo and silver",
+        "emblem": "a silver crescent moon on indigo sail",
+        "captain_look": "young woman with a long dark indigo braid over one shoulder, indigo hooded captain coat, silver crescent clasp, gentle amused smile, no sinister features"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    },
+    {
+      "id": "boss_serpent",
+      "name": "초록고리호",
+      "captain": "비취",
+      "min_ship_level": 5,
+      "unlock": "ship_5",
+      "ports": [
+        "port_reedbay",
+        "port_paperwater",
+        "port_whitesail"
+      ],
+      "chance": 0.04,
+      "power": 2.4,
+      "win_gold": [
+        190,
+        240
+      ],
+      "lose": 0.3,
+      "first_win_reward": {
+        "gold": 680,
+        "map_pieces": 2,
+        "cosmetic_id": "trophy_serpent_chest"
+      },
+      "lines": {
+        "appear": "초록 고리를 지나가 봐!",
+        "lose": "앞을 보는 연습을 할게.",
+        "win": "다음 고리에서 또 보자!"
+      },
+      "crew_lines": {
+        "geonu": "상자 받침은 단단해요.",
+        "deul": "뚜껑은 모두 닫았어요.",
+        "yeoul": "묶음부터 다시 살펴요."
+      },
+      "story": {
+        "id": "story_boss_serpent_first_win",
+        "title": "상자가 쉬는 자리",
+        "body": "초록고리호의 돛에 그려진 바다뱀은 자기 꼬리 쪽을 돌아보며 웃고 있었다. 비취는 귀항호가 앞서 나간 뒤에도 그 무늬를 한 번 더 올려다보았다. 돌아보는 데에는 익숙한데 앞을 보는 연습은 조금 더 해야겠다고 했다. 서린은 다음에 만날 때까지 연습할 물길은 충분하다고 답했다.\n\n비취가 내민 작은 상자에도 같은 뱀이 둘러져 있었다. 상자를 여는 손잡이가 꼬리 모양이었다. 그는 뚜껑을 닫았다 열었다 하며 한쪽 모서리가 걸리는 까닭을 찾았다. 서린이 빈 천 조각을 접어 바닥에 대자 상자는 더 이상 기울지 않았다. 비취는 장식보다 먼저 놓일 자리를 고르는 법을 배웠다고 말했다.\n\n귀항호는 상자를 갑판의 마른 구석에 두었다. 무엇을 담을지는 돌아가서 천천히 정하기로 했다. 비취는 빈 상자를 건네고도 아쉽지 않은 얼굴이었다. 다음에 다시 만났을 때 무엇이 들어 있는지 물어볼 수 있으니, 다시 인사할 이야깃거리까지 하나 생긴 셈이었다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 7,
+      "captain_icon_index": 7,
+      "ship_art": {
+        "file": "art/pirate_bosses.png",
+        "source_rect": [
+          1152,
+          512,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains.png",
+        "source_rect": [
+          768,
+          256,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "emerald and ivory",
+        "emblem": "a friendly curled emerald sea serpent on ivory sail",
+        "captain_look": "young man with short dark green-black hair, ivory tricorn with emerald serpent badge, emerald coat with ivory lapels, warm tan skin and open cheerful grin"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    }
+  ],
+  "selection_rules": {
+    "maximum_normal_combat_slots_per_voyage": 1,
+    "selection_scope": "ordinary_random_encounter_replacement",
+    "order": [
+      "기존 첫 강제 hook_minor 조우 또는 story_fixed 사건이면 그 기존 처리를 유지하며 우두머리 선택을 하지 않는다.",
+      "기존 항해의 조우 판정을 한 번 수행한다. 일반 항해는 항구 pirate_risk, 특별 항해는 이미 확정한 조우 확률을 사용한다.",
+      "일반 조우가 발생한 경우에만 배 단계·unlock·목적지 ports가 모두 맞는 우두머리를 sprite_index 순서로 고른다.",
+      "균등 난수 u∈[0,1) 하나에 각 적격 우두머리 chance의 누적 구간을 배정한다. 해당 구간에 들면 그 우두머리가 보통 해적을 대체한다.",
+      "우두머리 구간 밖이면 기존 적격 보통 해적을 기존 selection_weight 비율로 고른다. 보통 해적도 없으면 조우를 생략한다."
+    ],
+    "chance_semantics": "chance=0.04는 이미 일반 조우가 발생한 경우 그 우두머리가 선택될 확률 4%다. 항해 자체의 무조건 출현 확률이나 가중치가 아니다.",
+    "not_normalized_among_bosses": true,
+    "no_independent_roll_per_boss": true,
+    "maximum_eligible_bosses_in_this_data": 2,
+    "maximum_boss_probability_given_encounter": 0.08,
+    "example": {
+      "ordinary_encounter_chance": 0.3,
+      "eligible_boss_count": 2,
+      "each_boss_chance": 0.04,
+      "any_boss_per_voyage": 0.024,
+      "each_boss_per_voyage": 0.012
+    },
+    "on_no_eligible_boss": "기존 보통 해적 선택만 수행한다.",
+    "eligibility_snapshot": "기존 규칙과 같이 미확정 전투를 확정하는 시점의 진행 플래그로 검사하되, 배 단계와 목적지는 출항 스냅샷을 사용한다.",
+    "unlocked_port_required": true,
+    "first_win_does_not_remove_boss": true,
+    "no_extra_encounter_after_replacement": true,
+    "preserve_first_encounter": true,
+    "preserve_story_fixed": true
+  },
+  "combat_rules": {
+    "mode": "automatic",
+    "power_reference": 1.0,
+    "power_penalty_coefficient": 0.1,
+    "win_probability_formula": "clamp(ship.pirate_win - 0.1 * (boss.power - 1) + lighthouse_bonus + capped_active_island_worker_bonus + cannon.value + capped_crew.pirate_win_bonus, 0.35, 0.97)",
+    "minimum_win_probability": 0.35,
+    "maximum_win_probability": 0.97,
+    "effect_source": "19_ship_parts.json 및 20_crew.json. 28_crew_charms.json 부적 효과도 스킬·짝 효과와 먼저 합산한 뒤 같은 선원 effect_caps 안에 들어간 capped_crew 값만 사용한다.",
+    "same_formula_as_normal_pirate": true,
+    "boss_lose_field_means": "우두머리에게 졌을 때 전투 시점에 배에 남아 있는 화물에서 잃는 기본 비율. 골드 손실이나 패배 확률이 아니다.",
+    "cargo_adapter": "일반 전투 처리에 넘길 때 boss.lose를 pirate.lose_cargo에 대응시킨다.",
+    "effective_loss_fraction_formula": "boss.lose * (1 - min(0.5, helm.secondary_effects.bad_event_loss_reduction + capped_crew.repair_after_loss))",
+    "remaining_formula": "floor(current_onboard_quantity * (1 - effective_loss_fraction))",
+    "cargo_targets": "기존 계약별 처리 그대로: 특산물 계약 없으면 왕로의 목재·돌, 선결제된 특산물 계약이 있으면 귀로의 특산물만.",
+    "already_sold_cargo_loss": 0,
+    "gold_balance_loss": 0,
+    "resident_or_crew_loss": 0,
+    "ship_destruction": false,
+    "building_damage": false,
+    "extra_repair_fee": 0,
+    "injury_or_death": false,
+    "mission_adapter": "23_crew_missions.json의 win_if_encountered는 이 우두머리 전투를 일반 전투 한 건으로 검사한다. return_safely 임무는 일반 귀항 규칙을 유지한다.",
+    "fixed_story_events_count_as_boss_fights": false
+  },
+  "reward_rules": {
+    "repeat_win_gold_distribution": "uniform_integer_inclusive",
+    "repeat_gold_is_normal_combat_reward": "win_gold는 대체된 보통 해적 전투 보상을 대신한다. 보통 해적 보상을 동시에 더하지 않는다.",
+    "first_win_additional": true,
+    "first_win_includes_repeat_win_gold": true,
+    "first_win_definition": "해당 boss.id에 대해 처음 확정한 승리 귀항 정산",
+    "gold_unit": "integer_gold; wallet cents에는 gold * 100을 더한다.",
+    "gold_multiplier": "고정 첫승 보상과 우두머리 전투 보상에 판매가·특산물·좋은 사건 배율을 추가 적용하지 않는다.",
+    "lose_reward_gold": 0,
+    "first_win_cosmetic_reference": "27_ship_cosmetics_2.json의 같은 trophy ID. 장식 소장은 boss_first_win 조건과 같은 장부를 사용한다.",
+    "cosmetic_grant": "소장 ID가 없으면 한 번 추가한다. 이미 소장했으면 그대로 두며 다른 보상으로 바꾸지 않는다. 27의 조건 재평가가 첫승 금화·지도 조각을 다시 지급하지 않는다.",
+    "map_pieces": "기존 퍼즐 지도 조각 저장 규칙으로 정수 개수를 한 번 더한다. 최대 수량·완성 후 처리 규칙을 유지하고 보물 성공 횟수는 증가시키지 않는다.",
+    "map_piece_overflow": "기존 상한으로 못 받는 분량을 금화·추가 뽑기·재획득 기회로 바꾸지 않는다.",
+    "first_story_unlock": "첫승 정산에서 story.id를 해금한다. 읽기·다시보기·카드 재열기는 보상을 지급하지 않는다.",
+    "crew_xp": "정규 항해 XP만 기존대로 지급한다. 우두머리 또는 첫승 명목의 추가 XP는 없다.",
+    "voyage_ticket": "28의 정상 귀항 1회에 해당하는 항해 쪽지만 지급한다. 우두머리 조우·첫승을 별도 항해로 세지 않는다."
+  },
+  "settlement_rules": {
+    "reward_credit_on": "voyage_return_settlement",
+    "departure_snapshot": "배 단계·기본 승률·목적지·계약·부품·승선 선원과 스킬/짝/부적 합산 후 효과·등대/섬 일꾼 보너스를 출항 시 고정한다. 도중 장비 교체로 진행 중 항해를 다시 계산하지 않는다.",
+    "combat_key": "save_id + voyage_sequence + combat_slot",
+    "first_win_key": "save_id + boss_id + first_win",
+    "first_win_flags": "boss_first_win_ids에 boss.id를 저장한다. 별도의 옛 스토리 플래그를 덮어쓰지 않는다.",
+    "atomic_commit": [
+      "확정 전투 결과와 손실",
+      "정규 항해 정산",
+      "우두머리 일반 승리 보상",
+      "첫승 완료 ID",
+      "첫승 금화·지도 조각·장식 소장",
+      "첫승 이야기 해금"
+    ],
+    "rng_persisted": [
+      "선택된 적 종류와 ID",
+      "전투 승패",
+      "win_gold의 확정 금액"
+    ],
+    "unresolved_rng": "항해별 저장된 난수 상태와 판정 순번으로 이어서 처리한다. 아직 결과가 없는 전투도 앱 재실행이나 중단으로 새 시드를 받지 않는다.",
+    "reopen_reroll": false,
+    "duplicate_reward": false,
+    "retry": "패배해도 후보 목록에 남는다. 다음 항해에서 기존 확률로 다시 만날 수 있으며 강제 재조우나 유료 재도전은 없다.",
+    "migration": "새 저장 필드는 빈 목록·장부로 만든다. 과거 일반 해적 승리를 새 우두머리 첫승으로 소급하지 않는다.",
+    "offline_max_credited_seconds": 28800,
+    "offline_uses_same_selection_and_settlement": true,
+    "offline_first_win_once": "인정되는 오프라인 구간에서 같은 우두머리를 여러 번 이겨도 첫승은 한 번만 지급하며, 이후 승리는 win_gold만 지급한다.",
+    "incomplete_voyage": "출항 스냅샷과 미정산 전투 결과를 보존하고, 귀항 전에는 보상·첫승 해금이 완료된 것으로 표시하지 않는다."
+  },
+  "display_rules": {
+    "name_max_characters": 10,
+    "line_max_characters": 18,
+    "story_body_characters": [
+      300,
+      500
+    ],
+    "lines_semantics": {
+      "appear": "우두머리 등장",
+      "lose": "우두머리 패배 = 우리 승리",
+      "win": "우두머리 승리 = 우리 패배"
+    },
+    "crew_lines": "현재 출항 명단에 있는 선원의 대사만 고른다. 해당 선원이 없으면 생략하고 임의로 선원을 추가하지 않는다.",
+    "crew_line_selection": "가능한 대사 중 출항 때의 승선 슬롯 순서상 첫 한 줄만 표시한다. 이름과 초상화는 실제 화자 ID를 사용한다.",
+    "probability_label": "해적 조우 시 이 우두머리 출현 4%",
+    "first_win_state": "미획득·첫승 완료를 구분하고, 소장 장식 ID와 이야기 해금 여부를 별도로 확인한다."
+  },
+  "continuity_rules": {
+    "bosses_are_separate_rivals": true,
+    "gurok_is_not_resurrected_or_freed": true,
+    "friendly_redsail_fleet_unchanged": true,
+    "hook_ship": "갈고리별호의 은빛 둥근 갈고리는 규찬의 하역 도구 문양이다. 기존 구록·갈고리단과 관계없는 별개 배다.",
+    "red_crab_ship": "붉은집게호는 크림색 돛의 붉은 게 문양이며 가람의 붉은돛 선단이나 위장선이 아니다.",
+    "never_enemy_characters": [
+      "가람",
+      "서린",
+      "여울"
+    ],
+    "main_53": "기존 구록 체포와 기존 적 disabled_by 처리에 관여하지 않는다."
+  },
+  "source_files": [
+    "ASTRA_ORDER_7.md",
+    "06_pirates.json",
+    "02_ships.json",
+    "03_ports.json",
+    "19_ship_parts.json",
+    "20_crew.json",
+    "23_crew_missions.json",
+    "24_ship_stage5.json"
+  ],
+  "integration_notes": {
+    "program_code_changed": false,
+    "existing_values_changed": false,
+    "build28_integration_tested": false,
+    "balances_are_static_proposals": true
+  }
+}

@@ -1,0 +1,626 @@
+{
+  "schema_version": 1,
+  "design_status": "order7_data_for_integration",
+  "app_name": "리틀 아일랜드",
+  "souvenirs": [
+    {
+      "id": "souv_haesol_1",
+      "port": "port_haesol",
+      "name": "부두 솔방울",
+      "desc": "부두 그늘에서 주운 작고 단단한 솔방울.",
+      "icon_index": 0,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_haesol_2",
+      "port": "port_haesol",
+      "name": "조개 단추",
+      "desc": "작업복 주머니에서 나온 크림빛 조개 단추.",
+      "icon_index": 1,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_haesol_3",
+      "port": "port_haesol",
+      "name": "작은 부표",
+      "desc": "해솔항의 귀항길을 닮은 빨강과 크림색 부표.",
+      "icon_index": 2,
+      "chance": 0.2,
+      "rarity": "rare",
+      "effect": null
+    },
+    {
+      "id": "souv_saltflat_1",
+      "port": "port_saltflat",
+      "name": "소금 주머니",
+      "desc": "입구를 꼭 묶어 둔 손바닥만 한 소금 포대.",
+      "icon_index": 3,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_saltflat_2",
+      "port": "port_saltflat",
+      "name": "염전 갈퀴",
+      "desc": "소금여울의 낮은 물길을 빗던 작은 나무 갈퀴.",
+      "icon_index": 4,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_saltflat_3",
+      "port": "port_saltflat",
+      "name": "소금꽃",
+      "desc": "햇볕 아래서 꽃처럼 자란 하얀 소금 결정.",
+      "icon_index": 5,
+      "chance": 0.2,
+      "rarity": "rare",
+      "effect": null
+    },
+    {
+      "id": "souv_pottery_1",
+      "port": "port_pottery",
+      "name": "작은 찻잔",
+      "desc": "손잡이가 조금 비뚤어져 더 정다운 찻잔.",
+      "icon_index": 6,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_pottery_2",
+      "port": "port_pottery",
+      "name": "물결 접시",
+      "desc": "푸른 물결 한 줄이 둘러진 작은 도자기 접시.",
+      "icon_index": 7,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_pottery_3",
+      "port": "port_pottery",
+      "name": "도기 풍경",
+      "desc": "바람을 받으면 가볍게 울리는 푸른 도기 종.",
+      "icon_index": 8,
+      "chance": 0.2,
+      "rarity": "rare",
+      "effect": null
+    },
+    {
+      "id": "souv_windneck_1",
+      "port": "port_windneck",
+      "name": "돛천 조각",
+      "desc": "수선소에서 남겨 준 튼튼한 크림색 돛천.",
+      "icon_index": 9,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_windneck_2",
+      "port": "port_windneck",
+      "name": "바람 리본",
+      "desc": "바람목의 바람을 따라 나부끼는 두 갈래 리본.",
+      "icon_index": 10,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_windneck_3",
+      "port": "port_windneck",
+      "name": "작은 풍향계",
+      "desc": "새가 바라보는 쪽으로 바람을 읽는 풍향계.",
+      "icon_index": 11,
+      "chance": 0.2,
+      "rarity": "rare",
+      "effect": null
+    },
+    {
+      "id": "souv_pineshade_1",
+      "port": "port_pineshade",
+      "name": "나무 단면",
+      "desc": "솔그늘 목재의 둥근 나이테가 보이는 조각.",
+      "icon_index": 12,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_pineshade_2",
+      "port": "port_pineshade",
+      "name": "대패 말이",
+      "desc": "대패 끝에서 돌돌 말려 나온 얇은 나무 리본.",
+      "icon_index": 13,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_pineshade_3",
+      "port": "port_pineshade",
+      "name": "나무 새",
+      "desc": "남은 판재를 깎아 만든 손바닥 크기의 새.",
+      "icon_index": 14,
+      "chance": 0.2,
+      "rarity": "rare",
+      "effect": null
+    },
+    {
+      "id": "souv_redanchor_1",
+      "port": "port_redanchor",
+      "name": "납작 매듭",
+      "desc": "잡아당겨도 모양이 흐트러지지 않는 납작매듭.",
+      "icon_index": 15,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_redanchor_2",
+      "port": "port_redanchor",
+      "name": "붉은 닻 배지",
+      "desc": "밧줄 작업장에서 나눠 준 작은 붉은 닻 배지.",
+      "icon_index": 16,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_redanchor_3",
+      "port": "port_redanchor",
+      "name": "밧줄 바구니",
+      "desc": "짧은 닻줄을 모아 엮은 튼튼한 손잡이 바구니.",
+      "icon_index": 17,
+      "chance": 0.2,
+      "rarity": "rare",
+      "effect": null
+    },
+    {
+      "id": "souv_fogferry_1",
+      "port": "port_fogferry",
+      "name": "말린 생선 묶음",
+      "desc": "안개나루 건조대에서 정성껏 묶은 작은 생선.",
+      "icon_index": 18,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_fogferry_2",
+      "port": "port_fogferry",
+      "name": "하얀 봉투",
+      "desc": "아직 받는 이가 적히지 않은 깨끗한 편지 봉투.",
+      "icon_index": 19,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_fogferry_3",
+      "port": "port_fogferry",
+      "name": "안개종",
+      "desc": "안개 속에서 부두를 알리던 손잡이 달린 종.",
+      "icon_index": 20,
+      "chance": 0.2,
+      "rarity": "rare",
+      "effect": null
+    },
+    {
+      "id": "souv_glasscape_1",
+      "port": "port_glasscape",
+      "name": "유리 구슬",
+      "desc": "바닷빛이 조그맣게 고인 둥근 유리 구슬.",
+      "icon_index": 21,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_glasscape_2",
+      "port": "port_glasscape",
+      "name": "초록 유리병",
+      "desc": "렌즈 공방 옆에서 고른 납작한 초록빛 병.",
+      "icon_index": 22,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_glasscape_3",
+      "port": "port_glasscape",
+      "name": "빛모음 프리즘",
+      "desc": "등대 불빛을 여러 빛깔로 나누는 작은 프리즘.",
+      "icon_index": 23,
+      "chance": 0.2,
+      "rarity": "rare",
+      "effect": null
+    },
+    {
+      "id": "souv_reedbay_1",
+      "port": "port_reedbay",
+      "name": "황금 이삭",
+      "desc": "갈대만 창고 앞에서 묶어 준 잘 여문 곡식.",
+      "icon_index": 24,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_reedbay_2",
+      "port": "port_reedbay",
+      "name": "갈대 피리",
+      "desc": "갈대 줄기에 구멍을 내어 만든 짧은 피리.",
+      "icon_index": 25,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_reedbay_3",
+      "port": "port_reedbay",
+      "name": "짚배",
+      "desc": "짚을 촘촘히 엮어 만든 작은 평저선 모형.",
+      "icon_index": 26,
+      "chance": 0.2,
+      "rarity": "rare",
+      "effect": null
+    },
+    {
+      "id": "souv_paperwater_1",
+      "port": "port_paperwater",
+      "name": "종이학",
+      "desc": "기록지의 남는 모서리로 접어 준 하얀 학.",
+      "icon_index": 27,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_paperwater_2",
+      "port": "port_paperwater",
+      "name": "빈 두루마리",
+      "desc": "다음 항해를 적을 수 있도록 비워 둔 종이.",
+      "icon_index": 28,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_paperwater_3",
+      "port": "port_paperwater",
+      "name": "압화 책갈피",
+      "desc": "말린 들꽃 한 송이를 끼워 만든 종이 책갈피.",
+      "icon_index": 29,
+      "chance": 0.2,
+      "rarity": "rare",
+      "effect": null
+    },
+    {
+      "id": "souv_whitesail_1",
+      "port": "port_whitesail",
+      "name": "작은 망치",
+      "desc": "손에 맞게 손잡이를 다듬은 작은 목공 망치.",
+      "icon_index": 30,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_whitesail_2",
+      "port": "port_whitesail",
+      "name": "손바닥 렌치",
+      "desc": "부두의 작은 볼트를 조일 때 쓰던 짧은 렌치.",
+      "icon_index": 31,
+      "chance": 0.2,
+      "rarity": "common",
+      "effect": null
+    },
+    {
+      "id": "souv_whitesail_3",
+      "port": "port_whitesail",
+      "name": "황동 측정자",
+      "desc": "연장 장인이 손질한 반짝이는 황동 측정 도구.",
+      "icon_index": 32,
+      "chance": 0.2,
+      "rarity": "rare",
+      "effect": null
+    }
+  ],
+  "milestones": [
+    {
+      "id": "souvenir_count_5",
+      "count": 5,
+      "condition": {
+        "kind": "unique_souvenir_count_at_least",
+        "value": 5
+      },
+      "reward": {
+        "gold": 200,
+        "cosmetic_id": null
+      },
+      "card": "항구의 기억 다섯 개를 모았어요."
+    },
+    {
+      "id": "souvenir_count_10",
+      "count": 10,
+      "condition": {
+        "kind": "unique_souvenir_count_at_least",
+        "value": 10
+      },
+      "reward": {
+        "gold": 350,
+        "cosmetic_id": null
+      },
+      "card": "작은 기념품이 열 개 모였어요."
+    },
+    {
+      "id": "souvenir_count_15",
+      "count": 15,
+      "condition": {
+        "kind": "unique_souvenir_count_at_least",
+        "value": 15
+      },
+      "reward": {
+        "gold": 400,
+        "cosmetic_id": "souvenir_15_bow"
+      },
+      "card": "조개 장식과 함께 항해해요."
+    },
+    {
+      "id": "souvenir_count_20",
+      "count": 20,
+      "condition": {
+        "kind": "unique_souvenir_count_at_least",
+        "value": 20
+      },
+      "reward": {
+        "gold": 600,
+        "cosmetic_id": null
+      },
+      "card": "스무 가지 항구 이야기가 생겼어요."
+    },
+    {
+      "id": "souvenir_count_25",
+      "count": 25,
+      "condition": {
+        "kind": "unique_souvenir_count_at_least",
+        "value": 25
+      },
+      "reward": {
+        "gold": 700,
+        "cosmetic_id": "souvenir_25_sail"
+      },
+      "card": "돛에 새 나침반 무늬를 달아요."
+    },
+    {
+      "id": "souvenir_count_30",
+      "count": 30,
+      "condition": {
+        "kind": "unique_souvenir_count_at_least",
+        "value": 30
+      },
+      "reward": {
+        "gold": 1000,
+        "cosmetic_id": null
+      },
+      "card": "도감의 빈칸이 세 개 남았어요."
+    },
+    {
+      "id": "souvenir_count_33",
+      "count": 33,
+      "condition": {
+        "kind": "unique_souvenir_count_at_least",
+        "value": 33
+      },
+      "reward": {
+        "gold": 1500,
+        "cosmetic_id": "souvenir_33_globe"
+      },
+      "card": "서른세 가지 기억을 다 모았어요."
+    },
+    {
+      "id": "souvenir_all_ports",
+      "count": null,
+      "condition": {
+        "kind": "all_ports_have_at_least_one",
+        "ports": [
+          "port_haesol",
+          "port_saltflat",
+          "port_pottery",
+          "port_windneck",
+          "port_pineshade",
+          "port_redanchor",
+          "port_fogferry",
+          "port_glasscape",
+          "port_reedbay",
+          "port_paperwater",
+          "port_whitesail"
+        ],
+        "minimum_per_port": 1
+      },
+      "reward": {
+        "gold": 600,
+        "cosmetic_id": "souvenir_all_ports_flag"
+      },
+      "card": "열한 항구의 기억이 이어졌어요."
+    }
+  ],
+  "collection_rules": {
+    "catalog_name": "항해 도감",
+    "acquire_at": "destination_port_arrival",
+    "required_port_state": "기존 항구 해금과 최소 배 단계 조건을 충족하여 실제 목적지 도착 이벤트가 정상 처리된 경우",
+    "chance_per_arrival": 0.2,
+    "chance_field_semantics": "각 항목의 chance=0.2는 그 항구 도착 1회의 공통 획득 판정 확률을 반복 표기한 것이다. 아이템마다 독립 추첨하거나 세 값을 합산하지 않는다.",
+    "roll_order": [
+      "목적지 port의 미소장 항목만 모은다.",
+      "미소장 항목이 없으면 추첨 없이 종료한다.",
+      "도착 1회에 20% 확률 판정을 한 번 한다.",
+      "성공하면 미소장 목록에서 같은 확률로 한 개를 골라 영구 소장한다."
+    ],
+    "maximum_new_items_per_arrival": 1,
+    "missing_item_selection": "uniform_among_unowned_in_destination_port",
+    "rarity_meaning": "도감의 수집품 등급 표기이며 별도 확률 가중치를 뜻하지 않는다. common과 rare 모두 미소장 목록 안에서 같은 확률로 선택한다.",
+    "probability_examples": [
+      {
+        "unowned_count": 3,
+        "any_new_item": 0.2,
+        "per_unowned_item_fraction": "1/15",
+        "no_new_item": 0.8
+      },
+      {
+        "unowned_count": 2,
+        "any_new_item": 0.2,
+        "per_unowned_item_fraction": "1/10",
+        "no_new_item": 0.8
+      },
+      {
+        "unowned_count": 1,
+        "any_new_item": 0.2,
+        "per_unowned_item_fraction": "1/5",
+        "no_new_item": 0.8
+      },
+      {
+        "unowned_count": 0,
+        "any_new_item": 0.0,
+        "per_unowned_item_fraction": "0",
+        "no_new_item": 1.0
+      }
+    ],
+    "completed_port_behavior": "세 개를 모두 소장한 항구에서는 새 기념품이나 대체 금화·쪽지·자원을 주지 않는다.",
+    "duplicate_items": false,
+    "consume_or_sell_souvenirs": false,
+    "stats_or_ship_effect": null,
+    "warehouse_capacity_used": 0,
+    "cargo_capacity_used": 0,
+    "is_specialty_cargo": false,
+    "requires_specialty_purchase": false,
+    "ordinary_voyage_counts": true,
+    "crew_special_mission_voyage_counts": true,
+    "home_return_does_not_roll_again": true,
+    "visiting_port_screen_does_not_roll": true,
+    "past_arrivals_retroactive": false,
+    "pirate_or_boss_loss": "기념품은 화물이 아니므로 보통 해적이나 우두머리에게 패배해도 소장 기록을 잃지 않는다.",
+    "one_ship_one_destination": "한 번의 항해에 기존 목적지 도착 이벤트 한 개만 사용한다. 그림 속 다른 항구나 이야기 배경은 방문으로 세지 않는다."
+  },
+  "milestone_rules": {
+    "evaluate_after": "신규 기념품 소장 기록을 확정한 같은 도착 정산에서 검사한다.",
+    "count_source": "서로 다른 souvenir.id의 영구 소장 개수",
+    "all_ports_source": "지정된 11개 port 각각에서 소장 기념품이 하나 이상인지 검사한다. 방문 횟수나 해금 항구 수로 대신하지 않는다.",
+    "all_ports_is_not_count_11": true,
+    "first_claim_only": true,
+    "auto_grant": true,
+    "story_read_required": false,
+    "crossed_multiple_thresholds": "동시에 충족한 미지급 이정표를 모두 지급한다. count 이정표는 오름차순, 전 항구 이정표는 그 다음에 처리한다.",
+    "gold_unit": "integer_gold; credit wallet cents by reward.gold * 100",
+    "gold_not_multiplied_by_trade_crew_or_charm_effects": true,
+    "cosmetic_grant": "27_ship_cosmetics_2.json의 해당 ID를 영구 소장 목록에 한 번 추가한다. 자동 장착하거나 기존 장식을 해제하지 않는다.",
+    "already_owned_cosmetic": "이미 가진 장식이면 중복 지급이나 다른 보상으로 바꾸지 않는다. 해당 이정표의 미지급 금화만 원래대로 한 번 정산한다.",
+    "cosmetic_reward_source": "이 파일의 milestones.reward가 보상 원본이다. 27의 획득 조건 설명은 같은 완료 ID를 조회하며 별도 금화 보상을 다시 지급하지 않는다.",
+    "no_completion_reset": true,
+    "catalog_view_reward": 0
+  },
+  "settlement_rules": {
+    "arrival_key": "save_id + voyage_id + destination_port_arrival",
+    "milestone_key": "save_id + milestone_id + first_grant",
+    "persist_even_when_no_drop": true,
+    "persist_randomness": "항해 도착별 추첨 여부·추첨 결과·선택 ID를 저장한다. 앱 다시 열기·도감 열기·결과 카드 재생은 재추첨하지 않는다.",
+    "atomic_commit": [
+      "도착 이벤트 처리 장부",
+      "추첨 결과와 선택한 기념품 ID",
+      "영구 기념품 소장 목록",
+      "새 이정표 완료 ID",
+      "이정표 금화·장식 지급 내역"
+    ],
+    "return_summary": "귀항 카드에는 도착 정산 장부에 이미 기록된 기념품과 이정표 보상을 요약한다. 귀항 때 소장·금화·장식을 다시 지급하지 않는다.",
+    "interrupted_arrival": "저장 전 중단이면 같은 도착 이벤트와 저장된 RNG 결정으로 완료하고, 이미 확정된 도착이면 장부만 읽는다.",
+    "existing_save": "기념품 필드가 없는 저장은 빈 소장 목록·도착 장부·이정표 장부로 시작한다. 기존 항해 기록을 신규 획득으로 다시 돌리지 않는다.",
+    "existing_collection": "이미 있는 소장 ID와 이정표 장부를 보존한다. 알려진 소장 ID로 미완료 이정표만 재검사하며 지급 장부가 있으면 반복하지 않는다.",
+    "unknown_ids": "지원하지 않는 저장 ID는 보존하되 33개 도감 개수·항구 이정표 계산과 이미지 조회에서는 제외한다.",
+    "random_seed_scope": "기존 저장된 voyage_id와 항해 난수 시드에 destination_port_arrival/souvenir 키를 더해 고정한다. 동일 도착을 재개할 때 같은 난수 결정과 미확정 소장 스냅샷을 사용한다."
+  },
+  "offline_rules": {
+    "maximum_credited_seconds": 28800,
+    "simulation_order": "기존 최대 8시간 인정 구간에서 실제 순서대로 도착 이벤트를 처리한다.",
+    "same_resolver_as_online": true,
+    "maximum_items_per_completed_arrival": 1,
+    "incomplete_outbound": "아직 목적지에 도착하지 않은 항해에는 추첨하지 않는다.",
+    "after_arrival_before_return": "도착 정산이 끝났다면 기념품 소장은 유지한다. 미완료 귀항을 이유로 취소하거나 귀항 때 다시 추첨하지 않는다.",
+    "after_credited_window": "인정 구간 밖의 추정 도착에는 획득·이정표 보상을 추가하지 않는다."
+  },
+  "display_rules": {
+    "name_max_characters": 10,
+    "milestone_card_max_characters": 24,
+    "length_count": "공백·문장부호를 포함한 유니코드 문자 수",
+    "layout": "항구 순서대로 3개씩 표시하고 미소장 항목은 빈 윤곽으로 둔다.",
+    "port_order": [
+      "port_haesol",
+      "port_saltflat",
+      "port_pottery",
+      "port_windneck",
+      "port_pineshade",
+      "port_redanchor",
+      "port_fogferry",
+      "port_glasscape",
+      "port_reedbay",
+      "port_paperwater",
+      "port_whitesail"
+    ],
+    "count_label": "소장한 기념품 {owned}/33",
+    "arrival_chance_label": "이 항구에 도착할 때 20% 확률로 미소장 기념품 1개를 얻어요.",
+    "completed_port_label": "이 항구의 기념품을 모두 모았어요.",
+    "stat_notice": "기념품은 능력치를 바꾸지 않아요.",
+    "all_ports_label": "11개 항구에서 기념품 하나씩 모으기"
+  },
+  "art": {
+    "file": "art/souvenir_icons.png",
+    "sheet_size": [
+      1536,
+      1536
+    ],
+    "grid": [
+      6,
+      6
+    ],
+    "cell_size": [
+      256,
+      256
+    ],
+    "index_order": "row_major",
+    "used_indices": [
+      0,
+      32
+    ],
+    "empty_indices": [
+      33,
+      34,
+      35
+    ],
+    "background_key": "#FF00FF",
+    "sampling": "nearest_neighbor"
+  },
+  "integration_notes": {
+    "program_code_changed": false,
+    "existing_balance_changed": false,
+    "source_files": [
+      "ASTRA_ORDER_7.md",
+      "03_ports.json",
+      "shared_plan.json"
+    ],
+    "actual_build_tested": false,
+    "scope": "build-28에 추가할 데이터 설계다. 이번 첨부에 실제 build-28 코드가 없어 통합 실행을 검증한 결과로 표시하지 않는다.",
+    "new_save_fields": [
+      "owned_souvenir_ids",
+      "souvenir_arrival_ledger",
+      "completed_souvenir_milestone_ids",
+      "souvenir_milestone_reward_ledger"
+    ]
+  }
+}

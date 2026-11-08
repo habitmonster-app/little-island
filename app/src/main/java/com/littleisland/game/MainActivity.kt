@@ -48,6 +48,7 @@ class MainActivity : Activity(), AppUi.Host {
     override fun openJournal() = openJournalList()
     override fun openMap() = openMapPuzzle()
     override fun openCargo() = openCargoPuzzle()
+    override fun openTraining() = openTrainingPuzzle()
     override fun openTutorial() = showTutorial(0)
     override fun pickTime() {
         val opts = arrayOf("지금", "낮", "노을", "밤"); val hs = arrayOf<Float?>(null, 12f, 18.6f, 23f)
@@ -80,6 +81,39 @@ class MainActivity : Activity(), AppUi.Host {
         box.addView(v, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = pad / 2 })
         box.addView(Button(this).apply { text = "고른 상자 돌리기"; setOnClickListener { v.rotateSelected() } })
         dlg = AlertDialog.Builder(this).setTitle("짐 정리").setView(box).setNegativeButton("나중에", null).show()
+    }
+
+    private fun openTrainingPuzzle() {
+        val t = Game.trainStart() ?: return toast("오늘 훈련은 다 했어요. 내일 다시 3번!")
+        var dlg: AlertDialog? = null
+        val timer = TextView(this).apply { textSize = 15f }
+        var left = Fleet.trainSeconds
+        lateinit var v: TrainingPuzzleView
+        val tick = object : Runnable {
+            override fun run() {
+                if (v.over) return
+                left--
+                timer.text = "남은 시간 " + left + "초"
+                if (left <= 0) v.timeUp() else ui.postDelayed(this, 1000L)
+            }
+        }
+        v = TrainingPuzzleView(this, t, Fleet.trainMaxSwaps) { ok, swaps ->
+            ui.removeCallbacks(tick)
+            ui.postDelayed({
+                dlg?.dismiss()
+                val msg = if (ok) "성공! 뽑기 쪽지 +" + Game.trainDone(t, swaps) + "장 (" + swaps + "번 바꿈)" else "아쉬워요. 다음엔 더 빨리 맞춰 봐요"
+                AlertDialog.Builder(this).setTitle("훈련 끝").setMessage(msg + "\n오늘 남은 도전 " + Game.trainLeft + "번").setPositiveButton("좋아요", null).show()
+            }, 600L)
+        }
+        timer.text = "남은 시간 " + left + "초"
+        val pad = (16 * dp).toInt()
+        val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(pad, pad, pad, 0) }
+        box.addView(TextView(this).apply { text = "상자 두 개를 차례로 누르면 자리가 바뀌어요. 위 표시처럼 칸마다 같은 상자를 모아 주세요."; textSize = 13f })
+        box.addView(timer)
+        box.addView(v, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = pad / 2 })
+        dlg = AlertDialog.Builder(this).setTitle("선원 훈련").setView(box).setNegativeButton("그만하기") { _, _ -> v.timeUp() }.show()
+        dlg.setOnDismissListener { ui.removeCallbacks(tick) }
+        ui.postDelayed(tick, 1000L)
     }
 
     private fun openMapPuzzle() {

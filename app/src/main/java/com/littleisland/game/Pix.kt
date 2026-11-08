@@ -336,10 +336,16 @@ object Pix {
                 "skill" -> Art.cell("skill_icons", 4, 4, idx, px)
                 "face" -> Art.cell("worker_portraits", 4, 3, idx, px)
                 "deco" -> Art.cell("ship_deco", 4, 4, idx, px)
+                "deco2" -> Art.cell("ship_deco_2", 4, 4, idx, px)
+                "souv" -> Art.cell("souvenir_icons", 6, 6, idx, px)
+                "charm" -> Art.cell("charm_icons", 6, 4, idx, px)
+                "chest" -> Art.cell("gacha_chest", 4, 1, idx, px)
+                "boss" -> Art.cell("boss_captains", 4, 2, idx, px)
+                "bossship" -> Art.cell("pirate_bosses", 4, 2, idx, px)
                 else -> null
             }
             if (bm != null) { blit(c, bm, x, y, 10 * s, alpha); return }
-            return icon(c, when (name.substring(0, ci)) { "face" -> "person"; "part", "deco" -> "ship"; else -> "book" }, x, y, s, alpha)
+            return icon(c, when (name.substring(0, ci)) { "face", "boss" -> "person"; "part", "deco", "deco2", "bossship" -> "ship"; else -> "book" }, x, y, s, alpha)
         }
         val k = iconOrder.indexOf(name)
         if (k >= 0) Art.cell("icons", 4, 4, k, (10 * s * hi(c)).toInt())?.let { blit(c, it, x, y, 10 * s, alpha); return }

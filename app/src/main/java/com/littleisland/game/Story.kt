@@ -69,6 +69,16 @@ object Story {
                         sum, s.optString("body"), sum.substringBefore("\n"), names.keys.indexOf(id)))
                 }
             }
+            // 해적 우두머리 첫 승리 이야기 (25_pirate_bosses.json)
+            try {
+                val bs = JSONObject(c.assets.open("25_pirate_bosses.json").bufferedReader(Charsets.UTF_8).use { it.readText() }).getJSONArray("bosses")
+                for (i in 0 until bs.length()) {
+                    val b = bs.getJSONObject(i); val st = b.optJSONObject("story") ?: continue
+                    val id = st.optString("id", "story_" + b.getString("id"))
+                    entries.add(Entry(id, SIDE, "우두머리 · " + b.optString("name"), st.optString("title"), id, null,
+                        b.optString("captain") + " 선장의 배를 처음 이긴 날", st.optString("body"), "우두머리 이야기가 열렸어요"))
+                }
+            } catch (e: Exception) { }
             // 특별 항해 이야기 (23_crew_missions.json): 첫 성공 때 열림
             try {
                 val ms = JSONObject(c.assets.open("23_crew_missions.json").bufferedReader(Charsets.UTF_8).use { it.readText() }).getJSONArray("missions")

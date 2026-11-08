@@ -14,6 +14,7 @@ class AppUi(val scene: Scene, val host: Host) {
     interface Host {
         fun toast(s: String)
         fun openJournal(); fun openMap(); fun openCargo(); fun openTutorial(); fun pickTime(); fun setWallpaper()
+        fun openTraining() {}
     }
 
     /** 좌표는 가로 200도트 그대로 쓰고, 실제 그림은 SC배 크기로 그려서 글자·아이콘이 또렷하게 */
@@ -34,6 +35,7 @@ class AppUi(val scene: Scene, val host: Host) {
     private val tabs = listOf("store" to "짓기", "ship" to "배", "anchor" to "항로", "person" to "선원", "map" to "퍼즐", "book" to "일지", "gear" to "설정")
     var tab = 0
     private var popup: Tile? = null
+    private var after: Tile? = null      // 버튼을 누른 뒤 이어서 띄울 창 (뽑기 결과)
     private var page = 0
     private val tileRects = ArrayList<Pair<Rect, Tile>>()
     private val tabRects = ArrayList<Rect>()
@@ -162,20 +164,41 @@ class AppUi(val scene: Scene, val host: Host) {
                     val info = "배 꾸미기 · " + Fleet.slotName(slot) + "\n" + (cur?.let { it.name + ": " + it.desc } ?: "지금은 비어 있어요") + (next?.let { "\n누르면 → " + it.name } ?: "") +
                         "\n\n" + list + "\n\n모양만 바뀌어요. 능력치는 그대로예요."
                     l.add(if (own.isEmpty()) Tile("lock", "꾸미기 " + Fleet.slotName(slot), "아직 없음", St.LOCKED, info)
-                        else Tile(cur?.let { "deco:" + it.icon } ?: "deco:" + own[0].icon, Fleet.slotName(slot) + " " + own.size + "/" + all.size,
+                        else Tile(cur?.iconKey ?: own[0].iconKey, Fleet.slotName(slot) + " " + own.size + "/" + all.size,
                             cur?.name ?: "비어 있음", if (cur != null) St.ON else St.NORMAL, info, null,
                             if (next != null) "바꿔 달기" else "떼기",
                             { Game.setDeco(slot, next?.id) }, next?.let { it.name + "을(를) 달았어요" } ?: Fleet.slotName(slot) + " 장식을 뗐어요"))
                     for (dc in all) if (!dc.auto && dc.id !in Game.decoOwned && Game.decoReady(dc))
-                        l.add(Tile("deco:" + dc.icon, dc.name, "금화 " + dc.gold, if (Game.gold >= dc.gold) St.READY else St.NORMAL,
+                        l.add(Tile(dc.iconKey, dc.name, "금화 " + dc.gold, if (Game.gold >= dc.gold) St.READY else St.NORMAL,
                             dc.desc + "\n자리: " + Fleet.slotName(slot) + "\n모양만 바뀌어요. 능력치는 그대로예요.", Data.Cost(dc.gold, 0, 0), "사기", { Game.buyDeco(dc.id) }, dc.name + "을(를) 달았어요"))
                 }
             }
             2 -> {
+                // 항해 도감과 해적 우두머리
+                if (Fleet.souvenirs.isNotEmpty()) {
+                    val n = Game.souvOwned.size; val tot = Fleet.souvenirs.size
+                    val first = Fleet.souvenirs.lastOrNull { it.id in Game.souvOwned }
+                    val ports = Data.ports.joinToString("\n") { pt -> val sv = Fleet.souvenirs.filter { it.port == pt.id }
+                        pt.name + " " + sv.count { it.id in Game.souvOwned } + "/" + sv.size }
+                    val ms = Fleet.milestones.joinToString("\n") { m -> (if (m.id in Game.milesDone) "● " else "○ ") +
+                        (if (m.allPorts) "11개 항구에서 하나씩" else m.count.toString() + "개") + " · 금화 " + m.gold + (m.deco?.let { id -> " + " + (Fleet.deco(id)?.name ?: "장식") } ?: "") }
+                    l.add(Tile(first?.let { "souv:" + it.icon } ?: "book", "항해 도감", "$n/$tot", if (n > 0) St.ON else St.NORMAL,
+                        "항구에 도착하면 가끔 기념품을 얻어요 (도착할 때마다 20%).\n모으면 금화와 배 장식을 받아요. 능력치는 없어요.\n\n" + ports + "\n\n" + ms))
+                }
+                if (Fleet.bosses.isNotEmpty()) {
+                    val won = Game.bossWins.size
+                    val list = Fleet.bosses.joinToString("\n") { b -> (if (b.id in Game.bossWins) "● " else "○ ") + b.name + " · 배 " + b.minShip + "단계 · " +
+                        b.ports.mapNotNull { id -> Data.ports.firstOrNull { it.id == id }?.name }.joinToString(", ") }
+                    val last = Fleet.bosses.lastOrNull { it.id in Game.bossWins }
+                    l.add(Tile(last?.let { "boss:" + it.face } ?: "boss:0", "해적 우두머리", "$won/" + Fleet.bosses.size, if (won > 0) St.ON else St.NORMAL,
+                        "해적을 만나면 가끔(4%) 우두머리 배가 대신 나와요. 보통 해적보다 세요.\n처음 이기면 금화, 지도 조각, 전용 배 장식, 이야기를 받아요.\n져도 짐만 조금 잃어요.\n\n" + list))
+                }
                 for (p in Data.ports) {
                     val u = Data.unlock(p.id)
                     val open = p.id == "port_haesol" || Game.has(p.id)
-                    val info = p.name + "\n나무 " + fmt(p.buyW) + " · 돌 " + fmt(p.buyS) + "금화에 사요\n해적 " + (p.risk * 100).toInt() + "% · 거리 " + fmt(p.distance) + "\n" + p.look
+                    val sv = Fleet.souvenirs.filter { it.port == p.id }
+                    val info = p.name + "\n나무 " + fmt(p.buyW) + " · 돌 " + fmt(p.buyS) + "금화에 사요\n해적 " + (p.risk * 100).toInt() + "% · 거리 " + fmt(p.distance) + "\n" + p.look +
+                        (if (sv.isNotEmpty()) "\n\n기념품 " + sv.count { it.id in Game.souvOwned } + "/" + sv.size + "\n" + sv.joinToString("\n") { (if (it.id in Game.souvOwned) "● " + it.name else "○ ???") } else "")
                     l.add(when {
                         open && Game.route == p.id -> Tile("anchor", p.name, "지금 항로", St.ON, info)
                         open && Game.routeOk(p) -> Tile("anchor", p.name, "고르기", St.NORMAL, info, null, "이 항로로", { Game.setRoute(p.id) }, p.name + "로 다음 출항부터 가요")
@@ -187,6 +210,42 @@ class AppUi(val scene: Scene, val host: Host) {
             }
             3 -> {
                 val now = System.currentTimeMillis()
+                // 부적 뽑기 (게임 안 쪽지·금화로만), 훈련 퍼즐, 가진 부적
+                if (Fleet.charms.isNotEmpty()) {
+                    val rates = "일반 70% · 희귀 25% · 영웅 5%\n같은 등급 안의 부적은 모두 같은 확률이에요.\n(일반 각 5.83%, 희귀 각 3.13%, 영웅 각 1.25%)\n" +
+                        "영웅이 " + Fleet.pityAt + "번 연속 안 나오면 다음은 영웅 확정 (지금 " + Game.pity + "/" + Fleet.pityAt + ")\n같은 부적이 또 나오면 한 단계 올라가요 (최대 5).\n5단계면 쪽지 " + Fleet.dupRefund + "장을 돌려줘요."
+                    fun result(gold: Boolean): Tile? {
+                        val r = Game.lastDraw ?: return null
+                        val ch = r.charm
+                        return Tile("charm:" + ch.icon, ch.name + " Lv" + r.level, when { r.refund > 0 -> "쪽지 +" + r.refund; r.isNew -> "새 부적!"; else -> "한 단계 업!" },
+                            St.READY, Fleet.rarityName(ch.rarity) + " 부적" + (if (r.forced) " (확정)" else "") + "\n" + ch.desc + "\n\n효과: " + eff(ch.effect, Game.charmValue(ch, null)) +
+                                "\n" + ch.role + "이(가) 달면 1.5배\n\n선원 탭의 부적 칸에서 선원에게 달 수 있어요.",
+                            null, if (Game.canDraw(gold)) "한 번 더" else null, { (Game.draw(gold) != null).also { if (it) after = result(gold) } })
+                    }
+                    l.add(Tile("chest:0", "부적 뽑기", "쪽지 " + Game.tickets + "장", if (Game.canDraw(false)) St.READY else St.NORMAL,
+                        "항해 쪽지 " + Fleet.gachaTickets + "장으로 부적 하나를 뽑아요. 쪽지는 항해에서 돌아올 때마다 1장, 훈련 퍼즐로 더 받아요.\n진짜 돈은 쓰지 않아요.\n\n" + rates,
+                        null, if (Game.canDraw(false)) "쪽지 " + Fleet.gachaTickets + "장으로 뽑기" else null, { (Game.draw(false) != null).also { if (it) after = result(false) } }))
+                    l.add(Tile("chest:2", "금화로 뽑기", "금화 " + Fleet.gachaGold, if (Game.canDraw(true)) St.NORMAL else St.LOCKED,
+                        "금화 " + Fleet.gachaGold + "으로 부적 하나를 뽑아요. 확률은 쪽지 뽑기와 같아요.\n\n" + rates,
+                        null, if (Game.canDraw(true)) "금화로 뽑기" else null, { (Game.draw(true) != null).also { if (it) after = result(true) } }))
+                    Game.trainCheckDay()
+                    l.add(Tile("map", "훈련 퍼즐", "오늘 " + Game.trainLeft + "번", if (Game.trainLeft > 0) St.READY else St.DONE,
+                        "짐칸 맞추기: 위쪽 그림처럼 같은 짐을 세로 두 칸에 모아요.\n상자 두 개를 차례로 누르면 자리가 바뀌어요.\n" + Fleet.trainSeconds + "초 안에 " + Fleet.trainMaxSwaps + "번까지 바꿀 수 있어요.\n" +
+                            "가장 짧게 풀면 쪽지 3장, 한 번 더 바꾸면 2장, 그보다 더 바꾸면 1장이에요.\n하루 " + Fleet.trainPerDay + "번 도전해요.",
+                        null, if (Game.trainLeft > 0) "도전" else null, { host.openTraining(); true }))
+                    for (ch in Fleet.charms) {
+                        val lv = Game.charmLv[ch.id] ?: continue
+                        val who = Game.charmOn.entries.firstOrNull { it.value == ch.id }?.key
+                        val crewList = Game.promoted.toList()
+                        val nextWho = if (crewList.isEmpty()) null else { val k = crewList.indexOf(who); if (k + 1 < crewList.size) crewList[k + 1] else null }
+                        l.add(Tile("charm:" + ch.icon, ch.name + " Lv" + lv, who?.let { Fleet.crewOf(it)?.name } ?: "보관 중", if (who != null) St.ON else St.NORMAL,
+                            Fleet.rarityName(ch.rarity) + " 부적 · Lv" + lv + "/" + ch.values.size + "\n" + ch.desc + "\n\n효과: " + eff(ch.effect, Game.charmValue(ch, null)) +
+                                "\n" + ch.role + "이(가) 달면 1.5배 (" + eff(ch.effect, Game.charmValue(ch, null) * 1.5f) + ")\n지금: " + (who?.let { (Fleet.crewOf(it)?.name ?: "") + "이(가) 달고 있어요" } ?: "아무도 안 달았어요") +
+                                (nextWho?.let { "\n누르면 → " + (Fleet.crewOf(it)?.name ?: "") } ?: "") + "\n\n배에 탄 선원의 부적만 효과가 있어요.",
+                            null, if (crewList.isEmpty()) null else if (nextWho != null) "바꿔 달기" else "떼기", { Game.equipCharm(ch.id, nextWho) },
+                            nextWho?.let { ch.name + " → " + (Fleet.crewOf(it)?.name ?: "") } ?: ch.name + "을(를) 뗐어요"))
+                    }
+                }
                 // 배에 탄 선원 → 대기 선원 → 승진할 수 있는 알바
                 val order = Game.aboard + Game.promoted.filter { it !in Game.aboard }
                 for (id in order) {
@@ -202,7 +261,7 @@ class AppUi(val scene: Scene, val host: Host) {
                     val full = !on && Game.aboard.size >= Game.slots()
                     l.add(Tile("face:$pi", c.name + " Lv" + lv, if (on) "탑승" else "대기", if (on) St.ON else St.NORMAL,
                         c.role + "\n경험치 " + (if (next != null) Game.crewXp(id).toString() + "/" + next else "최고") + " (항해마다 +" + Fleet.xpPerVoyage + ")\n\n" + skills +
-                            (if (syn.isNotEmpty()) "\n\n$syn" else "") + (if (full) "\n\n자리가 꽉 찼어요. 다른 선원을 내리면 태울 수 있어요." else ""),
+                            (if (syn.isNotEmpty()) "\n\n$syn" else "") + (Game.charmOn[id]?.let { Fleet.charm(it) }?.let { "\n\n부적: " + it.name + " (" + eff(it.effect, Game.charmValue(it, id)) + ")" } ?: "") + (if (full) "\n\n자리가 꽉 찼어요. 다른 선원을 내리면 태울 수 있어요." else ""),
                         null, if (on) "내리기" else if (full) null else "태우기", { Game.toggleAboard(id) }, if (on) c.name + " 다음 항해는 쉬어요" else c.name + " 다음 항해에 타요"))
                 }
                 for (w in Data.workers) {
@@ -366,7 +425,7 @@ class AppUi(val scene: Scene, val host: Host) {
         btnRect = null
         if (t.btn != null && t.act != null) {
             val ok = t.cost == null || Game.canPay(t.cost)
-            val bw = 70f; val bx = px + (pw - bw) / 2
+            val bw = maxOf(70f, k.width(t.btn, 10) + 16f); val bx = px + (pw - bw) / 2
             k.button(c, bx, y - 4, bw, 18f, t.btn, ok)
             if (ok) btnRect = Rect(bx.toInt() - 4, (y - 8).toInt(), (bx + bw).toInt() + 4, (y + 18).toInt())
         }
@@ -381,7 +440,7 @@ class AppUi(val scene: Scene, val host: Host) {
             if (b != null && b.contains(ix, iy)) {
                 val ok = pop.act?.invoke() ?: false
                 if (ok && pop.done != null) host.toast(pop.done)
-                popup = null
+                popup = if (ok) after else null; after = null
             } else popup = null
             return
         }

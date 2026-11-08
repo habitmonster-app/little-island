@@ -277,6 +277,7 @@ class Scene {
         val u = pirateU()
         val fight = u >= 0f && u < pA / (pA + .035f)
         if (fight) {
+            Fleet.boss(v.pirate)?.let { b -> v.crew.firstOrNull { it in b.crewLines }?.let { id -> if (Random.nextBoolean()) { say(id, b.crewLines[id]!!); return true } } }
             val id = v.crew.random(); val l = Fleet.voices[id]?.fight?.randomOrNull() ?: return false
             say(id, l); return true
         }
@@ -776,26 +777,26 @@ class Scene {
     private fun shipDeco(x: Float, bottom: Float, sw: Float, lv: Int, time: Float) {
         if (Game.decoOn.isEmpty()) return
         val i = (lv - 1).coerceIn(0, 4)
-        val on = Art.has("ship_deco_on")
         fun px(cx: Int) = x + (cx / 128f - .5f) * sw
         fun py(cy: Int) = bottom - (1 - cy / 128f) * sw
         for ((slot, id) in Game.decoOn) {
             val d = Fleet.deco(id) ?: continue
+            val on = Art.has(d.onSheet); val ons = d.onSheet; val ics = d.iconSheet
             when (slot) {
                 // 무늬 가운데(칸 가운데)를 큰 돛 가운데에
-                "sail" -> (if (on) acell("ship_deco_on", 4, 4, d.icon, 12) else Art.sub("ship_deco", 4, 4, d.icon, .24f, .34f, .80f, .74f, 9 * SS))?.let {
+                "sail" -> (if (on) acell(ons, 4, 4, d.icon, 12) else Art.sub(ics, 4, 4, d.icon, .24f, .34f, .80f, .74f, 9 * SS))?.let {
                     Art.draw(c, it, px(SAIL[i][0]), py(SAIL[i][1]) + (if (on) 6f else 3f)) }
                 // 깃발 천의 왼쪽 가운데(칸 왼쪽 가운데)를 깃대 꼭대기 옆에
                 "flag" -> {
                     val wave = if ((floor(time * 3) % 2).toInt() == 0) 0f else 1f
                     val m = if (Game.lookStage() == 3) intArrayOf(MAST3[i][0] + 3, MAST3[i][1] + 1) else MAST[i]
-                    if (on) acell("ship_deco_on", 4, 4, d.icon, 14)?.let { Art.draw(c, it, px(m[0]) + 1f + 7f, py(m[1]) + 3f + 7f + wave) }
-                    else Art.sub("ship_deco", 4, 4, d.icon, .32f, .14f, .94f, .68f, 10 * SS)?.let { Art.draw(c, it, px(m[0]) + 5.5f, py(m[1]) + 6f + wave) }
+                    if (on) acell(ons, 4, 4, d.icon, 14)?.let { Art.draw(c, it, px(m[0]) + 1f + 7f, py(m[1]) + 3f + 7f + wave) }
+                    else Art.sub(ics, 4, 4, d.icon, .32f, .14f, .94f, .68f, 10 * SS)?.let { Art.draw(c, it, px(m[0]) + 5.5f, py(m[1]) + 6f + wave) }
                 }
                 // 뱃머리·갑판 물건은 칸 아래 가운데가 붙는 곳
-                "figurehead" -> (if (on) acell("ship_deco_on", 4, 4, d.icon, 13) else acell("ship_deco", 4, 4, d.icon, 10))?.let {
+                "figurehead" -> (if (on) acell(ons, 4, 4, d.icon, 13) else acell(ics, 4, 4, d.icon, 10))?.let {
                     Art.draw(c, it, px(BOW[i][0]), py(BOW[i][1]) + 4f) }
-                "deck" -> (if (on) acell("ship_deco_on", 4, 4, d.icon, 16) else acell("ship_deco", 4, 4, d.icon, 9))?.let {
+                "deck" -> (if (on) acell(ons, 4, 4, d.icon, 16) else acell(ics, 4, 4, d.icon, 9))?.let {
                     Art.draw(c, it, px(DECKP[i][0]), py(DECKP[i][1]) + (if (on) .5f else 0f)) }
             }
         }
@@ -914,6 +915,9 @@ class Scene {
         val y = y0 + (sin(time * 2.1f) * 1.2f).roundToInt()
         val pv = Game.voy?.pirate ?: ""
         val pi = when { pv.contains("gurok") || pv.contains("blockader") || pv.contains("farwater") -> 2; pv.contains("red") || pv.contains("raider") -> 1; else -> 0 }
+        Fleet.boss(pv)?.let { b -> acell("pirate_bosses", 4, 2, b.sprite, 72)?.let { bm ->
+            c.save(); if (sinking) { c.rotate(18f * min(1f, (y0 - WL) / 20f), x, y); c.clipRect(0f, 0f, W.toFloat(), WL + 4) }
+            Art.draw(c, bm, x, y + 5); c.restore(); return } }
         val pa = Data.pirates.indexOfFirst { it.id == pv }
         ((if (pa in 0..7) acell("pirates_all", 4, 2, pa, 58) else null) ?: acell("pirates", 3, 1, pi, 58))?.let { bm ->
             c.save(); if (sinking) { c.rotate(18f * min(1f, (y0 - WL) / 20f), x, y); c.clipRect(0f, 0f, W.toFloat(), WL + 4) }

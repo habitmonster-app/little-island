@@ -1,0 +1,2412 @@
+{
+  "schema_version": 1,
+  "app_name": "리틀 아일랜드",
+  "order": 7,
+  "index_base": 0,
+  "index_order": "row_major",
+  "background_key": "#FF00FF",
+  "sampling": "nearest_neighbor",
+  "rect_semantics": "[x,y,width,height], 시트 좌상단 기준 픽셀",
+  "bbox_semantics": "[left,top,right_exclusive,bottom_exclusive], 각 칸 내부 픽셀",
+  "anchor_semantics": "각 칸 내부 기준점. sprite top_left = ship_attach_point - anchor * draw_scale",
+  "keying_rule": "RGB=(255,0,255)를 투명 처리한 뒤 가장 가까운 픽셀 방식으로 확대/축소한다. 키를 제거하기 전에 보간하지 않는다.",
+  "visual_notes": [
+    "우두머리 배는 왼쪽, 우리 배에 붙이는 장식은 오른쪽 진행 기준이다.",
+    "22번 기존 장식 시트와 27번 새 장식 시트의 index는 각각 0~15다. ID와 source_sheet를 함께 사용한다.",
+    "부착 장식에는 전시용 깃대·뱃머리 받침·돛천을 넣지 않았다. 지구본 거치대와 시계 받침은 물건 자체의 일부다.",
+    "배 단계별 실제 부착 위치와 축척은 Claude의 앱 통합 후 확인한다."
+  ],
+  "files": [
+    {
+      "file": "art/pirate_bosses.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "grid": [
+        4,
+        2
+      ],
+      "cell_size": [
+        384,
+        512
+      ],
+      "sha256": "5e3bbe4af18a602c6736370cb80fdd6564cdf614e2561761a8fe7d2b62b243a4",
+      "bytes": 1431684,
+      "used_cells": 8,
+      "empty_indices": [],
+      "cells": [
+        {
+          "index": 0,
+          "id": "boss_hook",
+          "rect": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "content_bbox": [
+            9,
+            93,
+            375,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ]
+        },
+        {
+          "index": 1,
+          "id": "boss_red_crab",
+          "rect": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "content_bbox": [
+            10,
+            90,
+            374,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ]
+        },
+        {
+          "index": 2,
+          "id": "boss_kraken",
+          "rect": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "content_bbox": [
+            10,
+            91,
+            375,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ]
+        },
+        {
+          "index": 3,
+          "id": "boss_storm",
+          "rect": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "content_bbox": [
+            8,
+            91,
+            376,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ]
+        },
+        {
+          "index": 4,
+          "id": "boss_coin",
+          "rect": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "content_bbox": [
+            9,
+            95,
+            375,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ]
+        },
+        {
+          "index": 5,
+          "id": "boss_reef",
+          "rect": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "content_bbox": [
+            10,
+            96,
+            375,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ]
+        },
+        {
+          "index": 6,
+          "id": "boss_moon",
+          "rect": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "content_bbox": [
+            9,
+            94,
+            375,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ]
+        },
+        {
+          "index": 7,
+          "id": "boss_serpent",
+          "rect": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "content_bbox": [
+            10,
+            94,
+            374,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ]
+        }
+      ]
+    },
+    {
+      "file": "art/boss_captains.png",
+      "size": [
+        1024,
+        512
+      ],
+      "grid": [
+        4,
+        2
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "sha256": "3baf6d8e35f62d12c2d92ff142476d84f2c0e9a4e60619d60cc888b22bed31ee",
+      "bytes": 560215,
+      "used_cells": 8,
+      "empty_indices": [],
+      "cells": [
+        {
+          "index": 0,
+          "id": "boss_hook",
+          "rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            26,
+            9,
+            231,
+            241
+          ],
+          "anchor": [
+            128,
+            240
+          ],
+          "captain": "규찬"
+        },
+        {
+          "index": 1,
+          "id": "boss_red_crab",
+          "rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            30,
+            9,
+            225,
+            241
+          ],
+          "anchor": [
+            128,
+            240
+          ],
+          "captain": "홍미"
+        },
+        {
+          "index": 2,
+          "id": "boss_kraken",
+          "rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            22,
+            15,
+            235,
+            241
+          ],
+          "anchor": [
+            128,
+            240
+          ],
+          "captain": "묵우"
+        },
+        {
+          "index": 3,
+          "id": "boss_storm",
+          "rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            26,
+            8,
+            231,
+            241
+          ],
+          "anchor": [
+            128,
+            240
+          ],
+          "captain": "우람"
+        },
+        {
+          "index": 4,
+          "id": "boss_coin",
+          "rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            13,
+            235,
+            241
+          ],
+          "anchor": [
+            128,
+            240
+          ],
+          "captain": "금채"
+        },
+        {
+          "index": 5,
+          "id": "boss_reef",
+          "rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            18,
+            9,
+            237,
+            241
+          ],
+          "anchor": [
+            128,
+            240
+          ],
+          "captain": "자갈"
+        },
+        {
+          "index": 6,
+          "id": "boss_moon",
+          "rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            26,
+            14,
+            231,
+            241
+          ],
+          "anchor": [
+            128,
+            240
+          ],
+          "captain": "달온"
+        },
+        {
+          "index": 7,
+          "id": "boss_serpent",
+          "rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            21,
+            8,
+            235,
+            241
+          ],
+          "anchor": [
+            128,
+            240
+          ],
+          "captain": "비취"
+        }
+      ]
+    },
+    {
+      "file": "art/souvenir_icons.png",
+      "size": [
+        1536,
+        1536
+      ],
+      "grid": [
+        6,
+        6
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "sha256": "044230a1966b1f949fede3bf821828ae8d6184797181b4df61b2773cbabf1175",
+      "bytes": 1168880,
+      "used_cells": 33,
+      "empty_indices": [
+        33,
+        34,
+        35
+      ],
+      "cells": [
+        {
+          "index": 0,
+          "id": "souv_haesol_1",
+          "rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            30,
+            236,
+            225
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 1,
+          "id": "souv_haesol_2",
+          "rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            32,
+            236,
+            224
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 2,
+          "id": "souv_haesol_3",
+          "rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            59,
+            20,
+            196,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 3,
+          "id": "souv_saltflat_1",
+          "rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            22,
+            236,
+            234
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 4,
+          "id": "souv_saltflat_2",
+          "rect": [
+            1024,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            23,
+            20,
+            232,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 5,
+          "id": "souv_saltflat_3",
+          "rect": [
+            1280,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            32,
+            236,
+            224
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 6,
+          "id": "souv_pottery_1",
+          "rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            48,
+            236,
+            208
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 7,
+          "id": "souv_pottery_2",
+          "rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            59,
+            236,
+            196
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 8,
+          "id": "souv_pottery_3",
+          "rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            53,
+            20,
+            203,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 9,
+          "id": "souv_windneck_1",
+          "rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            43,
+            236,
+            212
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 10,
+          "id": "souv_windneck_2",
+          "rect": [
+            1024,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            39,
+            236,
+            216
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 11,
+          "id": "souv_windneck_3",
+          "rect": [
+            1280,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            33,
+            236,
+            222
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 12,
+          "id": "souv_pineshade_1",
+          "rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            27,
+            236,
+            229
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 13,
+          "id": "souv_pineshade_2",
+          "rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            26,
+            236,
+            230
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 14,
+          "id": "souv_pineshade_3",
+          "rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            42,
+            236,
+            213
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 15,
+          "id": "souv_redanchor_1",
+          "rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            29,
+            236,
+            226
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 16,
+          "id": "souv_redanchor_2",
+          "rect": [
+            1024,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            26,
+            20,
+            229,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 17,
+          "id": "souv_redanchor_3",
+          "rect": [
+            1280,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            28,
+            20,
+            228,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 18,
+          "id": "souv_fogferry_1",
+          "rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            30,
+            20,
+            226,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 19,
+          "id": "souv_fogferry_2",
+          "rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            47,
+            236,
+            209
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 20,
+          "id": "souv_fogferry_3",
+          "rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            56,
+            20,
+            200,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 21,
+          "id": "souv_glasscape_1",
+          "rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            21,
+            236,
+            234
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 22,
+          "id": "souv_glasscape_2",
+          "rect": [
+            1024,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            37,
+            20,
+            219,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 23,
+          "id": "souv_glasscape_3",
+          "rect": [
+            1280,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            29,
+            236,
+            227
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 24,
+          "id": "souv_reedbay_1",
+          "rect": [
+            0,
+            1024,
+            256,
+            256
+          ],
+          "content_bbox": [
+            38,
+            20,
+            218,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 25,
+          "id": "souv_reedbay_2",
+          "rect": [
+            256,
+            1024,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            20,
+            236,
+            235
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 26,
+          "id": "souv_reedbay_3",
+          "rect": [
+            512,
+            1024,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            29,
+            236,
+            227
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 27,
+          "id": "souv_paperwater_1",
+          "rect": [
+            768,
+            1024,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            35,
+            236,
+            221
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 28,
+          "id": "souv_paperwater_2",
+          "rect": [
+            1024,
+            1024,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            58,
+            236,
+            197
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 29,
+          "id": "souv_paperwater_3",
+          "rect": [
+            1280,
+            1024,
+            256,
+            256
+          ],
+          "content_bbox": [
+            25,
+            20,
+            230,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 30,
+          "id": "souv_whitesail_1",
+          "rect": [
+            0,
+            1280,
+            256,
+            256
+          ],
+          "content_bbox": [
+            33,
+            20,
+            222,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 31,
+          "id": "souv_whitesail_2",
+          "rect": [
+            256,
+            1280,
+            256,
+            256
+          ],
+          "content_bbox": [
+            29,
+            20,
+            227,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 32,
+          "id": "souv_whitesail_3",
+          "rect": [
+            512,
+            1280,
+            256,
+            256
+          ],
+          "content_bbox": [
+            20,
+            50,
+            236,
+            206
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        }
+      ]
+    },
+    {
+      "file": "art/ship_deco_2.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "sha256": "141d37ef7c33074856444144d91990ee5df10d4653a4d80c7f284cf6688a960a",
+      "bytes": 849018,
+      "used_cells": 16,
+      "empty_indices": [],
+      "cells": [
+        {
+          "index": 0,
+          "id": "trophy_hook_flag",
+          "rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            27,
+            16,
+            229,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 1,
+          "id": "trophy_crab_flag",
+          "rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            28,
+            16,
+            228,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 2,
+          "id": "souvenir_all_ports_flag",
+          "rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            22,
+            16,
+            233,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 3,
+          "id": "luxury_royal_flag",
+          "rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            24,
+            16,
+            231,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 4,
+          "id": "trophy_kraken_bow",
+          "rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            21,
+            16,
+            234,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 5,
+          "id": "trophy_storm_bow",
+          "rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            21,
+            16,
+            235,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 6,
+          "id": "souvenir_15_bow",
+          "rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            19,
+            16,
+            236,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 7,
+          "id": "luxury_dolphin_bow",
+          "rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            17,
+            240,
+            238
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 8,
+          "id": "trophy_coin_sail",
+          "rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            19,
+            240,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 9,
+          "id": "trophy_reef_sail",
+          "rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            19,
+            240,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 10,
+          "id": "souvenir_25_sail",
+          "rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            19,
+            240,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 11,
+          "id": "luxury_constellation_sail",
+          "rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            19,
+            240,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 12,
+          "id": "trophy_moon_lantern",
+          "rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            53,
+            16,
+            203,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 13,
+          "id": "trophy_serpent_chest",
+          "rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            30,
+            240,
+            225
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 14,
+          "id": "souvenir_33_globe",
+          "rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            25,
+            16,
+            231,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 15,
+          "id": "luxury_captain_clock",
+          "rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            28,
+            16,
+            228,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        }
+      ]
+    },
+    {
+      "file": "art/ship_deco_on_2.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "sha256": "10a47410cf79fbc3a4f55810b84f199405a906a81b85b9e1308c968096add049",
+      "bytes": 721044,
+      "used_cells": 16,
+      "empty_indices": [],
+      "cells": [
+        {
+          "index": 0,
+          "id": "trophy_hook_flag",
+          "rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            0,
+            46,
+            224,
+            221
+          ],
+          "anchor": [
+            0,
+            128
+          ]
+        },
+        {
+          "index": 1,
+          "id": "trophy_crab_flag",
+          "rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            0,
+            40,
+            224,
+            223
+          ],
+          "anchor": [
+            0,
+            128
+          ]
+        },
+        {
+          "index": 2,
+          "id": "souvenir_all_ports_flag",
+          "rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            0,
+            42,
+            224,
+            215
+          ],
+          "anchor": [
+            0,
+            128
+          ]
+        },
+        {
+          "index": 3,
+          "id": "luxury_royal_flag",
+          "rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            0,
+            40,
+            224,
+            245
+          ],
+          "anchor": [
+            0,
+            128
+          ]
+        },
+        {
+          "index": 4,
+          "id": "trophy_kraken_bow",
+          "rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            52,
+            240,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ]
+        },
+        {
+          "index": 5,
+          "id": "trophy_storm_bow",
+          "rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            48,
+            240,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ]
+        },
+        {
+          "index": 6,
+          "id": "souvenir_15_bow",
+          "rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            46,
+            240,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ]
+        },
+        {
+          "index": 7,
+          "id": "luxury_dolphin_bow",
+          "rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            62,
+            240,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ]
+        },
+        {
+          "index": 8,
+          "id": "trophy_coin_sail",
+          "rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 9,
+          "id": "trophy_reef_sail",
+          "rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            41,
+            240,
+            215
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 10,
+          "id": "souvenir_25_sail",
+          "rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            24,
+            240,
+            231
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 11,
+          "id": "luxury_constellation_sail",
+          "rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            36,
+            240,
+            220
+          ],
+          "anchor": [
+            128,
+            128
+          ]
+        },
+        {
+          "index": 12,
+          "id": "trophy_moon_lantern",
+          "rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            54,
+            24,
+            202,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ]
+        },
+        {
+          "index": 13,
+          "id": "trophy_serpent_chest",
+          "rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            54,
+            240,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ]
+        },
+        {
+          "index": 14,
+          "id": "souvenir_33_globe",
+          "rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            26,
+            24,
+            230,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ]
+        },
+        {
+          "index": 15,
+          "id": "luxury_captain_clock",
+          "rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            28,
+            24,
+            228,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ]
+        }
+      ]
+    },
+    {
+      "file": "art/charm_icons.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "grid": [
+        6,
+        4
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "sha256": "fd0bd0aa843280792e966270cfc53f3b305d9bbc43cde89c6351435ecf63763c",
+      "bytes": 1639728,
+      "used_cells": 24,
+      "empty_indices": [],
+      "cells": [
+        {
+          "index": 0,
+          "id": "charm_rope_bracelet",
+          "rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 1,
+          "id": "charm_flint_pin",
+          "rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 2,
+          "id": "charm_shell_pendant",
+          "rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 3,
+          "id": "charm_crate_key",
+          "rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 4,
+          "id": "charm_wind_chime",
+          "rect": [
+            1024,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 5,
+          "id": "charm_wood_plane",
+          "rect": [
+            1280,
+            0,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 6,
+          "id": "charm_brass_compass",
+          "rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 7,
+          "id": "charm_paper_bird",
+          "rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 8,
+          "id": "charm_spyglass",
+          "rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 9,
+          "id": "charm_soup_ladle",
+          "rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 10,
+          "id": "charm_brass_weight",
+          "rect": [
+            1024,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 11,
+          "id": "charm_anchor_pin",
+          "rect": [
+            1280,
+            256,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "frame_color": "wood"
+        },
+        {
+          "index": 12,
+          "id": "charm_silver_knot",
+          "rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "frame_color": "teal"
+        },
+        {
+          "index": 13,
+          "id": "charm_granite_token",
+          "rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "frame_color": "teal"
+        },
+        {
+          "index": 14,
+          "id": "charm_sail_patch",
+          "rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "frame_color": "teal"
+        },
+        {
+          "index": 15,
+          "id": "charm_glass_seal",
+          "rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "frame_color": "teal"
+        },
+        {
+          "index": 16,
+          "id": "charm_cedar_badge",
+          "rect": [
+            1024,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "frame_color": "teal"
+        },
+        {
+          "index": 17,
+          "id": "charm_signal_bell",
+          "rect": [
+            1280,
+            512,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "frame_color": "teal"
+        },
+        {
+          "index": 18,
+          "id": "charm_lucky_fish",
+          "rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "frame_color": "teal"
+        },
+        {
+          "index": 19,
+          "id": "charm_rescue_whistle",
+          "rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "frame_color": "teal"
+        },
+        {
+          "index": 20,
+          "id": "charm_star_badge",
+          "rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "epic",
+          "frame_color": "gold"
+        },
+        {
+          "index": 21,
+          "id": "charm_shell_compass",
+          "rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "epic",
+          "frame_color": "gold"
+        },
+        {
+          "index": 22,
+          "id": "charm_amber_crate",
+          "rect": [
+            1024,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "epic",
+          "frame_color": "gold"
+        },
+        {
+          "index": 23,
+          "id": "charm_harbor_lantern",
+          "rect": [
+            1280,
+            768,
+            256,
+            256
+          ],
+          "content_bbox": [
+            16,
+            16,
+            240,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "epic",
+          "frame_color": "gold"
+        }
+      ]
+    },
+    {
+      "file": "art/gacha_chest.png",
+      "size": [
+        512,
+        128
+      ],
+      "grid": [
+        4,
+        1
+      ],
+      "cell_size": [
+        128,
+        128
+      ],
+      "sha256": "df8df547180883efc466f7e1df0040b798975c032de0a2a1f5ed2e88da26eadf",
+      "bytes": 58554,
+      "used_cells": 4,
+      "empty_indices": [],
+      "cells": [
+        {
+          "index": 0,
+          "id": "closed",
+          "rect": [
+            0,
+            0,
+            128,
+            128
+          ],
+          "content_bbox": [
+            20,
+            45,
+            108,
+            121
+          ],
+          "anchor": [
+            64,
+            120
+          ],
+          "label_ko": "닫힘"
+        },
+        {
+          "index": 1,
+          "id": "shaking",
+          "rect": [
+            128,
+            0,
+            128,
+            128
+          ],
+          "content_bbox": [
+            15,
+            33,
+            114,
+            122
+          ],
+          "anchor": [
+            64,
+            120
+          ],
+          "label_ko": "흔들림"
+        },
+        {
+          "index": 2,
+          "id": "opening",
+          "rect": [
+            256,
+            0,
+            128,
+            128
+          ],
+          "content_bbox": [
+            20,
+            38,
+            108,
+            121
+          ],
+          "anchor": [
+            64,
+            120
+          ],
+          "label_ko": "열림 중"
+        },
+        {
+          "index": 3,
+          "id": "open",
+          "rect": [
+            384,
+            0,
+            128,
+            128
+          ],
+          "content_bbox": [
+            20,
+            5,
+            108,
+            121
+          ],
+          "anchor": [
+            64,
+            120
+          ],
+          "label_ko": "완전히 열림"
+        }
+      ]
+    }
+  ]
+}

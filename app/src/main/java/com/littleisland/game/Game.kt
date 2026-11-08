@@ -59,6 +59,17 @@ object Game {
     val aboard = ArrayList<String>()                   // 다음 출항에 탈 선원
     private val crewLv = HashMap<String, Int>()
     private val crewXp = HashMap<String, Int>()
+    // 7차: 우두머리, 도감, 부적, 훈련
+    val bossWins = LinkedHashSet<String>()               // 처음 이긴 우두머리
+    val souvOwned = LinkedHashSet<String>()              // 모은 기념품
+    val milesDone = LinkedHashSet<String>()              // 받은 도감 이정표
+    var tickets = 0; private set                         // 항해 쪽지
+    val charmLv = HashMap<String, Int>()                 // 가진 부적 → 단계(1~5)
+    val charmOn = HashMap<String, String>()              // 선원 → 단 부적
+    var pity = 0; private set                            // 영웅 안 나온 연속 횟수
+    var trainDay = -1L; private set
+    var trainLeft = 0; private set
+    var trainSet: List<String> = emptyList(); private set   // 오늘의 문제 3개
     var missionQ: String? = null; private set          // 다음 출항에 할 특별 항해
     val missionsDone = LinkedHashSet<String>()           // 성공한 특별 항해
     val decoOwned = LinkedHashSet<String>()             // 가진 배 장식
@@ -72,7 +83,18 @@ object Game {
     fun crewLevel(id: String) = crewLv[id] ?: 1
     fun crewXp(id: String) = crewXp[id] ?: 0
     fun slots() = Fleet.slots(shipLevel)
-    fun crewBonus(ids: List<String> = aboard): Map<String, Float> = Fleet.bonus(ids) { crewLevel(it) }
+    fun crewBonus(ids: List<String> = aboard): Map<String, Float> = Fleet.bonus(ids, { crewLevel(it) }, charmBonus(ids))
+    /** 탄 선원이 단 부적 효과 (역할이 맞으면 1.5배). 상한은 선원 스킬과 함께 한 번에 씌운다 */
+    fun charmBonus(ids: List<String>): Map<String, Float> {
+        val m = HashMap<String, Float>()
+        for (id in ids) { val ch = Fleet.charm(charmOn[id]) ?: continue; val v = charmValue(ch, id); m[ch.effect] = (m[ch.effect] ?: 0f) + v }
+        return m
+    }
+    fun charmValue(ch: Fleet.Charm, crewId: String?): Float {
+        val lv = (charmLv[ch.id] ?: 1).coerceIn(1, ch.values.size)
+        val role = crewId?.let { Fleet.crewOf(it)?.role }
+        return ch.values[lv - 1] * (if (role != null && role == ch.role) 1.5f else 1f)
+    }
     private fun cb(ids: List<String>, k: String) = crewBonus(ids)[k] ?: 0f
 
     /** 배 그림 단계(0~3): 이번 배 단계 기준 레벨을 넘은 부품 수 */
@@ -187,6 +209,12 @@ object Game {
         promoted.clear(); sp.getString("promoted", "")!!.split(",").filter { it.isNotEmpty() }.forEach { promoted.add(it) }
         aboard.clear(); sp.getString("aboard", "")!!.split(",").filter { it.isNotEmpty() && it in promoted }.forEach { aboard.add(it) }
         sp.getString("crewLv", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewLv[k] = v.toIntOrNull() ?: 1 }
+        fun set(k: String, to: MutableSet<String>) { to.clear(); sp.getString(k, "")!!.split(",").filter { it.isNotEmpty() }.forEach { to.add(it) } }
+        set("bossWins", bossWins); set("souvOwned", souvOwned); set("milesDone", milesDone)
+        tickets = sp.getInt("tickets", 0); pity = sp.getInt("pity", 0)
+        charmLv.clear(); sp.getString("charmLv", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); charmLv[k] = v.toIntOrNull() ?: 1 }
+        charmOn.clear(); sp.getString("charmOn", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); if (v in charmLv) charmOn[k] = v }
+        trainDay = sp.getLong("trainDay", -1L); trainLeft = sp.getInt("trainLeft", 0); trainSet = sp.getString("trainSet", "")!!.split(",").filter { it.isNotEmpty() }
         missionQ = sp.getString("missionQ", null)
         missionsDone.clear(); sp.getString("missionsDone", "")!!.split(",").filter { it.isNotEmpty() }.forEach { missionsDone.add(it) }
         decoOwned.clear(); sp.getString("decoOwned", "")!!.split(",").filter { it.isNotEmpty() }.forEach { decoOwned.add(it) }
@@ -236,6 +264,10 @@ object Game {
             putString("parts", parts.entries.joinToString(",") { it.key + ":" + it.value })
             putString("promoted", promoted.joinToString(",")); putString("aboard", aboard.joinToString(","))
             putString("crewLv", crewLv.entries.joinToString(",") { it.key + ":" + it.value })
+            putString("bossWins", bossWins.joinToString(",")); putString("souvOwned", souvOwned.joinToString(",")); putString("milesDone", milesDone.joinToString(","))
+            putInt("tickets", tickets); putInt("pity", pity)
+            putString("charmLv", charmLv.entries.joinToString(",") { it.key + ":" + it.value }); putString("charmOn", charmOn.entries.joinToString(",") { it.key + ":" + it.value })
+            putLong("trainDay", trainDay); putInt("trainLeft", trainLeft); putString("trainSet", trainSet.joinToString(","))
             putString("missionQ", missionQ); putString("missionsDone", missionsDone.joinToString(","))
             putString("decoOwned", decoOwned.joinToString(",")); putString("decoOn", decoOn.entries.joinToString(",") { it.key + ":" + it.value })
             putString("crewXp", crewXp.entries.joinToString(",") { it.key + ":" + it.value })
@@ -382,6 +414,12 @@ object Game {
                 pickWeighted(ok) { it.weight }
             }
         }
+        // 해적을 만났으면 가끔 우두머리가 대신 나온다 (우두머리마다 4% 구간, 한 번의 추첨)
+        if (pirate != null && !forced) {
+            val ok = Fleet.bosses.filter { shipLevel >= it.minShip && has(it.unlock) && p.id in it.ports }
+            var r = Random.nextFloat()
+            for (b in ok) { if (r < b.chance) { pirate = Data.pirate(b.id) ?: pirate; break }; r -= b.chance }
+        }
         val win = pirate?.let { Random.nextFloat() < winChance(it, crew) } ?: true
         val sec = voyageSeconds(p, crew).let { if (m == null) it else ceil(it * m.durMult).coerceIn(Data.minSeconds, Data.maxSeconds) }
         voy = Voyage(t, sec, p.id, cw, cs, pirate != null, pirate?.id, win, 0, 0L, null, 0L, crew, m?.id)
@@ -399,7 +437,19 @@ object Game {
                 val pr = Data.pirate(v.pirate ?: "") ?: Data.pirates.firstOrNull()
                 flag("pirate_1")
                 lastBattle = if (v.win) "pirate_win" else "pirate_lose"; lastBattleAt = t
-                if (pr != null) {
+                val boss = Fleet.boss(pr?.id)
+                if (pr != null && boss != null) {
+                    if (v.win) {
+                        val g = Random.nextInt(pr.winGold[0], max(pr.winGold[0], pr.winGold[1]) + 1)
+                        v.rewardC = g * 100L
+                        card("우두머리 " + boss.name + "을 물리쳤어요!", "귀항하면 금화 +$g\n" + boss.captain + ": “" + boss.loseLine + "”")
+                    } else {
+                        val lose = pr.lose * (1 - min(.5f, partLossCut() + cb(v.crew, "repair_after_loss")))
+                        val lw = v.cw - floor(v.cw * (1 - lose)).toInt(); val ls = v.cs - floor(v.cs * (1 - lose)).toInt()
+                        v.cw -= lw; v.cs -= ls
+                        card("우두머리 " + boss.name + "에게 당했어요", "짐을 빼앗겼어요 나무 -$lw 돌 -$ls\n" + boss.captain + ": “" + boss.winLine + "”")
+                    }
+                } else if (pr != null) {
                     if (v.win) {
                         val g = Random.nextInt(pr.winGold[0], max(pr.winGold[0], pr.winGold[1]) + 1)
                         v.rewardC = g * 100L
@@ -423,6 +473,7 @@ object Game {
             v.hire = tryHire(p, t)
             v.hire?.let { goldC -= (Data.worker(it)?.wage ?: 0) * 100L }
             card(p.name + "에 도착했어요", "짐을 팔아 금화 +" + sale / 100 + (v.hire?.let { ", " + (Data.worker(it)?.name ?: "") + " 고용" } ?: ""))
+            rollSouvenir(p.id)
         }
         if (v.step == 2 && f >= Data.fLeave) v.step = 3
         if (v.step >= 2 && f >= 1f) returnHome(v, v.start + (v.dur * 1000).toLong())
@@ -469,6 +520,12 @@ object Game {
         lastReturnAt = t
         card("배가 돌아왔어요", line)
         for (id in v.crew) giveXp(id, Fleet.xpPerVoyage)
+        tickets++
+        Fleet.boss(v.pirate)?.let { b -> if (v.encounter && v.win && bossWins.add(b.id)) {
+            goldC += b.rewardGold * 100L; if (b.rewardMaps > 0) mapPieces += b.rewardMaps
+            flag(b.storyId)
+            card("우두머리 첫 승리!", b.name + " · 금화 +" + b.rewardGold + (if (b.rewardMaps > 0) ", 지도 조각 +" + b.rewardMaps else ""))
+        } }
         Fleet.mission(v.mission)?.let { settleMission(it, v) }
         rollEvent(v)
         // 11화부터는 귀항할 때마다 최대 한 화씩
@@ -645,6 +702,8 @@ object Game {
             "game_flag" -> has(c.key)
             "counter_at_least" -> (if (c.key == "treasures") treasures else voyages) >= c.value
             "any_promoted_crew_level_at_least" -> promoted.any { crewLevel(it) >= c.value }
+            "boss_first_win" -> c.key in bossWins
+            "souvenir_milestone_complete" -> c.key in milesDone
             else -> false
         }
     }
@@ -653,7 +712,7 @@ object Game {
         for (d in Fleet.decos) {
             if (!d.auto || d.id in decoOwned || !decoReady(d)) continue
             decoOwned.add(d.id)
-            if (decoOn[d.slot] == null) decoOn[d.slot] = d.id
+            if (decoOn[d.slot] == null && d.sheet == 1) decoOn[d.slot] = d.id    // 2탄은 자동으로 달지 않음
             card("배 장식을 얻었어요", Fleet.slotName(d.slot) + " · " + d.name)
         }
     }
@@ -673,6 +732,90 @@ object Game {
         if (id !in decoOwned) return false
         if (decoOn[d.slot] == id) decoOn.remove(d.slot) else decoOn[d.slot] = id
         save(); return true
+    }
+
+    // ---------- 항해 도감 ----------
+    private fun rollSouvenir(port: String) {
+        val all = Fleet.souvenirs.filter { it.port == port }
+        val left = all.filter { it.id !in souvOwned }
+        if (left.isEmpty() || Random.nextFloat() >= (all.firstOrNull()?.chance ?: .2f)) return
+        val s = left.random()
+        souvOwned.add(s.id)
+        card("기념품을 얻었어요", s.name + " · 도감 " + souvOwned.size + "/" + Fleet.souvenirs.size)
+        checkMilestones()
+    }
+    fun portsWithSouvenir() = Fleet.souvenirs.filter { it.id in souvOwned }.map { it.port }.toSet().size
+    private fun checkMilestones() {
+        val ports = Fleet.souvenirs.map { it.port }.toSet().size
+        for (m in Fleet.milestones) {
+            if (m.id in milesDone) continue
+            val ok = if (m.allPorts) portsWithSouvenir() >= ports else souvOwned.size >= m.count
+            if (!ok) continue
+            milesDone.add(m.id); goldC += m.gold * 100L
+            card("도감 보상", m.card + (if (m.gold > 0) "\n금화 +" + m.gold else ""))
+        }
+        checkDeco()
+    }
+
+    // ---------- 부적 뽑기 ----------
+    class Draw(val charm: Fleet.Charm, val level: Int, val isNew: Boolean, val refund: Int, val forced: Boolean)
+    var lastDraw: Draw? = null; private set
+    fun canDraw(gold: Boolean) = if (gold) goldC >= Fleet.gachaGold * 100L else tickets >= Fleet.gachaTickets
+    /** 한 번 뽑기. 등급을 먼저 고르고 그 등급 안에서 똑같은 확률로 하나 */
+    @Synchronized fun draw(gold: Boolean): Draw? {
+        if (Fleet.charms.isEmpty() || !canDraw(gold)) return null
+        if (gold) goldC -= Fleet.gachaGold * 100L else tickets -= Fleet.gachaTickets
+        val forced = pity >= Fleet.pityAt
+        val rar = if (forced) "epic" else {
+            val total = Fleet.rarityW.values.sum(); var r = Random.nextInt(total); var pick = "common"
+            for ((k, w) in Fleet.rarityW) { if (r < w) { pick = k; break }; r -= w }
+            pick
+        }
+        val pool = Fleet.charms.filter { it.rarity == rar }.ifEmpty { Fleet.charms }
+        val ch = pool.random()
+        pity = if (ch.rarity == "epic") 0 else pity + 1
+        val had = charmLv[ch.id]
+        var refund = 0
+        val lv = when {
+            had == null -> 1
+            had < ch.values.size -> had + 1
+            else -> { refund = Fleet.dupRefund; tickets += refund; had }
+        }
+        charmLv[ch.id] = lv
+        val d = Draw(ch, lv, had == null, refund, forced)
+        lastDraw = d
+        save(); return d
+    }
+    /** 부적을 이 선원에게 단다 (null이면 뗀다). 다른 선원이 달고 있었으면 옮긴다 */
+    @Synchronized fun equipCharm(charmId: String, crewId: String?): Boolean {
+        if (charmId !in charmLv) return false
+        charmOn.entries.removeAll { it.value == charmId }
+        if (crewId != null) { if (crewId !in promoted) return false; charmOn[crewId] = charmId }
+        save(); return true
+    }
+
+    // ---------- 훈련 퍼즐 ----------
+    private fun today() = (System.currentTimeMillis() + java.util.TimeZone.getDefault().getOffset(System.currentTimeMillis())) / (24 * HOUR)
+    fun trainCheckDay() {
+        val d = today()
+        if (d != trainDay) {
+            trainDay = d; trainLeft = Fleet.trainPerDay
+            trainSet = Fleet.trainings.shuffled(java.util.Random(d)).take(Fleet.trainPerDay).map { it.id }
+        }
+    }
+    /** 도전 시작: 횟수를 하나 쓰고 오늘의 문제를 준다 */
+    @Synchronized fun trainStart(): Fleet.Training? {
+        trainCheckDay()
+        if (trainLeft <= 0) return null
+        val id = trainSet.getOrNull(Fleet.trainPerDay - trainLeft)
+        trainLeft--
+        save()
+        return Fleet.trainings.firstOrNull { it.id == id } ?: Fleet.trainings.randomOrNull()
+    }
+    /** 성공하면 교환 수에 따라 쪽지 3/2/1장 */
+    @Synchronized fun trainDone(t: Fleet.Training, swaps: Int): Int {
+        val n = when { swaps <= t.optimal -> 3; swaps == t.optimal + 1 -> 2; else -> 1 }
+        tickets += n; save(); return n
     }
 
     // ---------- 선원 ----------
@@ -774,6 +917,7 @@ object Game {
         shipLevel = 1; route = "port_haesol"; supplyT = 0f; voy = null; voyages = 0; workers.clear(); completed.clear()
         flags.clear(); opened.clear(); read.clear(); eventLast.clear(); lastEvent = ""; cards.clear(); log.clear(); report = null
         parts.clear(); promoted.clear(); aboard.clear(); crewLv.clear(); crewXp.clear(); decoOwned.clear(); decoOn.clear(); missionQ = null; missionsDone.clear()
+        bossWins.clear(); souvOwned.clear(); milesDone.clear(); tickets = 0; charmLv.clear(); charmOn.clear(); pity = 0; trainDay = -1L; trainLeft = 0
         storyDirty = true
         save()
     }

@@ -35,7 +35,12 @@ object Fleet {
     /** 22_ship_cosmetics.json: 배 꾸미기 (깃발·뱃머리·돛·갑판). 능력치 없이 모양만 */
     class Cond(val type: String, val key: String, val value: Int)
     class Deco(val id: String, val slot: String, val name: String, val icon: Int, val desc: String, val howText: String,
-               val auto: Boolean, val gold: Int, val conds: List<Cond>)
+               val auto: Boolean, val gold: Int, val conds: List<Cond>, val sheet: Int = 1) {
+        /** 고르는 화면 아이콘 이름 ("deco:3" 또는 2탄 "deco2:3") */
+        val iconKey get() = (if (sheet == 2) "deco2:" else "deco:") + icon
+        val onSheet get() = if (sheet == 2) "ship_deco_on_2" else "ship_deco_on"
+        val iconSheet get() = if (sheet == 2) "ship_deco_2" else "ship_deco"
+    }
     val decos = ArrayList<Deco>()
     /** 23_crew_missions.json: 선원 특별 항해 (선원마다 2개) */
     class Mission(val id: String, val crew: String, val title: String, val summary: String,
@@ -45,6 +50,36 @@ object Fleet {
                   val homeLine: String, val resultCard: String)
     val missions = ArrayList<Mission>()
     fun mission(id: String?) = missions.firstOrNull { it.id == id }
+
+    /** 25_pirate_bosses.json: 해적 우두머리 (보통 해적 대신 가끔 나옴) */
+    class Boss(val id: String, val name: String, val captain: String, val minShip: Int, val unlock: String, val ports: List<String>,
+               val chance: Float, val sprite: Int, val face: Int, val rewardGold: Int, val rewardMaps: Int, val rewardDeco: String?,
+               val appear: String, val loseLine: String, val winLine: String, val crewLines: Map<String, String>,
+               val storyId: String, val storyTitle: String, val storyBody: String)
+    val bosses = ArrayList<Boss>()
+    fun boss(id: String?) = bosses.firstOrNull { it.id == id }
+
+    /** 26_souvenirs.json: 항해 도감 */
+    class Souvenir(val id: String, val port: String, val name: String, val desc: String, val icon: Int, val chance: Float, val rare: Boolean)
+    class Milestone(val id: String, val count: Int, val allPorts: Boolean, val gold: Int, val deco: String?, val card: String)
+    val souvenirs = ArrayList<Souvenir>()
+    val milestones = ArrayList<Milestone>()
+
+    /** 28_crew_charms.json: 선원 부적과 뽑기, 훈련 퍼즐 */
+    class Charm(val id: String, val name: String, val rarity: String, val effect: String, val values: List<Float>, val role: String, val icon: Int, val desc: String)
+    class Training(val id: String, val initial: List<String>, val target: List<String>, val optimal: Int)
+    val charms = ArrayList<Charm>()
+    val trainings = ArrayList<Training>()
+    var gachaTickets = 10; private set
+    var gachaGold = 500; private set
+    var rarityW = mapOf("common" to 7000, "rare" to 2500, "epic" to 500); private set
+    var pityAt = 30; private set
+    var dupRefund = 3; private set
+    var trainPerDay = 3; private set
+    var trainSeconds = 60; private set
+    var trainMaxSwaps = 4; private set
+    fun charm(id: String?) = charms.firstOrNull { it.id == id }
+    fun rarityName(r: String) = when (r) { "epic" -> "영웅"; "rare" -> "희귀"; else -> "일반" }
     /** 선원 이야기 그림 칸 (20_crew 순서와 같다) */
     fun artIndex(crewId: String) = crew.indexOfFirst { it.id == crewId }
     val SLOTS = listOf("flag", "figurehead", "sail", "deck")
@@ -57,6 +92,7 @@ object Fleet {
         if (loaded) return
         loaded = true
         loadMissions(c)
+        loadOrder7(c)
         try {
             val d = JSONObject(c.assets.open("19_ship_parts.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
             val ps = d.getJSONArray("parts")
@@ -125,6 +161,76 @@ object Fleet {
         } catch (e: Exception) { }
     }
 
+    private fun json(c: Context, f: String) = JSONObject(c.assets.open(f).bufferedReader(Charsets.UTF_8).use { it.readText() })
+    private fun strs(a: org.json.JSONArray?) = if (a == null) emptyList() else (0 until a.length()).map { a.getString(it) }
+
+    private fun loadOrder7(c: Context) {
+        try {
+            val a = json(c, "25_pirate_bosses.json").getJSONArray("bosses")
+            for (i in 0 until a.length()) {
+                val b = a.getJSONObject(i); val r = b.optJSONObject("first_win_reward") ?: JSONObject()
+                val l = b.optJSONObject("lines") ?: JSONObject(); val st = b.optJSONObject("story") ?: JSONObject()
+                val cl = HashMap<String, String>(); b.optJSONObject("crew_lines")?.let { o -> o.keys().forEach { k -> cl[k] = o.getString(k) } }
+                bosses.add(Boss(b.getString("id"), b.optString("name"), b.optString("captain"), b.optInt("min_ship_level", 2), b.optString("unlock", "start"),
+                    strs(b.optJSONArray("ports")), b.optDouble("chance", .04).toFloat(), b.optInt("sprite_index", i), b.optInt("captain_icon_index", i),
+                    r.optInt("gold"), r.optInt("map_pieces"), if (r.isNull("cosmetic_id")) null else r.optString("cosmetic_id"),
+                    l.optString("appear"), l.optString("lose"), l.optString("win"), cl,
+                    st.optString("id", "story_" + b.getString("id")), st.optString("title"), st.optString("body")))
+            }
+            // 우두머리도 해적 목록에 넣어 둔다 (보통 해적 뽑기에는 안 들어감: normal=false, weight 0)
+            for (i in 0 until a.length()) {
+                val b = a.getJSONObject(i); val wg = b.optJSONArray("win_gold")
+                if (Data.pirates.none { it.id == b.getString("id") })
+                    Data.pirates.add(Data.Pirate(b.getString("id"), b.optString("name"), b.optString("unlock", "start"), emptyList(), emptyList(), false,
+                        strs(b.optJSONArray("ports")), 0, b.optDouble("power", 2.0).toFloat(), intArrayOf(wg?.optInt(0) ?: 50, wg?.optInt(1) ?: 80),
+                        b.optDouble("lose", .3).toFloat(), emptyList()))
+            }
+        } catch (e: Exception) { }
+        try {
+            val d = json(c, "26_souvenirs.json")
+            val a = d.getJSONArray("souvenirs")
+            for (i in 0 until a.length()) { val x = a.getJSONObject(i)
+                souvenirs.add(Souvenir(x.getString("id"), x.optString("port"), x.optString("name"), x.optString("desc"), x.optInt("icon_index", i),
+                    x.optDouble("chance", .2).toFloat(), x.optString("rarity") == "rare")) }
+            val m = d.optJSONArray("milestones")
+            if (m != null) for (i in 0 until m.length()) { val x = m.getJSONObject(i); val r = x.optJSONObject("reward") ?: JSONObject()
+                val cond = x.optJSONObject("condition") ?: JSONObject()
+                milestones.add(Milestone(x.getString("id"), x.optInt("count", cond.optInt("value")), cond.optString("kind").contains("port") || x.getString("id").contains("all_ports"),
+                    r.optInt("gold"), if (r.isNull("cosmetic_id")) null else r.optString("cosmetic_id"), x.optString("card"))) }
+        } catch (e: Exception) { }
+        try {
+            val d = json(c, "27_ship_cosmetics_2.json")
+            val it0 = d.getJSONArray("items")
+            for (i in 0 until it0.length()) {
+                val x = it0.getJSONObject(i); val a = x.optJSONObject("acquisition") ?: JSONObject()
+                val all = a.optJSONArray("all_of")
+                val conds = if (all == null) emptyList() else (0 until all.length()).map { k -> val o = all.getJSONObject(k)
+                    Cond(o.optString("type"), o.optString("key", o.optString("boss_id", o.optString("milestone_id", o.optString("counter")))), o.optInt("value", o.optInt("level"))) }
+                decos.add(Deco(x.getString("id"), x.optString("slot"), x.optString("name"), x.optInt("icon_index", i), x.optString("desc"),
+                    x.optString("how_to_get_text"), a.optString("mode") != "manual_purchase", a.optJSONObject("cost")?.optInt("gold") ?: 0, conds, 2))
+            }
+        } catch (e: Exception) { }
+        try {
+            val d = json(c, "28_crew_charms.json")
+            val a = d.getJSONArray("charms")
+            for (i in 0 until a.length()) { val x = a.getJSONObject(i); val v = x.getJSONArray("value_by_level")
+                charms.add(Charm(x.getString("id"), x.optString("name"), x.optString("rarity"), x.optString("effect"),
+                    (0 until v.length()).map { v.getDouble(it).toFloat() }, x.optString("best_for_role"), x.optInt("icon_index", i), x.optString("desc"))) }
+            d.optJSONObject("gacha")?.let { g ->
+                gachaTickets = g.optInt("cost_tickets", 10); gachaGold = g.optInt("cost_gold", 500)
+                g.optJSONObject("rarity_weights")?.let { o -> rarityW = o.keys().asSequence().associateWith { o.getInt(it) } }
+                g.optJSONObject("pity_rule")?.let { pityAt = it.optInt("force_epic_if_counter_before_draw_at_least", 30) }
+            }
+            val tp = d.optJSONObject("training_puzzle")
+            if (tp != null) {
+                trainPerDay = tp.optInt("plays_per_day", 3); trainSeconds = tp.optInt("timer_seconds", 60); trainMaxSwaps = tp.optInt("max_swaps", 4)
+                val pz = tp.optJSONArray("puzzles")
+                if (pz != null) for (i in 0 until pz.length()) { val x = pz.getJSONObject(i)
+                    trainings.add(Training(x.getString("id"), strs(x.getJSONArray("initial")), strs(x.getJSONArray("target")), x.optInt("optimal_swaps", 1))) }
+            }
+        } catch (e: Exception) { }
+    }
+
     private fun loadMissions(c: Context) {
         try {
             val d = JSONObject(c.assets.open("23_crew_missions.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
@@ -155,8 +261,8 @@ object Fleet {
     fun lookThreshold(shipLevel: Int) = lookThreshold[shipLevel] ?: (shipLevel * 5 - 2)
 
     /** 같이 탄 선원들의 스킬·짝 보너스를 효과별로 더하고 상한을 씌운다 */
-    fun bonus(ids: List<String>, level: (String) -> Int): Map<String, Float> {
-        val m = HashMap<String, Float>()
+    fun bonus(ids: List<String>, level: (String) -> Int, extra: Map<String, Float> = emptyMap()): Map<String, Float> {
+        val m = HashMap<String, Float>(extra)
         for (id in ids) {
             val c = crewOf(id) ?: continue
             val lv = level(id)

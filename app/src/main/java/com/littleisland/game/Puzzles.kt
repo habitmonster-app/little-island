@@ -212,3 +212,81 @@ class CargoPuzzleView(ctx: Context, val onSolved: () -> Unit) : View(ctx) {
         }
     }
 }
+
+/**
+ * 선원 훈련: 2 x 3 상자 바꾸기. 종류가 다른 상자 둘을 차례로 누르면 자리를 바꾼다.
+ * 위 줄 표시처럼 칸마다 같은 종류가 오게 하면 성공. 교환 횟수와 시간에 제한이 있다.
+ */
+class TrainingPuzzleView(ctx: Context, val t: Fleet.Training, val maxSwaps: Int, val onEnd: (ok: Boolean, swaps: Int) -> Unit) : View(ctx) {
+    private val cols = 3; private val rows = 2
+    private val board = t.initial.toMutableList()
+    var swaps = 0; private set
+    private var sel = -1
+    var over = false; private set
+    private val p = Paint().apply { isAntiAlias = true }
+    private val edge = Paint().apply { isAntiAlias = true; style = Paint.Style.STROKE }
+    private val txt = Paint().apply { isAntiAlias = true; color = Color.parseColor("#3a2412"); textAlign = Paint.Align.CENTER }
+    private val kindIcon = mapOf("wood" to "wood", "stone" to "stone", "grain" to "field")
+    private val kindName = mapOf("wood" to "나무", "stone" to "돌", "grain" to "곡식")
+    private val crSrc = Rect(); private val crDst = Rect()
+
+    fun solved() = board == t.target
+    fun timeUp() { if (!over) { over = true; invalidate(); onEnd(false, swaps) } }
+
+    override fun onMeasure(w: Int, h: Int) { val s = MeasureSpec.getSize(w); setMeasuredDimension(s, (s * 1.0f).toInt()) }
+    private fun cs() = width / (cols + .6f)
+    private fun x0() = (width - cols * cs()) / 2f
+    private fun y0() = cs() * .75f
+
+    override fun onTouchEvent(e: MotionEvent): Boolean {
+        if (e.action != MotionEvent.ACTION_DOWN || over) return true
+        val c = ((e.x - x0()) / cs()).toInt(); val r = ((e.y - y0()) / cs()).toInt()
+        if (e.x < x0() || e.y < y0() || c !in 0 until cols || r !in 0 until rows) { sel = -1; invalidate(); return true }
+        val i = r * cols + c
+        when {
+            sel < 0 -> sel = i
+            sel == i -> sel = -1
+            board[sel] == board[i] -> sel = i
+            else -> {
+                val a = board[sel]; board[sel] = board[i]; board[i] = a; sel = -1; swaps++
+                if (solved()) { over = true; invalidate(); onEnd(true, swaps); return true }
+                if (swaps >= maxSwaps) { over = true; invalidate(); onEnd(false, swaps); return true }
+            }
+        }
+        invalidate(); return true
+    }
+
+    private fun crate(cv: Canvas, kind: String, x: Float, y: Float, s: Float, hi: Boolean) {
+        val bm = Art.cell("crates", 4, 2, 0, 64)
+        if (bm != null) {
+            crSrc.set(0, 0, bm.width, bm.height); crDst.set((x + s * .06f).toInt(), (y + s * .06f).toInt(), (x + s * .94f).toInt(), (y + s * .94f).toInt())
+            cv.drawBitmap(bm, crSrc, crDst, null)
+        } else {
+            p.color = Color.parseColor("#b07a44"); cv.drawRect(x + s * .08f, y + s * .08f, x + s * .92f, y + s * .92f, p)
+        }
+        // 무엇이 든 상자인지 가운데에 표시
+        p.color = Color.argb(235, 255, 244, 214); cv.drawCircle(x + s * .5f, y + s * .52f, s * .27f, p)
+        Pix.icon(cv, kindIcon[kind] ?: "wood", x + s * .3f, y + s * .32f, s * .04f)
+        if (hi) { edge.strokeWidth = s * .08f; edge.color = Color.parseColor("#ffd36a"); cv.drawRect(x + s * .05f, y + s * .05f, x + s * .95f, y + s * .95f, edge) }
+    }
+
+    override fun onDraw(cv: Canvas) {
+        val s = cs(); val x0 = x0(); val y0 = y0()
+        // 목표 표시: 칸마다 어떤 상자가 와야 하는지
+        txt.textSize = s * .2f
+        for (c in 0 until cols) {
+            val k = t.target[c]
+            Pix.icon(cv, kindIcon[k] ?: "wood", x0 + c * s + s * .1f, y0 - s * .64f, s * .035f)
+            cv.drawText(kindName[k] ?: "", x0 + c * s + s * .7f, y0 - s * .3f, txt)
+        }
+        p.color = Color.parseColor("#5a3a1e"); cv.drawRect(x0 - s * .08f, y0 - s * .08f, x0 + cols * s + s * .08f, y0 + rows * s + s * .08f, p)
+        for (r in 0 until rows) for (c in 0 until cols) {
+            val i = r * cols + c
+            p.color = if (board[i] == t.target[i]) Color.parseColor("#6f8a3e") else Color.parseColor("#7a5030")
+            cv.drawRect(x0 + c * s + 3, y0 + r * s + 3, x0 + (c + 1) * s - 3, y0 + (r + 1) * s - 3, p)
+            crate(cv, board[i], x0 + c * s, y0 + r * s, s, i == sel)
+        }
+        txt.textSize = s * .2f
+        cv.drawText("바꾼 횟수 " + swaps + " / " + maxSwaps + "   (최소 " + t.optimal + "번)", width / 2f, y0 + rows * s + s * .42f, txt)
+    }
+}
