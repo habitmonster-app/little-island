@@ -30,7 +30,7 @@ class AppUi(val scene: Scene, val host: Host) {
     class Tile(val icon: String, val name: String, val sub: String, val st: St, val detail: String,
                val cost: Data.Cost? = null, val btn: String? = null, val act: (() -> Boolean)? = null, val done: String? = null)
 
-    private val tabs = listOf("store" to "짓기", "ship" to "배", "anchor" to "항로", "person" to "알바", "map" to "퍼즐", "book" to "일지", "gear" to "설정")
+    private val tabs = listOf("store" to "짓기", "ship" to "배", "anchor" to "항로", "person" to "선원", "map" to "퍼즐", "book" to "일지", "gear" to "설정")
     var tab = 0
     private var popup: Tile? = null
     private var page = 0
@@ -52,6 +52,7 @@ class AppUi(val scene: Scene, val host: Host) {
             k == "store_1" -> "창고 1단계"; k == "house_1" -> "첫 숙소"; k == "first_gather" -> "첫 채집"
             k == "lighthouse" -> "등대"; k == "market" -> "장터"; k == "dock" -> "부두"
             k.startsWith("voyages_") -> "항해 " + k.removePrefix("voyages_") + "번"
+            k.startsWith("parts_") -> "부품 4개 모두 Lv" + k.removePrefix("parts_")
             else -> k
         }
     }
@@ -92,6 +93,17 @@ class AppUi(val scene: Scene, val host: Host) {
                 }
             }
             1 -> {
+                for (p in Fleet.parts) {
+                    val lv = Game.partLevel(p.id); val n = Game.partNext(p.id)
+                    val now = if (lv > 0) Fleet.partText(p, Game.partValue(p.id)) else "아직 없음"
+                    val cap = Fleet.maxLevel(Game.shipLevel)
+                    val head = p.name + " Lv" + lv + " · " + p.desc + "\n지금: " + now
+                    l.add(if (n == null) Tile("part:" + p.icon, p.name + " Lv" + lv, if (lv >= 20) "최고" else "배 키우면 더", St.DONE,
+                            head + "\n\n배 " + Game.shipLevel + "단계에서는 Lv" + cap + "까지 올려요." + (if (lv < 20) " 배를 다음 단계로 고치면 더 올릴 수 있어요." else ""))
+                        else Tile("part:" + p.icon, p.name + " Lv" + lv, if (Game.canPay(n.cost)) "올리기!" else Fleet.partText(p, Game.partValue(p.id)),
+                            if (Game.canPay(n.cost)) St.READY else St.NORMAL, head + "\n다음: " + Fleet.partText(p, n.value) + "\n\n배 " + Game.shipLevel + "단계 최대 Lv" + cap,
+                            n.cost, "올리기", { Game.buyPart(p.id) }, p.name + " Lv" + (lv + 1) + "!"))
+                }
                 for (lv in 1..4) {
                     val s = Data.ship(lv)
                     val info = "짐 나무 " + s.cargoW + " · 돌 " + s.cargoS + "\n속도 " + fmt(s.speed) + " · 해적 대응 " + (s.pirateWin * 100).toInt() + "%"
@@ -99,8 +111,10 @@ class AppUi(val scene: Scene, val host: Host) {
                         lv <= Game.shipLevel -> l.add(Tile("ship", lv.toString() + "단계", if (lv == Game.shipLevel) "지금 배" else "지나옴", St.DONE, s.name + "\n" + info))
                         else -> {
                             val u = Data.unlock("ship_$lv") ?: continue
-                            l.add(if (lv == Game.shipLevel + 1) buyTile("ship", lv.toString() + "단계", Game.unlockReady(u), u.cost, s.name + "\n" + info, u.requires +
-                                (if (Game.warehouse < u.needWarehouse) listOf("store_" + u.needWarehouse) else emptyList()), "고치기", { Game.buyUnlock(u.key) }, "배가 " + s.name + "이(가) 됐어요")
+                            val pn = Fleet.needForShip(lv)
+                            l.add(if (lv == Game.shipLevel + 1) buyTile("ship", lv.toString() + "단계", Game.unlockReady(u), u.cost, s.name + "\n" + info + "\n선원 자리 " + Fleet.slots(lv) + "칸", u.requires +
+                                (if (Game.warehouse < u.needWarehouse) listOf("store_" + u.needWarehouse) else emptyList()) + (if (pn > 0) listOf("parts_$pn") else emptyList()),
+                                "고치기", { Game.buyUnlock(u.key) }, "배가 " + s.name + "이(가) 됐어요")
                                 else Tile("lock", lv.toString() + "단계", "잠김", St.LOCKED, s.name + "\n" + info + "\n\n앞 단계를 먼저 고쳐요"))
                         }
                     }
@@ -109,6 +123,9 @@ class AppUi(val scene: Scene, val host: Host) {
                     "나무가 모이면 배가 바로 떠나요.", null, if (Game.autoSail) "끄기" else "켜기", { Game.autoSail = !Game.autoSail; Game.save(); true }))
                 if (!Game.autoSail) l.add(Tile("ship", "지금 출항", if (Game.canSail()) "가능" else "대기", if (Game.canSail()) St.READY else St.NORMAL,
                     "나무 " + Game.LOAD_W + " · 돌 " + Game.LOAD_S + "까지 싣고 떠나요.", null, "출항", { Game.sail() }, "배가 떠났어요"))
+                l.add(Tile("ship", "배 상태", "짐 " + Game.LOAD_W + "/" + Game.LOAD_S, St.NORMAL,
+                    Game.ship().name + "\n짐: 나무 " + Game.LOAD_W + " · 돌 " + Game.LOAD_S + "\n항해 시간 -" + Fleet.pct(Game.speedCut()) +
+                    " (" + (Game.voyageSeconds() / 60).toInt() + "분)\n선원 " + Game.aboard.size + "/" + Game.slots() + "명 탑승"))
             }
             2 -> {
                 for (p in Data.ports) {
@@ -126,6 +143,35 @@ class AppUi(val scene: Scene, val host: Host) {
             }
             3 -> {
                 val now = System.currentTimeMillis()
+                // 배에 탄 선원 → 대기 선원 → 승진할 수 있는 알바
+                val order = Game.aboard + Game.promoted.filter { it !in Game.aboard }
+                for (id in order) {
+                    val c = Fleet.crewOf(id) ?: continue
+                    val on = id in Game.aboard
+                    val lv = Game.crewLevel(id)
+                    val next = Fleet.xpTo.getOrNull(lv - 1)
+                    val skills = c.skills.joinToString("\n") { (if (it.level <= lv) "● " else "○ ") + "Lv" + it.level + " " + it.name + " (" + eff(it.effect, it.value) + ")" }
+                    val syn = Fleet.synergies.filter { it.a == id || it.b == id }.joinToString("\n") { s ->
+                        val other = Fleet.crewOf(if (s.a == id) s.b else s.a)?.name ?: ""
+                        "짝 " + other + ": " + eff(s.effect, s.value) }
+                    val pi = Data.workers.indexOfFirst { it.id == id }
+                    val full = !on && Game.aboard.size >= Game.slots()
+                    l.add(Tile("face:$pi", c.name + " Lv" + lv, if (on) "탑승" else "대기", if (on) St.ON else St.NORMAL,
+                        c.role + "\n경험치 " + (if (next != null) Game.crewXp(id).toString() + "/" + next else "최고") + " (항해마다 +" + Fleet.xpPerVoyage + ")\n\n" + skills +
+                            (if (syn.isNotEmpty()) "\n\n$syn" else "") + (if (full) "\n\n자리가 꽉 찼어요. 다른 선원을 내리면 태울 수 있어요." else ""),
+                        null, if (on) "내리기" else if (full) null else "태우기", { Game.toggleAboard(id) }, if (on) c.name + " 다음 항해는 쉬어요" else c.name + " 다음 항해에 타요"))
+                }
+                for (w in Data.workers) {
+                    if (w.id in Game.promoted || !Game.canPromote(w.id)) continue
+                    val c = Fleet.crewOf(w.id) ?: continue
+                    val pi = Data.workers.indexOf(w)
+                    l.add(Tile("face:$pi", w.name, "선원 승진!", St.READY,
+                        w.name + "이(가) 일을 " + Game.completedOf(w.id) + "번 마쳤어요. 선원이 되면 배에 타서 항해할수록 자라요.\n\n" + c.role + " · " + c.roleDesc + "\n" +
+                            c.skills.joinToString("\n") { "Lv" + it.level + " " + it.name + " (" + eff(it.effect, it.value) + ")" },
+                        Data.Cost(Fleet.promoteGold, 0, 0), "선원으로", { Game.promote(w.id) }, w.name + "이(가) 선원이 됐어요"))
+                }
+                if (Game.promoted.isEmpty()) l.add(Tile("part:4", "선원 되는 법", "자리 " + Game.slots() + "칸", St.NORMAL,
+                    "알바가 섬에서 일을 " + Fleet.promoteContracts + "번 마치면 금화 " + Fleet.promoteGold + "으로 선원이 될 수 있어요. 선원은 배에 타고 항해할 때마다 경험치를 얻어 Lv10까지 자라고, 레벨마다 새 스킬이 열려요. 짝이 맞는 둘을 같이 태우면 보너스가 더 붙어요."))
                 for (i in 0 until 3) {
                     val wk = Game.workers.getOrNull(i)
                     l.add(when {
@@ -166,6 +212,8 @@ class AppUi(val scene: Scene, val host: Host) {
         return l
     }
 
+    private fun eff(e: String, v: Float) = Fleet.effectName(e) + " " + (if (e == "speed_bonus") "-" else "+") +
+        (if (e == "pirate_win_bonus" || e == "event_good_bonus" || e == "treasure_find_bonus") Fleet.pts(v) else Fleet.pct(v))
     private fun fmt(f: Float) = if (f % 1f == 0f) f.toInt().toString() else "%.2f".format(f).trimEnd('0').trimEnd('.')
     private fun mmss(ms: Long): String { val t = (ms / 1000).coerceAtLeast(0); return if (t >= 3600) (t / 3600).toString() + "시간 " + (t % 3600 / 60) + "분" else (t / 60).toString() + "분" }
 

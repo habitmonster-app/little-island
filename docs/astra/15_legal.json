@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "locale": "ko-KR",
+  "prepared_date": "2026-11-08",
+  "status": "draft_pending_round2_source",
+  "ready_to_publish": false,
+  "source_request": "ASTRA_ORDER_4.md",
+  "missing_reference": "to-astra-round2.md",
+  "source_note": "2차 원문을 확보하지 못해 4차 주문과 확인 가능한 기존 프로젝트를 기준으로 새로 작성한 출시 문서 초안입니다. 원래 스키마와 동일하다고 보장하지 않습니다.",
+  "app": {
+    "title": "작은 섬: 돌아오는 바다",
+    "platform": "Android",
+    "observed_package_name": "com.littleisland.game",
+    "release_package_name": null,
+    "operator_name": null,
+    "support_email": null,
+    "privacy_policy_url": null,
+    "effective_date": null,
+    "target_age_group": null
+  },
+  "verification_scope": {
+    "project": "little-island-for-gpt-2 source snapshot",
+    "release_binary_tested": false,
+    "observed_files": [
+      "app/src/main/AndroidManifest.xml",
+      "app/build.gradle.kts",
+      "app/src/main/java/com/littleisland/game/Game.kt",
+      "app/src/main/java/com/littleisland/game/Diag.kt",
+      "app/src/main/assets/galmuri-OFL.md"
+    ],
+    "observations": {
+      "local_save": "SharedPreferences island",
+      "local_diagnostics": "SharedPreferences diag; 배경화면 위치·페이지 신호 횟수·탭 횟수",
+      "manifest_requests_internet_permission": false,
+      "manifest_allow_backup": true,
+      "manifest_requests_runtime_permissions": false,
+      "wallpaper_service_permission": "android.permission.BIND_WALLPAPER",
+      "ads_or_analytics_dependencies_in_app_gradle": false
+    },
+    "limits": "관찰 내용은 전달받은 소스의 정적 확인 결과입니다. 출시 AAB의 병합 매니페스트, 전체 의존성과 실제 통신을 별도로 확인해야 합니다."
+  },
+  "privacy_policy_draft": {
+    "title": "개인정보처리방침",
+    "publication_condition": "운영자·연락처·시행일·공개 URL을 채우고 출시본 데이터 흐름과 아래 문구를 대조한 뒤 게시합니다. 광고·분석·계정 기능을 추가하면 이 초안을 먼저 갱신합니다.",
+    "sections": [
+      {
+        "id": "controller",
+        "title": "1. 운영자와 문의",
+        "body": "{operator_name}은 작은 섬: 돌아오는 바다를 제공합니다. 개인정보 또는 저장 데이터와 관련한 문의는 {support_email}로 보내 주세요. 시행일은 {effective_date}입니다."
+      },
+      {
+        "id": "local_data",
+        "title": "2. 기기에 저장하는 정보",
+        "body": "게임 진행을 이어가기 위해 자원, 건물과 배 성장, 항해 결과, 알바 계약, 열린 이야기와 읽음 상태, 설정, 진행 계산용 시각을 기기에 저장합니다. 선원 기능이 적용된 버전에서는 승진 여부, 편성, 경험치와 스킬 상태도 저장합니다. 배경화면 동작 점검용 신호·탭 횟수가 기기에 기록될 수 있습니다. 이는 게임 기능과 동작 점검에 사용됩니다."
+      },
+      {
+        "id": "transmission",
+        "title": "3. 서버 전송과 제3자 제공",
+        "body": "이 초안의 적용 대상은 별도 로그인·개발자 서버·광고·분석 SDK가 없는 로컬 저장형 출시본입니다. 해당 조건이 검증된 경우 운영자가 앱의 게임 기록을 서버로 수집하거나 광고 업체에 제공하는 기능은 없습니다. 조건이 달라지면 실제 수집 항목, 목적, 제공받는 자와 보유기간을 반영한 방침으로 교체합니다."
+      },
+      {
+        "id": "backup",
+        "title": "4. 운영체제 백업",
+        "body": "기기 및 Android 백업 설정에 따라 게임 저장 정보가 운영체제의 백업 또는 새 기기 이전 대상이 될 수 있습니다. 제공된 소스는 백업 허용 상태이며, 백업 여부와 삭제·복원 방법은 사용 중인 기기와 백업 서비스 설정을 따릅니다. 앱을 지운 뒤 다시 설치할 때 백업에서 진행 정보가 복원될 수 있습니다."
+      },
+      {
+        "id": "retention",
+        "title": "5. 보관과 삭제",
+        "body": "로컬 진행 정보는 게임을 이어가는 동안 기기에 보관됩니다. Android 설정의 앱 저장공간에서 데이터 삭제를 선택해 기기의 앱 데이터를 삭제할 수 있습니다. 이 작업은 게임 진행도 지웁니다. 별도 백업 사본은 기기 백업 설정에서 관리해 주세요."
+      },
+      {
+        "id": "permissions",
+        "title": "6. 권한",
+        "body": "라이브 배경화면 적용은 Android의 배경화면 선택 화면을 통해 사용자가 선택합니다. 제공된 소스에는 연락처·위치·카메라·마이크 접근 권한 요청이 없습니다. 출시 버전에 권한이 추가되면 용도와 선택 방법을 이 문서에 반영합니다."
+      },
+      {
+        "id": "support",
+        "title": "7. 문의 과정의 정보",
+        "body": "이메일로 문의하면 이메일 주소와 사용자가 직접 보낸 문의 내용이 문의 처리 과정에서 전달됩니다. 주민등록번호, 비밀번호 등 민감한 내용은 보내지 말아 주세요. 운영자는 문의 처리에 필요한 정보와 보유기간을 정해 공개하며, 요청은 {support_email}에서 받습니다."
+      },
+      {
+        "id": "updates",
+        "title": "8. 변경 안내",
+        "body": "처리하는 정보나 기능이 달라지면 이 페이지와 앱 내 안내를 갱신합니다. 이용자는 방침 상단의 시행일을 확인할 수 있습니다."
+      }
+    ]
+  },
+  "game_use_notice_draft": {
+    "title": "게임 이용 안내",
+    "sections": [
+      {
+        "id": "progress",
+        "body": "섬의 생산과 항해는 저장된 진행 시각을 기준으로 계산됩니다. 부재 진행은 게임이 안내하는 최대 시간까지만 반영됩니다. 실제로 앱이 계속 실행되는 것은 아닙니다."
+      },
+      {
+        "id": "story",
+        "body": "단·보리·해온은 섬에 머물고, 알바와 선원은 별도의 계약·승진 규칙을 따릅니다. 이야기를 나중에 읽어도 생산과 항해는 계속됩니다."
+      },
+      {
+        "id": "loss",
+        "body": "해적과의 조우는 자동으로 처리됩니다. 패배 시 짐을 잃을 수 있지만 주민과 선원이 다치거나 사라지지 않습니다."
+      },
+      {
+        "id": "save",
+        "body": "기기 데이터 삭제나 백업 상태에 따라 진행을 잃거나 이전 저장이 복원될 수 있습니다. 출시본에서 확인하지 않은 계정 동기화 또는 복구 기능을 약속하지 않습니다."
+      },
+      {
+        "id": "paid_features",
+        "body": "유료 기능, 광고 또는 계정 기능을 추가하는 경우 해당 버전의 안내와 조건을 별도로 제공합니다."
+      }
+    ]
+  },
+  "data_safety_workbook": {
+    "submit_ready": false,
+    "answers": {
+      "collects_user_data": null,
+      "shares_user_data": null,
+      "encryption_in_transit": null,
+      "deletion_request_supported": null,
+      "account_creation_supported": null
+    },
+    "rule": "모든 출시 버전과 포함 SDK를 확인한 뒤 Play Console 문항에 답합니다. 소스에 인터넷 권한이 없다는 사실만으로 제출 답안을 확정하지 않습니다.",
+    "candidate_profile": "검증된 로컬 전용·계정 없음 빌드는 기기 밖 전송 여부를 기준으로 수집/공유 항목을 검토합니다.",
+    "in_app_policy_entry": "설정 > 개인정보처리방침",
+    "public_url_requirements": [
+      "로그인 없이 열리는 공개 웹 페이지",
+      "정책 제목과 앱 이름 표시",
+      "실제 운영자 또는 문의 경로",
+      "게시된 문서의 사용자 편집 불가"
+    ]
+  },
+  "release_checklist": [
+    {
+      "id": "match_round2",
+      "status": "pending",
+      "task": "to-astra-round2.md 확보 후 15·16번 스키마와 요구 내용을 대조"
+    },
+    {
+      "id": "operator_details",
+      "status": "pending",
+      "task": "운영자 이름, 문의 이메일, 공개 URL, 시행일 입력"
+    },
+    {
+      "id": "binary_data_audit",
+      "status": "pending",
+      "task": "실제 출시 AAB의 병합 매니페스트, SDK, 통신, 백업과 삭제 동작 확인"
+    },
+    {
+      "id": "privacy_publish",
+      "status": "pending",
+      "task": "검증된 개인정보처리방침을 공개 URL과 앱에서 제공"
+    },
+    {
+      "id": "store_forms",
+      "status": "pending",
+      "task": "실제 기능을 기준으로 데이터 보안·광고·앱 접근·대상 연령·콘텐츠 등급 문항 작성"
+    },
+    {
+      "id": "account_changes",
+      "status": "conditional",
+      "task": "계정 생성 기능이 생기면 계정 및 관련 데이터 삭제 경로 준비"
+    },
+    {
+      "id": "licenses",
+      "status": "pending",
+      "task": "폰트 라이선스 유지, 그림의 생성 이력 보관, 실제 사운드 확보 후 이용조건 확인"
+    },
+    {
+      "id": "store_assets",
+      "status": "pending",
+      "task": "14_release.json의 출시 범위와 실제 구현 내용을 대조해 스토어 문구·이미지 선택"
+    },
+    {
+      "id": "release_build",
+      "status": "pending",
+      "task": "스토어 업로드 당시 요구사항에 맞는 타깃 API·서명·패키지·버전 확인"
+    },
+    {
+      "id": "device_test",
+      "status": "pending",
+      "task": "실제 기기에서 배경화면·전경 앱·저장/복원·부재 진행을 확인"
+    }
+  ],
+  "rights_and_credits": {
+    "font": {
+      "name": "Galmuri",
+      "author": "Lee Minseo",
+      "license": "SIL Open Font License 1.1",
+      "bundled_notice_file": "app/src/main/assets/galmuri-OFL.md",
+      "notice_text": "Copyright &copy; 2019–2025 Lee Minseo (quiple@quiple.dev)\n\nThis font software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\n<https://openfontlicense.org>\n\n# SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n\n## PREAMBLE\n\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded,\nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\n## DEFINITIONS\n\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\n## PERMISSION & CONDITIONS\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1. Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2. Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3. No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4. The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5. The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\n## TERMINATION\n\nThis license becomes null and void if any of the above conditions are\nnot met.\n\n## DISCLAIMER\n\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+    },
+    "art": {
+      "origin": "이 대화의 이미지 생성 결과 및 기존 작은 섬 생성 이미지",
+      "generated_image_provenance_retained": true,
+      "third_party_reference_rights_verified": false,
+      "exclusive_rights_claimed": false
+    },
+    "audio": {
+      "files_provided": false,
+      "list_file": "16_sounds.json",
+      "license_verified": false
+    }
+  },
+  "sources": [
+    {
+      "id": "play_userdata",
+      "title": "User data",
+      "url": "https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-GB",
+      "checked_date": "2026-11-08",
+      "used_for": [
+        "개인정보처리방침 공개와 앱내제공",
+        "실제 처리내용과 일치"
+      ]
+    },
+    {
+      "id": "play_data_safety",
+      "title": "Provide information for Google Play’s Data safety section",
+      "url": "https://support.google.com/googleplay/android-developer/answer/10787469?hl=en-en",
+      "checked_date": "2026-11-08",
+      "used_for": [
+        "SDK포함 데이터흐름 확인",
+        "수집없는앱의 문항및방침"
+      ]
+    },
+    {
+      "id": "android_backup",
+      "title": "Back up user data with Auto Backup",
+      "url": "https://developer.android.com/identity/data/autobackup?hl=en",
+      "checked_date": "2026-11-08",
+      "used_for": [
+        "allowBackup",
+        "기기백업과이전"
+      ]
+    }
+  ]
+}

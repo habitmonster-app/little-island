@@ -350,6 +350,7 @@ class Scene {
         updateTalk(dt)
         updateFloaters(dt)
         if (sailing()) scroll += dt * 16f
+        if (Game.levelUps > 0) { pops.add(Pop(dockX - 10, GROUND - 30, "선원 레벨 업!", 3.5f, true)); Game.levelUps = 0 }
         if (Game.arrived > 0) { pops.add(Pop(dockX, GROUND - 24, "알바 도착", 3f)); Game.arrived = 0 }
         if (Game.supplies > 0) { if (islandOffset() == 0f) pops.add(Pop(dockX + 10, WL - 22, "짐배 +짐", 2.5f)); Game.supplies = 0 }
         // 해적 결과, 항구 판매 순간에 숫자를 띄운다
@@ -692,10 +693,31 @@ class Scene {
     }
 
     // ---------- 우리 배 ----------
+    /** 배 위 선원: 항해 중엔 키·밧줄, 해적과 싸울 땐 대포, 항구와 승리 뒤엔 환호 */
+    private val DECK = 9f
+    private val deckX = floatArrayOf(-.20f, .16f, -.02f, .30f, -.34f)
+    private fun deckCrew(x: Float, y: Float, w: Float, time: Float) {
+        val v = Game.voy ?: return
+        if (v.crew.isEmpty()) return
+        val f = Game.voyFrac()
+        val u = pirateU()
+        val fight = u >= 0f && u < pA / (pA + .035f)
+        val cheer = (f in Data.fArrive..Data.fLeave) || (u >= 0f && !fight && v.win)
+        for ((i, id) in v.crew.withIndex()) {
+            val cd = Fleet.crewOf(id) ?: continue
+            val pose = when { cheer -> 3; fight -> if (i % 2 == 0) 2 else 0; i == 0 -> 1; else -> 0 }
+            val bm = Art.cell(cd.sheet, 4, 6, cd.row * 4 + pose, 18) ?: continue
+            val bob = if (pose == 0 && (floor(time * 2 + i) % 2).toInt() == 1) 1f else 0f
+            Art.draw(c, bm, x + deckX[i % deckX.size] * w, y - DECK + bob)
+        }
+    }
+
     private fun ourShip(x: Float, time: Float) {
         val lv = Game.shipLevel
         val y = WL + (sin(time * 1.8f) * 1.2f).roundToInt()
-        Art.cell("ships", 4, 1, lv - 1, 54 + (lv - 1) * 8)?.let { Art.draw(c, it, x, y + 5); return }
+        val sw = 54 + (lv - 1) * 8
+        val sb = Art.cell("ship_stages", 4, 4, (lv - 1) * 4 + Game.lookStage(), sw) ?: Art.cell("ships", 4, 1, lv - 1, sw)
+        if (sb != null) { Art.draw(c, sb, x, y + 5); deckCrew(x, y, sw.toFloat(), time); return }
         val len = 30f + (lv - 1) * 7f
         val hull = col("#6D513A"); val hullL = col("#A78355")
         for (i in 0 until 7) r(x - len / 2 + i, y - 4 + i, len - i * 2 + (if (i < 3) 4f else 0f), 1f, if (i < 2) hullL else hull)

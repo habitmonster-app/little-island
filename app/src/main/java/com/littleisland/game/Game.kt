@@ -53,9 +53,34 @@ object Game {
     fun beds() = houses
     fun completedOf(id: String) = completed[id] ?: 0
 
+    // ---------- 배 부품·선원 ----------
+    val parts = HashMap<String, Int>()                 // 부품 id → 레벨 (0~20)
+    val promoted = LinkedHashSet<String>()             // 선원이 된 알바
+    val aboard = ArrayList<String>()                   // 다음 출항에 탈 선원
+    private val crewLv = HashMap<String, Int>()
+    private val crewXp = HashMap<String, Int>()
+    var levelUps = 0                                   // 화면 연출용 (Scene이 0으로 돌림)
+
+    fun partLevel(id: String) = parts[id] ?: 0
+    fun partValue(id: String): Float { val lv = partLevel(id); return if (lv <= 0) 0f else Fleet.part(id)?.levels?.getOrNull(lv - 1)?.value ?: 0f }
+    private fun partLossCut(): Float { val lv = partLevel("helm"); return if (lv <= 0) 0f else Fleet.part("helm")?.levels?.getOrNull(lv - 1)?.lossCut ?: 0f }
+    fun minPart() = Fleet.parts.minOfOrNull { partLevel(it.id) } ?: 0
+    fun crewLevel(id: String) = crewLv[id] ?: 1
+    fun crewXp(id: String) = crewXp[id] ?: 0
+    fun slots() = Fleet.slots(shipLevel)
+    fun crewBonus(ids: List<String> = aboard): Map<String, Float> = Fleet.bonus(ids) { crewLevel(it) }
+    private fun cb(ids: List<String>, k: String) = crewBonus(ids)[k] ?: 0f
+
+    /** 배 그림 단계(0~3): 이번 배 단계 기준 레벨을 넘은 부품 수 */
+    fun lookStage(): Int { val t = Fleet.lookThreshold(shipLevel); return minOf(3, Fleet.parts.count { partLevel(it.id) >= t }) }
+
+    fun loadW(ids: List<String> = aboard) = floor(ship().cargoW * (1 + min(1.35f, partValue("hull") + cb(ids, "cargo_bonus")))).toInt()
+    fun loadS(ids: List<String> = aboard) = floor(ship().cargoS * (1 + min(1.35f, partValue("hull") + cb(ids, "cargo_bonus")))).toInt()
+
     // ---------- 항해 ----------
     class Voyage(var start: Long, val dur: Float, val port: String, var cw: Int, var cs: Int, val encounter: Boolean,
-                 val pirate: String?, val win: Boolean, var step: Int, var rewardC: Long, var hire: String?, var saleC: Long)
+                 val pirate: String?, val win: Boolean, var step: Int, var rewardC: Long, var hire: String?, var saleC: Long,
+                 val crew: List<String> = emptyList())
     var voy: Voyage? = null; private set
     var voyages = 0; private set
     var mapPieces = 0; private set            // 홈 화면 톡 기믹으로 모으는 지도 조각
@@ -82,6 +107,7 @@ object Game {
     fun has(f: String): Boolean = when {
         f.isEmpty() || f == "start" -> true
         f.startsWith("voyages_") -> voyages >= (f.removePrefix("voyages_").toIntOrNull() ?: Int.MAX_VALUE)
+        f.startsWith("parts_") -> minPart() >= (f.removePrefix("parts_").toIntOrNull() ?: Int.MAX_VALUE)
         else -> f in flags
     }
     fun hasAll(l: List<String>) = l.all { has(it) }
@@ -104,8 +130,8 @@ object Game {
     }
 
     // 이야기 자리표시자용
-    val LOAD_W get() = ship().cargoW
-    val LOAD_S get() = ship().cargoS
+    val LOAD_W get() = loadW()
+    val LOAD_S get() = loadS()
     val WAGE get() = Data.worker("yeoul")?.wage ?: 10
     const val WORK_MS = 6 * HOUR
 
@@ -116,7 +142,7 @@ object Game {
     // =====================================================================
     fun init(c: Context) {
         if (prefs != null) return
-        Data.load(c); Story.load(c); Art.init(c)
+        Data.load(c); Story.load(c); Art.init(c); Fleet.load(c)
         val sp = c.applicationContext.getSharedPreferences("island", Context.MODE_PRIVATE)
         prefs = sp
         wood = sp.getInt("wood", 12); stone = sp.getInt("stone", 4)
@@ -146,13 +172,22 @@ object Game {
             if (":" in w) { val (id, e) = w.split(":"); e.toLongOrNull()?.let { workers.add(Contract(id, it)) } }
             else w.toLongOrNull()?.let { e -> haesol.getOrNull(i)?.let { workers.add(Contract(it, e)) } }
         }
+        // 배 부품: 예전 저장이면 이미 산 배 단계만큼 무료로 채운다
+        parts.clear()
+        if (sp.contains("parts")) sp.getString("parts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); parts[k] = v.toIntOrNull() ?: 0 }
+        else if (sp.contains("last")) Fleet.parts.forEach { parts[it.id] = 5 * (shipLevel - 1) }
+        promoted.clear(); sp.getString("promoted", "")!!.split(",").filter { it.isNotEmpty() }.forEach { promoted.add(it) }
+        aboard.clear(); sp.getString("aboard", "")!!.split(",").filter { it.isNotEmpty() && it in promoted }.forEach { aboard.add(it) }
+        sp.getString("crewLv", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewLv[k] = v.toIntOrNull() ?: 1 }
+        sp.getString("crewXp", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewXp[k] = v.toIntOrNull() ?: 0 }
         // 항해
         voy = null
         if (sp.contains("v_start")) {
             val st = sp.getLong("v_start", 0L)
             if (st != 0L) voy = Voyage(st, sp.getFloat("v_dur", 720f), sp.getString("v_port", route)!!, sp.getInt("v_cw", 0), sp.getInt("v_cs", 0),
                 sp.getBoolean("v_enc", false), sp.getString("v_pirate", null), sp.getBoolean("v_win", true), sp.getInt("v_step", 0),
-                sp.getLong("v_reward", 0L), sp.getString("v_hire", null), sp.getLong("v_sale", 0L))
+                sp.getLong("v_reward", 0L), sp.getString("v_hire", null), sp.getLong("v_sale", 0L),
+                sp.getString("v_crew", "")!!.split(",").filter { it.isNotEmpty() })
         } else if (sp.getLong("voyStart", 0L) != 0L) {
             // 빌드 5~6의 진행 중 항해는 정산만 하고 마친다
             goldC += sp.getInt("voyGold", 0) * 100L
@@ -183,11 +218,15 @@ object Game {
             putString("eventLast", eventLast.entries.joinToString(",") { it.key + ":" + it.value })
             putString("lastEvent", lastEvent)
             putString("workers", workers.joinToString(",") { it.id + ":" + it.expire })
+            putString("parts", parts.entries.joinToString(",") { it.key + ":" + it.value })
+            putString("promoted", promoted.joinToString(",")); putString("aboard", aboard.joinToString(","))
+            putString("crewLv", crewLv.entries.joinToString(",") { it.key + ":" + it.value })
+            putString("crewXp", crewXp.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
             if (v == null) putLong("v_start", 0L) else {
                 putLong("v_start", v.start); putFloat("v_dur", v.dur); putString("v_port", v.port); putInt("v_cw", v.cw); putInt("v_cs", v.cs)
                 putBoolean("v_enc", v.encounter); putString("v_pirate", v.pirate); putBoolean("v_win", v.win); putInt("v_step", v.step)
-                putLong("v_reward", v.rewardC); putString("v_hire", v.hire); putLong("v_sale", v.saleC)
+                putLong("v_reward", v.rewardC); putString("v_hire", v.hire); putLong("v_sale", v.saleC); putString("v_crew", v.crew.joinToString(","))
             }
             apply()
         }
@@ -297,17 +336,18 @@ object Game {
     private fun workerPirateBonus() = min(Data.pirateCap, workers.sumOf { (Data.worker(it.id)?.pirateBonus ?: 0f).toDouble() }.toFloat())
     fun workerSaleBonus() = min(Data.saleCap, workers.sumOf { (Data.worker(it.id)?.saleBonus ?: 0f).toDouble() }.toFloat())
 
-    fun winChance(p: Data.Pirate): Float = (ship().pirateWin - Data.powerCoef * (p.power - 1f) +
-        (if (lighthouse) Data.lighthouseBonus else 0f) + workerPirateBonus()).coerceIn(Data.winMin, Data.winMax)
+    fun winChance(p: Data.Pirate, ids: List<String> = aboard): Float = (ship().pirateWin - Data.powerCoef * (p.power - 1f) +
+        (if (lighthouse) Data.lighthouseBonus else 0f) + workerPirateBonus() + partValue("cannon") + cb(ids, "pirate_win_bonus")).coerceIn(Data.winMin, Data.winMax)
 
-    fun voyageSeconds(p: Data.Port = port()): Float =
-        ceil(Data.baseSeconds * p.distance / ship().speed).coerceIn(Data.minSeconds, Data.maxSeconds)
+    fun speedCut(ids: List<String> = aboard) = min(.35f, partValue("sail") + cb(ids, "speed_bonus"))
+    fun voyageSeconds(p: Data.Port = port(), ids: List<String> = aboard): Float =
+        ceil(Data.baseSeconds * p.distance / ship().speed * (1 - speedCut(ids))).coerceIn(Data.minSeconds, Data.maxSeconds)
 
     private fun depart(t: Long) {
         var p = port()
         if (!routeOk(p)) { route = "port_haesol"; p = port() }
-        val s = ship()
-        val cw = min(wood, s.cargoW); val cs = min(stone, s.cargoS)
+        val crew = aboard.filter { it in promoted }.take(slots())
+        val cw = min(wood, loadW(crew)); val cs = min(stone, loadS(crew))
         wood -= cw; stone -= cs
         flag("sail_1")
         // 해적: 첫 조우는 반드시, 그 뒤는 항구 위험도만큼
@@ -321,8 +361,8 @@ object Game {
                 pickWeighted(ok) { it.weight }
             }
         }
-        val win = pirate?.let { Random.nextFloat() < winChance(it) } ?: true
-        voy = Voyage(t, voyageSeconds(p), p.id, cw, cs, pirate != null, pirate?.id, win, 0, 0L, null, 0L)
+        val win = pirate?.let { Random.nextFloat() < winChance(it, crew) } ?: true
+        voy = Voyage(t, voyageSeconds(p, crew), p.id, cw, cs, pirate != null, pirate?.id, win, 0, 0L, null, 0L, crew)
         storyDirty = true
         save()
     }
@@ -342,7 +382,8 @@ object Game {
                         v.rewardC = g * 100L
                         card(pr.name + "을 물리쳤어요!", "귀항하면 금화 +$g")
                     } else {
-                        val lw = v.cw - floor(v.cw * (1 - pr.lose)).toInt(); val ls = v.cs - floor(v.cs * (1 - pr.lose)).toInt()
+                        val lose = pr.lose * (1 - min(.5f, partLossCut() + cb(v.crew, "repair_after_loss")))
+                        val lw = v.cw - floor(v.cw * (1 - lose)).toInt(); val ls = v.cs - floor(v.cs * (1 - lose)).toInt()
                         v.cw -= lw; v.cs -= ls
                         card(pr.name + "에게 당했어요", "짐을 빼앗겼어요 나무 -$lw 돌 -$ls")
                     }
@@ -351,9 +392,9 @@ object Game {
         }
         if (v.step == 1 && f >= Data.fArrive) {
             v.step = 2
-            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f)
+            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f) + cb(v.crew, "sale_bonus")
             packed = false
-            val sale = floor((v.cw * p.buyW + v.cs * p.buyS) * mul * 100).toLong()
+            val sale = floor((v.cw * p.buyW * (1 + cb(v.crew, "wood_price_bonus")) + v.cs * p.buyS * (1 + cb(v.crew, "stone_price_bonus"))) * mul * 100).toLong()
             goldC += sale; v.saleC = sale
             flag("sale_1")
             v.hire = tryHire(p, t)
@@ -368,7 +409,7 @@ object Game {
         if (workers.size >= houses) return null
         val gold = goldC / 100
         val busy = workers.map { it.id }.toSet()
-        val list = Data.workers.filter { it.port == p.id && has(it.unlock) && it.id !in busy }
+        val list = Data.workers.filter { it.port == p.id && has(it.unlock) && it.id !in busy && it.id !in promoted }
         // 첫 알바는 해솔항의 여울로 정해져 있다 (예비금 규칙 예외)
         if (!has("worker_arrive_1")) {
             val y = list.firstOrNull { it.id == "yeoul" } ?: return null
@@ -404,6 +445,20 @@ object Game {
         voy = null
         lastReturnAt = t
         card("배가 돌아왔어요", line)
+        for (id in v.crew) {
+            var lv = crewLevel(id); if (lv >= Fleet.maxCrewLevel) continue
+            var xp = crewXp(id) + Fleet.xpPerVoyage
+            val before = lv
+            while (lv < Fleet.maxCrewLevel && xp >= (Fleet.xpTo.getOrNull(lv - 1) ?: Int.MAX_VALUE)) { xp -= Fleet.xpTo[lv - 1]; lv++ }
+            if (lv >= Fleet.maxCrewLevel) xp = 0
+            crewLv[id] = lv; crewXp[id] = xp
+            if (lv > before) {
+                levelUps++
+                val c = Fleet.crewOf(id)
+                val sk = c?.skills?.firstOrNull { it.level in (before + 1)..lv }
+                card("선원 레벨 업!", (c?.name ?: "선원") + " Lv" + lv + (sk?.let { " · 새 스킬 " + it.name } ?: ""))
+            }
+        }
         rollEvent(v)
         // 11화부터는 귀항할 때마다 최대 한 화씩
         Story.refresh(true).forEach { announce(it) }
@@ -412,13 +467,20 @@ object Game {
     }
 
     private fun rollEvent(v: Voyage) {
-        if (Random.nextFloat() >= Data.eventChance) return
-        val ok = Data.events.filter { e ->
+        val good = min(.15f, partValue("helm") + cb(v.crew, "event_good_bonus"))
+        val treasure = cb(v.crew, "treasure_find_bonus")
+        val r = Random.nextFloat()
+        val bonusOnly = r >= Data.eventChance
+        if (bonusOnly && r >= Data.eventChance + good + treasure) return
+        val ok0 = Data.events.filter { e ->
             val story = Story.byId(e.id)
             story != null && has(story.unlock) && has(e.unlock) && hasAll(e.requires) &&
                 (e.ports == null || v.port in e.ports) && (!e.needField || field) &&
                 (e.repeat || e.id !in eventLast) && voyages - (eventLast[e.id] ?: -999) >= e.cooldown && e.id != lastEvent
         }
+        // 기본 확률을 넘긴 몫은 키·선원 덕분: 좋은 사건(보상 있는 것)이나 보물 사건만 고른다
+        val ok = if (!bonusOnly) ok0 else if (r < Data.eventChance + treasure && ok0.any { it.id == "voy_21" }) ok0.filter { it.id == "voy_21" }
+            else ok0.filter { it.gold > 0 || it.wood > 0 || it.stone > 0 }
         val e = pickWeighted(ok) { it.weight } ?: return
         eventLast[e.id] = voyages; lastEvent = e.id
         if (e.gold > 0) goldC += e.gold * 100L
@@ -489,7 +551,41 @@ object Game {
     }
 
     /** 배 강화·항구 개방·등대·장터: 01 progression 항목 */
-    fun unlockReady(u: Data.Unlock) = !has(u.key) && hasAll(u.requires) && warehouse >= u.needWarehouse && u.cost != null
+    fun unlockReady(u: Data.Unlock) = !has(u.key) && hasAll(u.requires) && warehouse >= u.needWarehouse && u.cost != null &&
+        (!u.key.startsWith("ship_") || minPart() >= Fleet.needForShip(u.key.removePrefix("ship_").toIntOrNull() ?: 0))
+
+    // ---------- 배 부품 ----------
+    fun partNext(id: String): Fleet.Level? {
+        val p = Fleet.part(id) ?: return null
+        val lv = partLevel(id)
+        if (lv >= Fleet.maxLevel(shipLevel)) return null
+        return p.levels.getOrNull(lv)?.takeIf { it.reqShip <= shipLevel }
+    }
+    fun buyPart(id: String): Boolean {
+        val n = partNext(id) ?: return false
+        val before = lookStage()
+        if (!pay(n.cost)) return false
+        parts[id] = partLevel(id) + 1
+        if (lookStage() > before) card("배가 달라졌어요", "부품을 손봐서 배 모습이 바뀌었어요")
+        save(); return true
+    }
+
+    // ---------- 선원 ----------
+    fun canPromote(id: String) = id !in promoted && completedOf(id) >= Fleet.promoteContracts && workers.none { it.id == id } &&
+        (Fleet.crewOf(id)?.let { has(it.unlock) } ?: false)
+    fun promote(id: String): Boolean {
+        if (!canPromote(id) || goldC < Fleet.promoteGold * 100L) return false
+        goldC -= Fleet.promoteGold * 100L
+        promoted.add(id); crewLv[id] = 1; crewXp[id] = 0
+        if (aboard.size < slots()) aboard.add(id)
+        card("새 선원!", (Fleet.crewOf(id)?.name ?: "") + "이(가) 선원이 됐어요")
+        save(); return true
+    }
+    fun toggleAboard(id: String): Boolean {
+        if (id !in promoted) return false
+        if (id in aboard) aboard.remove(id) else { if (aboard.size >= slots()) return false; aboard.add(id) }
+        save(); return true
+    }
     fun buyUnlock(key: String): Boolean {
         val u = Data.unlock(key) ?: return false
         if (!unlockReady(u) || !pay(u.cost)) return false
@@ -515,6 +611,10 @@ object Game {
         if (h != null && houseReady()) return Goal("house", "알바 숙소 " + (houses + 1) + "채", h.cost, true, true)
         if (warehouse < 2 && w != null && warehouseReady()) return Goal("ware", "창고 " + (warehouse + 1) + "단계", w.second.cost, true, true)
         if (fieldReady()) return Goal("field", "작은 밭", Data.field?.cost, true, true)
+        // 배 부품: 가장 싼 다음 레벨
+        Fleet.parts.mapNotNull { p -> partNext(p.id)?.let { p to it } }.minByOrNull { it.second.cost.gold * 10 + it.second.cost.wood + it.second.cost.stone }?.let { (p, n) ->
+            return Goal("part:" + p.id, p.name + " Lv" + (partLevel(p.id) + 1), n.cost, true, false)
+        }
         val ships = Data.unlock("ship_" + (shipLevel + 1))
         val cands = Data.unlocks.filter { !has(it.key) && it.cost != null && (it.key.startsWith("ship_") || it.key.startsWith("port_") || it.key == "lighthouse" || it.key == "market") }
         val u = cands.firstOrNull { unlockReady(it) } ?: ships?.takeIf { !has(it.key) } ?: return null
@@ -567,6 +667,7 @@ object Game {
         wood = 12; stone = 4; goldC = 0; houses = 0; warehouse = 0; dock = false; field = false; lighthouse = false; market = false
         shipLevel = 1; route = "port_haesol"; supplyT = 0f; voy = null; voyages = 0; workers.clear(); completed.clear()
         flags.clear(); opened.clear(); read.clear(); eventLast.clear(); lastEvent = ""; cards.clear(); log.clear(); report = null
+        parts.clear(); promoted.clear(); aboard.clear(); crewLv.clear(); crewXp.clear()
         storyDirty = true
         save()
     }

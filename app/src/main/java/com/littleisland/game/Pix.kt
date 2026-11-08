@@ -318,6 +318,19 @@ object Pix {
     private val ip = Paint().apply { isFilterBitmap = false }
 
     fun icon(c: Canvas, name: String, x: Float, y: Float, s: Float, alpha: Int = 255) {
+        // 그림 시트의 한 칸: "part:0" 부품, "skill:3" 스킬, "face:2" 알바 얼굴
+        val ci = name.indexOf(':')
+        if (ci > 0) {
+            val idx = name.substring(ci + 1).toIntOrNull() ?: 0
+            val bm = when (name.substring(0, ci)) {
+                "part" -> Art.cell("part_icons", 4, 2, idx, (10 * s).toInt())
+                "skill" -> Art.cell("skill_icons", 4, 4, idx, (10 * s).toInt())
+                "face" -> Art.cell("worker_portraits", 4, 3, idx, (10 * s).toInt())
+                else -> null
+            }
+            if (bm != null) { ip.alpha = alpha; c.drawBitmap(bm, x, y, ip); return }
+            return icon(c, when (name.substring(0, ci)) { "face" -> "person"; "part" -> "ship"; else -> "book" }, x, y, s, alpha)
+        }
         val k = iconOrder.indexOf(name)
         if (k >= 0) Art.cell("icons", 4, 4, k, (10 * s).toInt())?.let { ip.alpha = alpha; c.drawBitmap(it, x, y, ip); return }
         val rows = icons[name] ?: return
