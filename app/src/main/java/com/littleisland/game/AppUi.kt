@@ -16,14 +16,15 @@ class AppUi(val scene: Scene, val host: Host) {
         fun openJournal(); fun openMap(); fun openCargo(); fun openTutorial(); fun pickTime(); fun setWallpaper()
     }
 
-    companion object { const val W = 200 }
+    /** 좌표는 가로 200도트 그대로 쓰고, 실제 그림은 SC배 크기로 그려서 글자·아이콘이 또렷하게 */
+    companion object { const val W = 200; const val SC = 3 }
     var H = 440; private set
-    var bitmap: Bitmap = Bitmap.createBitmap(W, H, Bitmap.Config.ARGB_8888); private set
-    private var c = Canvas(bitmap)
+    var bitmap: Bitmap = Bitmap.createBitmap(W * SC, H * SC, Bitmap.Config.ARGB_8888); private set
+    private var c = Canvas(bitmap).apply { scale(SC.toFloat(), SC.toFloat()) }
 
     fun resize(h: Int) {
         if (h == H) return
-        H = h.coerceAtLeast(360); bitmap = Bitmap.createBitmap(W, H, Bitmap.Config.ARGB_8888); c = Canvas(bitmap)
+        H = h.coerceAtLeast(360); bitmap = Bitmap.createBitmap(W * SC, H * SC, Bitmap.Config.ARGB_8888); c = Canvas(bitmap).apply { scale(SC.toFloat(), SC.toFloat()) }
     }
 
     enum class St { READY, NORMAL, DONE, LOCKED, ON, OFF }
@@ -223,7 +224,7 @@ class AppUi(val scene: Scene, val host: Host) {
         k.rect(c, 0f, 0f, W.toFloat(), H.toFloat(), k.col("#0d0a08"))
         // 위: 장면 (바다 띠 부분을 잘라서)
         val sy = (Scene.WL - sceneH * .55f).toInt()
-        src.set(0, sy, Scene.W, sy + sceneH.toInt())
+        src.set(0, sy * Scene.SS, Scene.W * Scene.SS, (sy + sceneH.toInt()) * Scene.SS)
         dst.set(0, top.toInt(), W, (top + sceneH).toInt())
         c.drawBitmap(scene.bitmap, src, dst, bp)
         label(c, 6f, top + 14)

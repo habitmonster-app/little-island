@@ -202,7 +202,7 @@ object Game {
         storyDirty = true
     }
 
-    fun save() {
+    @Synchronized fun save() {
         saveT = 0f
         val v = voy
         prefs?.edit()?.apply {
@@ -236,14 +236,14 @@ object Game {
     // 시뮬레이션
 
     /** 화면이 그려지는 동안 매 프레임 부른다. */
-    fun tick(dt: Float) {
+    @Synchronized fun tick(dt: Float) {
         advance(System.currentTimeMillis())
         saveT += dt
         if (saveT > 10f) save()
     }
 
     /** 다시 보이기 시작할 때. 안 보던 시간(최대 8시간)을 시간 순서대로 계산하고 결과 카드를 만든다. */
-    fun catchUp() {
+    @Synchronized fun catchUp() {
         val now = System.currentTimeMillis()
         val gap = now - last
         if (gap < 20_000L) { advance(now); return }
@@ -255,7 +255,7 @@ object Game {
         save()
     }
 
-    fun advance(now: Long) {
+    @Synchronized fun advance(now: Long) {
         if (now <= last) return
         val gap = now - last
         if (gap > OFFLINE_MAX_MS) {
@@ -524,7 +524,7 @@ object Game {
 
     fun nextHouse() = Data.houses.getOrNull(houses)
     fun houseReady() = nextHouse()?.let { hasAll(it.requires) } ?: false
-    fun buildHouse(): Boolean {
+    @Synchronized fun buildHouse(): Boolean {
         val b = nextHouse() ?: return false
         if (!houseReady() || !pay(b.cost)) return false
         houses++; done(if (houses == 1) "house_1" else null); return true
@@ -532,20 +532,20 @@ object Game {
 
     fun nextWarehouse() = Data.warehouse.getOrNull(warehouse + 1)
     fun warehouseReady() = nextWarehouse()?.let { hasAll(it.second.requires) } ?: false
-    fun upgradeWarehouse(): Boolean {
+    @Synchronized fun upgradeWarehouse(): Boolean {
         val l = nextWarehouse() ?: return false
         if (!warehouseReady() || !pay(l.second.cost)) return false
         warehouse++; done(if (warehouse == 1) "store_1" else null); return true
     }
 
     fun dockReady() = !dock && (Data.dock?.let { hasAll(it.requires) } ?: true)
-    fun buildDock(): Boolean {
+    @Synchronized fun buildDock(): Boolean {
         if (!dockReady() || !pay(Data.dock?.cost ?: Data.Cost(0, 60, 20))) return false
         dock = true; supplyT = Data.supplyEvery - 8; done("dock"); return true
     }
 
     fun fieldReady() = !field && (Data.field?.let { hasAll(it.requires) } ?: false)
-    fun buildField(): Boolean {
+    @Synchronized fun buildField(): Boolean {
         if (!fieldReady() || !pay(Data.field?.cost)) return false
         field = true; done(null); return true
     }
@@ -561,7 +561,7 @@ object Game {
         if (lv >= Fleet.maxLevel(shipLevel)) return null
         return p.levels.getOrNull(lv)?.takeIf { it.reqShip <= shipLevel }
     }
-    fun buyPart(id: String): Boolean {
+    @Synchronized fun buyPart(id: String): Boolean {
         val n = partNext(id) ?: return false
         val before = lookStage()
         if (!pay(n.cost)) return false
@@ -573,7 +573,7 @@ object Game {
     // ---------- 선원 ----------
     fun canPromote(id: String) = id !in promoted && completedOf(id) >= Fleet.promoteContracts && workers.none { it.id == id } &&
         (Fleet.crewOf(id)?.let { has(it.unlock) } ?: false)
-    fun promote(id: String): Boolean {
+    @Synchronized fun promote(id: String): Boolean {
         if (!canPromote(id) || goldC < Fleet.promoteGold * 100L) return false
         goldC -= Fleet.promoteGold * 100L
         promoted.add(id); crewLv[id] = 1; crewXp[id] = 0
@@ -581,12 +581,12 @@ object Game {
         card("새 선원!", (Fleet.crewOf(id)?.name ?: "") + "이(가) 선원이 됐어요")
         save(); return true
     }
-    fun toggleAboard(id: String): Boolean {
+    @Synchronized fun toggleAboard(id: String): Boolean {
         if (id !in promoted) return false
         if (id in aboard) aboard.remove(id) else { if (aboard.size >= slots()) return false; aboard.add(id) }
         save(); return true
     }
-    fun buyUnlock(key: String): Boolean {
+    @Synchronized fun buyUnlock(key: String): Boolean {
         val u = Data.unlock(key) ?: return false
         if (!unlockReady(u) || !pay(u.cost)) return false
         when {
@@ -643,7 +643,7 @@ object Game {
     }
 
     /** 홈 화면에서 떠다니는 물건을 톡 쳤을 때. 보상 글을 돌려준다. */
-    fun pickUp(kind: Int): String {
+    @Synchronized fun pickUp(kind: Int): String {
         finds++
         val lv = shipLevel
         val text = when (kind) {

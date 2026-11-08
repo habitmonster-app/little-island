@@ -34,7 +34,7 @@ class IslandWallpaperService : WallpaperService() {
         private var cam = -1f
         private var lastPhase = -1
         private val frame = Runnable { drawFrame() }
-        private val labelCv by lazy { Canvas(scene.bitmap) }
+        private val labelCv by lazy { Canvas(scene.bitmap).apply { scale(Scene.SS.toFloat(), Scene.SS.toFloat()) } }
         private var card: Triple<String, String, String>? = null   // 결과 카드 (제목, 내용, 작은 글씨)
         private var cardT = 0f
         private val cardBg = Paint().apply { isAntiAlias = true; color = Color.parseColor("#f3e6c4") }
@@ -135,7 +135,8 @@ class IslandWallpaperService : WallpaperService() {
             val left = (Scene.W - vw) / 2f
             val top = ((Scene.H - vh) / 2f).coerceIn(0f, (Scene.H - vh).coerceAtLeast(0f))
             ox = left; oy = top
-            src.set(left.toInt(), top.toInt(), (left + vw).toInt(), (top + vh).toInt())
+            val k = Scene.SS
+            src.set((left * k).toInt(), (top * k).toInt(), ((left + vw) * k).toInt(), ((top + vh) * k).toInt())
             dst.set(0, 0, sw, sh)
             cv.drawBitmap(scene.bitmap, src, dst, paint)
             drawPops(cv)

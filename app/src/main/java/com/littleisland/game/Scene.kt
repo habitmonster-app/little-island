@@ -32,10 +32,14 @@ class Scene {
         const val WL = 252f       // 물 높이 (배가 뜨는 곳)
         const val SAIL_X = 74f    // 항해 중 배가 머무는 화면 위치
         const val SHIFT = 260f    // 장면이 들어오고 나가는 거리
+        /** 좌표는 200도트 그대로, 실제 그림은 SS배 크기로 그려서 또렷하게 */
+        const val SS = 3
     }
 
-    val bitmap: Bitmap = Bitmap.createBitmap(W, H, Bitmap.Config.ARGB_8888)
-    private val c = Canvas(bitmap)
+    val bitmap: Bitmap = Bitmap.createBitmap(W * SS, H * SS, Bitmap.Config.ARGB_8888)
+    private val c = Canvas(bitmap).apply { scale(SS.toFloat(), SS.toFloat()) }
+    private fun aget(n: String, w: Int) = Art.get(n, w * SS)
+    private fun acell(n: String, cols: Int, rows: Int, i: Int, w: Int) = Art.cell(n, cols, rows, i, w * SS)
     private val p = Paint().apply { isAntiAlias = false }
     private val gp = Paint().apply { isAntiAlias = false }
     private var ga = 1f
@@ -174,10 +178,10 @@ class Scene {
             val bob = sin(time * 2.5f + f.x) * 1.2f
             val glow = (floor(time * 3) % 2).toInt() == 0
             val fxi = when (f.kind) { 0 -> 7; 1 -> 8; else -> if ((floor(time * 5) % 2).toInt() == 0) 9 else 10 }
-            val fb = Art.cell("fx", 6, 2, fxi, if (f.kind == 1) 16 else 14)
+            val fb = acell("fx", 6, 2, fxi, if (f.kind == 1) 16 else 14)
             if (fb != null) {
                 Art.draw(c, fb, f.x, f.y + 3 + (if (f.kind == 2) 0f else bob), f.kind == 2)
-                if (glow && f.kind != 2) Art.cell("fx", 6, 2, 6, 7)?.let { Art.draw(c, it, f.x + 5, f.y - 8 + bob) }
+                if (glow && f.kind != 2) acell("fx", 6, 2, 6, 7)?.let { Art.draw(c, it, f.x + 5, f.y - 8 + bob) }
                 continue
             }
             when (f.kind) {
@@ -422,16 +426,18 @@ class Scene {
     }
 
     private fun bgLayer(name: String, alpha: Int) {
-        val bg = Art.get(name, 360) ?: return
+        val bg = aget(name, 360) ?: return
         val a = alpha.coerceIn(0, 255)
         // 그림의 수평선(높이 48%)을 화면 수평선에 맞추고, 위아래 남는 곳은 그림 맨 위·맨 아래 색으로 채운다
-        val top = HOR - bg.height * .48f
-        val bottom = top + bg.height
+        // 그림의 파도 띠(높이 47~51%)가 배·항구가 떠 있는 물선(WL)에 끝나도록 맞춘다
+        val bw = bg.width / SS.toFloat(); val bh = bg.height / SS.toFloat()
+        val top = WL + 2 - bh * .51f
+        val bottom = top + bh
         p.color = bg.getPixel(bg.width / 2, 1) or (0xff shl 24); p.alpha = a; c.drawRect(0f, 0f, W.toFloat(), top + 1, p)
         p.color = bg.getPixel(bg.width / 2, bg.height - 2) or (0xff shl 24); p.alpha = a; c.drawRect(0f, bottom - 1, W.toFloat(), H.toFloat(), p)
         p.alpha = 255
-        var x = -((scroll * .5f) % bg.width)
-        while (x < W) { Art.draw(c, bg, x + bg.width / 2f, bottom, false, a); x += bg.width }
+        var x = -((scroll * .5f) % bw)
+        while (x < W) { Art.draw(c, bg, x + bw / 2f, bottom, false, a); x += bw }
     }
 
     private fun sky(time: Float, h: Float) {
@@ -543,11 +549,11 @@ class Scene {
     private fun island(time: Float, o: Float) {
         c.save(); c.translate(o, 0f)
         val stage = when { Game.has("main_60") -> "island_4"; Game.has("main_30") -> "island_3"; Game.has("main_10") -> "island_2"; else -> "island" }
-        val isl = Art.get(stage, 196) ?: Art.get("island", 196)
+        val isl = aget(stage, 196) ?: aget("island", 196)
         if (isl != null) {
             // 그림마다 풀밭 높이(위에서부터 비율)가 조금씩 달라서, 풀밭이 GROUND에 오도록 맞춘다
             val g = when (stage) { "island_2" -> .432f; "island_3" -> .438f; "island_4" -> .445f; else -> .431f }
-            Art.draw(c, isl, 98f, GROUND + isl.height * (1 - g)); artIsland(time); c.restore(); return
+            Art.draw(c, isl, 98f, GROUND + isl.height / SS.toFloat() * (1 - g)); artIsland(time); c.restore(); return
         }
         // 물 밑 바위와 모래 (옆 단면)
         for (i in 0..40) {
@@ -585,7 +591,7 @@ class Scene {
 
     /** 그림 파일이 있는 섬: 건물과 사람만 그 위에 */
     private fun artIsland(time: Float) {
-        fun b(name: String, x: Float, w: Int, fallback: () -> Unit) { val bm = Art.cell("buildings", 7, 1, name.toInt(), w); if (bm != null) Art.draw(c, bm, x, GROUND + 1) else fallback() }
+        fun b(name: String, x: Float, w: Int, fallback: () -> Unit) { val bm = acell("buildings", 7, 1, name.toInt(), w); if (bm != null) Art.draw(c, bm, x, GROUND + 1) else fallback() }
         if (Game.lighthouse) b("4", 8f, 16) {}
         if (Game.field) b("3", 40f, 24) {}
         b(if (Game.dock) "2" else "6", dockX + 13, 34) {}
@@ -648,11 +654,11 @@ class Scene {
         val frame = if (v.st == 2) 4 + (floor(time * 5) % 2).toInt() else if (moving0) (floor(v.step) % 4).toInt() else 0
         val wi = if (v.look < 3) -1 else Data.workers.indexOfFirst { it.id == v.wid }
         val sheet = when {
-            v.look < 3 -> Art.cell("residents", 6, 3, v.look * 6 + frame, 22)
-            wi in 0..5 -> Art.cell("workers_all_a", 6, 6, wi * 6 + frame, 22)
-            wi in 6..11 -> Art.cell("workers_all_b", 6, 6, (wi - 6) * 6 + frame, 22)
+            v.look < 3 -> acell("residents", 6, 3, v.look * 6 + frame, 22)
+            wi in 0..5 -> acell("workers_all_a", 6, 6, wi * 6 + frame, 22)
+            wi in 6..11 -> acell("workers_all_b", 6, 6, (wi - 6) * 6 + frame, 22)
             else -> null
-        } ?: Art.cell("worker", 6, 1, frame, 22)
+        } ?: acell("worker", 6, 1, frame, 22)
         if (sheet != null) { Art.draw(c, sheet, v.x, GROUND + 1, v.dir < 0); return }
         val lk = looks[v.look % looks.size]
         val d = v.dir
@@ -706,7 +712,7 @@ class Scene {
         for ((i, id) in v.crew.withIndex()) {
             val cd = Fleet.crewOf(id) ?: continue
             val pose = when { cheer -> 3; fight -> if (i % 2 == 0) 2 else 0; i == 0 -> 1; else -> 0 }
-            val bm = Art.cell(cd.sheet, 4, 6, cd.row * 4 + pose, 18) ?: continue
+            val bm = acell(cd.sheet, 4, 6, cd.row * 4 + pose, 18) ?: continue
             val bob = if (pose == 0 && (floor(time * 2 + i) % 2).toInt() == 1) 1f else 0f
             Art.draw(c, bm, x + deckX[i % deckX.size] * w, y - DECK + bob)
         }
@@ -716,7 +722,7 @@ class Scene {
         val lv = Game.shipLevel
         val y = WL + (sin(time * 1.8f) * 1.2f).roundToInt()
         val sw = 54 + (lv - 1) * 8
-        val sb = Art.cell("ship_stages", 4, 4, (lv - 1) * 4 + Game.lookStage(), sw) ?: Art.cell("ships", 4, 1, lv - 1, sw)
+        val sb = acell("ship_stages", 4, 4, (lv - 1) * 4 + Game.lookStage(), sw) ?: acell("ships", 4, 1, lv - 1, sw)
         if (sb != null) { Art.draw(c, sb, x, y + 5); deckCrew(x, y, sw.toFloat(), time); return }
         val len = 30f + (lv - 1) * 7f
         val hull = col("#6D513A"); val hullL = col("#A78355")
@@ -768,20 +774,20 @@ class Scene {
             else -> x = lerp(150f, 240f, ease((u - fightB) / (1 - fightB)))
         }
         pirateShip(x, WL + sink, time, cs, sink > 0)
-        if (sink in 1f..14f) Art.cell("fx", 6, 2, 5, 26)?.let { Art.draw(c, it, x, WL + 4, false, (255 * (1 - sink / 14f)).toInt()) }
+        if (sink in 1f..14f) acell("fx", 6, 2, 5, 26)?.let { Art.draw(c, it, x, WL + 4, false, (255 * (1 - sink / 14f)).toInt()) }
         // 포격: 번갈아 쏘고 포탄이 날아간다
         if (u in fightA..fightB && Art.has("fx")) {
             val k = time * 1.6f
             val turn = floor(k).toInt() % 2; val t = k % 1f
             val sx = if (turn == 0) SAIL_X + 18 else x - 16
             val ex = if (turn == 0) x - 10 else SAIL_X + 10
-            if (t < .14f) Art.cell("fx", 6, 2, 0, 12)?.let { Art.draw(c, it, sx, WL - 3, turn != 0) }
+            if (t < .14f) acell("fx", 6, 2, 0, 12)?.let { Art.draw(c, it, sx, WL - 3, turn != 0) }
             val sm = when { t < .3f -> 1; t < .55f -> 2; else -> 3 }
-            Art.cell("fx", 6, 2, sm, 8 + sm * 3)?.let { Art.draw(c, it, sx + (if (turn == 0) -2 else 2) * t * 6, WL - 6 - t * 6, false, (200 * (1 - t)).toInt()) }
+            acell("fx", 6, 2, sm, 8 + sm * 3)?.let { Art.draw(c, it, sx + (if (turn == 0) -2 else 2) * t * 6, WL - 6 - t * 6, false, (200 * (1 - t)).toInt()) }
             if (t < .7f) {
                 val bx = lerp(sx, ex, t / .7f); val by = WL - 8 - sin(t / .7f * PI.toFloat()) * 14
                 r(bx, by, 2f, 2f, col("#1a1a1a"))
-            } else Art.cell("fx", 6, 2, 4, 14)?.let { Art.draw(c, it, ex, WL + 3) }
+            } else acell("fx", 6, 2, 4, 14)?.let { Art.draw(c, it, ex, WL + 3) }
         } else if (u in fightA..fightB) {
             val k = time * 1.6f
             val turn = floor(k).toInt() % 2; val t = k % 1f
@@ -805,7 +811,7 @@ class Scene {
         val pv = Game.voy?.pirate ?: ""
         val pi = when { pv.contains("gurok") || pv.contains("blockader") || pv.contains("farwater") -> 2; pv.contains("red") || pv.contains("raider") -> 1; else -> 0 }
         val pa = Data.pirates.indexOfFirst { it.id == pv }
-        ((if (pa in 0..7) Art.cell("pirates_all", 4, 2, pa, 58) else null) ?: Art.cell("pirates", 3, 1, pi, 58))?.let { bm ->
+        ((if (pa in 0..7) acell("pirates_all", 4, 2, pa, 58) else null) ?: acell("pirates", 3, 1, pi, 58))?.let { bm ->
             c.save(); if (sinking) { c.rotate(18f * min(1f, (y0 - WL) / 20f), x, y); c.clipRect(0f, 0f, W.toFloat(), WL + 4) }
             Art.draw(c, bm, x, y + 5); c.restore(); return }
         c.save()
@@ -825,7 +831,7 @@ class Scene {
     private fun port(time: Float, o: Float) {
         val pr = Data.port(Game.voy?.port ?: Game.route)
         val pc = pr.colors
-        (Art.get(if (pr.id == "port_haesol") "port" else pr.id, 170) ?: Art.get("port", 170))?.let { Art.draw(c, it, o + 120f, WL + 6); return }
+        (aget(if (pr.id == "port_haesol") "port" else pr.id, 170) ?: aget("port", 170))?.let { Art.draw(c, it, o + 120f, WL + 6); return }
         c.save(); c.translate(o, 0f)
         // 뒤쪽 땅과 집
         r(40f, GROUND - 2, 170f, WL - GROUND + 3, col("#cdb98a"))

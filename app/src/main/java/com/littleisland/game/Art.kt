@@ -17,12 +17,12 @@ object Art {
     private var ctx: Context? = null
     private val raw = HashMap<String, Bitmap?>()
     private val cache = HashMap<String, Bitmap?>()
-    private val p = Paint().apply { isFilterBitmap = false }
-    private val src = Rect(); private val dst = Rect()
+    // 배경화면과 앱이 서로 다른 스레드에서 동시에 그리므로, 그리기 도구는 스레드마다 따로 쓴다
+    private val tl = ThreadLocal.withInitial { Triple(Paint().apply { isFilterBitmap = false }, Rect(), android.graphics.RectF()) }
 
     fun init(c: Context) { if (ctx == null) ctx = c.applicationContext }
 
-    private fun load(name: String): Bitmap? = raw.getOrPut(name) {
+    @Synchronized private fun load(name: String): Bitmap? = raw.getOrPut(name) {
         val c = ctx ?: return@getOrPut null
         try {
             val b = c.assets.open("art/$name.png").use { BitmapFactory.decodeStream(it) } ?: return@getOrPut null
@@ -39,17 +39,17 @@ object Art {
         } catch (e: Exception) { null }
     }
 
-    fun has(name: String) = load(name) != null
+    @Synchronized fun has(name: String) = load(name) != null
 
     /** 그림 전체를 가로 w도트로 줄여서 (도트 느낌을 살리려고 한 번 줄인 뒤 그대로 쓴다) */
-    fun get(name: String, w: Int): Bitmap? = cache.getOrPut("$name@$w") {
+    @Synchronized fun get(name: String, w: Int): Bitmap? = cache.getOrPut("$name@$w") {
         val b = load(name) ?: return@getOrPut null
         val h = (b.height * w / b.width.toFloat()).toInt().coerceAtLeast(1)
         mutable(Bitmap.createScaledBitmap(b, w, h, true)).also { clean(it) }
     }
 
     /** 격자 그림(cols x rows)에서 한 칸을 가로 w도트로 */
-    fun cell(name: String, cols: Int, rows: Int, idx: Int, w: Int): Bitmap? = cache.getOrPut("$name#$cols.$rows.$idx@$w") {
+    @Synchronized fun cell(name: String, cols: Int, rows: Int, idx: Int, w: Int): Bitmap? = cache.getOrPut("$name#$cols.$rows.$idx@$w") {
         val b = load(name) ?: return@getOrPut null
         val cw = b.width / cols; val ch = b.height / rows
         val cx = (idx % cols) * cw; val cy = (idx / cols) * ch
@@ -69,12 +69,16 @@ object Art {
         b.setPixels(px, 0, b.width, 0, 0, b.width, b.height)
     }
 
-    /** 가운데-아래를 (x, bottom)에 맞춰 그린다. flip이면 좌우를 뒤집는다 */
+    /** 가운데-아래를 (x, bottom)에 맞춰 그린다. flip이면 좌우를 뒤집는다.
+     *  장면 캔버스가 200도트의 k배 크기면, 그림도 k배로 받아 둔 것이라 1/k 크기 자리에 그린다 */
     fun draw(c: Canvas, b: Bitmap, x: Float, bottom: Float, flip: Boolean = false, alpha: Int = 255) {
+        val (p, src, dst) = tl.get()!!
         p.alpha = alpha
-        val l = (x - b.width / 2f).toInt(); val t = (bottom - b.height).toInt()
+        val k = maxOf(1, c.width / 200).toFloat()
+        val w = b.width / k; val h = b.height / k
+        val l = x - w / 2f; val t = bottom - h
         if (flip) { c.save(); c.scale(-1f, 1f, x, 0f) }
-        src.set(0, 0, b.width, b.height); dst.set(l, t, l + b.width, t + b.height)
+        src.set(0, 0, b.width, b.height); dst.set(l, t, l + w, t + h)
         c.drawBitmap(b, src, dst, p)
         if (flip) c.restore()
         p.alpha = 255

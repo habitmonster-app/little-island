@@ -188,7 +188,7 @@ class MainActivity : Activity(), AppUi.Host {
             scene.draw(now / 1000f)
             app.refreshPopup()
             app.draw()
-            src.set(0, 0, AppUi.W, app.H)
+            src.set(0, 0, app.bitmap.width, app.bitmap.height)
             dst.set(0, 0, width, (app.H * scale).toInt())
             canvas.drawColor(Color.BLACK)
             canvas.drawBitmap(app.bitmap, src, dst, paint)

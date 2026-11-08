@@ -27,10 +27,10 @@ object Pix {
     fun col(h: String) = Color.parseColor(h)
     val INK = col("#2a1a10"); val CREAM = col("#f4ead2"); val GOLD = col("#ffd36a"); val DIM = col("#8a7a66"); val GREEN = col("#8fd06a"); val RED = col("#e0705a")
 
-    fun rect(c: Canvas, x: Float, y: Float, w: Float, h: Float, color: Int) { p.color = color; c.drawRect(x, y, x + w, y + h, p) }
+    @Synchronized fun rect(c: Canvas, x: Float, y: Float, w: Float, h: Float, color: Int) { p.color = color; c.drawRect(x, y, x + w, y + h, p) }
 
     /** 글자. size 12 = 큰 글꼴, 10 = 작은 글꼴. outline이면 어두운 테두리 */
-    fun text(c: Canvas, s: String, x: Float, y: Float, size: Int, color: Int, align: Paint.Align = Paint.Align.LEFT, outline: Boolean = false) {
+    @Synchronized fun text(c: Canvas, s: String, x: Float, y: Float, size: Int, color: Int, align: Paint.Align = Paint.Align.LEFT, outline: Boolean = false) {
         tp.typeface = if (size >= 12) big else small
         tp.textSize = size.toFloat(); tp.textAlign = align
         if (outline) {
@@ -39,10 +39,10 @@ object Pix {
         }
         tp.color = color; c.drawText(s, x, y, tp)
     }
-    fun width(s: String, size: Int): Float { tp.typeface = if (size >= 12) big else small; tp.textSize = size.toFloat(); return tp.measureText(s) }
+    @Synchronized fun width(s: String, size: Int): Float { tp.typeface = if (size >= 12) big else small; tp.textSize = size.toFloat(); return tp.measureText(s) }
 
     /** 폭에 맞게 줄을 나눈다 (한글은 글자 단위로도 끊는다) */
-    fun wrap(s: String, size: Int, maxW: Float): List<String> {
+    @Synchronized fun wrap(s: String, size: Int, maxW: Float): List<String> {
         val out = ArrayList<String>()
         for (para in s.split("\n")) {
             var line = ""
@@ -65,7 +65,7 @@ object Pix {
     }
 
     /** 글자가 폭을 넘으면 끝을 줄인다 */
-    fun fit(s: String, size: Int, maxW: Float): String {
+    @Synchronized fun fit(s: String, size: Int, maxW: Float): String {
         if (width(s, size) <= maxW) return s
         var t = s
         while (t.length > 1 && width("$t…", size) > maxW) t = t.dropLast(1)
@@ -316,23 +316,32 @@ object Pix {
     /** 아이콘을 s배로 그린다 */
     private val iconOrder = listOf("wood", "stone", "gold", "map", "house", "store", "dock", "field", "lighthouse", "market", "ship", "anchor", "person", "puzzle", "book", "gear")
     private val ip = Paint().apply { isFilterBitmap = false }
+    private val iSrc = android.graphics.Rect(); private val iDst = android.graphics.RectF()
+    /** 앱 화면(가로 400 이상)은 두 배 그림을 쓴다 */
+    private fun hi(c: Canvas) = maxOf(1, c.width / 200)
+    private fun blit(c: Canvas, b: android.graphics.Bitmap, x: Float, y: Float, w: Float, alpha: Int) {
+        ip.alpha = alpha
+        iSrc.set(0, 0, b.width, b.height); iDst.set(x, y, x + w, y + w * b.height / b.width)
+        c.drawBitmap(b, iSrc, iDst, ip)
+    }
 
-    fun icon(c: Canvas, name: String, x: Float, y: Float, s: Float, alpha: Int = 255) {
+    @Synchronized fun icon(c: Canvas, name: String, x: Float, y: Float, s: Float, alpha: Int = 255) {
         // 그림 시트의 한 칸: "part:0" 부품, "skill:3" 스킬, "face:2" 알바 얼굴
         val ci = name.indexOf(':')
         if (ci > 0) {
             val idx = name.substring(ci + 1).toIntOrNull() ?: 0
+            val px = (10 * s * hi(c)).toInt()
             val bm = when (name.substring(0, ci)) {
-                "part" -> Art.cell("part_icons", 4, 2, idx, (10 * s).toInt())
-                "skill" -> Art.cell("skill_icons", 4, 4, idx, (10 * s).toInt())
-                "face" -> Art.cell("worker_portraits", 4, 3, idx, (10 * s).toInt())
+                "part" -> Art.cell("part_icons", 4, 2, idx, px)
+                "skill" -> Art.cell("skill_icons", 4, 4, idx, px)
+                "face" -> Art.cell("worker_portraits", 4, 3, idx, px)
                 else -> null
             }
-            if (bm != null) { ip.alpha = alpha; c.drawBitmap(bm, x, y, ip); return }
+            if (bm != null) { blit(c, bm, x, y, 10 * s, alpha); return }
             return icon(c, when (name.substring(0, ci)) { "face" -> "person"; "part" -> "ship"; else -> "book" }, x, y, s, alpha)
         }
         val k = iconOrder.indexOf(name)
-        if (k >= 0) Art.cell("icons", 4, 4, k, (10 * s).toInt())?.let { ip.alpha = alpha; c.drawBitmap(it, x, y, ip); return }
+        if (k >= 0) Art.cell("icons", 4, 4, k, (10 * s * hi(c)).toInt())?.let { blit(c, it, x, y, 10 * s, alpha); return }
         val rows = icons[name] ?: return
         for ((r, line) in rows.withIndex()) for ((k, ch) in line.withIndex()) {
             if (k >= 10) break
@@ -345,7 +354,7 @@ object Pix {
 
     // ---------- 판넬과 칸 ----------
     /** 돌 테두리 + 나무판 판넬 */
-    fun panel(c: Canvas, x: Float, y: Float, w: Float, h: Float) {
+    @Synchronized fun panel(c: Canvas, x: Float, y: Float, w: Float, h: Float) {
         rect(c, x, y, w, h, col("#5a5a60"))
         for (i in 0 until (w / 6).toInt()) { rect(c, x + i * 6 + 1, y, 4f, 1f, col("#8a8a92")); rect(c, x + i * 6 + 3, y + h - 1, 3f, 1f, col("#3a3a40")) }
         rect(c, x + 3, y + 3, w - 6, h - 6, col("#3a2414"))
@@ -356,7 +365,7 @@ object Pix {
     }
 
     /** 물건 칸 (어두운 홈). glow면 금색 테두리 */
-    fun slot(c: Canvas, x: Float, y: Float, w: Float, h: Float, glow: Boolean = false, sel: Boolean = false) {
+    @Synchronized fun slot(c: Canvas, x: Float, y: Float, w: Float, h: Float, glow: Boolean = false, sel: Boolean = false) {
         rect(c, x, y, w, h, if (glow) GOLD else if (sel) col("#c8a050") else col("#1a1008"))
         rect(c, x + 1, y + 1, w - 2, h - 2, col("#2e2014"))
         rect(c, x + 1, y + 1, w - 2, 1f, col("#1a1008")); rect(c, x + 1, y + h - 2, w - 2, 1f, col("#4a3420"))
@@ -364,7 +373,7 @@ object Pix {
     }
 
     /** 나무 단추 */
-    fun button(c: Canvas, x: Float, y: Float, w: Float, h: Float, label: String, on: Boolean) {
+    @Synchronized fun button(c: Canvas, x: Float, y: Float, w: Float, h: Float, label: String, on: Boolean) {
         rect(c, x, y, w, h, INK)
         rect(c, x + 1, y + 1, w - 2, h - 2, if (on) col("#c8903a") else col("#5a4a3a"))
         rect(c, x + 1, y + 1, w - 2, 1f, if (on) col("#f0c060") else col("#6a5a4a"))
@@ -372,7 +381,7 @@ object Pix {
         text(c, label, x + w / 2, y + h / 2 + 4, 10, if (on) INK else DIM, Paint.Align.CENTER)
     }
 
-    fun bar(c: Canvas, x: Float, y: Float, w: Float, h: Float, f: Float, fill: Int = col("#e0b45a")) {
+    @Synchronized fun bar(c: Canvas, x: Float, y: Float, w: Float, h: Float, f: Float, fill: Int = col("#e0b45a")) {
         rect(c, x, y, w, h, col("#c8a050")); rect(c, x + 1, y + 1, w - 2, h - 2, col("#1a1410"))
         rect(c, x + 1, y + 1, (w - 2) * f.coerceIn(0f, 1f), h - 2, fill)
     }
