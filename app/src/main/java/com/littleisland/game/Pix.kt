@@ -412,3 +412,12 @@ object Pix {
         rect(c, x + 1, y + 1, (w - 2) * f.coerceIn(0f, 1f), h - 2, fill)
     }
 }
+
+/** 큰 숫자를 짧게: 9,999 / 12.3K / 4.5M / 1.2B */
+fun big(n: Long): String = when {
+    n < 10_000L -> "%,d".format(n)
+    n < 1_000_000L -> "%.1fK".format(n / 1000.0).replace(".0K", "K")
+    n < 1_000_000_000L -> "%.1fM".format(n / 1_000_000.0).replace(".0M", "M")
+    else -> "%.1fB".format(n / 1_000_000_000.0).replace(".0B", "B")
+}
+fun big(n: Int): String = big(n.toLong())

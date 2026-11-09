@@ -23,6 +23,12 @@ object Game {
     var stone = 4; private set
     private var goldC = 0L                     // 금화 1/100 단위
     val gold get() = (goldC / 100).toInt()
+    /** 초당 금화 (최근 항해 판매로 어림) */
+    var gps = 0f
+    /** 바다를 톡 치면 받는 금화: 배가 클수록, 짐칸이 넓을수록 많다 */
+    fun tapGold(): Int = max(1, Math.round(gps * .4f) + shipLevel * shipLevel + (loadW() + loadS() * 2) / 20)
+    @Synchronized fun addTapGold(n: Int) { goldC += n * 100L; tapsDone++ }
+    var tapsDone = 0
     private var fracW = 0.0; private var fracS = 0.0
     var houses = 0; private set
     var warehouse = 0; private set
@@ -220,7 +226,7 @@ object Game {
             else w.toLongOrNull()?.let { e -> haesol.getOrNull(i)?.let { workers.add(Contract(it, e)) } }
         }
         // 배 부품: 예전 저장이면 이미 산 배 단계만큼 무료로 채운다
-        parts.clear(); partStars.clear()
+        parts.clear(); partStars.clear(); gps = sp.getFloat("gps", 0f)
         sp.getString("stars", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); partStars[k] = v.toIntOrNull() ?: 0 }
         if (sp.contains("parts")) sp.getString("parts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); parts[k] = v.toIntOrNull() ?: 0 }
         else if (sp.contains("last")) Fleet.core.forEach { parts[it.id] = 5 * (shipLevel - 1) }
@@ -283,7 +289,7 @@ object Game {
         saveT = 0f
         val v = voy
         prefs?.edit()?.apply {
-            putInt("wood", wood); putInt("stone", stone); putLong("goldC", goldC)
+            putInt("wood", wood); putInt("stone", stone); putLong("goldC", goldC); putFloat("gps", gps)
             putInt("houses", houses); putInt("warehouse", warehouse); putInt("storage", min(warehouse, 2))
             putBoolean("dock", dock); putBoolean("field", field); putBoolean("lighthouse", lighthouse); putBoolean("market", market)
             putInt("shipLevel", shipLevel); putString("route", route)
@@ -976,6 +982,7 @@ object Game {
             packed = false
             val sale = floor((v.cw * p.buyW * (1 + cb(v.crew, "wood_price_bonus")) + v.cs * p.buyS * (1 + cb(v.crew, "stone_price_bonus"))) * mul * 100).toLong()
             goldC += sale; v.saleC = sale
+            gps = if (gps <= 0f) sale / 100f / v.dur else gps * .7f + sale / 100f / v.dur * .3f
             flag("sale_1")
             v.hire = tryHire(p, t)
             v.hire?.let { goldC -= (Data.worker(it)?.wage ?: 0) * 100L }
@@ -1405,7 +1412,7 @@ object Game {
         return listOfNotNull(
             if (c.wood > 0) "나무 " + min(wood, c.wood) + "/" + c.wood else null,
             if (c.stone > 0) "돌 " + min(stone, c.stone) + "/" + c.stone else null,
-            if (c.gold > 0) "금화 " + "%,d".format(min(gold, c.gold)) + "/" + "%,d".format(c.gold) else null).joinToString(" · ")
+            if (c.gold > 0) "금화 " + big(min(gold, c.gold)) + "/" + big(c.gold) else null).joinToString(" · ")
     }
 
     private fun autoBuildStep() {

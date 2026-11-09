@@ -193,7 +193,7 @@ class IslandWallpaperService : WallpaperService() {
                     if (parts.isEmpty()) 1f else parts.average().toFloat()
                 } ?: 0f
             } else { title = "섬 · 배가 곧 떠나요"; sub = ""; frac = 0f }
-            val res = "나무 " + Game.wood + " · 돌 " + Game.stone + " · 금화 " + "%,d".format(Game.gold)
+            val res = "나무 " + Game.wood + " · 돌 " + Game.stone + " · 금화 " + big(Game.gold)
             val y0 = syOf(Scene.HOR - 74f)
             val x0 = 22 * d; val w = cv.width - 44 * d
             fun outlined(t: String, x: Float, y: Float, size: Float, cl: Int, align: Paint.Align, maxW: Float) {

@@ -32,12 +32,15 @@ class AppUi(val scene: Scene, val host: Host) {
     class Tile(val icon: String, val name: String, val sub: String, val st: St, val detail: String,
                val cost: Data.Cost? = null, val btn: String? = null, val act: (() -> Boolean)? = null, val done: String? = null,
                val keep: Boolean = false,
-               val btn2: String? = null, val act2: (() -> Boolean)? = null, val done2: String? = null)   // 두 번째 버튼 (선원: 태우기/내리기)   // keep: 버튼을 눌러도 창을 닫지 않고 새 내용으로 (부품 연속 올리기)
+               val btn2: String? = null, val act2: (() -> Boolean)? = null, val done2: String? = null, val go: Int = -1)   // 두 번째 버튼 (선원: 태우기/내리기)   // keep: 버튼을 눌러도 창을 닫지 않고 새 내용으로 (부품 연속 올리기)
 
-    private val tabs = listOf("store" to "짓기", "ship" to "배", "anchor" to "항로", "person" to "선원", "map" to "할 일", "book" to "기록", "gear" to "설정", "skill:9" to "스킬")
+    private val tabs = listOf("store" to "짓기", "ship" to "배", "anchor" to "항해", "person" to "선원", "map" to "할 일", "book" to "기록", "gear" to "설정", "skill:9" to "스킬", "part:5" to "강화", "map" to "더보기")
     /** 화면에 놓는 탭 순서: 배와 선원이 맨 앞 */
-    private val order = intArrayOf(1, 3, 7, 0, 2, 4, 5, 6)
-    var tab = if (Game.dock) 1 else 0
+    private val order = intArrayOf(8, 2, 9)
+    /** 더보기 안에 들어 있는 탭들 */
+    private val SUB = intArrayOf(0, 1, 3, 4, 5, 6, 7)
+    var tab = if (Game.dock) 8 else 0
+    private var backRect: Rect? = null
     private var popup: Tile? = null
     var fxAt = 0L                        // 올리기 성공 반짝임 시작 시각
     private var after: Tile? = null      // 버튼을 누른 뒤 이어서 띄울 창 (뽑기 결과)
@@ -128,6 +131,20 @@ class AppUi(val scene: Scene, val host: Host) {
     private fun tiles(): List<Tile> {
         val l = ArrayList<Tile>()
         when (tab) {
+            9 -> {
+                fun go(t: Int, sub: String, ready: Boolean) = Tile(tabs[t].first, tabs[t].second, sub, if (ready) St.READY else St.NORMAL, "", go = t)
+                val daily = Game.attReady() || Game.dbReady() || Game.seasonReady()
+                l.add(go(4, if (daily) "받을 것 있음" else "하루 보상", daily))
+                val pf = Game.promoted.any { Game.ptsFree(it) > 0 }; val tr = (0 until 25).any { Game.treeOpen(it) && Game.gold >= Game.treeCost(it) }
+                l.add(go(7, if (pf) "점수 찍기" else if (tr) "배울 수 있음" else "능력치·나무", pf || tr))
+                val pr = Data.workers.any { Game.canPromote(it.id) }
+                l.add(go(3, if (pr) "승진 가능" else "선원·알바", pr))
+                l.add(go(1, "배 단계·꾸미기", false))
+                l.add(go(0, "섬 짓기", false))
+                val n = Game.unread()
+                l.add(go(5, if (n > 0) "새 글 $n" else "도감·일지", n > 0))
+                l.add(go(6, "소리·배경화면", false))
+            }
             0 -> {
                 val h = Game.nextHouse()
                 l.add(if (h == null) Tile("house", "숙소 3/3", "다 지음", St.DONE, Fleet.short("buildings", "house", "알바가 머무는 숙소예요."))
@@ -489,6 +506,10 @@ class AppUi(val scene: Scene, val host: Host) {
         c.restore()
         label(c, 6f, top + 14)
         drawPower(top + 28)
+        // 큰 금화 숫자와 초당 금화
+        k.icon(c, "gold", 6f, top + 22, 1.6f)
+        k.text(c, big(Game.gold), 25f, top + 36, 16, k.GOLD, Paint.Align.LEFT, true)
+        k.text(c, (if (Game.gps > 0.05f) "초당 +" + (if (Game.gps < 10) "%.1f".format(Game.gps) else big(Game.gps.toLong())) + " · " else "") + "바다를 톡톡 눌러요!", 7f, top + 49, 8, k.CREAM, Paint.Align.LEFT, true)
         drawGoal(top + sceneH - 21)
         // 탭
         val ty = top + sceneH + 4
@@ -497,29 +518,36 @@ class AppUi(val scene: Scene, val host: Host) {
             val t = tabs[ti]
             val st = (W - 6f) / order.size
             val x = 3f + i * st; val bw = st - 2f
+            val on = ti == tab || (ti == 9 && tab in SUB)
             k.rect(c, x, ty, bw, 25f, k.INK)
-            k.rect(c, x + 1, ty + 1, bw - 2, 23f, if (ti == tab) k.col("#c8903a") else k.col("#8a6030"))
-            k.rect(c, x + 1, ty + 1, bw - 2, 2f, if (ti == tab) k.col("#f0c060") else k.col("#a87444"))
-            if (t.first.contains(":")) k.icon(c, t.first, x + (bw - 18) / 2, ty + 3.5f, 1.8f) else k.icon(c, t.first, x + (bw - 20) / 2, ty + 3f, 2f)
-            if (ti == 5 && Game.unread() > 0) k.rect(c, x + bw - 5, ty - 1, 5f, 5f, k.RED)
-            if (ti == 7 && (0 until 25).any { Game.treeOpen(it) && Game.gold >= Game.treeCost(it) }) k.rect(c, x + bw - 5, ty - 1, 5f, 5f, k.GOLD)
+            k.rect(c, x + 1, ty + 1, bw - 2, 23f, if (on) k.col("#c8903a") else k.col("#8a6030"))
+            k.rect(c, x + 1, ty + 1, bw - 2, 2f, if (on) k.col("#f0c060") else k.col("#a87444"))
+            val tw = 20 + 3 + k.width(t.second, 11); val ix = x + (bw - tw) / 2
+            if (t.first.contains(":")) k.icon(c, t.first, ix + 1, ty + 3.5f, 1.8f) else k.icon(c, t.first, ix, ty + 3f, 2f)
+            k.text(c, t.second, ix + 23, ty + 17, 11, if (on) k.CREAM else k.col("#f0dcb0"), Paint.Align.LEFT, true)
+            val dot = when (ti) { 8 -> upRows().any { it.can }; 9 -> moreDot(); else -> false }
+            if (dot) k.rect(c, x + bw - 6, ty - 1, 6f, 6f, if (ti == 9) k.RED else k.GOLD)
             tabRects.add(Rect(x.toInt(), ty.toInt(), (x + bw).toInt(), (ty + 25).toInt()))
         }
         // 판넬
         val py = ty + 30; val ph = H - py - 26
         k.panel(c, 2f, py, W - 4f, ph)
-        if (tab != 7) k.text(c, tabs[tab].second, W / 2f, py + 17, 12, k.CREAM, Paint.Align.CENTER, true)
-        tileRects.clear(); treeRects.clear(); treeBtn = null; slotRects.clear(); modeRects.clear(); statRects.clear(); faceRects.clear()
+        if (tab != 7 && tab != 8) k.text(c, tabs[tab].second, W / 2f, py + 17, 12, k.CREAM, Paint.Align.CENTER, true)
+        tileRects.clear(); treeRects.clear(); treeBtn = null; slotRects.clear(); modeRects.clear(); statRects.clear(); faceRects.clear(); upRects.clear(); multRects.clear()
+        backRect = null
+        if (tab in SUB && tab != 7) { k.text(c, "◀ 더보기", 10f, py + 16, 10, k.GOLD, Paint.Align.LEFT, true); backRect = Rect(2, py.toInt(), 70, (py + 22).toInt()) }
+        if (tab == 8) { drawUpgrade(py, ph); drawBar(k); drawFloats(); popup?.let { drawPopup(it) }; return }
         if (tab == 7) {
             // 위의 두 버튼: 선원 능력치 / 항해술 나무
             k.rect(c, 6f, py + 3, W - 12f, 19f, k.col("#3a2614"))
+            k.button(c, 8f, py + 4, 22f, 16f, "◀", true); backRect = Rect(2, py.toInt(), 32, (py + 24).toInt())
             for ((m, nm) in listOf("선원 능력치", "항해술 나무").withIndex()) {
-                val bx = 8f + m * (W - 16f) / 2; val bw = (W - 16f) / 2 - 2
+                val bx = 34f + m * (W - 42f) / 2; val bw = (W - 42f) / 2 - 2
                 k.button(c, bx, py + 4, bw, 16f, nm, skillMode == m)
                 modeRects.add(Rect(bx.toInt(), (py + 1).toInt(), (bx + bw).toInt(), (py + 23).toInt()) to m)
             }
             if (skillMode == 0) drawStats(py, ph) else drawTree(py, ph)
-            drawBar(k); popup?.let { drawPopup(it) }; return
+            drawBar(k); drawFloats(); popup?.let { drawPopup(it) }; return
         }
         val all = tiles()
         val list = if (tab == 1) all.filter { !it.icon.startsWith("part:") && it.sub != "지나옴" } else all
@@ -552,6 +580,7 @@ class AppUi(val scene: Scene, val host: Host) {
             if (scrollY < maxScroll - 2) k.text(c, "▼", W - 5.5f, areaBot + 3, 7, k.GOLD, Paint.Align.CENTER, true)
         }
         drawBar(k)
+        drawFloats()
         popup?.let { drawPopup(it) }
     }
 
@@ -559,11 +588,137 @@ class AppUi(val scene: Scene, val host: Host) {
         // 자원 막대
         val by = H - 22f
         k.rect(c, 20f, by, W - 40f, 18f, k.INK); k.rect(c, 21f, by + 1, W - 42f, 16f, k.col("#5d3a1f")); k.rect(c, 21f, by + 1, W - 42f, 1f, k.col("#a87444"))
-        val items = listOf("wood" to Game.wood.toString(), "stone" to Game.stone.toString(), "gold" to "%,d".format(Game.gold), "map" to Game.mapPieces.toString())
+        val items = listOf("wood" to Game.wood.toString(), "stone" to Game.stone.toString(), "gold" to big(Game.gold), "map" to Game.mapPieces.toString())
         // 금화는 자리를 넓게 (5단계 배는 18만 금화라 숫자가 길다)
         val gap = floatArrayOf(34f, 34f, 60f, 0f)
         var x = 26f
         for ((i, iv) in items.withIndex()) { val (ic, v) = iv; k.icon(c, ic, x, by + 4, 1f); k.text(c, v, x + 12, by + 13, 10, k.GOLD); x += gap[i] }
+    }
+
+    // ---------- 강화: 거지키우기처럼 한 줄 목록 하나 ----------
+    class URow(val icon: String, val title: String, val sub: String, val cost: Data.Cost?, val can: Boolean, val label: String,
+               val act: () -> Boolean, val big: Boolean = false)
+    private val upRects = ArrayList<Pair<Rect, URow>>()
+    private val multRects = ArrayList<Pair<Rect, Int>>()
+    private var mult = 1                       // 1, 10, 0(최대)
+    fun upRows(): List<URow> {
+        val l = ArrayList<URow>()
+        // 다음 배 단계
+        val nx = Game.shipLevel + 1
+        Data.unlock("ship_$nx")?.takeIf { !Game.has(it.key) && Data.ships.any { s -> s.level == nx } }?.let { u ->
+            val need = Fleet.needForShip(nx); val minP = Game.minPart()
+            val ready = Game.unlockReady(u)
+            l.add(URow("ship", nx.toString() + "단계 배로 키우기", if (minP < need) "부품 넷 모두 Lv$need (지금 Lv$minP)" else Data.ship(nx).name.substringAfter("· "),
+                u.cost, ready && Game.canPay(u.cost), "키우기", { Game.buyUnlock(u.key) }, big = true))
+        }
+        for (p in Fleet.parts) {
+            val lv = Game.partLevel(p.id); val n = Game.partNext(p.id)
+            val st = Game.stars(p.id); val stS = if (st > 0) " ★$st" else ""
+            if (n != null) l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, Fleet.partText(p, Game.partValue(p.id)) + " → " + Fleet.partText(p, n.value * (1 + .1f * st)).substringAfterLast(" "),
+                n.cost, Game.canPay(n.cost), "+1", { Game.buyPart(p.id) }))
+            else if (Game.starReady(p.id)) { val sc = Game.starCost(p.id)
+                l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, "별 " + st + "/" + Game.STAR_MAX + " · 별마다 효과 +10%", sc, Game.canPay(sc), "★+1", { Game.buyStar(p.id) })) }
+            else l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, if (lv >= p.levels.size) "가장 높은 레벨" else "배를 키우면 더 올려요", null, false, "최고", { false }))
+        }
+        for (id in Game.promoted) {
+            val pi = Data.workers.indexOfFirst { it.id == id }; val lv = Game.crewLevel(id)
+            val tc = Game.teachCost(id)
+            l.add(URow((if (lv >= 11) "face15:" else "face:") + pi, (Fleet.crewOf(id)?.name ?: id) + " Lv" + lv, if (tc == null) "가장 높은 레벨" else "선원 레벨 +1 · 능력치 점수 +2",
+                tc?.let { Data.Cost(it, 0, 0) }, tc != null && Game.gold >= tc, "+1", { Game.teach(id) }))
+        }
+        return l
+    }
+    private fun moreDot() = Game.attReady() || Game.dbReady() || Game.seasonReady() || Game.unread() > 0 ||
+        Game.promoted.any { Game.ptsFree(it) > 0 } || Data.workers.any { Game.canPromote(it.id) }
+
+    private fun buyRow(u: URow) {
+        if (!u.can) { host.toast("재료가 모자라요"); return }
+        val p0 = Game.myPower()
+        val times = if (u.big) 1 else if (mult == 0) 999 else mult
+        var n = 0
+        while (n < times && u.act()) n++
+        if (n == 0) return
+        fxAt = System.currentTimeMillis()
+        val dp = Game.myPower() - p0
+        if (dp > 0) { powFx = dp; powFxAt = fxAt }
+        val nm = u.title.substringBefore(" Lv")
+        floats.add(Float3(W - 30f, upY[u.title] ?: 300f, if (u.big) "배가 커졌어요!" else nm + " +" + n, fxAt))
+    }
+    private val upY = HashMap<String, Float>()
+
+    private fun drawUpgrade(py: Float, ph: Float) {
+        val k = Pix
+        k.text(c, "강화", 12f, py + 17, 12, k.CREAM, Paint.Align.LEFT, true)
+        // x1 / x10 / 최대
+        val ms = listOf(1 to "x1", 10 to "x10", 0 to "최대")
+        var bx = W - 10f - 3 * 34f
+        for ((m, lb) in ms) { k.button(c, bx, py + 4, 32f, 16f, lb, mult == m); multRects.add(Rect(bx.toInt(), (py + 1).toInt(), (bx + 32).toInt(), (py + 23).toInt()) to m); bx += 34f }
+        val rows = upRows()
+        val areaTop = py + 24; val areaBot = py + ph - 4
+        val rh = 34f
+        val contentH = rows.sumOf { (if (it.big) rh + 10 else rh).toDouble() }.toFloat()
+        maxScroll = (contentH - (areaBot - areaTop) + 4).coerceAtLeast(0f)
+        scrollY = scrollY.coerceIn(0f, maxScroll)
+        c.save(); c.clipRect(2f, areaTop, W - 2f, areaBot)
+        var y = areaTop + 2 - scrollY
+        upY.clear()
+        for (u in rows) {
+            val h = if (u.big) rh + 8 else rh - 2
+            if (y + h > areaTop && y < areaBot) {
+                k.rect(c, 6f, y, W - 14f, h, k.INK)
+                k.rect(c, 7f, y + 1, W - 16f, h - 2, if (u.big) k.col("#4a3018") else k.col("#3a2614"))
+                if (u.can) k.rect(c, 7f, y + 1, 2f, h - 2, k.GOLD)
+                k.slot(c, 10f, y + 3, h - 6, h - 6, false, false)
+                k.icon(c, u.icon, 10f + (h - 6) / 2 - 10 * (h - 6) / 32f, y + 3 + (h - 6) / 2 - 10 * (h - 6) / 32f, 2f * (h - 6) / 32f)
+                val tx = 14f + h - 6
+                val bw = 58f; val bxx = W - 12f - bw
+                k.text(c, k.fit(u.title, 10, bxx - tx - 4), tx, y + h / 2 - 1, 10, k.CREAM, Paint.Align.LEFT, true)
+                k.text(c, k.fit(u.sub, 8, bxx - tx - 4), tx, y + h / 2 + 10, 8, k.col("#c8b896"))
+                // 오른쪽 버튼: 위에 값, 아래에 행동
+                if (u.cost != null) {
+                    k.button(c, bxx, y + 3, bw, h - 6, "", u.can)
+                    val cg = u.cost
+                    val main = if (cg.gold > 0) big(cg.gold) else if (cg.wood > 0) big(cg.wood) else big(cg.stone)
+                    val ic = if (cg.gold > 0) "gold" else if (cg.wood > 0) "wood" else "stone"
+                    k.icon(c, ic, bxx + 5, y + h / 2 - 9, .9f)
+                    k.text(c, main, bxx + 16, y + h / 2 - 1, 9, if (u.can) k.INK else k.col("#c8b896"), Paint.Align.LEFT, true)
+                    val extra = listOfNotNull(if (cg.gold > 0 && cg.wood > 0) "나무 " + big(cg.wood) else null, if ((cg.gold > 0 || cg.wood > 0) && cg.stone > 0) "돌 " + big(cg.stone) else null).joinToString(" ")
+                    k.text(c, if (extra.isNotEmpty()) extra else u.label + (if (!u.big && mult != 1) (if (mult == 0) " 최대" else " x$mult") else ""), bxx + bw / 2, y + h / 2 + 10, 7, if (u.can) k.INK else k.col("#a89878"), Paint.Align.CENTER)
+                    upRects.add(Rect(bxx.toInt() - 2, maxOf(y, areaTop).toInt(), (bxx + bw).toInt() + 4, minOf(y + h, areaBot).toInt()) to u)
+                } else k.text(c, u.label, bxx + bw / 2, y + h / 2 + 4, 10, k.DIM, Paint.Align.CENTER, true)
+            }
+            upY[u.title] = y + h / 2
+            y += h + 4
+        }
+        c.restore()
+        if (maxScroll > 0) {
+            val vh = areaBot - areaTop; val bh = (vh * vh / (contentH + 4)).coerceAtLeast(14f)
+            val by = areaTop + (vh - bh) * (scrollY / maxScroll)
+            k.rect(c, W - 5f, areaTop, 2f, vh, k.col("#2a1a10")); k.rect(c, W - 5f, by, 2f, bh, k.GOLD)
+        }
+    }
+
+    // ---------- 떠오르는 +숫자 ----------
+    class Float3(val x: Float, val y: Float, val s: String, val t0: Long)
+    private val floats = ArrayList<Float3>()
+    private var combo = 0; private var lastTap = 0L
+    private fun drawFloats() {
+        val now = System.currentTimeMillis()
+        floats.removeAll { now - it.t0 > 900 }
+        for (f in floats.toList()) {
+            val e = (now - f.t0) / 900f
+            val a = (255 * (1 - e)).toInt().coerceIn(0, 255)
+            Pix.text(c, f.s, f.x, f.y - 6 - e * 22, 11, android.graphics.Color.argb(a, 255, 211, 106), Paint.Align.CENTER, true)
+        }
+    }
+
+    /** 돌아왔을 때 보상 창 */
+    fun showReport(r: Game.Report) {
+        val t = if (r.minutes >= 60) (r.minutes / 60).toString() + "시간 " + (r.minutes % 60) + "분" else r.minutes.coerceAtLeast(1).toString() + "분"
+        popup = Tile("gold", "돌아왔어요!", "금화 +" + big(r.gold), St.READY,
+            t + " 동안 섬과 배가 일했어요.\n\n금화 +" + big(r.gold) + "\n나무 +" + big(r.wood) + " · 돌 +" + big(r.stone) +
+                (if (r.voyages > 0) "\n항해 " + r.voyages + "번 다녀왔어요" else "") + (if (r.full) "\n창고가 가득 찼어요" else ""),
+            null, "받기", { true }, null)
     }
 
     // ---------- 배 화면: 가운데 배, 양옆에 부품 넷 ----------
@@ -683,7 +838,7 @@ class AppUi(val scene: Scene, val host: Host) {
     private fun treeTile(i: Int): Tile {
         val n = Game.TREE[i]; val own = i in Game.treeOwned; val open = Game.treeOpen(i)
         val g = Game.treeCost(i)
-        return Tile("skill:" + n.icon, n.name + (if (n.big) " ★" else ""), if (own) "배움" else if (open) "금화 " + "%,d".format(g) else "잠김",
+        return Tile("skill:" + n.icon, n.name + (if (n.big) " ★" else ""), if (own) "배움" else if (open) "금화 " + big(g) else "잠김",
             if (own) St.DONE else if (open) St.READY else St.LOCKED,
             Game.treeKindText(n) + (if (n.big) "\n★ 큰 칸이라 효과가 커요." else "") + "\n\n" + when { own -> "이미 배웠어요."; open -> "배우면 이웃 칸이 열려요."; else -> "이어진 옆 칸을 먼저 배워요." },
             if (open) Data.Cost(g, 0, 0) else null, if (open) "배우기" else null, { Game.learn(i) }, n.name + "! " + Game.treeKindText(n))
@@ -752,7 +907,7 @@ class AppUi(val scene: Scene, val host: Host) {
             return
         }
         tab = when {
-            key.startsWith("part:") || key.startsWith("ship_") -> 1
+            key.startsWith("part:") || key.startsWith("ship_") || key.startsWith("crew:") -> 8
             key.startsWith("crew:") -> 3
             key.startsWith("port_") -> 2
             else -> 0
@@ -820,7 +975,7 @@ class AppUi(val scene: Scene, val host: Host) {
             for ((ic, need, have) in listOf(Triple("wood", cc.wood, Game.wood), Triple("stone", cc.stone, Game.stone), Triple("gold", cc.gold, Game.gold))) {
                 if (need <= 0) continue
                 k.icon(c, ic, x, y - 4, 1f)
-                val s = "%,d".format(need)
+                val s = big(need)
                 k.text(c, s, x + 12, y + 4, 10, if (have >= need) k.GREEN else k.RED)
                 x += 18 + k.width(s, 10)
             }
@@ -868,8 +1023,22 @@ class AppUi(val scene: Scene, val host: Host) {
         }
         // 위 장면: 병, 상자, 바다 동물, 조개를 앱에서도 톡 쳐서 줍는다
         goalRect?.let { r -> if (r.contains(ix, iy)) { openGoal(); return } }
-        if (y >= top && y < top + sceneH) { val vh = sceneH / Z; scene.tap((x - (W - Scene.W * Z) / 2f) / Z, (Scene.WL - vh * .55f).toInt() + (y - top) / Z)?.let { host.toast(it) }; return }
+        if (y >= top && y < top + sceneH) {
+            val vh = sceneH / Z
+            val got = scene.tap((x - (W - Scene.W * Z) / 2f) / Z, (Scene.WL - vh * .55f).toInt() + (y - top) / Z)
+            if (got != null) { host.toast(got); return }
+            // 빈 바다를 톡: 금화가 튄다. 빨리 연달아 치면 콤보(최대 2배)
+            val now = System.currentTimeMillis()
+            combo = if (now - lastTap < 600) (combo + 1).coerceAtMost(20) else 0; lastTap = now
+            val n = Math.round(Game.tapGold() * (1 + combo * .05f))
+            Game.addTapGold(n)
+            floats.add(Float3(x + (Math.random() * 16 - 8).toFloat(), y, "+" + big(n) + (if (combo >= 5) " x" + "%.1f".format(1 + combo * .05f) else ""), now))
+            return
+        }
+        backRect?.let { r -> if (r.contains(ix, iy)) { tab = 9; scrollY = 0f; return } }
         for ((i, r) in tabRects.withIndex()) if (r.contains(ix, iy)) { tab = order[i]; page = 0; scrollY = 0f; return }
+        for ((r, m) in multRects) if (r.contains(ix, iy)) { mult = m; return }
+        for ((r, u) in upRects) if (r.contains(ix, iy)) { buyRow(u); return }
         treeBtn?.let { r -> if (r.contains(ix, iy)) {
             val p0 = Game.myPower(); val n = Game.TREE[treeSel]
             if (Game.learn(treeSel)) { fxAt = System.currentTimeMillis(); val dp = Game.myPower() - p0
@@ -885,8 +1054,11 @@ class AppUi(val scene: Scene, val host: Host) {
             return }
         for ((r, t) in slotRects) if (r.contains(ix, iy)) { popup = t; return }
         for ((r, pg) in pageRects) if (r.contains(ix, iy)) { page = pg; return }
-        for ((r, t) in tileRects) if (r.contains(ix, iy)) { popup = t; return }
+        for ((r, t) in tileRects) if (r.contains(ix, iy)) { if (t.go >= 0) { tab = t.go; scrollY = 0f } else popup = t; return }
     }
+
+    /** 길게 누르면 계속 올리기: 강화 줄의 버튼 위인지 */
+    fun holdable(x: Float, y: Float): Boolean = popup == null && tab == 8 && upRects.any { it.first.contains(x.toInt(), y.toInt()) }
 
     /** 옆으로 밀어서 쪽 넘기기 (dir: +1 다음, -1 앞) */
     fun swipe(dir: Int) {}

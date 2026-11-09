@@ -205,10 +205,7 @@ class MainActivity : Activity(), AppUi.Host {
         Game.report?.let { r ->
             Game.report = null
             val t = if (r.minutes >= 60) (r.minutes / 60).toString() + "시간 " + (r.minutes % 60) + "분" else r.minutes.coerceAtLeast(1).toString() + "분"
-            AlertDialog.Builder(this).setTitle(t + " 동안 섬에서")
-                .setMessage("나무 +" + r.wood + ", 돌 +" + r.stone + ", 금화 +" + r.gold +
-                    (if (r.voyages > 0) "\n항해 " + r.voyages + "번 다녀왔어요." else "") + (if (r.full) "\n창고가 가득 찼어요. 창고를 넓혀 보세요." else ""))
-                .setPositiveButton("좋아요", null).show()
+            if (t.isNotEmpty()) view.showReport(r)
         }
         view.running = true; view.invalidate()
     }
@@ -241,16 +238,20 @@ class MainActivity : Activity(), AppUi.Host {
             if (running) postInvalidateDelayed(66L)
         }
 
-        private var downX = 0f; private var downY = 0f; private var lastY = 0f; private var moved = false
+        fun showReport(r: Game.Report) = app.showReport(r)
+        private var downX = 0f; private var downY = 0f; private var lastY = 0f; private var moved = false; private var held = false
+        // 강화 버튼을 길게 누르면 계속 올라간다
+        private val repeat = object : Runnable { override fun run() { held = true; app.tap(downX / scale, downY / scale); invalidate(); postDelayed(this, 110L) } }
         override fun onTouchEvent(e: MotionEvent): Boolean {
             when (e.action) {
-                MotionEvent.ACTION_DOWN -> { downX = e.x; downY = e.y; lastY = e.y; moved = false }
+                MotionEvent.ACTION_DOWN -> { downX = e.x; downY = e.y; lastY = e.y; moved = false; held = false
+                    if (app.holdable(e.x / scale, e.y / scale)) postDelayed(repeat, 450L) }
                 MotionEvent.ACTION_MOVE -> {
                     // 위아래로 끌면 목록이 밀린다
-                    if (!moved && Math.abs(e.y - downY) > 8 * scale) moved = true
+                    if (!moved && Math.abs(e.y - downY) > 8 * scale) { moved = true; removeCallbacks(repeat) }
                     if (moved) { app.scrollBy((e.y - lastY) / scale); lastY = e.y; invalidate() }
                 }
-                MotionEvent.ACTION_UP -> { if (!moved) app.tap(e.x / scale, e.y / scale); invalidate() }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> { removeCallbacks(repeat); if (!moved && !held && e.action == MotionEvent.ACTION_UP) app.tap(e.x / scale, e.y / scale); invalidate() }
             }
             return true
         }

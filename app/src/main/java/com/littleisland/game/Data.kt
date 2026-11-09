@@ -8,7 +8,7 @@ import org.json.JSONObject
 object Data {
     class Cost(val gold: Int, val wood: Int, val stone: Int) {
         fun text(): String = listOfNotNull(
-            if (gold > 0) "금화 " + "%,d".format(gold) else null,
+            if (gold > 0) "금화 " + big(gold) else null,
             if (wood > 0) "나무 $wood" else null,
             if (stone > 0) "돌 $stone" else null).joinToString(" · ").ifEmpty { "무료" }
     }
