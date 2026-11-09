@@ -764,7 +764,7 @@ class AppUi(val scene: Scene, val host: Host) {
                     val main = if (cg.gold > 0) big(cg.gold) else if (cg.wood > 0) big(cg.wood) else big(cg.stone)
                     val ic = if (cg.gold > 0) "gold" else if (cg.wood > 0) "wood" else "stone"
                     k.icon(c, ic, bxx + 5, y + h / 2 - 9, .9f)
-                    k.text(c, k.fit(main, 9, bw - 20), bxx + 16, y + h / 2 - 1, 9, if (ok) k.INK else k.col("#c8b896"), Paint.Align.LEFT, true)
+                    k.text(c, k.fit(main, 9, bw - 20), bxx + 16, y + h / 2 - 1, 9, if (ok) k.INK else k.col("#c8b896"), Paint.Align.LEFT)
                     val extra = (if (mc != null) "+" + mc.first + " " else "") + listOfNotNull(if (cg.gold > 0 && cg.wood > 0) "나무" + big(cg.wood) else null, if ((cg.gold > 0 || cg.wood > 0) && cg.stone > 0) "돌" + big(cg.stone) else null).joinToString(" ")
                     k.text(c, k.fit(if (extra.isNotBlank() && extra.trim() != "+" + (mc?.first ?: "")) extra else (if (mc != null) "+" + mc.first else u.label), 7, bw - 4), bxx + bw / 2, y + h / 2 + 10, 7, if (ok) k.INK else k.col("#a89878"), Paint.Align.CENTER)
                     upRects.add(Rect(bxx.toInt() - 2, maxOf(y, areaTop).toInt(), (bxx + bw).toInt() + 4, minOf(y + h, areaBot).toInt()) to u)
