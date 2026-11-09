@@ -9,13 +9,15 @@ import org.json.JSONObject
  */
 object Fleet {
     class Level(val value: Float, val cost: Data.Cost, val reqShip: Int, val lossCut: Float)
-    class Part(val id: String, val name: String, val desc: String, val icon: Int, val levels: List<Level>)
+    class Part(val id: String, val name: String, val desc: String, val icon: Int, val levels: List<Level>, val extra: Boolean = false)
     class Skill(val level: Int, val id: String, val name: String, val effect: String, val value: Float, val icon: Int, val desc: String)
     class Crew(val id: String, val name: String, val role: String, val roleDesc: String, val unlock: String,
                var skills: List<Skill>, val line: String, val sheet: String, val row: Int, val portrait: Int)
     class Synergy(val a: String, val b: String, val name: String, val effect: String, val value: Float, val desc: String)
 
     val parts = ArrayList<Part>()
+    /** 큰 배 단계·모습에 쓰는 기본 부품 넷 (망루·선실은 빼고) */
+    val core get() = parts.filter { !it.extra }
     private val maxPer = HashMap<Int, Int>()
     private val needFor = HashMap<Int, Int>()
     private val lookThreshold = HashMap<Int, Int>()
@@ -106,7 +108,7 @@ object Fleet {
                     Level(l.getDouble("value").toFloat(), Data.Cost(co.optInt("gold"), co.optInt("wood"), co.optInt("stone")),
                         l.optInt("requires_ship_level", 1), l.optJSONObject("secondary_effects")?.optDouble("bad_event_loss_reduction", 0.0)?.toFloat() ?: 0f)
                 }
-                parts.add(Part(p.getString("id"), p.getString("name"), p.optString("desc"), p.optInt("icon_index", i), levels))
+                parts.add(Part(p.getString("id"), p.getString("name"), p.optString("desc"), p.optInt("icon_index", i), levels, p.optBoolean("extra")))
             }
             d.optJSONObject("max_level_per_ship_level")?.let { o -> o.keys().forEach { k -> maxPer[k.toInt()] = o.getInt(k) } }
             d.optJSONObject("ship_upgrade_needs_parts_level")?.let { o -> o.keys().forEach { k -> needFor[k.toInt()] = o.getInt(k) } }
@@ -495,6 +497,8 @@ object Fleet {
         "hull" -> "짐 +" + pct(value)
         "sail" -> "항해 시간 -" + pct(value)
         "cannon" -> "해적 승률 +" + pts(value)
+        "lookout" -> "해적 만남 -" + pct(value)
+        "cabin" -> "선원 능력 +" + pct(value)
         else -> "좋은 사건 +" + pts(value)
     }
     fun pct(v: Float) = (v * 100 + .5f).toInt().toString() + "%"

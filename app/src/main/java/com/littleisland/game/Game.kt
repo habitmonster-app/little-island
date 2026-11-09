@@ -77,9 +77,25 @@ object Game {
     var levelUps = 0                                   // 화면 연출용 (Scene이 0으로 돌림)
 
     fun partLevel(id: String) = parts[id] ?: 0
-    fun partValue(id: String): Float { val lv = partLevel(id); return if (lv <= 0) 0f else Fleet.part(id)?.levels?.getOrNull(lv - 1)?.value ?: 0f }
+    fun partValue(id: String): Float { val lv = partLevel(id); return if (lv <= 0) 0f else (Fleet.part(id)?.levels?.getOrNull(lv - 1)?.value ?: 0f) * (1 + .1f * stars(id)) }
+    // ---------- 부품 별 강화: 지금 배에서 최고 레벨이면 금화로 별 1~5 (별 하나마다 효과 +10%) ----------
+    val partStars = HashMap<String, Int>()
+    const val STAR_MAX = 5
+    fun stars(id: String) = partStars[id] ?: 0
+    fun starCost(id: String) = Data.Cost((400 * (1 shl stars(id)) * shipLevel), 0, 0)
+    fun starReady(id: String) = partLevel(id) > 0 && partNext(id) == null && stars(id) < STAR_MAX
+    @Synchronized fun buyStar(id: String): Boolean {
+        if (!starReady(id) || !pay(starCost(id))) return false
+        partStars[id] = stars(id) + 1; bump("part_upgrade"); save(); return true
+    }
+    /** 해적에게 지면 금고 금화도 조금 빼앗긴다 (키·선원 수리로 줄어듦). 빼앗긴 금화 수를 돌려준다 */
+    private fun plunder(winGold: Int, frac: Float, crew: List<String>): Int {
+        val cut = 1 - min(.5f, partLossCut() + cb(crew, "repair_after_loss"))
+        val g = min(goldC / 100 * frac * cut, max(20, winGold * 3).toFloat()).toLong().coerceAtLeast(0)
+        goldC -= g * 100; return g.toInt()
+    }
     private fun partLossCut(): Float { val lv = partLevel("helm"); return if (lv <= 0) 0f else Fleet.part("helm")?.levels?.getOrNull(lv - 1)?.lossCut ?: 0f }
-    fun minPart() = Fleet.parts.minOfOrNull { partLevel(it.id) } ?: 0
+    fun minPart() = Fleet.core.minOfOrNull { partLevel(it.id) } ?: 0
     fun crewLevel(id: String) = crewLv[id] ?: 1
     fun crewXp(id: String) = crewXp[id] ?: 0
     fun slots() = Fleet.slots(shipLevel)
@@ -98,7 +114,7 @@ object Game {
     private fun cb(ids: List<String>, k: String) = crewBonus(ids)[k] ?: 0f
 
     /** 배 그림 단계(0~3): 이번 배 단계 기준 레벨을 넘은 부품 수 */
-    fun lookStage(): Int { val t = Fleet.lookThreshold(shipLevel); return minOf(3, Fleet.parts.count { partLevel(it.id) >= t }) }
+    fun lookStage(): Int { val t = Fleet.lookThreshold(shipLevel); return minOf(3, Fleet.core.count { partLevel(it.id) >= t }) }
 
     fun loadW(ids: List<String> = aboard) = floor(ship().cargoW * (1 + min(1.35f, partValue("hull") + cb(ids, "cargo_bonus") + tree("cargo") + cs(ids, 2)))).toInt()
     fun loadS(ids: List<String> = aboard) = floor(ship().cargoS * (1 + min(1.35f, partValue("hull") + cb(ids, "cargo_bonus") + tree("cargo") + cs(ids, 2)))).toInt()
@@ -204,9 +220,10 @@ object Game {
             else w.toLongOrNull()?.let { e -> haesol.getOrNull(i)?.let { workers.add(Contract(it, e)) } }
         }
         // 배 부품: 예전 저장이면 이미 산 배 단계만큼 무료로 채운다
-        parts.clear()
+        parts.clear(); partStars.clear()
+        sp.getString("stars", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); partStars[k] = v.toIntOrNull() ?: 0 }
         if (sp.contains("parts")) sp.getString("parts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); parts[k] = v.toIntOrNull() ?: 0 }
-        else if (sp.contains("last")) Fleet.parts.forEach { parts[it.id] = 5 * (shipLevel - 1) }
+        else if (sp.contains("last")) Fleet.core.forEach { parts[it.id] = 5 * (shipLevel - 1) }
         promoted.clear(); sp.getString("promoted", "")!!.split(",").filter { it.isNotEmpty() }.forEach { promoted.add(it) }
         aboard.clear(); sp.getString("aboard", "")!!.split(",").filter { it.isNotEmpty() && it in promoted }.forEach { aboard.add(it) }
         sp.getString("crewLv", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewLv[k] = v.toIntOrNull() ?: 1 }
@@ -255,11 +272,7 @@ object Game {
         if (houses >= 1) flags.add("house_1")
         if (warehouse >= 1) flags.add("store_1")
         if (dock) flags.add("dock")
-        if (shipLevel >= 2) flags.add("ship_2")
-        if (shipLevel >= 3) flags.add("ship_3")
-        if (shipLevel >= 4) flags.add("ship_4")
-        if (shipLevel >= 5) flags.add("ship_5")
-        if (shipLevel >= 6) flags.add("ship_6")
+        for (n in 2..shipLevel) flags.add("ship_$n")
         if (lighthouse) flags.add("lighthouse")
         if (market) flags.add("market")
         checkTitles(false)
@@ -283,6 +296,7 @@ object Game {
             putString("lastEvent", lastEvent)
             putString("workers", workers.joinToString(",") { it.id + ":" + it.expire })
             putString("parts", parts.entries.joinToString(",") { it.key + ":" + it.value })
+            putString("stars", partStars.entries.joinToString(",") { it.key + ":" + it.value })
             putString("promoted", promoted.joinToString(",")); putString("aboard", aboard.joinToString(","))
             putString("crewLv", crewLv.entries.joinToString(",") { it.key + ":" + it.value })
             putString("bossWins", bossWins.joinToString(",")); putString("souvOwned", souvOwned.joinToString(",")); putString("milesDone", milesDone.joinToString(","))
@@ -520,7 +534,7 @@ object Game {
     fun ptsTotal(id: String) = (crewLevel(id) - 1) * 2
     fun ptsFree(id: String) = ptsTotal(id) - pts(id).sum()
     /** 배에 탄 선원들이 찍은 능력치 합 */
-    fun cs(ids: List<String>, k: Int): Float = ids.filter { it in promoted }.sumOf { (crewPts[it]?.get(k) ?: 0).toDouble() }.toFloat() * STAT_PER[k]
+    fun cs(ids: List<String>, k: Int): Float = ids.filter { it in promoted }.sumOf { (crewPts[it]?.get(k) ?: 0).toDouble() }.toFloat() * STAT_PER[k] * (1 + partValue("cabin"))
     fun statText(k: Int, n: Int): String = when (k) { 0 -> "이길 확률 +" + "%.1f".format(n * STAT_PER[0] * 100).removeSuffix(".0") + "%p"
         1 -> "항해 시간 -" + (n * 1) + "%"; 2 -> "짐칸 +" + (n * 2) + "%"; else -> "판매 +" + (n * 2) + "%" }
     @Synchronized fun statAdd(id: String, k: Int, d: Int): Boolean {
@@ -577,7 +591,7 @@ object Game {
     fun renownWin() = renown * .02f
     fun renownSale() = renown * .1f
     /** 명성: 배 5단계 이상, 부품 넷 다 지금 최고 레벨이면 다시 시작할 수 있다 */
-    fun renownReady() = shipLevel >= 5 && Fleet.parts.all { partNext(it.id) == null && partLevel(it.id) > 1 }
+    fun renownReady() = shipLevel >= 5 && Fleet.core.all { partNext(it.id) == null && partLevel(it.id) > 1 }
     @Synchronized fun doRenown(): Boolean {
         if (!renownReady()) return false
         renown++
@@ -893,7 +907,7 @@ object Game {
         flag("sail_1")
         // 해적: 첫 조우는 반드시, 그 뒤는 항구 위험도만큼
         val forced = !has("pirate_1") && !has("main_53")
-        val enc = forced || Random.nextFloat() < p.risk + (m?.pirateAdd ?: 0f) + wv("pirate_chance")
+        val enc = forced || Random.nextFloat() < (p.risk + (m?.pirateAdd ?: 0f) + wv("pirate_chance")) * (1 - min(.4f, partValue("lookout")))
         var pirate: Data.Pirate? = null
         if (enc) {
             pirate = if (forced) Data.pirate("hook_minor") else {
@@ -937,7 +951,8 @@ object Game {
                         val lose = pr.lose * (1 - min(.5f, partLossCut() + cb(v.crew, "repair_after_loss")))
                         val lw = v.cw - floor(v.cw * (1 - lose)).toInt(); val ls = v.cs - floor(v.cs * (1 - lose)).toInt()
                         v.cw -= lw; v.cs -= ls
-                        card("우두머리 " + boss.name + "에게 당했어요", powerLine(pr, v.crew) + "\n짐을 빼앗겼어요 나무 -$lw 돌 -$ls\n" + boss.captain + ": “" + boss.winLine + "”")
+                        val pg = plunder(pr.winGold[1], .1f, v.crew)
+                        card("우두머리 " + boss.name + "에게 약탈당했어요", powerLine(pr, v.crew) + "\n빼앗긴 것  나무 -$lw 돌 -$ls 금화 -$pg\n" + boss.captain + ": “" + boss.winLine + "”")
                     }
                 } else if (pr != null) {
                     if (v.win) {
@@ -948,7 +963,8 @@ object Game {
                         val lose = pr.lose * (1 - min(.5f, partLossCut() + cb(v.crew, "repair_after_loss")))
                         val lw = v.cw - floor(v.cw * (1 - lose)).toInt(); val ls = v.cs - floor(v.cs * (1 - lose)).toInt()
                         v.cw -= lw; v.cs -= ls
-                        card(pr.name + "에게 당했어요", powerLine(pr, v.crew) + "\n짐을 빼앗겼어요 나무 -$lw 돌 -$ls")
+                        val pg = plunder(pr.winGold[1], .05f, v.crew)
+                        card(pr.name + "에게 약탈당했어요", powerLine(pr, v.crew) + "\n빼앗긴 것  나무 -$lw 돌 -$ls 금화 -$pg")
                     }
                 }
             }
@@ -1424,7 +1440,7 @@ object Game {
         wood = 12; stone = 4; goldC = 0; houses = 0; warehouse = 0; dock = false; field = false; lighthouse = false; market = false
         shipLevel = 1; route = "port_haesol"; supplyT = 0f; voy = null; voyages = 0; workers.clear(); completed.clear()
         flags.clear(); opened.clear(); read.clear(); eventLast.clear(); lastEvent = ""; cards.clear(); log.clear(); report = null
-        parts.clear(); promoted.clear(); aboard.clear(); crewLv.clear(); crewXp.clear(); decoOwned.clear(); decoOn.clear(); missionQ = null; missionsDone.clear()
+        parts.clear(); partStars.clear(); promoted.clear(); aboard.clear(); crewLv.clear(); crewXp.clear(); decoOwned.clear(); decoOn.clear(); missionQ = null; missionsDone.clear()
         bossWins.clear(); souvOwned.clear(); milesDone.clear(); tickets = 0; charmLv.clear(); charmOn.clear(); pity = 0; trainDay = -1L; trainLeft = 0
         ordDay = -1L; ordIds = emptyList(); ordProg.clear(); ordDone.clear(); weekStart = -1L; weekCount = 0; weekGot = false
         storyDirty = true

@@ -51,7 +51,7 @@
       "lighthouse_bonus": 0.03,
       "active_worker_bonus_cap": 0.02,
       "minimum": 0.35,
-      "maximum": 0.97,
+      "maximum": 0.93,
       "formula": "clamp(ship.pirate_win - power_penalty_coefficient * (pirate.power - power_reference) + lighthouse_bonus_if_built + active_worker_bonus, minimum, maximum)",
       "day_night_modifier": 0,
       "offline_modifier": 0,

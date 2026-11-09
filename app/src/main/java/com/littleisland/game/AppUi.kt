@@ -164,9 +164,16 @@ class AppUi(val scene: Scene, val host: Host) {
                     val odds = if (p.id == "cannon" && n != null) { val d = n.value - Game.partValue(p.id); val o = Game.normalOdds(); val bo = Game.bossOdds()
                         "\n\n이길 확률 (올리면)\n보통 해적  " + pct1(o) + " → " + pct1((o + d).coerceAtMost(Data.winMax)) +
                             (bo?.let { "\n우두머리  " + pct1(it) + " → " + pct1((it + d).coerceAtMost(Data.winMax)) } ?: "") } else ""
-                    l.add(if (n == null) Tile("part:" + p.icon, p.name + " Lv" + lv, if (lv >= top) "최고" else "배 키우면 더", St.DONE,
+                    val stN = Game.stars(p.id); val stS = if (stN > 0) "★$stN" else ""
+                    l.add(if (n == null && Game.starReady(p.id)) { val sc = Game.starCost(p.id)
+                        Tile("part:" + p.icon, p.name + " Lv" + lv + stS, if (Game.canPay(sc)) "별 강화!" else "★ " + stN + "/" + Game.STAR_MAX,
+                            if (Game.canPay(sc)) St.READY else St.NORMAL,
+                            head + "\n\n별 강화 " + stN + "/" + Game.STAR_MAX + " · 별 하나마다 효과 +10%\n다음  " + Fleet.partText(p, Game.partValue(p.id) / (1 + .1f * stN) * (1 + .1f * (stN + 1))) +
+                                (if (lv < top) "\n\n배를 다음 단계로 고치면 레벨도 더 올려요." else ""),
+                            sc, "★" + (stN + 1) + " 강화", { Game.buyStar(p.id) }, p.name + " ★" + (stN + 1) + "!", keep = true) }
+                        else if (n == null) Tile("part:" + p.icon, p.name + " Lv" + lv + stS, if (lv >= top) "최고" else "배 키우면 더", St.DONE,
                             head + "\n\n" + (if (lv < top) "배를 다음 단계로 고치면 더 올려요." else "가장 높은 레벨이에요."))
-                        else Tile("part:" + p.icon, p.name + " Lv" + lv, if (Game.canPay(n.cost)) "올리기!" else Fleet.partText(p, Game.partValue(p.id)),
+                        else Tile("part:" + p.icon, p.name + " Lv" + lv + stS, if (Game.canPay(n.cost)) "올리기!" else Fleet.partText(p, Game.partValue(p.id)),
                             if (Game.canPay(n.cost)) St.READY else St.NORMAL, head + "\n다음  " + Fleet.partText(p, n.value) + note + "\n(최대 Lv" + cap + ")" + odds,
                             n.cost, "Lv" + (lv + 1) + "로 올리기", { Game.buyPart(p.id) }, p.name + " Lv" + (lv + 1) + "!", keep = true))
                 }
@@ -516,7 +523,7 @@ class AppUi(val scene: Scene, val host: Host) {
         val list = if (tab == 1) all.filter { !it.icon.startsWith("part:") && it.sub != "지나옴" } else all
         // 위아래로 미는 목록: 배 화면 머리도 같이 밀린다
         val areaTop = py + 22; val areaBot = py + ph - 4
-        val head = if (tab == 1) 80f else 0f
+        val head = if (tab == 1) 108f else 0f
         val tw = 58f; val th = 60f; val gx = 6f
         val x0 = (W - (tw * 3 + gx * 2)) / 2f
         val rows = (list.size + 2) / 3
@@ -561,23 +568,23 @@ class AppUi(val scene: Scene, val host: Host) {
     private val slotRects = ArrayList<Pair<Rect, Tile>>()
     private fun drawShipHead(y: Float, all: List<Tile>, aTop: Float, aBot: Float): Float {
         val k = Pix
-        val h = 78f
+        val h = 106f
         k.rect(c, 8f, y, W - 16f, h - 4, k.col("#2a1a10"))
         k.rect(c, 9f, y + 1, W - 18f, h - 6, k.col("#1d3550"))
         k.rect(c, 9f, y + h * .62f, W - 18f, h * .38f - 5, k.col("#17496e"))
-        scene.shipArt(64)?.let { bm -> src.set(0, 0, bm.width, bm.height); dst.set((W / 2 - 29), (y + 3).toInt(), (W / 2 + 29), (y + 61).toInt()); c.drawBitmap(bm, src, dst, bp) }
+        scene.shipArt(64)?.let { bm -> src.set(0, 0, bm.width, bm.height); dst.set((W / 2 - 40), (y + 6).toInt(), (W / 2 + 40), (y + 86).toInt()); c.drawBitmap(bm, src, dst, bp) }
         k.rect(c, W / 2 - 52f, y + h - 16, 104f, 11f, k.col("#cc10243a")); k.text(c, Game.ship().name, W / 2f, y + h - 8, 8, k.CREAM, Paint.Align.CENTER, true)
         val parts = all.filter { it.icon.startsWith("part:") }
         for ((i, t) in parts.withIndex()) {
-            val left = i < 2
-            val sx = if (left) 14f else W - 14f - 46f; val sy = y + 4 + (i % 2) * 35f
-            k.slot(c, sx, sy, 46f, 32f, t.st == St.READY, false)
+            val left = i < 3
+            val sx = if (left) 12f else W - 12f - 48f; val sy = y + 4 + (i % 3) * 33f
+            k.slot(c, sx, sy, 48f, 31f, t.st == St.READY, false)
             k.icon(c, t.icon, sx + 3, sy + 6, 1f)
             val nm = t.name.substringBefore(" Lv"); val lv = t.name.substringAfter(" Lv", "")
-            k.text(c, nm, sx + 27, sy + 13, 8, k.CREAM, Paint.Align.CENTER)
-            k.text(c, "Lv$lv", sx + 27, sy + 25, 10, if (t.st == St.READY) k.GOLD else k.col("#c8b896"), Paint.Align.CENTER, true)
-            if (t.st == St.READY) k.text(c, "!", sx + 42, sy + 9, 10, k.GOLD, Paint.Align.CENTER, true)
-            if (sy + 32 > aTop && sy < aBot) slotRects.add(Rect(sx.toInt(), maxOf(sy, aTop).toInt(), (sx + 46).toInt(), minOf(sy + 32, aBot).toInt()) to t)
+            k.text(c, nm, sx + 29, sy + 13, 8, k.CREAM, Paint.Align.CENTER)
+            k.text(c, "Lv$lv", sx + 29, sy + 25, 9, if (t.st == St.READY) k.GOLD else k.col("#c8b896"), Paint.Align.CENTER, true)
+            if (t.st == St.READY) k.text(c, "!", sx + 44, sy + 9, 10, k.GOLD, Paint.Align.CENTER, true)
+            if (sy + 31 > aTop && sy < aBot) slotRects.add(Rect(sx.toInt(), maxOf(sy, aTop).toInt(), (sx + 48).toInt(), minOf(sy + 31, aBot).toInt()) to t)
         }
         return h
     }

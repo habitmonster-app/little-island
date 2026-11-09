@@ -340,7 +340,7 @@ object Pix {
             val idx = name.substring(ci + 1).toIntOrNull() ?: 0
             val px = (10 * s * hi(c)).toInt()
             val bm = when (name.substring(0, ci)) {
-                "part" -> Art.cell("part_icons", 4, 2, idx, px)
+                "part" -> if (idx >= 100) Art.cell("skill_icons", 4, 4, idx - 100, px) else Art.cell("part_icons", 4, 2, idx, px)
                 "skill" -> Art.cell("skill_icons", 4, 4, idx, px)
                 "face" -> Art.cell("worker_portraits", 4, 3, idx, px)
                 "face15" -> Art.cell("crew_portraits_15", 4, 3, idx, px)

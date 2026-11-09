@@ -9,7 +9,7 @@
    "cargo_stone": 10,
    "cargo_special": 0,
    "speed": 1.0,
-   "pirate_win": 0.7,
+   "pirate_win": 0.45,
    "upgrade_cost": null,
    "upgrade_requires": [],
    "requires_previous_level": 0,
@@ -43,7 +43,7 @@
    "cargo_stone": 20,
    "cargo_special": 8,
    "speed": 1.1,
-   "pirate_win": 0.77,
+   "pirate_win": 0.5,
    "upgrade_cost": {
     "gold": 1800,
     "wood": 120,
@@ -83,7 +83,7 @@
    "cargo_stone": 40,
    "cargo_special": 20,
    "speed": 1.25,
-   "pirate_win": 0.84,
+   "pirate_win": 0.55,
    "upgrade_cost": {
     "gold": 30000,
     "wood": 280,
@@ -124,7 +124,7 @@
    "cargo_stone": 60,
    "cargo_special": 36,
    "speed": 1.4,
-   "pirate_win": 0.9,
+   "pirate_win": 0.6,
    "upgrade_cost": {
     "gold": 100000,
     "wood": 400,
@@ -164,7 +164,7 @@
    "cargo_stone": 75,
    "cargo_special": 45,
    "speed": 1.45,
-   "pirate_win": 0.9,
+   "pirate_win": 0.64,
    "upgrade_cost": {
     "gold": 180000,
     "wood": 600,
@@ -220,7 +220,7 @@
    "cargo_stone": 90,
    "cargo_special": 54,
    "speed": 1.5,
-   "pirate_win": 0.92,
+   "pirate_win": 0.68,
    "upgrade_cost": {
     "gold": 324000,
     "wood": 1080,
@@ -263,6 +263,230 @@
     "sail": 25,
     "cannon": 25,
     "helm": 25
+   },
+   "upgrade_requires_building_levels": {
+    "warehouse": 4
+   }
+  },
+  {
+   "level": 7,
+   "name": "귀항호 · 별을 잇는 돛",
+   "unlock": "ship_7",
+   "cargo_wood": 225,
+   "cargo_stone": 112,
+   "cargo_special": 67,
+   "speed": 1.6,
+   "pirate_win": 0.72,
+   "upgrade_cost": {
+    "gold": 583200,
+    "wood": 1944,
+    "stone": 1620
+   },
+   "upgrade_requires": [
+    "ship_6"
+   ],
+   "requires_previous_level": 6,
+   "look": "네 돛대에 별자리 무늬 돛",
+   "sprite_id": "ship_7",
+   "size": [
+    60,
+    46
+   ],
+   "mast_count": 3,
+   "cannon_count": 2,
+   "palette": [
+    "#785136",
+    "#C49A62",
+    "#F4E6B8",
+    "#3B8F91",
+    "#D4A64F"
+   ],
+   "carry_forward": [
+    "ship_name",
+    "blue_cord",
+    "keepsake_nameplate",
+    "cosmetic_collection",
+    "part_levels",
+    "crew_levels_and_xp",
+    "crew_assignments",
+    "equipped_cosmetics"
+   ],
+   "home_news": "먼 별까지 길을 잇는 배예요",
+   "desc": "먼 별까지 길을 잇는 배예요",
+   "crew_slots": 6,
+   "upgrade_requires_parts": {
+    "hull": 30,
+    "sail": 30,
+    "cannon": 30,
+    "helm": 30
+   },
+   "upgrade_requires_building_levels": {
+    "warehouse": 4
+   }
+  },
+  {
+   "level": 8,
+   "name": "귀항호 · 바다의 등불",
+   "unlock": "ship_8",
+   "cargo_wood": 281,
+   "cargo_stone": 140,
+   "cargo_special": 83,
+   "speed": 1.7,
+   "pirate_win": 0.76,
+   "upgrade_cost": {
+    "gold": 1049760,
+    "wood": 3499,
+    "stone": 2916
+   },
+   "upgrade_requires": [
+    "ship_7"
+   ],
+   "requires_previous_level": 7,
+   "look": "선미 등불탑과 철판 덧댄 뱃머리",
+   "sprite_id": "ship_8",
+   "size": [
+    60,
+    46
+   ],
+   "mast_count": 3,
+   "cannon_count": 2,
+   "palette": [
+    "#785136",
+    "#C49A62",
+    "#F4E6B8",
+    "#3B8F91",
+    "#D4A64F"
+   ],
+   "carry_forward": [
+    "ship_name",
+    "blue_cord",
+    "keepsake_nameplate",
+    "cosmetic_collection",
+    "part_levels",
+    "crew_levels_and_xp",
+    "crew_assignments",
+    "equipped_cosmetics"
+   ],
+   "home_news": "밤바다도 밝히는 배예요",
+   "desc": "밤바다도 밝히는 배예요",
+   "crew_slots": 6,
+   "upgrade_requires_parts": {
+    "hull": 35,
+    "sail": 35,
+    "cannon": 35,
+    "helm": 35
+   },
+   "upgrade_requires_building_levels": {
+    "warehouse": 4
+   }
+  },
+  {
+   "level": 9,
+   "name": "귀항호 · 폭풍을 넘는 배",
+   "unlock": "ship_9",
+   "cargo_wood": 351,
+   "cargo_stone": 175,
+   "cargo_special": 103,
+   "speed": 1.8,
+   "pirate_win": 0.8,
+   "upgrade_cost": {
+    "gold": 1889568,
+    "wood": 6298,
+    "stone": 5248
+   },
+   "upgrade_requires": [
+    "ship_8"
+   ],
+   "requires_previous_level": 8,
+   "look": "두꺼운 철판 선체와 대포 세 줄",
+   "sprite_id": "ship_9",
+   "size": [
+    60,
+    46
+   ],
+   "mast_count": 3,
+   "cannon_count": 2,
+   "palette": [
+    "#785136",
+    "#C49A62",
+    "#F4E6B8",
+    "#3B8F91",
+    "#D4A64F"
+   ],
+   "carry_forward": [
+    "ship_name",
+    "blue_cord",
+    "keepsake_nameplate",
+    "cosmetic_collection",
+    "part_levels",
+    "crew_levels_and_xp",
+    "crew_assignments",
+    "equipped_cosmetics"
+   ],
+   "home_news": "폭풍도 넘는 튼튼한 배예요",
+   "desc": "폭풍도 넘는 튼튼한 배예요",
+   "crew_slots": 6,
+   "upgrade_requires_parts": {
+    "hull": 40,
+    "sail": 40,
+    "cannon": 40,
+    "helm": 40
+   },
+   "upgrade_requires_building_levels": {
+    "warehouse": 4
+   }
+  },
+  {
+   "level": 10,
+   "name": "귀항호 · 돌아오는 바다의 왕",
+   "unlock": "ship_10",
+   "cargo_wood": 438,
+   "cargo_stone": 218,
+   "cargo_special": 128,
+   "speed": 1.95,
+   "pirate_win": 0.84,
+   "upgrade_cost": {
+    "gold": 3401222,
+    "wood": 11336,
+    "stone": 9446
+   },
+   "upgrade_requires": [
+    "ship_9"
+   ],
+   "requires_previous_level": 9,
+   "look": "금빛 장식, 다섯 돛, 큰 깃발",
+   "sprite_id": "ship_10",
+   "size": [
+    60,
+    46
+   ],
+   "mast_count": 3,
+   "cannon_count": 2,
+   "palette": [
+    "#785136",
+    "#C49A62",
+    "#F4E6B8",
+    "#3B8F91",
+    "#D4A64F"
+   ],
+   "carry_forward": [
+    "ship_name",
+    "blue_cord",
+    "keepsake_nameplate",
+    "cosmetic_collection",
+    "part_levels",
+    "crew_levels_and_xp",
+    "crew_assignments",
+    "equipped_cosmetics"
+   ],
+   "home_news": "모든 바다가 기다리는 배예요",
+   "desc": "모든 바다가 기다리는 배예요",
+   "crew_slots": 6,
+   "upgrade_requires_parts": {
+    "hull": 45,
+    "sail": 45,
+    "cannon": 45,
+    "helm": 45
    },
    "upgrade_requires_building_levels": {
     "warehouse": 4

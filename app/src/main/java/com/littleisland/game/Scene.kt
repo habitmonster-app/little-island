@@ -928,7 +928,8 @@ class Scene {
     fun shipArt(w: Int): android.graphics.Bitmap? = shipCell(Game.shipLevel, Game.lookStage(), w, false)
     private fun shipCell(lv: Int, look: Int, sw: Int, cutFlag: Boolean): android.graphics.Bitmap? {
         val five = lv >= 5
-        val sheet = if (lv >= 6 && Art.has("ship_stage6")) "ship_stage6" else if (five) "ship_stage5" else "ship_stages"
+        // 7~10단계는 새 그림(ship_stage7..10)이 오기 전까지 6단계 그림을 쓴다
+        val sheet = if (lv >= 7 && Art.has("ship_stage$lv")) "ship_stage$lv" else if (lv >= 6 && Art.has("ship_stage6")) "ship_stage6" else if (five) "ship_stage5" else "ship_stages"
         val rows = if (five) 1 else 4
         val idx = if (five) look else (lv - 1) * 4 + look
         if (cutFlag && look == 3) {
@@ -995,7 +996,7 @@ class Scene {
     private fun ourShip(x: Float, time: Float) {
         val lv = Game.shipLevel
         val y = WL + (sin(time * 1.8f) * 1.2f).roundToInt()
-        val sw = 54 + (lv - 1) * 8
+        val sw = if (lv <= 6) 54 + (lv - 1) * 8 else 94 + (lv - 6) * 4
         val look = Game.lookStage()
         // 장식 깃발을 달면 4번째 모양의 원래 빨간 깃발은 지우고 그린다 (겹치지 않게)
         val sb = shipCell(lv, look, sw, Game.decoOn["flag"] != null)

@@ -309,6 +309,206 @@
       "stone": 227
      },
      "requires_ship_level": 6
+    },
+    {
+     "level": 31,
+     "value": 1.36,
+     "cost": {
+      "gold": 123200,
+      "wood": 728,
+      "stone": 254
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 32,
+     "value": 1.37,
+     "cost": {
+      "gold": 137984,
+      "wood": 815,
+      "stone": 284
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 33,
+     "value": 1.38,
+     "cost": {
+      "gold": 154542,
+      "wood": 912,
+      "stone": 318
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 34,
+     "value": 1.39,
+     "cost": {
+      "gold": 173087,
+      "wood": 1021,
+      "stone": 356
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 35,
+     "value": 1.4,
+     "cost": {
+      "gold": 193857,
+      "wood": 1143,
+      "stone": 398
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 36,
+     "value": 1.41,
+     "cost": {
+      "gold": 217119,
+      "wood": 1280,
+      "stone": 445
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 37,
+     "value": 1.42,
+     "cost": {
+      "gold": 243173,
+      "wood": 1433,
+      "stone": 498
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 38,
+     "value": 1.43,
+     "cost": {
+      "gold": 272353,
+      "wood": 1604,
+      "stone": 557
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 39,
+     "value": 1.44,
+     "cost": {
+      "gold": 305035,
+      "wood": 1796,
+      "stone": 623
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 40,
+     "value": 1.45,
+     "cost": {
+      "gold": 341639,
+      "wood": 2011,
+      "stone": 697
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 41,
+     "value": 1.46,
+     "cost": {
+      "gold": 382635,
+      "wood": 2252,
+      "stone": 780
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 42,
+     "value": 1.47,
+     "cost": {
+      "gold": 428551,
+      "wood": 2522,
+      "stone": 873
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 43,
+     "value": 1.48,
+     "cost": {
+      "gold": 479977,
+      "wood": 2824,
+      "stone": 977
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 44,
+     "value": 1.49,
+     "cost": {
+      "gold": 537574,
+      "wood": 3162,
+      "stone": 1094
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 45,
+     "value": 1.5,
+     "cost": {
+      "gold": 602082,
+      "wood": 3541,
+      "stone": 1225
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 46,
+     "value": 1.51,
+     "cost": {
+      "gold": 674331,
+      "wood": 3965,
+      "stone": 1372
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 47,
+     "value": 1.52,
+     "cost": {
+      "gold": 755250,
+      "wood": 4440,
+      "stone": 1536
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 48,
+     "value": 1.53,
+     "cost": {
+      "gold": 845880,
+      "wood": 4972,
+      "stone": 1720
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 49,
+     "value": 1.54,
+     "cost": {
+      "gold": 947385,
+      "wood": 5568,
+      "stone": 1926
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 50,
+     "value": 1.55,
+     "cost": {
+      "gold": 1061071,
+      "wood": 6236,
+      "stone": 2157
+     },
+     "requires_ship_level": 10
     }
    ]
   },
@@ -618,6 +818,206 @@
       "stone": 130
      },
      "requires_ship_level": 6
+    },
+    {
+     "level": 31,
+     "value": 0.283,
+     "cost": {
+      "gold": 123200,
+      "wood": 582,
+      "stone": 145
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 32,
+     "value": 0.286,
+     "cost": {
+      "gold": 137984,
+      "wood": 651,
+      "stone": 162
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 33,
+     "value": 0.289,
+     "cost": {
+      "gold": 154542,
+      "wood": 729,
+      "stone": 181
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 34,
+     "value": 0.292,
+     "cost": {
+      "gold": 173087,
+      "wood": 816,
+      "stone": 202
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 35,
+     "value": 0.295,
+     "cost": {
+      "gold": 193857,
+      "wood": 913,
+      "stone": 226
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 36,
+     "value": 0.298,
+     "cost": {
+      "gold": 217119,
+      "wood": 1022,
+      "stone": 253
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 37,
+     "value": 0.301,
+     "cost": {
+      "gold": 243173,
+      "wood": 1144,
+      "stone": 283
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 38,
+     "value": 0.304,
+     "cost": {
+      "gold": 272353,
+      "wood": 1281,
+      "stone": 316
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 39,
+     "value": 0.307,
+     "cost": {
+      "gold": 305035,
+      "wood": 1434,
+      "stone": 353
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 40,
+     "value": 0.31,
+     "cost": {
+      "gold": 341639,
+      "wood": 1606,
+      "stone": 395
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 41,
+     "value": 0.313,
+     "cost": {
+      "gold": 382635,
+      "wood": 1798,
+      "stone": 442
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 42,
+     "value": 0.316,
+     "cost": {
+      "gold": 428551,
+      "wood": 2013,
+      "stone": 495
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 43,
+     "value": 0.319,
+     "cost": {
+      "gold": 479977,
+      "wood": 2254,
+      "stone": 554
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 44,
+     "value": 0.322,
+     "cost": {
+      "gold": 537574,
+      "wood": 2524,
+      "stone": 620
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 45,
+     "value": 0.325,
+     "cost": {
+      "gold": 602082,
+      "wood": 2826,
+      "stone": 694
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 46,
+     "value": 0.328,
+     "cost": {
+      "gold": 674331,
+      "wood": 3165,
+      "stone": 777
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 47,
+     "value": 0.331,
+     "cost": {
+      "gold": 755250,
+      "wood": 3544,
+      "stone": 870
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 48,
+     "value": 0.334,
+     "cost": {
+      "gold": 845880,
+      "wood": 3969,
+      "stone": 974
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 49,
+     "value": 0.337,
+     "cost": {
+      "gold": 947385,
+      "wood": 4445,
+      "stone": 1090
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 50,
+     "value": 0.34,
+     "cost": {
+      "gold": 1061071,
+      "wood": 4978,
+      "stone": 1220
+     },
+     "requires_ship_level": 10
     }
    ]
   },
@@ -927,6 +1327,206 @@
       "stone": 520
      },
      "requires_ship_level": 6
+    },
+    {
+     "level": 31,
+     "value": 0.112,
+     "cost": {
+      "gold": 135520,
+      "wood": 436,
+      "stone": 582
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 32,
+     "value": 0.114,
+     "cost": {
+      "gold": 151782,
+      "wood": 488,
+      "stone": 651
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 33,
+     "value": 0.116,
+     "cost": {
+      "gold": 169995,
+      "wood": 546,
+      "stone": 729
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 34,
+     "value": 0.118,
+     "cost": {
+      "gold": 190394,
+      "wood": 611,
+      "stone": 816
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 35,
+     "value": 0.12,
+     "cost": {
+      "gold": 213241,
+      "wood": 684,
+      "stone": 913
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 36,
+     "value": 0.122,
+     "cost": {
+      "gold": 238829,
+      "wood": 766,
+      "stone": 1022
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 37,
+     "value": 0.124,
+     "cost": {
+      "gold": 267488,
+      "wood": 857,
+      "stone": 1144
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 38,
+     "value": 0.126,
+     "cost": {
+      "gold": 299586,
+      "wood": 959,
+      "stone": 1281
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 39,
+     "value": 0.128,
+     "cost": {
+      "gold": 335536,
+      "wood": 1074,
+      "stone": 1434
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 40,
+     "value": 0.13,
+     "cost": {
+      "gold": 375800,
+      "wood": 1202,
+      "stone": 1606
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 41,
+     "value": 0.132,
+     "cost": {
+      "gold": 420896,
+      "wood": 1346,
+      "stone": 1798
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 42,
+     "value": 0.134,
+     "cost": {
+      "gold": 471403,
+      "wood": 1507,
+      "stone": 2013
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 43,
+     "value": 0.136,
+     "cost": {
+      "gold": 527971,
+      "wood": 1687,
+      "stone": 2254
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 44,
+     "value": 0.138,
+     "cost": {
+      "gold": 591327,
+      "wood": 1889,
+      "stone": 2524
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 45,
+     "value": 0.14,
+     "cost": {
+      "gold": 662286,
+      "wood": 2115,
+      "stone": 2826
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 46,
+     "value": 0.142,
+     "cost": {
+      "gold": 741760,
+      "wood": 2368,
+      "stone": 3165
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 47,
+     "value": 0.144,
+     "cost": {
+      "gold": 830771,
+      "wood": 2652,
+      "stone": 3544
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 48,
+     "value": 0.146,
+     "cost": {
+      "gold": 930463,
+      "wood": 2970,
+      "stone": 3969
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 49,
+     "value": 0.148,
+     "cost": {
+      "gold": 1042118,
+      "wood": 3326,
+      "stone": 4445
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 50,
+     "value": 0.15,
+     "cost": {
+      "gold": 1167172,
+      "wood": 3725,
+      "stone": 4978
+     },
+     "requires_ship_level": 10
     }
    ]
   },
@@ -1326,27 +1926,1315 @@
      "secondary_effects": {
       "bad_event_loss_reduction": 0.1
      }
+    },
+    {
+     "level": 31,
+     "value": 0.05,
+     "cost": {
+      "gold": 110880,
+      "wood": 436,
+      "stone": 291
+     },
+     "requires_ship_level": 7,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 32,
+     "value": 0.05,
+     "cost": {
+      "gold": 124185,
+      "wood": 488,
+      "stone": 325
+     },
+     "requires_ship_level": 7,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 33,
+     "value": 0.05,
+     "cost": {
+      "gold": 139087,
+      "wood": 546,
+      "stone": 364
+     },
+     "requires_ship_level": 7,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 34,
+     "value": 0.05,
+     "cost": {
+      "gold": 155777,
+      "wood": 611,
+      "stone": 407
+     },
+     "requires_ship_level": 7,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 35,
+     "value": 0.05,
+     "cost": {
+      "gold": 174470,
+      "wood": 684,
+      "stone": 455
+     },
+     "requires_ship_level": 7,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 36,
+     "value": 0.05,
+     "cost": {
+      "gold": 195406,
+      "wood": 766,
+      "stone": 509
+     },
+     "requires_ship_level": 8,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 37,
+     "value": 0.05,
+     "cost": {
+      "gold": 218854,
+      "wood": 857,
+      "stone": 570
+     },
+     "requires_ship_level": 8,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 38,
+     "value": 0.05,
+     "cost": {
+      "gold": 245116,
+      "wood": 959,
+      "stone": 638
+     },
+     "requires_ship_level": 8,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 39,
+     "value": 0.05,
+     "cost": {
+      "gold": 274529,
+      "wood": 1074,
+      "stone": 714
+     },
+     "requires_ship_level": 8,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 40,
+     "value": 0.05,
+     "cost": {
+      "gold": 307472,
+      "wood": 1202,
+      "stone": 799
+     },
+     "requires_ship_level": 8,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 41,
+     "value": 0.05,
+     "cost": {
+      "gold": 344368,
+      "wood": 1346,
+      "stone": 894
+     },
+     "requires_ship_level": 9,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 42,
+     "value": 0.05,
+     "cost": {
+      "gold": 385692,
+      "wood": 1507,
+      "stone": 1001
+     },
+     "requires_ship_level": 9,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 43,
+     "value": 0.05,
+     "cost": {
+      "gold": 431975,
+      "wood": 1687,
+      "stone": 1121
+     },
+     "requires_ship_level": 9,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 44,
+     "value": 0.05,
+     "cost": {
+      "gold": 483812,
+      "wood": 1889,
+      "stone": 1255
+     },
+     "requires_ship_level": 9,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 45,
+     "value": 0.05,
+     "cost": {
+      "gold": 541869,
+      "wood": 2115,
+      "stone": 1405
+     },
+     "requires_ship_level": 9,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 46,
+     "value": 0.05,
+     "cost": {
+      "gold": 606893,
+      "wood": 2368,
+      "stone": 1573
+     },
+     "requires_ship_level": 10,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 47,
+     "value": 0.05,
+     "cost": {
+      "gold": 679720,
+      "wood": 2652,
+      "stone": 1761
+     },
+     "requires_ship_level": 10,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 48,
+     "value": 0.05,
+     "cost": {
+      "gold": 761286,
+      "wood": 2970,
+      "stone": 1972
+     },
+     "requires_ship_level": 10,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 49,
+     "value": 0.05,
+     "cost": {
+      "gold": 852640,
+      "wood": 3326,
+      "stone": 2208
+     },
+     "requires_ship_level": 10,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 50,
+     "value": 0.05,
+     "cost": {
+      "gold": 954956,
+      "wood": 3725,
+      "stone": 2472
+     },
+     "requires_ship_level": 10,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    }
+   ]
+  },
+  {
+   "id": "lookout",
+   "name": "망루",
+   "stat": "lookout",
+   "desc": "해적을 먼저 보고 피해요",
+   "icon_index": 110,
+   "extra": true,
+   "levels": [
+    {
+     "level": 1,
+     "value": 0.012,
+     "cost": {
+      "gold": 0,
+      "wood": 7,
+      "stone": 10
+     },
+     "requires_ship_level": 1
+    },
+    {
+     "level": 2,
+     "value": 0.024,
+     "cost": {
+      "gold": 9,
+      "wood": 8,
+      "stone": 11
+     },
+     "requires_ship_level": 1
+    },
+    {
+     "level": 3,
+     "value": 0.036,
+     "cost": {
+      "gold": 18,
+      "wood": 11,
+      "stone": 14
+     },
+     "requires_ship_level": 1
+    },
+    {
+     "level": 4,
+     "value": 0.048,
+     "cost": {
+      "gold": 31,
+      "wood": 14,
+      "stone": 19
+     },
+     "requires_ship_level": 1
+    },
+    {
+     "level": 5,
+     "value": 0.06,
+     "cost": {
+      "gold": 44,
+      "wood": 18,
+      "stone": 24
+     },
+     "requires_ship_level": 1
+    },
+    {
+     "level": 6,
+     "value": 0.072,
+     "cost": {
+      "gold": 99,
+      "wood": 27,
+      "stone": 35
+     },
+     "requires_ship_level": 2
+    },
+    {
+     "level": 7,
+     "value": 0.084,
+     "cost": {
+      "gold": 154,
+      "wood": 33,
+      "stone": 45
+     },
+     "requires_ship_level": 2
+    },
+    {
+     "level": 8,
+     "value": 0.096,
+     "cost": {
+      "gold": 231,
+      "wood": 42,
+      "stone": 56
+     },
+     "requires_ship_level": 2
+    },
+    {
+     "level": 9,
+     "value": 0.108,
+     "cost": {
+      "gold": 330,
+      "wood": 51,
+      "stone": 67
+     },
+     "requires_ship_level": 2
+    },
+    {
+     "level": 10,
+     "value": 0.12,
+     "cost": {
+      "gold": 462,
+      "wood": 60,
+      "stone": 80
+     },
+     "requires_ship_level": 2
+    },
+    {
+     "level": 11,
+     "value": 0.132,
+     "cost": {
+      "gold": 770,
+      "wood": 78,
+      "stone": 104
+     },
+     "requires_ship_level": 3
+    },
+    {
+     "level": 12,
+     "value": 0.144,
+     "cost": {
+      "gold": 1100,
+      "wood": 93,
+      "stone": 125
+     },
+     "requires_ship_level": 3
+    },
+    {
+     "level": 13,
+     "value": 0.156,
+     "cost": {
+      "gold": 1595,
+      "wood": 111,
+      "stone": 147
+     },
+     "requires_ship_level": 3
+    },
+    {
+     "level": 14,
+     "value": 0.168,
+     "cost": {
+      "gold": 2200,
+      "wood": 129,
+      "stone": 173
+     },
+     "requires_ship_level": 3
+    },
+    {
+     "level": 15,
+     "value": 0.18,
+     "cost": {
+      "gold": 3080,
+      "wood": 147,
+      "stone": 197
+     },
+     "requires_ship_level": 3
+    },
+    {
+     "level": 16,
+     "value": 0.192,
+     "cost": {
+      "gold": 4950,
+      "wood": 162,
+      "stone": 216
+     },
+     "requires_ship_level": 4
+    },
+    {
+     "level": 17,
+     "value": 0.204,
+     "cost": {
+      "gold": 6820,
+      "wood": 174,
+      "stone": 232
+     },
+     "requires_ship_level": 4
+    },
+    {
+     "level": 18,
+     "value": 0.216,
+     "cost": {
+      "gold": 9350,
+      "wood": 186,
+      "stone": 248
+     },
+     "requires_ship_level": 4
+    },
+    {
+     "level": 19,
+     "value": 0.228,
+     "cost": {
+      "gold": 12650,
+      "wood": 198,
+      "stone": 264
+     },
+     "requires_ship_level": 4
+    },
+    {
+     "level": 20,
+     "value": 0.24,
+     "cost": {
+      "gold": 16500,
+      "wood": 210,
+      "stone": 280
+     },
+     "requires_ship_level": 4
+    },
+    {
+     "level": 21,
+     "value": 0.252,
+     "cost": {
+      "gold": 22000,
+      "wood": 228,
+      "stone": 304
+     },
+     "requires_ship_level": 5
+    },
+    {
+     "level": 22,
+     "value": 0.264,
+     "cost": {
+      "gold": 28600,
+      "wood": 246,
+      "stone": 328
+     },
+     "requires_ship_level": 5
+    },
+    {
+     "level": 23,
+     "value": 0.276,
+     "cost": {
+      "gold": 37400,
+      "wood": 264,
+      "stone": 352
+     },
+     "requires_ship_level": 5
+    },
+    {
+     "level": 24,
+     "value": 0.288,
+     "cost": {
+      "gold": 48400,
+      "wood": 282,
+      "stone": 376
+     },
+     "requires_ship_level": 5
+    },
+    {
+     "level": 25,
+     "value": 0.3,
+     "cost": {
+      "gold": 61600,
+      "wood": 300,
+      "stone": 400
+     },
+     "requires_ship_level": 5
+    },
+    {
+     "level": 26,
+     "value": 0.312,
+     "cost": {
+      "gold": 70400,
+      "wood": 318,
+      "stone": 424
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 27,
+     "value": 0.324,
+     "cost": {
+      "gold": 81400,
+      "wood": 336,
+      "stone": 448
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 28,
+     "value": 0.336,
+     "cost": {
+      "gold": 93500,
+      "wood": 354,
+      "stone": 472
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 29,
+     "value": 0.348,
+     "cost": {
+      "gold": 106700,
+      "wood": 372,
+      "stone": 496
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 30,
+     "value": 0.36,
+     "cost": {
+      "gold": 121000,
+      "wood": 390,
+      "stone": 520
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 31,
+     "value": 0.362,
+     "cost": {
+      "gold": 135520,
+      "wood": 436,
+      "stone": 582
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 32,
+     "value": 0.364,
+     "cost": {
+      "gold": 151782,
+      "wood": 488,
+      "stone": 651
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 33,
+     "value": 0.366,
+     "cost": {
+      "gold": 169995,
+      "wood": 546,
+      "stone": 729
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 34,
+     "value": 0.368,
+     "cost": {
+      "gold": 190394,
+      "wood": 611,
+      "stone": 816
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 35,
+     "value": 0.37,
+     "cost": {
+      "gold": 213241,
+      "wood": 684,
+      "stone": 913
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 36,
+     "value": 0.372,
+     "cost": {
+      "gold": 238829,
+      "wood": 766,
+      "stone": 1022
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 37,
+     "value": 0.374,
+     "cost": {
+      "gold": 267488,
+      "wood": 857,
+      "stone": 1144
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 38,
+     "value": 0.376,
+     "cost": {
+      "gold": 299586,
+      "wood": 959,
+      "stone": 1281
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 39,
+     "value": 0.378,
+     "cost": {
+      "gold": 335536,
+      "wood": 1074,
+      "stone": 1434
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 40,
+     "value": 0.38,
+     "cost": {
+      "gold": 375800,
+      "wood": 1202,
+      "stone": 1606
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 41,
+     "value": 0.382,
+     "cost": {
+      "gold": 420896,
+      "wood": 1346,
+      "stone": 1798
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 42,
+     "value": 0.384,
+     "cost": {
+      "gold": 471403,
+      "wood": 1507,
+      "stone": 2013
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 43,
+     "value": 0.386,
+     "cost": {
+      "gold": 527971,
+      "wood": 1687,
+      "stone": 2254
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 44,
+     "value": 0.388,
+     "cost": {
+      "gold": 591327,
+      "wood": 1889,
+      "stone": 2524
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 45,
+     "value": 0.39,
+     "cost": {
+      "gold": 662286,
+      "wood": 2115,
+      "stone": 2826
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 46,
+     "value": 0.392,
+     "cost": {
+      "gold": 741760,
+      "wood": 2368,
+      "stone": 3165
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 47,
+     "value": 0.394,
+     "cost": {
+      "gold": 830771,
+      "wood": 2652,
+      "stone": 3544
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 48,
+     "value": 0.396,
+     "cost": {
+      "gold": 930463,
+      "wood": 2970,
+      "stone": 3969
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 49,
+     "value": 0.398,
+     "cost": {
+      "gold": 1042118,
+      "wood": 3326,
+      "stone": 4445
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 50,
+     "value": 0.4,
+     "cost": {
+      "gold": 1167172,
+      "wood": 3725,
+      "stone": 4978
+     },
+     "requires_ship_level": 10
+    }
+   ]
+  },
+  {
+   "id": "cabin",
+   "name": "선실",
+   "stat": "cabin",
+   "desc": "선원 능력치 효과가 커져요",
+   "icon_index": 4,
+   "extra": true,
+   "levels": [
+    {
+     "level": 1,
+     "value": 0.02,
+     "cost": {
+      "gold": 0,
+      "wood": 7,
+      "stone": 10
+     },
+     "requires_ship_level": 1
+    },
+    {
+     "level": 2,
+     "value": 0.04,
+     "cost": {
+      "gold": 9,
+      "wood": 8,
+      "stone": 11
+     },
+     "requires_ship_level": 1
+    },
+    {
+     "level": 3,
+     "value": 0.06,
+     "cost": {
+      "gold": 18,
+      "wood": 11,
+      "stone": 14
+     },
+     "requires_ship_level": 1
+    },
+    {
+     "level": 4,
+     "value": 0.08,
+     "cost": {
+      "gold": 31,
+      "wood": 14,
+      "stone": 19
+     },
+     "requires_ship_level": 1
+    },
+    {
+     "level": 5,
+     "value": 0.1,
+     "cost": {
+      "gold": 44,
+      "wood": 18,
+      "stone": 24
+     },
+     "requires_ship_level": 1
+    },
+    {
+     "level": 6,
+     "value": 0.12,
+     "cost": {
+      "gold": 99,
+      "wood": 27,
+      "stone": 35
+     },
+     "requires_ship_level": 2
+    },
+    {
+     "level": 7,
+     "value": 0.14,
+     "cost": {
+      "gold": 154,
+      "wood": 33,
+      "stone": 45
+     },
+     "requires_ship_level": 2
+    },
+    {
+     "level": 8,
+     "value": 0.16,
+     "cost": {
+      "gold": 231,
+      "wood": 42,
+      "stone": 56
+     },
+     "requires_ship_level": 2
+    },
+    {
+     "level": 9,
+     "value": 0.18,
+     "cost": {
+      "gold": 330,
+      "wood": 51,
+      "stone": 67
+     },
+     "requires_ship_level": 2
+    },
+    {
+     "level": 10,
+     "value": 0.2,
+     "cost": {
+      "gold": 462,
+      "wood": 60,
+      "stone": 80
+     },
+     "requires_ship_level": 2
+    },
+    {
+     "level": 11,
+     "value": 0.22,
+     "cost": {
+      "gold": 770,
+      "wood": 78,
+      "stone": 104
+     },
+     "requires_ship_level": 3
+    },
+    {
+     "level": 12,
+     "value": 0.24,
+     "cost": {
+      "gold": 1100,
+      "wood": 93,
+      "stone": 125
+     },
+     "requires_ship_level": 3
+    },
+    {
+     "level": 13,
+     "value": 0.26,
+     "cost": {
+      "gold": 1595,
+      "wood": 111,
+      "stone": 147
+     },
+     "requires_ship_level": 3
+    },
+    {
+     "level": 14,
+     "value": 0.28,
+     "cost": {
+      "gold": 2200,
+      "wood": 129,
+      "stone": 173
+     },
+     "requires_ship_level": 3
+    },
+    {
+     "level": 15,
+     "value": 0.3,
+     "cost": {
+      "gold": 3080,
+      "wood": 147,
+      "stone": 197
+     },
+     "requires_ship_level": 3
+    },
+    {
+     "level": 16,
+     "value": 0.32,
+     "cost": {
+      "gold": 4950,
+      "wood": 162,
+      "stone": 216
+     },
+     "requires_ship_level": 4
+    },
+    {
+     "level": 17,
+     "value": 0.34,
+     "cost": {
+      "gold": 6820,
+      "wood": 174,
+      "stone": 232
+     },
+     "requires_ship_level": 4
+    },
+    {
+     "level": 18,
+     "value": 0.36,
+     "cost": {
+      "gold": 9350,
+      "wood": 186,
+      "stone": 248
+     },
+     "requires_ship_level": 4
+    },
+    {
+     "level": 19,
+     "value": 0.38,
+     "cost": {
+      "gold": 12650,
+      "wood": 198,
+      "stone": 264
+     },
+     "requires_ship_level": 4
+    },
+    {
+     "level": 20,
+     "value": 0.4,
+     "cost": {
+      "gold": 16500,
+      "wood": 210,
+      "stone": 280
+     },
+     "requires_ship_level": 4
+    },
+    {
+     "level": 21,
+     "value": 0.42,
+     "cost": {
+      "gold": 22000,
+      "wood": 228,
+      "stone": 304
+     },
+     "requires_ship_level": 5
+    },
+    {
+     "level": 22,
+     "value": 0.44,
+     "cost": {
+      "gold": 28600,
+      "wood": 246,
+      "stone": 328
+     },
+     "requires_ship_level": 5
+    },
+    {
+     "level": 23,
+     "value": 0.46,
+     "cost": {
+      "gold": 37400,
+      "wood": 264,
+      "stone": 352
+     },
+     "requires_ship_level": 5
+    },
+    {
+     "level": 24,
+     "value": 0.48,
+     "cost": {
+      "gold": 48400,
+      "wood": 282,
+      "stone": 376
+     },
+     "requires_ship_level": 5
+    },
+    {
+     "level": 25,
+     "value": 0.5,
+     "cost": {
+      "gold": 61600,
+      "wood": 300,
+      "stone": 400
+     },
+     "requires_ship_level": 5
+    },
+    {
+     "level": 26,
+     "value": 0.52,
+     "cost": {
+      "gold": 70400,
+      "wood": 318,
+      "stone": 424
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 27,
+     "value": 0.54,
+     "cost": {
+      "gold": 81400,
+      "wood": 336,
+      "stone": 448
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 28,
+     "value": 0.56,
+     "cost": {
+      "gold": 93500,
+      "wood": 354,
+      "stone": 472
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 29,
+     "value": 0.58,
+     "cost": {
+      "gold": 106700,
+      "wood": 372,
+      "stone": 496
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 30,
+     "value": 0.6,
+     "cost": {
+      "gold": 121000,
+      "wood": 390,
+      "stone": 520
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 31,
+     "value": 0.61,
+     "cost": {
+      "gold": 135520,
+      "wood": 436,
+      "stone": 582
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 32,
+     "value": 0.62,
+     "cost": {
+      "gold": 151782,
+      "wood": 488,
+      "stone": 651
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 33,
+     "value": 0.63,
+     "cost": {
+      "gold": 169995,
+      "wood": 546,
+      "stone": 729
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 34,
+     "value": 0.64,
+     "cost": {
+      "gold": 190394,
+      "wood": 611,
+      "stone": 816
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 35,
+     "value": 0.65,
+     "cost": {
+      "gold": 213241,
+      "wood": 684,
+      "stone": 913
+     },
+     "requires_ship_level": 7
+    },
+    {
+     "level": 36,
+     "value": 0.66,
+     "cost": {
+      "gold": 238829,
+      "wood": 766,
+      "stone": 1022
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 37,
+     "value": 0.67,
+     "cost": {
+      "gold": 267488,
+      "wood": 857,
+      "stone": 1144
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 38,
+     "value": 0.68,
+     "cost": {
+      "gold": 299586,
+      "wood": 959,
+      "stone": 1281
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 39,
+     "value": 0.69,
+     "cost": {
+      "gold": 335536,
+      "wood": 1074,
+      "stone": 1434
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 40,
+     "value": 0.7,
+     "cost": {
+      "gold": 375800,
+      "wood": 1202,
+      "stone": 1606
+     },
+     "requires_ship_level": 8
+    },
+    {
+     "level": 41,
+     "value": 0.71,
+     "cost": {
+      "gold": 420896,
+      "wood": 1346,
+      "stone": 1798
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 42,
+     "value": 0.72,
+     "cost": {
+      "gold": 471403,
+      "wood": 1507,
+      "stone": 2013
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 43,
+     "value": 0.73,
+     "cost": {
+      "gold": 527971,
+      "wood": 1687,
+      "stone": 2254
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 44,
+     "value": 0.74,
+     "cost": {
+      "gold": 591327,
+      "wood": 1889,
+      "stone": 2524
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 45,
+     "value": 0.75,
+     "cost": {
+      "gold": 662286,
+      "wood": 2115,
+      "stone": 2826
+     },
+     "requires_ship_level": 9
+    },
+    {
+     "level": 46,
+     "value": 0.76,
+     "cost": {
+      "gold": 741760,
+      "wood": 2368,
+      "stone": 3165
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 47,
+     "value": 0.77,
+     "cost": {
+      "gold": 830771,
+      "wood": 2652,
+      "stone": 3544
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 48,
+     "value": 0.78,
+     "cost": {
+      "gold": 930463,
+      "wood": 2970,
+      "stone": 3969
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 49,
+     "value": 0.79,
+     "cost": {
+      "gold": 1042118,
+      "wood": 3326,
+      "stone": 4445
+     },
+     "requires_ship_level": 10
+    },
+    {
+     "level": 50,
+     "value": 0.8,
+     "cost": {
+      "gold": 1167172,
+      "wood": 3725,
+      "stone": 4978
+     },
+     "requires_ship_level": 10
     }
    ]
   }
  ],
  "initial_level": 0,
  "initial_value": 0,
- "max_level": 30,
+ "max_level": 50,
  "max_level_per_ship_level": {
   "1": 5,
   "2": 10,
   "3": 15,
   "4": 20,
   "5": 25,
-  "6": 30
+  "6": 30,
+  "7": 35,
+  "8": 40,
+  "9": 45,
+  "10": 50
  },
  "ship_upgrade_needs_parts_level": {
   "2": 5,
   "3": 10,
   "4": 15,
   "5": 20,
-  "6": 25
+  "6": 25,
+  "7": 30,
+  "8": 35,
+  "9": 40,
+  "10": 45
  },
  "look_stage_rule": "현재 큰 배 단계의 부품 구간 중간 레벨 이상인 부품 수를 세고 min(3, 개수)를 적용해 0~3열을 골라요.",
  "look_stages": {
@@ -1360,7 +3248,11 @@
    "3": 13,
    "4": 18,
    "5": 23,
-   "6": 28
+   "6": 28,
+   "7": 33,
+   "8": 38,
+   "9": 43,
+   "10": 48
   },
   "threshold_comparison": "part.level >= threshold_by_ship_level[ship_level]",
   "column_formula": "min(3, count(parts whose level >= current_threshold))",
