@@ -523,6 +523,8 @@ class AppUi(val scene: Scene, val host: Host) {
             } else popup = null
             return
         }
+        // 위 장면: 병, 상자, 바다 동물, 조개를 앱에서도 톡 쳐서 줍는다
+        if (y >= top && y < top + sceneH) { scene.tap(x, (Scene.WL - sceneH * .55f).toInt() + (y - top))?.let { host.toast(it) }; return }
         for ((i, r) in tabRects.withIndex()) if (r.contains(ix, iy)) { tab = i; page = 0; return }
         for ((r, pg) in pageRects) if (r.contains(ix, iy)) { page = pg; return }
         for ((r, t) in tileRects) if (r.contains(ix, iy)) { popup = t; return }
