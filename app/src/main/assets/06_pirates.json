@@ -47,7 +47,7 @@
     "conditional_win_probability": {
       "base_field": "ship.pirate_win",
       "power_reference": 1.0,
-      "power_penalty_coefficient": 0.1,
+      "power_penalty_coefficient": 0.3,
       "lighthouse_bonus": 0.03,
       "active_worker_bonus_cap": 0.02,
       "minimum": 0.35,

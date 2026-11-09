@@ -31,10 +31,13 @@ class AppUi(val scene: Scene, val host: Host) {
     enum class St { READY, NORMAL, DONE, LOCKED, ON, OFF }
     class Tile(val icon: String, val name: String, val sub: String, val st: St, val detail: String,
                val cost: Data.Cost? = null, val btn: String? = null, val act: (() -> Boolean)? = null, val done: String? = null,
-               val keep: Boolean = false)   // keep: 버튼을 눌러도 창을 닫지 않고 새 내용으로 (부품 연속 올리기)
+               val keep: Boolean = false,
+               val btn2: String? = null, val act2: (() -> Boolean)? = null, val done2: String? = null)   // 두 번째 버튼 (선원: 태우기/내리기)   // keep: 버튼을 눌러도 창을 닫지 않고 새 내용으로 (부품 연속 올리기)
 
-    private val tabs = listOf("store" to "짓기", "ship" to "배", "anchor" to "항로", "person" to "선원", "map" to "할 일", "book" to "일지", "gear" to "설정")
-    var tab = 0
+    private val tabs = listOf("store" to "짓기", "ship" to "배", "anchor" to "항로", "person" to "선원", "map" to "할 일", "book" to "기록", "gear" to "설정")
+    /** 화면에 놓는 탭 순서: 배와 선원이 맨 앞 */
+    private val order = intArrayOf(1, 3, 0, 2, 4, 5, 6)
+    var tab = if (Game.dock) 1 else 0
     private var popup: Tile? = null
     var fxAt = 0L                        // 올리기 성공 반짝임 시작 시각
     private var after: Tile? = null      // 버튼을 누른 뒤 이어서 띄울 창 (뽑기 결과)
@@ -42,6 +45,8 @@ class AppUi(val scene: Scene, val host: Host) {
     private val tileRects = ArrayList<Pair<Rect, Tile>>()
     private val tabRects = ArrayList<Rect>()
     private var btnRect: Rect? = null
+    private var btn2Rect: Rect? = null
+    private var goalRect: Rect? = null
     private var pageRects = ArrayList<Pair<Rect, Int>>()
     private val src = Rect(); private val dst = Rect()
     private val bp = Paint().apply { isFilterBitmap = false }
@@ -73,6 +78,15 @@ class AppUi(val scene: Scene, val host: Host) {
         if (!ready) Tile("lock", name, "잠김", St.LOCKED, detail + "\n\n열리려면: " + need(req))
         else Tile(icon, name, if (Game.canPay(cost)) "지금 가능!" else "모으는 중", if (Game.canPay(cost)) St.READY else St.NORMAL, detail, cost, btn, act, done)
 
+    /** 해적 대응 칸: 무엇이 얼마나 도와주는지와 이길 확률 */
+    private fun fightTile(): Tile {
+        val n = Game.normalOdds(); val b = Game.bossOdds()
+        val parts = Game.fightParts().filter { it.second > 0f }.joinToString("\n") { (nm, v) -> nm + "  " + (if (nm.startsWith("배 ")) Fleet.pct(v) else "+" + Fleet.pts(v)) }
+        return Tile("boss:0", "해적 대응", Fleet.pct(n), if (n >= .8f) St.ON else St.NORMAL,
+            "이번 항로 해적을 이길 확률\n보통 해적  " + Fleet.pct(n) + (b?.let { "\n우두머리  " + Fleet.pct(it) } ?: "") +
+                "\n\n" + parts + "\n\n대포를 올리고, 선원 레벨을 올리면 더 잘 싸워요.")
+    }
+
     private fun tiles(): List<Tile> {
         val l = ArrayList<Tile>()
         when (tab) {
@@ -98,6 +112,7 @@ class AppUi(val scene: Scene, val host: Host) {
                 }
             }
             1 -> {
+                l.add(fightTile())
                 for (p in Fleet.parts) {
                     val lv = Game.partLevel(p.id); val n = Game.partNext(p.id)
                     val now = if (lv > 0) Fleet.partText(p, Game.partValue(p.id)) else "아직 없음"
@@ -107,10 +122,13 @@ class AppUi(val scene: Scene, val host: Host) {
                     // 키는 Lv20에서 효과가 이미 최대. 그 뒤는 레벨과 배 모습만 오른다
                     val maxed = lv > 0 && p.levels.getOrNull(lv)?.let { it.value <= p.levels[lv - 1].value } == true
                     val note = if (maxed) "\n(효과는 최대. 모습만 바뀌어요)" else ""
+                    val odds = if (p.id == "cannon" && n != null) { val d = n.value - Game.partValue(p.id); val o = Game.normalOdds(); val bo = Game.bossOdds()
+                        "\n\n이길 확률 (올리면)\n보통 해적  " + pct1(o) + " → " + pct1((o + d).coerceAtMost(Data.winMax)) +
+                            (bo?.let { "\n우두머리  " + pct1(it) + " → " + pct1((it + d).coerceAtMost(Data.winMax)) } ?: "") } else ""
                     l.add(if (n == null) Tile("part:" + p.icon, p.name + " Lv" + lv, if (lv >= top) "최고" else "배 키우면 더", St.DONE,
                             head + "\n\n" + (if (lv < top) "배를 다음 단계로 고치면 더 올려요." else "가장 높은 레벨이에요."))
                         else Tile("part:" + p.icon, p.name + " Lv" + lv, if (Game.canPay(n.cost)) "올리기!" else Fleet.partText(p, Game.partValue(p.id)),
-                            if (Game.canPay(n.cost)) St.READY else St.NORMAL, head + "\n다음  " + Fleet.partText(p, n.value) + note + "\n(최대 Lv" + cap + ")",
+                            if (Game.canPay(n.cost)) St.READY else St.NORMAL, head + "\n다음  " + Fleet.partText(p, n.value) + note + "\n(최대 Lv" + cap + ")" + odds,
                             n.cost, "Lv" + (lv + 1) + "로 올리기", { Game.buyPart(p.id) }, p.name + " Lv" + (lv + 1) + "!", keep = true))
                 }
                 for (lv in 1..Data.ships.size) {
@@ -174,23 +192,6 @@ class AppUi(val scene: Scene, val host: Host) {
                 }
             }
             2 -> {
-                // 항해 도감과 해적 우두머리
-                if (Fleet.souvenirs.isNotEmpty()) {
-                    val n = Game.souvOwned.size; val tot = Fleet.souvenirs.size
-                    val first = Fleet.souvenirs.lastOrNull { it.id in Game.souvOwned }
-                    val nm = Fleet.milestones.firstOrNull { it.id !in Game.milesDone && !it.allPorts }
-                    val ms = nm?.let { m -> "다음 보상  " + m.count + "개 → 금화 " + m.gold + (m.deco?.let { id -> " + " + (Fleet.deco(id)?.name ?: "장식") } ?: "") } ?: "개수 보상을 다 받았어요"
-                    val ports = "항구마다 몇 개 모았는지는 항구 칸에서 봐요."
-                    l.add(Tile(first?.let { "souv:" + it.icon } ?: "book", "항해 도감", "$n/$tot", if (n > 0) St.ON else St.NORMAL,
-                        "항구에 닿을 때 가끔 기념품을 얻어요.\n\n" + ms + "\n\n" + ports))
-                }
-                if (Fleet.bosses.isNotEmpty()) {
-                    val won = Game.bossWins.size
-                    val list = Fleet.bosses.groupBy { it.minShip }.toSortedMap().entries.joinToString("\n") { (lv, bs) -> "배 " + lv + "단계  " + bs.joinToString(" ") { b -> (if (b.id in Game.bossWins) "●" else "○") + b.name } }
-                    val last = Fleet.bosses.lastOrNull { it.id in Game.bossWins }
-                    l.add(Tile(last?.let { "boss:" + it.face } ?: "boss:0", "해적 우두머리", "$won/" + Fleet.bosses.size, if (won > 0) St.ON else St.NORMAL,
-                        "가끔 해적 대신 센 우두머리가 나와요.\n처음 이기면 장식과 이야기를 받아요.\n\n" + list))
-                }
                 for (p in Data.ports) {
                     val u = Data.unlock(p.id)
                     val open = p.id == "port_haesol" || Game.has(p.id)
@@ -208,6 +209,40 @@ class AppUi(val scene: Scene, val host: Host) {
             }
             3 -> {
                 val now = System.currentTimeMillis()
+                l.add(fightTile())
+                // 배에 탄 선원 → 대기 선원 → 승진할 수 있는 알바
+                val order = Game.aboard + Game.promoted.filter { it !in Game.aboard }
+                for (id in order) {
+                    val c = Fleet.crewOf(id) ?: continue
+                    val on = id in Game.aboard
+                    val lv = Game.crewLevel(id)
+                    val next = Fleet.xpTo.getOrNull(lv - 1)
+                    val learned = c.skills.filter { it.level <= lv }; val nx = c.skills.firstOrNull { it.level > lv }
+                    // 배운 스킬은 효과별로 합쳐서 짧게, 다음 스킬은 한 줄만
+                    val skills = "스킬 " + learned.size + "/" + c.skills.size + "\n" + learned.groupBy { it.effect }.entries.joinToString("\n") { (e, l) -> "● " + eff(e, l.sumOf { it.value.toDouble() }.toFloat()) } +
+                        (nx?.let { "\n○ Lv" + it.level + " " + it.name } ?: "")
+                    val syn = Fleet.synergies.filter { it.a == id || it.b == id }.joinToString("\n") { s ->
+                        val other = Fleet.crewOf(if (s.a == id) s.b else s.a)?.name ?: ""
+                        "짝 " + other + ": " + eff(s.effect, s.value) }
+                    val pi = Data.workers.indexOfFirst { it.id == id }
+                    val full = !on && Game.aboard.size >= Game.slots()
+                    val tc = Game.teachCost(id)
+                    val canT = tc != null && Game.gold >= tc
+                    l.add(Tile((if (lv >= 11) "face15:" else "face:") + pi, c.name + " Lv" + lv, if (canT) "가르치기!" else if (on) "탑승" else "대기", if (canT) St.READY else if (on) St.ON else St.NORMAL,
+                        c.role + " · " + Fleet.short("crew_roles", id, c.roleDesc) + "\n경험치 " + (if (next != null) Game.crewXp(id).toString() + "/" + next else "최고") + "\n\n" + skills +
+                            (if (syn.isNotEmpty()) "\n\n$syn" else "") + (Game.charmOn[id]?.let { Fleet.charm(it) }?.let { "\n\n부적: " + it.name + " (" + eff(it.effect, Game.charmValue(it, id)) + ")" } ?: "") + (if (full) "\n\n자리가 꽉 찼어요. 다른 선원을 내리면 태울 수 있어요." else ""),
+                        tc?.let { Data.Cost(it, 0, 0) }, if (tc != null) "Lv" + (lv + 1) + "로 가르치기" else null, { Game.teach(id) }, c.name + " Lv" + (lv + 1) + "!", keep = true,
+                        btn2 = if (on) "내리기" else if (full) null else "태우기", act2 = { Game.toggleAboard(id) }, done2 = if (on) c.name + " 다음 항해는 쉬어요" else c.name + " 다음 항해에 타요"))
+                }
+                for (w in Data.workers) {
+                    if (w.id in Game.promoted || !Game.canPromote(w.id)) continue
+                    val c = Fleet.crewOf(w.id) ?: continue
+                    val pi = Data.workers.indexOf(w)
+                    l.add(Tile("face:$pi", w.name, "선원 승진!", St.READY,
+                        c.role + " · " + Fleet.short("crew_roles", w.id, c.roleDesc) + "\n선원이 되면 항해할수록 자라요.\n\n" +
+                            c.skills.joinToString("\n") { "Lv" + it.level + " " + it.name + " (" + eff(it.effect, it.value) + ")" },
+                        Data.Cost(Fleet.promoteGold, 0, 0), "선원으로", { Game.promote(w.id) }, w.name + "이(가) 선원이 됐어요"))
+                }
                 // 부적 뽑기 (게임 안 쪽지·금화로만), 훈련 퍼즐, 가진 부적
                 if (Fleet.charms.isNotEmpty()) {
                     val rates = "일반 70 · 희귀 25 · 영웅 5%\n영웅 확정까지 " + (Fleet.pityAt - Game.pity) + "번\n같은 부적이 나오면 레벨 업"
@@ -242,36 +277,6 @@ class AppUi(val scene: Scene, val host: Host) {
                             nextWho?.let { ch.name + " → " + (Fleet.crewOf(it)?.name ?: "") } ?: ch.name + "을(를) 뗐어요"))
                     }
                 }
-                // 배에 탄 선원 → 대기 선원 → 승진할 수 있는 알바
-                val order = Game.aboard + Game.promoted.filter { it !in Game.aboard }
-                for (id in order) {
-                    val c = Fleet.crewOf(id) ?: continue
-                    val on = id in Game.aboard
-                    val lv = Game.crewLevel(id)
-                    val next = Fleet.xpTo.getOrNull(lv - 1)
-                    val learned = c.skills.filter { it.level <= lv }; val nx = c.skills.firstOrNull { it.level > lv }
-                    // 배운 스킬은 효과별로 합쳐서 짧게, 다음 스킬은 한 줄만
-                    val skills = "스킬 " + learned.size + "/" + c.skills.size + "\n" + learned.groupBy { it.effect }.entries.joinToString("\n") { (e, l) -> "● " + eff(e, l.sumOf { it.value.toDouble() }.toFloat()) } +
-                        (nx?.let { "\n○ Lv" + it.level + " " + it.name } ?: "")
-                    val syn = Fleet.synergies.filter { it.a == id || it.b == id }.joinToString("\n") { s ->
-                        val other = Fleet.crewOf(if (s.a == id) s.b else s.a)?.name ?: ""
-                        "짝 " + other + ": " + eff(s.effect, s.value) }
-                    val pi = Data.workers.indexOfFirst { it.id == id }
-                    val full = !on && Game.aboard.size >= Game.slots()
-                    l.add(Tile((if (lv >= 11) "face15:" else "face:") + pi, c.name + " Lv" + lv, if (on) "탑승" else "대기", if (on) St.ON else St.NORMAL,
-                        c.role + " · " + Fleet.short("crew_roles", id, c.roleDesc) + "\n경험치 " + (if (next != null) Game.crewXp(id).toString() + "/" + next else "최고") + "\n\n" + skills +
-                            (if (syn.isNotEmpty()) "\n\n$syn" else "") + (Game.charmOn[id]?.let { Fleet.charm(it) }?.let { "\n\n부적: " + it.name + " (" + eff(it.effect, Game.charmValue(it, id)) + ")" } ?: "") + (if (full) "\n\n자리가 꽉 찼어요. 다른 선원을 내리면 태울 수 있어요." else ""),
-                        null, if (on) "내리기" else if (full) null else "태우기", { Game.toggleAboard(id) }, if (on) c.name + " 다음 항해는 쉬어요" else c.name + " 다음 항해에 타요"))
-                }
-                for (w in Data.workers) {
-                    if (w.id in Game.promoted || !Game.canPromote(w.id)) continue
-                    val c = Fleet.crewOf(w.id) ?: continue
-                    val pi = Data.workers.indexOf(w)
-                    l.add(Tile("face:$pi", w.name, "선원 승진!", St.READY,
-                        c.role + " · " + Fleet.short("crew_roles", w.id, c.roleDesc) + "\n선원이 되면 항해할수록 자라요.\n\n" +
-                            c.skills.joinToString("\n") { "Lv" + it.level + " " + it.name + " (" + eff(it.effect, it.value) + ")" },
-                        Data.Cost(Fleet.promoteGold, 0, 0), "선원으로", { Game.promote(w.id) }, w.name + "이(가) 선원이 됐어요"))
-                }
                 if (Game.promoted.isEmpty()) l.add(Tile("part:4", "선원 되는 법", "자리 " + Game.slots() + "칸", St.NORMAL,
                     "알바가 섬에서 일을 " + Fleet.promoteContracts + "번 마치면 금화 " + Fleet.promoteGold + "으로 선원이 될 수 있어요. 선원은 배에 타고 항해할 때마다 경험치를 얻어 Lv" + Fleet.maxCrewLevel + "까지 자라고, 레벨마다 새 스킬이 열려요. 짝이 맞는 둘을 같이 태우면 보너스가 더 붙어요."))
                 for (i in 0 until 3) {
@@ -297,15 +302,6 @@ class AppUi(val scene: Scene, val host: Host) {
                     l.add(Tile("visitor:" + v.face, v.name, if (Game.visDone) "거래함" else left.toString() + "분 머묾", if (Game.visDone) St.DONE else if (Game.canTrade()) St.READY else St.NORMAL,
                         "“" + v.hello + "”\n\n" + (o?.short ?: "") + "\n줄 것  " + (o?.let { Game.resText(it.give) } ?: "") + "\n받을 것  " + (o?.let { Game.resText(it.get) } ?: "") +
                             (if (Game.visDone) "\n\n“" + v.bye + "”" else ""), null, if (Game.canTrade()) "거래" else null, { Game.trade(); true }, "거래했어요"))
-                }
-                // 이번 주 바다 소식
-                Game.tide()?.let { t ->
-                    l.add(Tile("tide:" + t.icon, t.name, "이번 주", St.ON, t.short + "\n\n" + t.news + "\n\n월요일마다 새 소식이 와요."))
-                }
-                // 지금 항해 날씨
-                Game.weather()?.let { w ->
-                    val e = when (w.kind) { "speed" -> if (w.value > 0) "빨리 가요" else "조금 느려요"; "cargo" -> "짐을 더 실어요"; "pirate_chance" -> "해적을 덜 만나요"; else -> "평온해요" }
-                    l.add(Tile("weather:" + w.icon, "날씨 " + w.name, e, St.ON, "“" + w.crewLine + "”\n\n이번 항해  " + e + "\n날씨는 떠날 때 정해져요."))
                 }
                 // 항구 의뢰: 받은 것 → 제시 중
                 Game.reqRefresh()
@@ -340,6 +336,14 @@ class AppUi(val scene: Scene, val host: Host) {
                     when { Game.treasurePending -> "지도를 맞췄어요. 다음 항해에 보물섬에 들러요."
                            else -> "홈 화면에 떠다니는 유리병·보물상자를 톡 쳐서 조각을 모아요. " + Game.MAP_NEED + "개면 밀기 퍼즐로 지도를 맞춰요." },
                     null, if (mp >= Game.MAP_NEED && !Game.treasurePending) "맞추기" else null, { host.openMap(); false }))
+                l.add(Tile("chest", "짐 정리", if (Game.packed) "정리 끝" else "+" + (Game.PACK_BONUS * 100).toInt() + "%", if (Game.packed) St.DONE else St.READY,
+                    "짐칸을 상자로 빈틈없이 채우면 다음 항구 판매금이 " + (Game.PACK_BONUS * 100).toInt() + "% 늘어요.", null,
+                    if (Game.packed) null else "정리하기", { host.openCargo(); false }))
+            }
+            5 -> {
+                val n = Game.unread()
+                l.add(Tile("book", "항해일지", if (n > 0) "새 글 $n" else "읽기", if (n > 0) St.READY else St.NORMAL, "섬과 바다의 이야기가 쌓여요.", null, "열기", { host.openJournal(); false }))
+                // 모으는 것들: 바다 동물 도감, 칭호, 계절, 바다 소식, 날씨, 항해 도감, 우두머리
                 // 바다 동물 도감
                 if (Fleet.creatures.isNotEmpty()) {
                     val seen = Fleet.creatures.filter { it.kind in Game.critSeen }
@@ -365,13 +369,32 @@ class AppUi(val scene: Scene, val host: Host) {
                         "지금  " + (cur?.name ?: "없음") + "\n홈 화면 글줄 앞에 붙어요.\n\n" + (locked?.let { "다음  " + it.name + "\n" + it.short } ?: "모든 칭호를 열었어요!"),
                         null, if (got.isEmpty()) null else if (nextT != null) "바꾸기" else "떼기", { Game.setTitle(nextT?.id) }, nextT?.let { "칭호 " + it.name } ?: "칭호를 뗐어요"))
                 }
-                l.add(Tile("chest", "짐 정리", if (Game.packed) "정리 끝" else "+" + (Game.PACK_BONUS * 100).toInt() + "%", if (Game.packed) St.DONE else St.READY,
-                    "짐칸을 상자로 빈틈없이 채우면 다음 항구 판매금이 " + (Game.PACK_BONUS * 100).toInt() + "% 늘어요.", null,
-                    if (Game.packed) null else "정리하기", { host.openCargo(); false }))
-            }
-            5 -> {
-                val n = Game.unread()
-                l.add(Tile("book", "항해일지", if (n > 0) "새 글 $n" else "읽기", if (n > 0) St.READY else St.NORMAL, "섬과 바다의 이야기가 쌓여요.", null, "열기", { host.openJournal(); false }))
+                // 이번 주 바다 소식
+                Game.tide()?.let { t ->
+                    l.add(Tile("tide:" + t.icon, t.name, "이번 주", St.ON, t.short + "\n\n" + t.news + "\n\n월요일마다 새 소식이 와요."))
+                }
+                // 지금 항해 날씨
+                Game.weather()?.let { w ->
+                    val e = when (w.kind) { "speed" -> if (w.value > 0) "빨리 가요" else "조금 느려요"; "cargo" -> "짐을 더 실어요"; "pirate_chance" -> "해적을 덜 만나요"; else -> "평온해요" }
+                    l.add(Tile("weather:" + w.icon, "날씨 " + w.name, e, St.ON, "“" + w.crewLine + "”\n\n이번 항해  " + e + "\n날씨는 떠날 때 정해져요."))
+                }
+                // 항해 도감과 해적 우두머리
+                if (Fleet.souvenirs.isNotEmpty()) {
+                    val n = Game.souvOwned.size; val tot = Fleet.souvenirs.size
+                    val first = Fleet.souvenirs.lastOrNull { it.id in Game.souvOwned }
+                    val nm = Fleet.milestones.firstOrNull { it.id !in Game.milesDone && !it.allPorts }
+                    val ms = nm?.let { m -> "다음 보상  " + m.count + "개 → 금화 " + m.gold + (m.deco?.let { id -> " + " + (Fleet.deco(id)?.name ?: "장식") } ?: "") } ?: "개수 보상을 다 받았어요"
+                    val ports = "항구마다 몇 개 모았는지는 항구 칸에서 봐요."
+                    l.add(Tile(first?.let { "souv:" + it.icon } ?: "book", "항해 도감", "$n/$tot", if (n > 0) St.ON else St.NORMAL,
+                        "항구에 닿을 때 가끔 기념품을 얻어요.\n\n" + ms + "\n\n" + ports))
+                }
+                if (Fleet.bosses.isNotEmpty()) {
+                    val won = Game.bossWins.size
+                    val list = Fleet.bosses.groupBy { it.minShip }.toSortedMap().entries.joinToString("\n") { (lv, bs) -> "배 " + lv + "단계  " + bs.joinToString(" ") { b -> (if (b.id in Game.bossWins) "●" else "○") + b.name } }
+                    val last = Fleet.bosses.lastOrNull { it.id in Game.bossWins }
+                    l.add(Tile(last?.let { "boss:" + it.face } ?: "boss:0", "해적 우두머리", "$won/" + Fleet.bosses.size, if (won > 0) St.ON else St.NORMAL,
+                        "가끔 해적 대신 센 우두머리가 나와요.\n처음 이기면 장식과 이야기를 받아요.\n\n" + list))
+                }
             }
             6 -> {
                 l.add(Tile("auto", "자동 짓기", if (Game.autoBuild) "켜짐" else "꺼짐", if (Game.autoBuild) St.ON else St.OFF,
@@ -386,6 +409,7 @@ class AppUi(val scene: Scene, val host: Host) {
 
     private fun eff(e: String, v: Float) = Fleet.effectName(e) + " " + (if (e == "speed_bonus") "-" else "+") +
         (if (e == "pirate_win_bonus" || e == "event_good_bonus" || e == "treasure_find_bonus") Fleet.pts(v) else Fleet.pct(v))
+    private fun pct1(v: Float) = "%.1f".format(v * 100).removeSuffix(".0") + "%"
     private fun fmt(f: Float) = if (f % 1f == 0f) f.toInt().toString() else "%.2f".format(f).trimEnd('0').trimEnd('.')
     private fun mmss(ms: Long): String { val t = (ms / 1000).coerceAtLeast(0); return if (t >= 3600) (t / 3600).toString() + "시간 " + (t % 3600 / 60) + "분" else (t / 60).toString() + "분" }
 
@@ -404,16 +428,18 @@ class AppUi(val scene: Scene, val host: Host) {
         dst.set(0, top.toInt(), W, (top + sceneH).toInt())
         c.drawBitmap(scene.bitmap, src, dst, bp)
         label(c, 6f, top + 14)
+        drawGoal(top + sceneH - 21)
         // 탭
         val ty = top + sceneH + 4
         tabRects.clear()
-        for ((i, t) in tabs.withIndex()) {
+        for ((i, ti) in order.withIndex()) {
+            val t = tabs[ti]
             val x = 3f + i * 27f + (if (i == tabs.size - 1) 6f else 0f)
             k.rect(c, x, ty, 25f, 25f, k.INK)
-            k.rect(c, x + 1, ty + 1, 23f, 23f, if (i == tab) k.col("#c8903a") else k.col("#8a6030"))
-            k.rect(c, x + 1, ty + 1, 23f, 2f, if (i == tab) k.col("#f0c060") else k.col("#a87444"))
+            k.rect(c, x + 1, ty + 1, 23f, 23f, if (ti == tab) k.col("#c8903a") else k.col("#8a6030"))
+            k.rect(c, x + 1, ty + 1, 23f, 2f, if (ti == tab) k.col("#f0c060") else k.col("#a87444"))
             k.icon(c, t.first, x + 2.5f, ty + 3f, 2f)
-            if (i == 5 && Game.unread() > 0) k.rect(c, x + 20, ty - 1, 5f, 5f, k.RED)
+            if (ti == 5 && Game.unread() > 0) k.rect(c, x + 20, ty - 1, 5f, 5f, k.RED)
             tabRects.add(Rect(x.toInt(), ty.toInt(), (x + 25).toInt(), (ty + 25).toInt()))
         }
         // 판넬
@@ -425,6 +451,7 @@ class AppUi(val scene: Scene, val host: Host) {
         val tw = 58f; val th = 60f; val gx = 6f
         val x0 = (W - (tw * 3 + gx * 2)) / 2f; val y0 = py + 24
         val perPage = (((ph - 30) + gx) / (th + gx)).toInt().coerceAtLeast(1) * 3
+        perPageNow = perPage
         val pages = (list.size + perPage - 1) / perPage
         if (page >= pages) page = 0
         for ((n, t) in list.drop(page * perPage).take(perPage).withIndex()) {
@@ -448,6 +475,47 @@ class AppUi(val scene: Scene, val host: Host) {
         for ((i, iv) in items.withIndex()) { val (ic, v) = iv; k.icon(c, ic, x, by + 4, 1f); k.text(c, v, x + 12, by + 13, 10, k.GOLD); x += gap[i] }
         popup?.let { drawPopup(it) }
     }
+
+    /** 장면 아래 '다음 목표' 띠: 누르면 그 칸을 바로 연다 */
+    private fun drawGoal(y: Float) {
+        val k = Pix
+        goalRect = null
+        if (popup != null) return
+        val g = Game.goal() ?: return
+        val ok = g.ready && Game.canPay(g.cost)
+        k.rect(c, 4f, y, W - 8f, 18f, k.INK)
+        k.rect(c, 5f, y + 1, W - 10f, 16f, if (ok) k.col("#7a4f1c") else k.col("#4a3420"))
+        k.rect(c, 5f, y + 1, W - 10f, 1f, if (ok) k.col("#f0c060") else k.col("#8a6030"))
+        // 모으는 중이면 진행 막대
+        if (!ok) { val f = prog(g.cost); k.rect(c, 5f, y + 15, (W - 10f) * f, 2f, k.GOLD) }
+        k.text(c, "다음 목표", 10f, y + 12, 8, k.col("#c8b896"))
+        k.text(c, k.fit(g.name, 10, W - 104f), 52f, y + 13, 10, k.CREAM, Paint.Align.LEFT, true)
+        k.text(c, if (ok) "지금 하기 ▶" else (prog(g.cost) * 100).toInt().toString() + "%", W - 10f, y + 13, 10, if (ok) k.GOLD else k.col("#c8b896"), Paint.Align.RIGHT, true)
+        goalRect = Rect(4, y.toInt(), W - 4, (y + 18).toInt())
+    }
+
+    /** 목표 띠를 눌렀을 때: 그 탭으로 가서 그 칸의 창을 연다 */
+    private fun openGoal() {
+        val g = Game.goal() ?: return
+        val key = g.key
+        tab = when {
+            key.startsWith("part:") || key.startsWith("ship_") -> 1
+            key.startsWith("crew:") -> 3
+            key.startsWith("port_") -> 2
+            else -> 0
+        }
+        page = 0
+        val list = tiles()
+        val t = when {
+            key.startsWith("part:") -> Fleet.part(key.removePrefix("part:"))?.let { p -> list.firstOrNull { it.icon == "part:" + p.icon } }
+            key.startsWith("crew:") -> Data.workers.indexOfFirst { it.id == key.removePrefix("crew:") }.let { pi -> list.firstOrNull { it.icon == "face:$pi" || it.icon == "face15:$pi" } }
+            key.startsWith("ship_") -> list.firstOrNull { it.name == key.removePrefix("ship_") + "단계" }
+            key.startsWith("port_") -> list.firstOrNull { it.name == Data.port(key).name }
+            else -> { val ic = when (key) { "ware" -> "store"; else -> key }; list.firstOrNull { it.icon == ic } }
+        }
+        t?.let { tl -> val i = list.indexOf(tl); if (i >= 0) page = i / perPageNow; popup = tl }
+    }
+    private var perPageNow = 6
 
     /** 장면 위 진행 표시 (홈 화면과 같은 말) */
     fun label(cv: Canvas, x: Float, y: Float) {
@@ -478,7 +546,7 @@ class AppUi(val scene: Scene, val host: Host) {
         k.rect(c, 0f, 0f, W.toFloat(), H.toFloat(), android.graphics.Color.argb(150, 0, 0, 0))
         val lines = k.wrap(t.detail, 10, W - 52f)
         val costH = if (t.cost != null) 16f else 0f
-        val ph = 54f + lines.size * 13f + costH + (if (t.btn != null) 26f else 6f)
+        val ph = 54f + lines.size * 13f + costH + (if (t.btn != null || t.btn2 != null) 26f else 6f)
         val px = 14f; val pw = W - 28f; val py = ((H - ph) / 2f).coerceAtLeast(20f)
         k.panel(c, px, py, pw, ph)
         k.slot(c, px + 10, py + 10, 28f, 28f)
@@ -500,12 +568,19 @@ class AppUi(val scene: Scene, val host: Host) {
             }
             y += costH
         }
-        btnRect = null
+        btnRect = null; btn2Rect = null
+        val two = t.btn2 != null && t.act2 != null
         if (t.btn != null && t.act != null) {
             val ok = t.cost == null || Game.canPay(t.cost)
-            val bw = maxOf(70f, k.width(t.btn, 10) + 16f); val bx = px + (pw - bw) / 2
+            val bw = maxOf(if (two) 60f else 70f, k.width(t.btn, 10) + 16f); val bx = if (two) px + 10 else px + (pw - bw) / 2
             k.button(c, bx, y - 4, bw, 18f, t.btn, ok)
             if (ok) btnRect = Rect(bx.toInt() - 4, (y - 8).toInt(), (bx + bw).toInt() + 4, (y + 18).toInt())
+        }
+        if (two) {
+            val b2 = t.btn2!!
+            val bw = maxOf(50f, k.width(b2, 10) + 16f); val bx = if (t.btn != null) px + pw - 10 - bw else px + (pw - bw) / 2
+            k.button(c, bx, y - 4, bw, 18f, b2, true)
+            btn2Rect = Rect(bx.toInt() - 4, (y - 8).toInt(), (bx + bw).toInt() + 4, (y + 18).toInt())
         }
     }
 
@@ -514,6 +589,13 @@ class AppUi(val scene: Scene, val host: Host) {
         val ix = x.toInt(); val iy = y.toInt()
         val pop = popup
         if (pop != null) {
+            val b2 = btn2Rect
+            if (b2 != null && b2.contains(ix, iy)) {
+                val ok = pop.act2?.invoke() ?: false
+                if (ok && pop.done2 != null) host.toast(pop.done2)
+                popup = if (ok) tiles().firstOrNull { it.icon == pop.icon } else null; after = null
+                return
+            }
             val b = btnRect
             if (b != null && b.contains(ix, iy)) {
                 val ok = pop.act?.invoke() ?: false
@@ -524,8 +606,9 @@ class AppUi(val scene: Scene, val host: Host) {
             return
         }
         // 위 장면: 병, 상자, 바다 동물, 조개를 앱에서도 톡 쳐서 줍는다
+        goalRect?.let { r -> if (r.contains(ix, iy)) { openGoal(); return } }
         if (y >= top && y < top + sceneH) { scene.tap(x, (Scene.WL - sceneH * .55f).toInt() + (y - top))?.let { host.toast(it) }; return }
-        for ((i, r) in tabRects.withIndex()) if (r.contains(ix, iy)) { tab = i; page = 0; return }
+        for ((i, r) in tabRects.withIndex()) if (r.contains(ix, iy)) { tab = order[i]; page = 0; return }
         for ((r, pg) in pageRects) if (r.contains(ix, iy)) { page = pg; return }
         for ((r, t) in tileRects) if (r.contains(ix, iy)) { popup = t; return }
     }

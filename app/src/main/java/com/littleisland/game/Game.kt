@@ -694,6 +694,38 @@ object Game {
     fun winChance(p: Data.Pirate, ids: List<String> = aboard): Float = (ship().pirateWin - Data.powerCoef * (p.power - 1f) +
         (if (lighthouse) Data.lighthouseBonus else 0f) + workerPirateBonus() + partValue("cannon") + cb(ids, "pirate_win_bonus")).coerceIn(Data.winMin, Data.winMax)
 
+    // ---------- 해적 대응: 배·대포·선원이 얼마나 도와주는지 ----------
+    /** 지금 항로에서 만날 수 있는 보통 해적 (출항 때와 같은 조건) */
+    fun routePirates(p: Data.Port = port()): List<Data.Pirate> = Data.pirates.filter { it.normal && it.weight > 0 && has(it.unlock) && hasAll(it.requires) &&
+        it.disabledBy.none { d -> has(d) } && (it.ports == null || p.id in it.ports) }
+    /** 지금 항로의 우두머리 */
+    fun routeBosses(p: Data.Port = port()): List<Data.Pirate> = Fleet.bosses.filter { shipLevel >= it.minShip && p.id in it.ports }.mapNotNull { Data.pirate(it.id) }
+    /** 보통 해적을 이길 확률 (가중 평균) */
+    fun normalOdds(ids: List<String> = aboard.filter { it in promoted }.take(slots())): Float {
+        val ps = routePirates(); if (ps.isEmpty()) return winChance(Data.pirate("hook_minor") ?: return 1f, ids)
+        val tw = ps.sumOf { it.weight }.toFloat()
+        return ps.sumOf { (winChance(it, ids) * it.weight).toDouble() }.toFloat() / tw
+    }
+    /** 가장 센 우두머리를 이길 확률 (없으면 null) */
+    fun bossOdds(ids: List<String> = aboard.filter { it in promoted }.take(slots())): Float? = routeBosses().maxByOrNull { it.power }?.let { winChance(it, ids) }
+    /** 해적 대응을 이루는 것들: 이름과 더해지는 값 */
+    fun fightParts(ids: List<String> = aboard.filter { it in promoted }.take(slots())): List<Pair<String, Float>> = listOf(
+        "배 " + shipLevel + "단계" to ship().pirateWin,
+        "대포 Lv" + partLevel("cannon") to partValue("cannon"),
+        "선원 스킬·부적" to cb(ids, "pirate_win_bonus"),
+        "등대" to (if (lighthouse) Data.lighthouseBonus else 0f),
+        "알바" to workerPirateBonus())
+
+    // ---------- 선원 가르치기: 금화로 바로 다음 레벨 ----------
+    fun teachCost(id: String): Int? { val lv = crewLevel(id); return if (id !in promoted || lv >= Fleet.maxCrewLevel) null else 250 * lv * lv }
+    @Synchronized fun teach(id: String): Boolean {
+        val g = teachCost(id) ?: return false
+        if (gold < g) return false
+        goldC -= g * 100L
+        val need = (Fleet.xpTo.getOrNull(crewLevel(id) - 1) ?: return false) - crewXp(id)
+        giveXp(id, need.coerceAtLeast(1)); bump("crew_teach"); save(); return true
+    }
+
     fun speedCut(ids: List<String> = aboard) = min(.35f, partValue("sail") + cb(ids, "speed_bonus"))
     fun voyageSeconds(p: Data.Port = port(), ids: List<String> = aboard): Float =
         ceil(Data.baseSeconds * p.distance / ship().speed * (1 - speedCut(ids))).coerceIn(Data.minSeconds, Data.maxSeconds)
@@ -1181,20 +1213,26 @@ object Game {
         if (h != null && houseReady()) return Goal("house", "알바 숙소 " + (houses + 1) + "채", h.cost, true, true)
         if (warehouse < 2 && w != null && warehouseReady()) return Goal("ware", "창고 " + (warehouse + 1) + "단계", w.second.cost, true, true)
         if (fieldReady()) return Goal("field", "작은 밭", Data.field?.cost, true, true)
-        // 배 부품: 가장 싼 다음 레벨
-        Fleet.parts.mapNotNull { p -> partNext(p.id)?.let { p to it } }.minByOrNull { it.second.cost.gold * 10 + it.second.cost.wood + it.second.cost.stone }?.let { (p, n) ->
-            return Goal("part:" + p.id, p.name + " Lv" + (partLevel(p.id) + 1), n.cost, true, false)
-        }
-        val ships = Data.unlock("ship_" + (shipLevel + 1))
-        val cands = Data.unlocks.filter { !has(it.key) && it.cost != null && (it.key.startsWith("ship_") || it.key.startsWith("port_") || it.key == "lighthouse" || it.key == "market") }
-        val u = cands.firstOrNull { unlockReady(it) } ?: ships?.takeIf { !has(it.key) } ?: return null
-        val name = when {
-            u.key.startsWith("ship_") -> "배 " + u.key.removePrefix("ship_") + "단계"
-            u.key.startsWith("port_") -> Data.port(u.key).name + " 항로"
-            u.key == "lighthouse" -> "등대"
-            else -> "장터"
-        }
-        return Goal(u.key, name, u.cost, unlockReady(u), false)
+        // 그다음은 해적과 싸울 힘: 배 단계 → 부품 → 선원 레벨. 지금 살 수 있는 게 있으면 그것부터.
+        val su = Data.unlock("ship_" + (shipLevel + 1))?.takeIf { !has(it.key) && unlockReady(it) }
+        if (su != null && canPay(su.cost)) return Goal(su.key, "배 " + (shipLevel + 1) + "단계", su.cost, true, false)
+        val ups = ArrayList<Goal>()
+        for (p in Fleet.parts) partNext(p.id)?.let { ups.add(Goal("part:" + p.id, p.name + " Lv" + (partLevel(p.id) + 1), it.cost, true, false)) }
+        for (id in aboard.filter { it in promoted }) teachCost(id)?.let { ups.add(Goal("crew:" + id, (Fleet.crewOf(id)?.name ?: "선원") + " Lv" + (crewLevel(id) + 1), Data.Cost(it, 0, 0), true, false)) }
+        fun w(g: Goal) = (g.cost?.gold ?: 0) * 10 + (g.cost?.wood ?: 0) + (g.cost?.stone ?: 0) + (if (g.key == "part:cannon") -1 else 0)
+        ups.filter { canPay(it.cost) }.minByOrNull { w(it) }?.let { return it }
+        if (su != null) return Goal(su.key, "배 " + (shipLevel + 1) + "단계", su.cost, true, false)
+        val cands = Data.unlocks.filter { !has(it.key) && it.cost != null && (it.key.startsWith("port_") || it.key == "lighthouse" || it.key == "market") }
+        cands.firstOrNull { unlockReady(it) && canPay(it.cost) }?.let { u -> return Goal(u.key, unlockName(u.key), u.cost, true, false) }
+        ups.minByOrNull { w(it) }?.let { return it }
+        val u = cands.firstOrNull { unlockReady(it) } ?: Data.unlock("ship_" + (shipLevel + 1))?.takeIf { !has(it.key) } ?: return null
+        return Goal(u.key, unlockName(u.key), u.cost, unlockReady(u), false)
+    }
+    private fun unlockName(key: String) = when {
+        key.startsWith("ship_") -> "배 " + key.removePrefix("ship_") + "단계"
+        key.startsWith("port_") -> Data.port(key).name + " 항로"
+        key == "lighthouse" -> "등대"
+        else -> "장터"
     }
 
     fun goalProgress(g: Goal): String {
