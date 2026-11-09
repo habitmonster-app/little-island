@@ -88,7 +88,27 @@ object Game {
     var supplies = 0                           // 짐배 도착 수 (화면 연출용, Scene이 0으로 돌림)
     private var hireSpent = 0; private var hireDay = -1L
 
-    fun cap() = Data.capacity(warehouse)
+    fun cap() = Math.round(Data.capacity(warehouse) * (1 + .25f * storeLv) * Math.pow(2.0, (storeLv / 10).toDouble()).toFloat())
+
+    // ---------- 섬 생산 강화: 나무 캐기·돌 캐기·창고 (10레벨마다 2배) ----------
+    var woodLv = 0; var stoneLv = 0; var storeLv = 0
+    fun prodMul(lv: Int) = (1 + .1f * lv) * Math.pow(2.0, (lv / 10).toDouble()).toFloat()
+    fun prodCost(lv: Int) = Data.Cost(Math.round(20 * Math.pow(1.2, lv.toDouble())).toInt(), 0, 0)
+    fun storeCost(lv: Int) = Data.Cost(Math.round(60 * Math.pow(1.3, lv.toDouble())).toInt(), 0, 0)
+    /** 초당 나무·돌 (주민+알바+짐배) */
+    fun woodRate(): Float { var r = RESIDENTS * Data.gatherRate * Data.woodFrac; for (w in workers) Data.worker(w.id)?.let { d -> r += Data.gatherRate * Data.woodFrac * (1 + d.woodBonus) }
+        if (dock) r += (Data.supplyW[0] + Data.supplyW[1]) / 2f / Data.supplyEvery; return r * prodMul(woodLv) }
+    fun stoneRate(): Float { var r = RESIDENTS * Data.gatherRate * Data.stoneFrac; for (w in workers) Data.worker(w.id)?.let { d -> r += Data.gatherRate * Data.stoneFrac * (1 + d.stoneBonus) }
+        if (dock) r += (Data.supplyS[0] + Data.supplyS[1]) / 2f / Data.supplyEvery; return r * prodMul(stoneLv) }
+    @Synchronized fun buyProd(kind: Int): Boolean {
+        val c = when (kind) { 0 -> prodCost(woodLv); 1 -> prodCost(stoneLv); else -> storeCost(storeLv) }
+        if (!pay(c)) return false
+        when (kind) { 0 -> woodLv++; 1 -> stoneLv++; else -> storeLv++ }
+        bump("part_upgrade"); save(); return true
+    }
+    /** 부품 10레벨마다 판매 금화 +10% (곱해서 쌓임) */
+    fun partMilestones() = Fleet.parts.sumOf { partLevel(it.id) / 10 }
+    fun milestoneSale() = Math.pow(1.1, partMilestones().toDouble()).toFloat()
     fun ship() = Data.ship(shipLevel)
     fun port() = Data.port(route)
 
@@ -295,7 +315,7 @@ object Game {
         pearlUntil = sp.getLong("pearlUntil", 0L); pearlNext = sp.getLong("pearlNext", 0L)
         crewPts.clear(); sp.getString("crewPts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewPts[k] = v.split(".").map { x -> x.toIntOrNull() ?: 0 }.plus(listOf(0, 0, 0, 0)).take(4).toIntArray() }
         treeOwned.clear(); sp.getString("tree", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { treeOwned.add(it) }
-        renown = sp.getInt("renown", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); stageCool = sp.getLong("stageCool", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
+        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); stageCool = sp.getLong("stageCool", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
         dbDay = sp.getLong("dbDay", -1L); seasonKey = sp.getString("seasonKey", "") ?: ""; seasonPts = sp.getInt("seasonPts", 0); seasonGot = sp.getInt("seasonGot", 0)
         visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
         set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
@@ -361,7 +381,7 @@ object Game {
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
             putLong("pearlUntil", pearlUntil); putLong("pearlNext", pearlNext)
-            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putLong("chestAt", chestAt); putInt("pStage", pStage); putLong("stageCool", stageCool); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
+            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putLong("stageCool", stageCool); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
             putString("seasonKey", seasonKey); putInt("seasonPts", seasonPts); putInt("seasonGot", seasonGot)
             putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
@@ -854,17 +874,20 @@ object Game {
             rw += Data.gatherRate * Data.woodFrac * (1 + d.woodBonus) * fm
             rs += Data.gatherRate * Data.stoneFrac * (1 + d.stoneBonus) * fm
         }
+        rw *= prodMul(woodLv); rs *= prodMul(stoneLv)
         fracW += rw * dt; fracS += rs * dt
         val gw = floor(fracW).toInt(); val gs = floor(fracS).toInt()
         fracW -= gw; fracS -= gs
-        if (gw + gs > 0) { add(gw, gs); flag("first_gather") }
+        if (gw + gs > 0) { sellOver(gw, gs, add(gw, gs)); flag("first_gather") }
+        overRate = (if (wood >= cap()) rw else 0f) + (if (stone >= cap()) rs else 0f)
 
         // 부두 짐배
         if (dock) {
             supplyT += dt
             if (supplyT >= Data.supplyEvery) {
                 supplyT -= Data.supplyEvery
-                add(Random.nextInt(Data.supplyW[0], Data.supplyW[1] + 1), Random.nextInt(Data.supplyS[0], Data.supplyS[1] + 1))
+                val sw = Math.round(Random.nextInt(Data.supplyW[0], Data.supplyW[1] + 1) * prodMul(woodLv)); val ss = Math.round(Random.nextInt(Data.supplyS[0], Data.supplyS[1] + 1) * prodMul(stoneLv))
+                sellOver(sw, ss, add(sw, ss))
                 supplies++
             }
         }
@@ -877,6 +900,12 @@ object Game {
         else voyageStep(v, t)
     }
 
+    /** 창고가 가득 차서 못 넣은 나무와 돌은 섬 상인이 싸게 사 간다 */
+    const val OVER_CENTS = 10
+    var overRate = 0f
+    fun overGps() = overRate * OVER_CENTS / 100f
+    fun gpsAll() = gps + overGps()
+    private fun sellOver(w: Int, s: Int, got: Pair<Int, Int>) { val n = (w - got.first) + (s - got.second); if (n > 0) goldC += n.toLong() * OVER_CENTS }
     /** 창고 칸까지만 넣는다. 이미 넘게 가진 건 버리지 않는다. */
     fun add(w: Int, s: Int): Pair<Int, Int> {
         val bw = wood; val bs = stone
@@ -1022,7 +1051,7 @@ object Game {
             val delivered = deliverReqs(v)
             val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f) + cb(v.crew, "sale_bonus") + renownSale() + tree("sale") + cs(v.crew, 3)
             packed = false
-            val sale = floor((v.cw * p.buyW * (1 + cb(v.crew, "wood_price_bonus")) + v.cs * p.buyS * (1 + cb(v.crew, "stone_price_bonus"))) * mul * 100).toLong()
+            val sale = floor((v.cw * p.buyW * (1 + cb(v.crew, "wood_price_bonus")) + v.cs * p.buyS * (1 + cb(v.crew, "stone_price_bonus"))) * mul * milestoneSale() * 100).toLong()
             goldC += sale; v.saleC = sale
             gps = if (gps <= 0f) sale / 100f / v.dur else gps * .7f + sale / 100f / v.dur * .3f
             flag("sale_1")
@@ -1060,7 +1089,7 @@ object Game {
         var line = "판매 금화 +" + v.saleC / 100 + (if (v.rewardC > 0) ", 보물 +" + v.rewardC / 100 else "")
         v.hire?.let { id ->
             val d = Data.worker(id)
-            workers.add(Contract(id, t + (d?.hours ?: 6) * HOUR))
+            workers.add(Contract(id, t + if (!has("worker_leave_1")) HOUR / 2 else (d?.hours ?: 6) * HOUR)) // 첫 알바는 30분만
             arrived++
             flag("worker_arrive_1")
             line += ", " + (d?.name ?: "알바") + " 도착"
@@ -1489,7 +1518,7 @@ object Game {
         wood = 12; stone = 4; goldC = 0; houses = 0; warehouse = 0; dock = false; field = false; lighthouse = false; market = false
         shipLevel = 1; route = "port_haesol"; supplyT = 0f; voy = null; voyages = 0; workers.clear(); completed.clear()
         flags.clear(); opened.clear(); read.clear(); eventLast.clear(); lastEvent = ""; cards.clear(); log.clear(); report = null
-        chestAt = 0L; pStage = 0; stageCool = 0L; gps = 0f
+        chestAt = 0L; pStage = 0; stageCool = 0L; gps = 0f; woodLv = 0; stoneLv = 0; storeLv = 0
         parts.clear(); partStars.clear(); promoted.clear(); aboard.clear(); crewLv.clear(); crewXp.clear(); decoOwned.clear(); decoOn.clear(); missionQ = null; missionsDone.clear()
         bossWins.clear(); souvOwned.clear(); milesDone.clear(); tickets = 0; charmLv.clear(); charmOn.clear(); pity = 0; trainDay = -1L; trainLeft = 0
         ordDay = -1L; ordIds = emptyList(); ordProg.clear(); ordDone.clear(); weekStart = -1L; weekCount = 0; weekGot = false

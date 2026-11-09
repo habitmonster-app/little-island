@@ -108,9 +108,9 @@
     "main_10"
    ],
    "cost": {
-    "gold": 1800,
-    "wood": 120,
-    "stone": 60
+    "gold": 100,
+    "wood": 160,
+    "stone": 100
    },
    "requires_building_levels": {
     "warehouse": 2
@@ -129,7 +129,7 @@
     "main_12"
    ],
    "cost": {
-    "gold": 1800,
+    "gold": 300,
     "wood": 80,
     "stone": 40
    },
@@ -150,7 +150,7 @@
     "main_13"
    ],
    "cost": {
-    "gold": 3200,
+    "gold": 600,
     "wood": 100,
     "stone": 80
    },
@@ -171,7 +171,7 @@
     "main_14"
    ],
    "cost": {
-    "gold": 4600,
+    "gold": 900,
     "wood": 140,
     "stone": 80
    },
@@ -192,7 +192,7 @@
     "main_15"
    ],
    "cost": {
-    "gold": 4000,
+    "gold": 800,
     "wood": 120,
     "stone": 80
    },
@@ -213,7 +213,7 @@
     "main_20"
    ],
    "cost": {
-    "gold": 8500,
+    "gold": 1500,
     "wood": 180,
     "stone": 100
    },
@@ -234,7 +234,7 @@
     "main_29"
    ],
    "cost": {
-    "gold": 16000,
+    "gold": 2500,
     "wood": 200,
     "stone": 140
    },
@@ -255,7 +255,7 @@
     "main_34"
    ],
    "cost": {
-    "gold": 22000,
+    "gold": 3500,
     "wood": 160,
     "stone": 240
    },
@@ -278,9 +278,9 @@
     "main_35"
    ],
    "cost": {
-    "gold": 30000,
-    "wood": 280,
-    "stone": 220
+    "gold": 12000,
+    "wood": 360,
+    "stone": 225
    },
    "requires_building_levels": {
     "warehouse": 2
@@ -299,7 +299,7 @@
     "main_36"
    ],
    "cost": {
-    "gold": 28000,
+    "gold": 6000,
     "wood": 200,
     "stone": 260
    },
@@ -320,7 +320,7 @@
     "main_37"
    ],
    "cost": {
-    "gold": 36000,
+    "gold": 8000,
     "wood": 220,
     "stone": 160
    },
@@ -341,7 +341,7 @@
     "main_38"
    ],
    "cost": {
-    "gold": 42000,
+    "gold": 10000,
     "wood": 160,
     "stone": 140
    },
@@ -361,7 +361,7 @@
     "main_41"
    ],
    "cost": {
-    "gold": 50000,
+    "gold": 14000,
     "wood": 280,
     "stone": 240
    },
@@ -382,7 +382,7 @@
     "main_44"
    ],
    "cost": {
-    "gold": 65000,
+    "gold": 18000,
     "wood": 280,
     "stone": 220
    },
@@ -403,9 +403,9 @@
     "main_47"
    ],
    "cost": {
-    "gold": 100000,
-    "wood": 400,
-    "stone": 350
+    "gold": 150000,
+    "wood": 640,
+    "stone": 400
    },
    "requires_building_levels": {
     "warehouse": 2
@@ -437,12 +437,12 @@
     "ship_4"
    ],
    "cost": {
-    "gold": 180000,
-    "wood": 600,
-    "stone": 500
+    "gold": 2500000,
+    "wood": 1000,
+    "stone": 625
    },
    "requires_building_levels": {
-    "warehouse": 3
+    "warehouse": 2
    },
    "requires_parts_at_least": {
     "hull": 20,
@@ -459,12 +459,12 @@
     "ship_5"
    ],
    "cost": {
-    "gold": 324000,
-    "wood": 1080,
+    "gold": 7000000,
+    "wood": 1440,
     "stone": 900
    },
    "requires_building_levels": {
-    "warehouse": 4
+    "warehouse": 2
    },
    "requires_parts_at_least": {
     "hull": 25,
@@ -481,12 +481,12 @@
     "ship_6"
    ],
    "cost": {
-    "gold": 583200,
-    "wood": 1944,
-    "stone": 1620
+    "gold": 18000000,
+    "wood": 1960,
+    "stone": 1225
    },
    "requires_building_levels": {
-    "warehouse": 4
+    "warehouse": 2
    },
    "requires_parts_at_least": {
     "hull": 30,
@@ -503,12 +503,12 @@
     "ship_7"
    ],
    "cost": {
-    "gold": 1049760,
-    "wood": 3499,
-    "stone": 2916
+    "gold": 40000000,
+    "wood": 2560,
+    "stone": 1600
    },
    "requires_building_levels": {
-    "warehouse": 4
+    "warehouse": 2
    },
    "requires_parts_at_least": {
     "hull": 35,
@@ -525,12 +525,12 @@
     "ship_8"
    ],
    "cost": {
-    "gold": 1889568,
-    "wood": 6298,
-    "stone": 5248
+    "gold": 80000000,
+    "wood": 3240,
+    "stone": 2025
    },
    "requires_building_levels": {
-    "warehouse": 4
+    "warehouse": 2
    },
    "requires_parts_at_least": {
     "hull": 40,
@@ -547,12 +547,12 @@
     "ship_9"
    ],
    "cost": {
-    "gold": 3401222,
-    "wood": 11336,
-    "stone": 9446
+    "gold": 150000000,
+    "wood": 4000,
+    "stone": 2500
    },
    "requires_building_levels": {
-    "warehouse": 4
+    "warehouse": 2
    },
    "requires_parts_at_least": {
     "hull": 45,

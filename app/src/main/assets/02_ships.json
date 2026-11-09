@@ -45,9 +45,9 @@
    "speed": 1.1,
    "pirate_win": 0.5,
    "upgrade_cost": {
-    "gold": 1800,
-    "wood": 120,
-    "stone": 60
+    "gold": 100,
+    "wood": 160,
+    "stone": 100
    },
    "upgrade_requires": [
     "main_10"
@@ -85,9 +85,9 @@
    "speed": 1.25,
    "pirate_win": 0.55,
    "upgrade_cost": {
-    "gold": 30000,
-    "wood": 280,
-    "stone": 220
+    "gold": 12000,
+    "wood": 360,
+    "stone": 225
    },
    "upgrade_requires": [
     "main_35",
@@ -126,9 +126,9 @@
    "speed": 1.4,
    "pirate_win": 0.6,
    "upgrade_cost": {
-    "gold": 100000,
-    "wood": 400,
-    "stone": 350
+    "gold": 150000,
+    "wood": 640,
+    "stone": 400
    },
    "upgrade_requires": [
     "main_47"
@@ -166,9 +166,9 @@
    "speed": 1.45,
    "pirate_win": 0.64,
    "upgrade_cost": {
-    "gold": 180000,
-    "wood": 600,
-    "stone": 500
+    "gold": 2500000,
+    "wood": 1000,
+    "stone": 625
    },
    "upgrade_requires": [
     "ship_4"
@@ -222,8 +222,8 @@
    "speed": 1.5,
    "pirate_win": 0.68,
    "upgrade_cost": {
-    "gold": 324000,
-    "wood": 1080,
+    "gold": 7000000,
+    "wood": 1440,
     "stone": 900
    },
    "upgrade_requires": [
@@ -278,9 +278,9 @@
    "speed": 1.6,
    "pirate_win": 0.72,
    "upgrade_cost": {
-    "gold": 583200,
-    "wood": 1944,
-    "stone": 1620
+    "gold": 18000000,
+    "wood": 1960,
+    "stone": 1225
    },
    "upgrade_requires": [
     "ship_6"
@@ -334,9 +334,9 @@
    "speed": 1.7,
    "pirate_win": 0.76,
    "upgrade_cost": {
-    "gold": 1049760,
-    "wood": 3499,
-    "stone": 2916
+    "gold": 40000000,
+    "wood": 2560,
+    "stone": 1600
    },
    "upgrade_requires": [
     "ship_7"
@@ -390,9 +390,9 @@
    "speed": 1.8,
    "pirate_win": 0.8,
    "upgrade_cost": {
-    "gold": 1889568,
-    "wood": 6298,
-    "stone": 5248
+    "gold": 80000000,
+    "wood": 3240,
+    "stone": 2025
    },
    "upgrade_requires": [
     "ship_8"
@@ -446,9 +446,9 @@
    "speed": 1.95,
    "pirate_win": 0.84,
    "upgrade_cost": {
-    "gold": 3401222,
-    "wood": 11336,
-    "stone": 9446
+    "gold": 150000000,
+    "wood": 4000,
+    "stone": 2500
    },
    "upgrade_requires": [
     "ship_9"

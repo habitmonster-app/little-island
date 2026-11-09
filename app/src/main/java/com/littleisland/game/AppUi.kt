@@ -511,7 +511,7 @@ class AppUi(val scene: Scene, val host: Host) {
         // 큰 금화 숫자와 초당 금화
         k.icon(c, "gold", 6f, top + 22, 1.6f)
         k.text(c, big(Game.gold), 25f, top + 36, 16, k.GOLD, Paint.Align.LEFT, true)
-        k.text(c, (if (Game.gps > 0.05f) "초당 +" + (if (Game.gps < 10) "%.1f".format(Game.gps) else big(Game.gps.toLong())) + " · " else "") + "바다를 톡톡 눌러요!", 7f, top + 49, 8, k.CREAM, Paint.Align.LEFT, true)
+        k.text(c, (if (Game.gpsAll() > 0.05f) "초당 +" + (if (Game.gpsAll() < 10) "%.1f".format(Game.gpsAll()) else big(Game.gpsAll().toLong())) + " · " else "") + "바다를 톡톡 눌러요!", 7f, top + 49, 8, k.CREAM, Paint.Align.LEFT, true)
         drawGoal(top + sceneH - 21)
         // 탭
         val ty = top + sceneH + 4
@@ -590,9 +590,9 @@ class AppUi(val scene: Scene, val host: Host) {
         // 자원 막대
         val by = H - 22f
         k.rect(c, 20f, by, W - 40f, 18f, k.INK); k.rect(c, 21f, by + 1, W - 42f, 16f, k.col("#5d3a1f")); k.rect(c, 21f, by + 1, W - 42f, 1f, k.col("#a87444"))
-        val items = listOf("wood" to Game.wood.toString(), "stone" to Game.stone.toString(), "gold" to big(Game.gold), "map" to Game.mapPieces.toString())
+        val items = listOf("wood" to big(Game.wood), "stone" to big(Game.stone), "gold" to big(Game.gold), "map" to Game.mapPieces.toString())
         // 금화는 자리를 넓게 (5단계 배는 18만 금화라 숫자가 길다)
-        val gap = floatArrayOf(34f, 34f, 60f, 0f)
+        val gap = floatArrayOf(44f, 44f, 62f, 0f)
         var x = 26f
         for ((i, iv) in items.withIndex()) { val (ic, v) = iv; k.icon(c, ic, x, by + 4, 1f); k.text(c, v, x + 12, by + 13, 10, k.GOLD); x += gap[i] }
     }
@@ -623,13 +623,24 @@ class AppUi(val scene: Scene, val host: Host) {
         Data.unlock("ship_$nx")?.takeIf { !Game.has(it.key) && Data.ships.any { s -> s.level == nx } }?.let { u ->
             val need = Fleet.needForShip(nx); val minP = Game.minPart()
             val ready = Game.unlockReady(u)
-            l.add(URow("ship", nx.toString() + "단계 배로 키우기", if (minP < need) "부품 모두 Lv$need (지금 $minP)" else Data.ship(nx).name.substringAfter("· "),
+            val capLow = u.cost != null && (u.cost.wood > Game.cap() || u.cost.stone > Game.cap())
+            l.add(URow("ship", nx.toString() + "단계 배로 키우기", if (minP < need) "부품 모두 Lv$need (지금 $minP)" else if (capLow) "창고를 넓혀야 재료를 담아요" else Data.ship(nx).name.substringAfter("· "),
                 u.cost, ready && Game.canPay(u.cost), "키우기", { Game.buyUnlock(u.key) }, big = true))
         }
+        // 섬 생산: 배가 커지는 만큼 섬도 같이
+        fun rate(v: Float) = if (v < 10) "%.2f".format(v) else big(v.toLong())
+        val wc = Game.prodCost(Game.woodLv); val sc = Game.prodCost(Game.stoneLv); val stc = Game.storeCost(Game.storeLv)
+        fun nx(lv: Int) = (Game.prodMul(lv + 1) / Game.prodMul(lv))
+        l.add(URow("wood", "나무 캐기 Lv" + Game.woodLv, "초당 " + rate(Game.woodRate()) + " → " + rate(Game.woodRate() * nx(Game.woodLv)) + (if ((Game.woodLv + 1) % 10 == 0) " 2배!" else ""),
+            wc, Game.canPay(wc), "+1", { Game.buyProd(0) }))
+        l.add(URow("stone", "돌 캐기 Lv" + Game.stoneLv, "초당 " + rate(Game.stoneRate()) + " → " + rate(Game.stoneRate() * nx(Game.stoneLv)) + (if ((Game.stoneLv + 1) % 10 == 0) " 2배!" else ""),
+            sc, Game.canPay(sc), "+1", { Game.buyProd(1) }))
+        val capNow = Game.cap(); Game.storeLv++; val capNext = Game.cap(); Game.storeLv--
+        l.add(URow("store", "창고 Lv" + Game.storeLv, big(capNow) + " → " + big(capNext) + " · 넘친 건 금화로", stc, Game.canPay(stc), "+1", { Game.buyProd(2) }))
         for (p in Fleet.parts) {
             val lv = Game.partLevel(p.id); val n = Game.partNext(p.id)
             val st = Game.stars(p.id); val stS = if (st > 0) " ★$st" else ""
-            if (n != null) l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, Fleet.partText(p, Game.partValue(p.id)) + " → " + Fleet.partText(p, n.value * (1 + .1f * st)).substringAfterLast(" "),
+            if (n != null) l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, if ((lv + 1) % 10 == 0) "Lv" + (lv + 1) + " 달성하면 판매 +10%" else Fleet.partText(p, Game.partValue(p.id)) + " → " + Fleet.partText(p, n.value * (1 + .1f * st)).substringAfterLast(" "),
                 n.cost, Game.canPay(n.cost), "+1", { Game.buyPart(p.id) }))
             else if (Game.starReady(p.id)) { val sc = Game.starCost(p.id)
                 l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, "별 " + st + "/" + Game.STAR_MAX + " · 별마다 효과 +10%", sc, Game.canPay(sc), "★+1", { Game.buyStar(p.id) })) }
@@ -679,6 +690,10 @@ class AppUi(val scene: Scene, val host: Host) {
         val dp = Game.myPower() - p0
         if (dp > 0) { powFx = dp; powFxAt = fxAt }
         val nm = u.title.substringBefore(" Lv")
+        // 10레벨을 넘기면 크게 축하
+        val lvBefore = u.title.substringAfter(" Lv", "").takeWhile { it.isDigit() }.toIntOrNull()
+        if (lvBefore != null && (lvBefore + n) / 10 > lvBefore / 10) { host.sound("win"); coins(W / 2f, 200f, 30)
+            floats.add(Float3(W / 2f, 230f, "Lv" + ((lvBefore + n) / 10 * 10) + " 달성! " + (if (u.icon == "wood" || u.icon == "stone" || u.icon == "store") "2배!" else "판매 +10%"), fxAt)) }
         if (u.cost != null || u.small) floats.add(Float3(W - 30f, upY[u.title] ?: 300f, if (u.big) "배가 커졌어요!" else nm + " +" + n, fxAt))
         if (u.big) coins(W / 2f, 120f, 30)
     }
