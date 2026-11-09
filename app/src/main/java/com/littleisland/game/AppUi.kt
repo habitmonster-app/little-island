@@ -15,6 +15,7 @@ class AppUi(val scene: Scene, val host: Host) {
         fun toast(s: String)
         fun openJournal(); fun openMap(); fun openCargo(); fun openTutorial(); fun pickTime(); fun setWallpaper()
         fun openTraining() {}
+        fun sound(name: String) {}
     }
 
     /** 좌표는 가로 200도트 그대로 쓰고, 실제 그림은 SC배 크기로 그려서 글자·아이콘이 또렷하게 */
@@ -463,6 +464,8 @@ class AppUi(val scene: Scene, val host: Host) {
                 }
             }
             6 -> {
+                l.add(Tile("chest:1", "효과음", if (Game.soundOn) "켜짐" else "꺼짐", if (Game.soundOn) St.ON else St.OFF,
+                    "톡톡, 강화, 해적 싸움 소리예요.", null, if (Game.soundOn) "끄기" else "켜기", { Game.soundOn = !Game.soundOn; Game.save(); true }))
                 l.add(Tile("auto", "자동 짓기", if (Game.autoBuild) "켜짐" else "꺼짐", if (Game.autoBuild) St.ON else St.OFF,
                     "숙소·창고·부두·밭은 재료가 모이면 알아서 지어요. 금화는 안 써요.", null, if (Game.autoBuild) "끄기" else "켜기", { Game.autoBuild = !Game.autoBuild; Game.save(); true }))
                 l.add(Tile("book", "처음 안내", "다시 보기", St.NORMAL, "이 게임이 어떻게 돌아가는지 다시 봐요.", null, "보기", { host.openTutorial(); false }))
@@ -602,6 +605,19 @@ class AppUi(val scene: Scene, val host: Host) {
     private var mult = 1                       // 1, 10, 0(최대)
     fun upRows(): List<URow> {
         val l = ArrayList<URow>()
+        // 4시간마다 보물 상자
+        if (Game.chestReady()) l.add(URow("chest:1", "보물 상자 도착!", "금화 " + big(Game.chestGold()) + " + 쪽지 1장", null, true, "", {
+            val g = Game.openChest(); if (g > 0) { host.sound("chest"); coins(W / 2f, 300f, 24); floats.add(Float3(W / 2f, 300f, "+" + big(g), System.currentTimeMillis())) }; g > 0 }, btnText = "열기"))
+        else l.add(URow("chest:1", "다음 보물 상자", mmss(Game.chestLeft()) + " 뒤에 도착해요", null, false, "", { false }, btnText = "대기"))
+        // 해적 토벌 단계
+        if (Game.dock) {
+            val w = Game.stageWait()
+            l.add(URow("boss:0", "해적 토벌 " + Game.stageName(), "이길 확률 " + pct1(Game.stageOdds()) + " · 금화 " + big(Game.stageGold()) + (if ((Game.pStage + 1) % 10 == 0) " · 쪽지 3" else ""),
+                null, w == 0L, "", { fight(); true }, btnText = if (w > 0) "쉬는 중 " + (w / 60000 + 1) + "분" else "도전!"))
+        }
+        // 명성: 다 키우면 새 항해 (영구 보너스)
+        if (Game.renownReady()) l.add(URow("title:0", "명성 새 항해!", "부품을 내려놓고 영원히 더 강해져요", null, true, "", { popup = renownTile(); true }, btnText = "보기"))
+        else if (Game.shipLevel >= 4 || Game.renown > 0) l.add(URow("title:0", "명성 " + Game.renown, "배 5단계, 부품 모두 최고면 새 항해", null, false, "", { false }, btnText = "대기"))
         // 다음 배 단계
         val nx = Game.shipLevel + 1
         Data.unlock("ship_$nx")?.takeIf { !Game.has(it.key) && Data.ships.any { s -> s.level == nx } }?.let { u ->
@@ -654,15 +670,17 @@ class AppUi(val scene: Scene, val host: Host) {
     private fun buyRow(u: URow) {
         if (!u.can) { host.toast("재료가 모자라요"); return }
         val p0 = Game.myPower()
-        val times = if (u.big) 1 else if (mult == 0) 999 else mult
+        val times = if (u.big || (u.btnText != null && u.cost == null && !u.small)) 1 else if (mult == 0) 999 else mult
         var n = 0
         while (n < times && u.act()) n++
         if (n == 0) return
-        fxAt = System.currentTimeMillis()
+        fxAt = System.currentTimeMillis(); sparkIcon = u.icon
+        if (u.cost != null || u.small) host.sound("up")
         val dp = Game.myPower() - p0
         if (dp > 0) { powFx = dp; powFxAt = fxAt }
         val nm = u.title.substringBefore(" Lv")
-        floats.add(Float3(W - 30f, upY[u.title] ?: 300f, if (u.big) "배가 커졌어요!" else nm + " +" + n, fxAt))
+        if (u.cost != null || u.small) floats.add(Float3(W - 30f, upY[u.title] ?: 300f, if (u.big) "배가 커졌어요!" else nm + " +" + n, fxAt))
+        if (u.big) coins(W / 2f, 120f, 30)
     }
     private val upY = HashMap<String, Float>()
 
@@ -693,6 +711,7 @@ class AppUi(val scene: Scene, val host: Host) {
                 if (u.can) k.rect(c, ix + 1, y + 1, 2f, h - 2, k.GOLD)
                 k.slot(c, ix + 4, y + 3, h - 6, h - 6, false, false)
                 k.icon(c, u.icon, ix + 4 + (h - 6) / 2 - 10 * (h - 6) / 32f, y + 3 + (h - 6) / 2 - 10 * (h - 6) / 32f, 2f * (h - 6) / 32f)
+                if (u.icon == sparkIcon) { val fe = System.currentTimeMillis() - fxAt; if (fe in 0 until 400) k.icon(c, "fx:" + (fe / 100), ix - 4, y - 8, 2.6f) }
                 val tx = ix + 8 + h - 6
                 val bw = 60f; val bxx = W - 12f - bw
                 val ts = if (u.small) 9 else 10
@@ -729,8 +748,31 @@ class AppUi(val scene: Scene, val host: Host) {
     class Float3(val x: Float, val y: Float, val s: String, val t0: Long)
     private val floats = ArrayList<Float3>()
     private var combo = 0; private var lastTap = 0L
+    class Coin(var x: Float, var y: Float, var vx: Float, var vy: Float, val t0: Long)
+    private val coinList = ArrayList<Coin>()
+    private var sparkIcon = ""
+    private var lastCoinT = 0L
+    fun coins(x: Float, y: Float, n: Int) {
+        val now = System.currentTimeMillis()
+        repeat(n) { coinList.add(Coin(x, y, (Math.random() * 120 - 60).toFloat(), (-Math.random() * 120 - 60).toFloat(), now + (Math.random() * 200).toLong())) }
+    }
+    private var seenBattle = Game.lastBattleAt
+    private fun fight() {
+        host.sound("boom")
+        val res = Game.challengeStage()
+        if (res == 1) { host.sound("win"); coins(W / 2f, 110f, 30); floats.add(Float3(W / 2f, 110f, "토벌 성공! +" + big(Game.stageGold(Game.pStage - 1)), System.currentTimeMillis())) }
+        else if (res == -1) { host.sound("lose"); floats.add(Float3(W / 2f, 110f, "졌어요… 5분 쉬어요", System.currentTimeMillis())) }
+    }
     private fun drawFloats() {
         val now = System.currentTimeMillis()
+        // 항해 중 해적을 이기면 앱에서도 금화가 쏟아진다
+        if (Game.lastBattleAt != seenBattle) { seenBattle = Game.lastBattleAt
+            if (Game.lastBattle == "pirate_win") { host.sound("win"); coins(W / 2f, 100f, 20) } else if (Game.lastBattle == "pirate_lose") host.sound("lose") }
+        val dt = ((now - lastCoinT).coerceIn(0, 100)) / 1000f; lastCoinT = now
+        coinList.removeAll { now - it.t0 > 1400 }
+        for (cn in coinList) { if (now < cn.t0) continue
+            cn.vy += 260 * dt; cn.x += cn.vx * dt; cn.y += cn.vy * dt
+            Pix.icon(c, "gold", cn.x - 5, cn.y - 5, 1f) }
         floats.removeAll { now - it.t0 > 900 }
         for (f in floats.toList()) {
             val e = (now - f.t0) / 900f
@@ -745,7 +787,8 @@ class AppUi(val scene: Scene, val host: Host) {
         popup = Tile("gold", "돌아왔어요!", "금화 +" + big(r.gold), St.READY,
             t + " 동안 섬과 배가 일했어요.\n\n금화 +" + big(r.gold) + "\n나무 +" + big(r.wood) + " · 돌 +" + big(r.stone) +
                 (if (r.voyages > 0) "\n항해 " + r.voyages + "번 다녀왔어요" else "") + (if (r.full) "\n창고가 가득 찼어요" else ""),
-            null, "받기", { true }, null)
+            null, "받기", { host.sound("chest"); coins(W / 2f, 200f, 20); true }, null,
+            btn2 = if (Game.tickets > 0) "2배 (쪽지 1)" else null, act2 = { val ok = Game.doubleReport(r); if (ok) { host.sound("win"); coins(W / 2f, 200f, 40) }; ok }, done2 = "금화 2배!")
     }
 
     // ---------- 배 화면: 가운데 배, 양옆에 부품 넷 ----------
@@ -908,6 +951,7 @@ class AppUi(val scene: Scene, val host: Host) {
     /** 목표 띠를 눌렀을 때: 그 탭으로 가서 그 칸의 창을 연다 */
     /** 앱 목표: 하루 보상이 있으면 그것부터, 아니면 섬의 다음 목표 */
     private fun appGoal(): Game.Goal? = when {
+        Game.chestReady() -> Game.Goal("d:chest4", "보물 상자 열기", null, true, false)
         Game.attReady() -> Game.Goal("d:chest:1", "출석 상자 받기", null, true, false)
         Game.dbReady() -> Game.Goal("d:boss", "오늘의 우두머리", null, true, false)
         Game.seasonReady() -> Game.Goal("d:season", "시즌 보상 받기", null, true, false)
@@ -921,6 +965,7 @@ class AppUi(val scene: Scene, val host: Host) {
         val g = appGoal() ?: return
         val key = g.key
         if (key == "d:stats" || key == "d:promote") { tab = 10; scrollY = 0f; return }
+        if (key == "d:chest4") { tab = 8; scrollY = 0f; return }
         if (key.startsWith("d:")) {
             tab = when (key) { "d:renown" -> 1; "d:promote" -> 3; else -> 4 }; page = 0; scrollY = 0f
             val list = tiles()
@@ -1033,7 +1078,7 @@ class AppUi(val scene: Scene, val host: Host) {
             if (b2 != null && b2.contains(ix, iy)) {
                 val ok = pop.act2?.invoke() ?: false
                 if (ok && pop.done2 != null) host.toast(pop.done2)
-                popup = if (ok) tiles().firstOrNull { it.icon == pop.icon } else null; after = null
+                popup = if (ok && pop.name != "돌아왔어요!") tiles().firstOrNull { it.icon == pop.icon } else null; after = null
                 return
             }
             val b = btnRect
@@ -1058,7 +1103,8 @@ class AppUi(val scene: Scene, val host: Host) {
             val now = System.currentTimeMillis()
             combo = if (now - lastTap < 600) (combo + 1).coerceAtMost(20) else 0; lastTap = now
             val n = Math.round(Game.tapGold() * (1 + combo * .05f))
-            Game.addTapGold(n)
+            Game.addTapGold(n); host.sound("tap")
+            if (combo > 0 && combo % 10 == 0) coins(x, y, 6)
             floats.add(Float3(x + (Math.random() * 16 - 8).toFloat(), y, "+" + big(n) + (if (combo >= 5) " x" + "%.1f".format(1 + combo * .05f) else ""), now))
             return
         }

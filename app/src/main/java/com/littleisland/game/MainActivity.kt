@@ -42,7 +42,18 @@ class MainActivity : Activity(), AppUi.Host {
         dp = resources.displayMetrics.density
         view = GameView(this, this)
         setContentView(view)
+        // 효과음
+        @Suppress("DEPRECATION")
+        sp = android.media.SoundPool(6, android.media.AudioManager.STREAM_MUSIC, 0)
+        for (k in listOf("tap", "up", "win", "lose", "chest", "boom")) { val id = resources.getIdentifier("sfx_$k", "raw", packageName)
+            if (id != 0) sfx[k] = sp!!.load(this, id, 1) }
+        // 알림 허락 (안드로이드 13부터)
+        if (android.os.Build.VERSION.SDK_INT >= 33 && checkSelfPermission("android.permission.POST_NOTIFICATIONS") != android.content.pm.PackageManager.PERMISSION_GRANTED)
+            requestPermissions(arrayOf("android.permission.POST_NOTIFICATIONS"), 3)
     }
+    private var sp: android.media.SoundPool? = null
+    private val sfx = HashMap<String, Int>()
+    override fun sound(name: String) { if (Game.soundOn) sfx[name]?.let { sp?.play(it, if (name == "tap") .5f else .8f, if (name == "tap") .5f else .8f, 1, 0, 1f) } }
 
     override fun toast(s: String) = Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
     override fun openJournal() = openJournalList()
@@ -210,7 +221,7 @@ class MainActivity : Activity(), AppUi.Host {
         view.running = true; view.invalidate()
     }
 
-    override fun onPause() { super.onPause(); view.running = false; Game.save() }
+    override fun onPause() { super.onPause(); view.running = false; Game.save(); ChestReceiver.schedule(this) }
 
     /** 도트 화면을 그리고 키워서 보여준다 */
     class GameView(ctx: Context, host: AppUi.Host) : View(ctx) {

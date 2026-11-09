@@ -29,6 +29,48 @@ object Game {
     fun tapGold(): Int = max(1, Math.round(gps * .4f) + shipLevel * shipLevel + (loadW() + loadS() * 2) / 20)
     @Synchronized fun addTapGold(n: Int) { goldC += n * 100L; tapsDone++ }
     var tapsDone = 0
+    var soundOn = true
+
+    // ---------- 4시간마다 보물 상자 ----------
+    const val CHEST_MS = 4 * 3600 * 1000L
+    var chestAt = 0L
+    fun chestLeft(now: Long = System.currentTimeMillis()) = (chestAt + CHEST_MS - now).coerceAtLeast(0L)
+    fun chestReady() = chestLeft() == 0L
+    fun chestGold() = max(200, Math.round(gps * 1800f) + 120 * shipLevel * shipLevel)
+    /** 상자를 열면 받은 금화를 돌려준다 (못 열면 0) */
+    @Synchronized fun openChest(): Int {
+        if (!chestReady()) return 0
+        val g = chestGold(); goldC += g * 100L; tickets += 1
+        chestAt = System.currentTimeMillis(); bump("chest"); save(); return g
+    }
+
+    // ---------- 돌아왔을 때 2배 받기 (쪽지 1장) ----------
+    @Synchronized fun doubleReport(r: Report): Boolean {
+        if (tickets < 1) return false
+        tickets -= 1; goldC += r.gold * 100L; add(r.wood, r.stone); save(); return true
+    }
+
+    // ---------- 해적 토벌: 1-1, 1-2 … 단계마다 해적이 세진다 ----------
+    var pStage = 0                       // 깬 단계 수
+    var stageCool = 0L                   // 지면 잠깐 쉬어야 다시 도전
+    const val STAGE_COOL_MS = 5 * 60 * 1000L
+    fun stageName(n: Int = pStage) = (n / 10 + 1).toString() + "-" + (n % 10 + 1)
+    fun stageGold(n: Int = pStage) = Math.round(40 * Math.pow(1.16, n.toDouble())).toInt() + 20 * shipLevel
+    fun stagePirate(n: Int = pStage): Data.Pirate {
+        val base = Data.pirate("hook_minor")
+        return Data.Pirate("stage_$n", (base?.name ?: "해적") + " " + stageName(n), "start", emptyList(), emptyList(), false, null, 0,
+            1f + n * .07f, intArrayOf(stageGold(n), stageGold(n)), 0f, base?.colors ?: emptyList())
+    }
+    fun stageOdds(n: Int = pStage) = winChance(stagePirate(n), aboard.filter { it in promoted }.take(slots()))
+    fun stageWait() = (stageCool - System.currentTimeMillis()).coerceAtLeast(0L)
+    /** 도전 결과: 1 이김, -1 짐, 0 못 함 */
+    @Synchronized fun challengeStage(): Int {
+        if (stageWait() > 0) return 0
+        val win = kotlin.random.Random.nextFloat() < stageOdds()
+        if (win) { goldC += stageGold() * 100L; if ((pStage + 1) % 10 == 0) tickets += 3; pStage++; bump("pirate_win") }
+        else stageCool = System.currentTimeMillis() + STAGE_COOL_MS
+        save(); return if (win) 1 else -1
+    }
     private var fracW = 0.0; private var fracS = 0.0
     var houses = 0; private set
     var warehouse = 0; private set
@@ -253,7 +295,7 @@ object Game {
         pearlUntil = sp.getLong("pearlUntil", 0L); pearlNext = sp.getLong("pearlNext", 0L)
         crewPts.clear(); sp.getString("crewPts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewPts[k] = v.split(".").map { x -> x.toIntOrNull() ?: 0 }.plus(listOf(0, 0, 0, 0)).take(4).toIntArray() }
         treeOwned.clear(); sp.getString("tree", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { treeOwned.add(it) }
-        renown = sp.getInt("renown", 0); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
+        renown = sp.getInt("renown", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); stageCool = sp.getLong("stageCool", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
         dbDay = sp.getLong("dbDay", -1L); seasonKey = sp.getString("seasonKey", "") ?: ""; seasonPts = sp.getInt("seasonPts", 0); seasonGot = sp.getInt("seasonGot", 0)
         visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
         set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
@@ -319,7 +361,7 @@ object Game {
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
             putLong("pearlUntil", pearlUntil); putLong("pearlNext", pearlNext)
-            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
+            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putLong("chestAt", chestAt); putInt("pStage", pStage); putLong("stageCool", stageCool); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
             putString("seasonKey", seasonKey); putInt("seasonPts", seasonPts); putInt("seasonGot", seasonGot)
             putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
@@ -1447,6 +1489,7 @@ object Game {
         wood = 12; stone = 4; goldC = 0; houses = 0; warehouse = 0; dock = false; field = false; lighthouse = false; market = false
         shipLevel = 1; route = "port_haesol"; supplyT = 0f; voy = null; voyages = 0; workers.clear(); completed.clear()
         flags.clear(); opened.clear(); read.clear(); eventLast.clear(); lastEvent = ""; cards.clear(); log.clear(); report = null
+        chestAt = 0L; pStage = 0; stageCool = 0L; gps = 0f
         parts.clear(); partStars.clear(); promoted.clear(); aboard.clear(); crewLv.clear(); crewXp.clear(); decoOwned.clear(); decoOn.clear(); missionQ = null; missionsDone.clear()
         bossWins.clear(); souvOwned.clear(); milesDone.clear(); tickets = 0; charmLv.clear(); charmOn.clear(); pity = 0; trainDay = -1L; trainLeft = 0
         ordDay = -1L; ordIds = emptyList(); ordProg.clear(); ordDone.clear(); weekStart = -1L; weekCount = 0; weekGot = false
