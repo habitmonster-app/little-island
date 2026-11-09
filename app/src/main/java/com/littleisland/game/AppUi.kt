@@ -496,15 +496,14 @@ class AppUi(val scene: Scene, val host: Host) {
         val vh = sceneH / Z; val sy = (Scene.WL - vh * .55f).toInt()
         val sw = Scene.W * Z; val ox = (W - sw) / 2f
         c.save(); c.clipRect(0f, top, W.toFloat(), top + sceneH)
-        fun band(x0: Float, flip: Boolean) {
+        scene.wantBg = true
+        fun band(x0: Float, bm: android.graphics.Bitmap) {
             src.set(0, sy * Scene.SS, Scene.W * Scene.SS, (sy + vh.toInt()) * Scene.SS)
-            if (flip) { c.save(); c.scale(-1f, 1f, x0 + sw / 2, 0f) }
-            dstF.set(x0, top, x0 + sw, top + sceneH); c.drawBitmap(scene.bitmap, src, dstF, bp)
-            if (flip) c.restore()
+            dstF.set(x0, top, x0 + sw, top + sceneH); c.drawBitmap(bm, src, dstF, bp)
         }
-        band(ox, false)
-        // 양옆: 배가 없는 오른쪽 끝을 이어 붙인다 (왼쪽은 그대로 이어서, 오른쪽은 거울로)
-        band(ox - sw, false); band(ox + sw, true)
+        // 양옆: 배·섬·항구가 두 번 보이지 않게 하늘과 바다만 이어 붙인다
+        band(ox - sw, scene.bgBitmap); band(ox + sw, scene.bgBitmap)
+        band(ox, scene.bitmap)
         c.restore()
         label(c, 6f, top + 14)
         drawPower(top + 28)
@@ -599,7 +598,20 @@ class AppUi(val scene: Scene, val host: Host) {
 
     // ---------- 강화: 거지키우기처럼 한 줄 목록 하나 ----------
     class URow(val icon: String, val title: String, val sub: String, val cost: Data.Cost?, val can: Boolean, val label: String,
-               val act: () -> Boolean, val big: Boolean = false, val btnText: String? = null, val small: Boolean = false, val head: Boolean = false)
+               val act: () -> Boolean, val big: Boolean = false, val btnText: String? = null, val small: Boolean = false, val head: Boolean = false,
+               val costAt: ((Int) -> Data.Cost?)? = null)
+    /** x10·최대일 때 실제로 몇 단계를 사는지와 그 합계 */
+    private fun multiCost(u: URow): Pair<Int, Data.Cost>? {
+        val f = u.costAt ?: return null
+        if (mult == 1) return null
+        var g = 0L; var w = 0L; var st = 0L; var n = 0
+        val lim = if (mult == 0) 999 else mult
+        while (n < lim) { val c = f(n) ?: break
+            if (mult == 0 && (Game.gold < g + c.gold || Game.wood < w + c.wood || Game.stone < st + c.stone)) break
+            g += c.gold; w += c.wood; st += c.stone; n++ }
+        if (n == 0) { val c = f(0) ?: return null; return 1 to c }
+        return n to Data.Cost(g.coerceAtMost(Int.MAX_VALUE.toLong()).toInt(), w.coerceAtMost(Int.MAX_VALUE.toLong()).toInt(), st.coerceAtMost(Int.MAX_VALUE.toLong()).toInt())
+    }
     private val upRects = ArrayList<Pair<Rect, URow>>()
     private val multRects = ArrayList<Pair<Rect, Int>>()
     private var mult = 1                       // 1, 10, 0(최대)
@@ -636,16 +648,16 @@ class AppUi(val scene: Scene, val host: Host) {
         val wc = Game.prodCost(Game.woodLv); val sc = Game.prodCost(Game.stoneLv); val stc = Game.storeCost(Game.storeLv)
         fun nx(lv: Int) = (Game.prodMul(lv + 1) / Game.prodMul(lv))
         l.add(URow("wood", "나무 캐기 Lv" + Game.woodLv, "초당 " + rate(Game.woodRate()) + " → " + rate(Game.woodRate() * nx(Game.woodLv)) + (if ((Game.woodLv + 1) % 10 == 0) " 2배!" else ""),
-            wc, Game.canPay(wc), "+1", { Game.buyProd(0) }))
+            wc, Game.canPay(wc), "+1", { Game.buyProd(0) }, costAt = { i -> Game.prodCost(Game.woodLv + i) }))
         l.add(URow("stone", "돌 캐기 Lv" + Game.stoneLv, "초당 " + rate(Game.stoneRate()) + " → " + rate(Game.stoneRate() * nx(Game.stoneLv)) + (if ((Game.stoneLv + 1) % 10 == 0) " 2배!" else ""),
-            sc, Game.canPay(sc), "+1", { Game.buyProd(1) }))
+            sc, Game.canPay(sc), "+1", { Game.buyProd(1) }, costAt = { i -> Game.prodCost(Game.stoneLv + i) }))
         val capNow = Game.cap(); Game.storeLv++; val capNext = Game.cap(); Game.storeLv--
-        l.add(URow("store", "창고 Lv" + Game.storeLv, big(capNow) + " → " + big(capNext) + " · 넘친 건 금화로", stc, Game.canPay(stc), "+1", { Game.buyProd(2) }))
+        l.add(URow("store", "창고 Lv" + Game.storeLv, big(capNow) + " → " + big(capNext) + " · 넘친 건 금화로", stc, Game.canPay(stc), "+1", { Game.buyProd(2) }, costAt = { i -> Game.storeCost(Game.storeLv + i) }))
         for (p in Fleet.parts) {
             val lv = Game.partLevel(p.id); val n = Game.partNext(p.id)
             val st = Game.stars(p.id); val stS = if (st > 0) " ★$st" else ""
             if (n != null) l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, if ((lv + 1) % 10 == 0) "Lv" + (lv + 1) + " 달성하면 판매 +10%" else Fleet.partText(p, Game.partValue(p.id)) + " → " + Fleet.partText(p, n.value * (1 + .1f * st)).substringAfterLast(" "),
-                n.cost, Game.canPay(n.cost), "+1", { Game.buyPart(p.id) }))
+                n.cost, Game.canPay(n.cost), "+1", { Game.buyPart(p.id) }, costAt = { i -> Game.partCostAt(p.id, i) }))
             else if (Game.starReady(p.id)) { val sc = Game.starCost(p.id)
                 l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, "별 " + st + "/" + Game.STAR_MAX + " · 별마다 효과 +10%", sc, Game.canPay(sc), "★+1", { Game.buyStar(p.id) })) }
             else l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, if (lv >= p.levels.size) "가장 높은 레벨" else "배를 키우면 더 올려요", null, false, "최고", { false }))
@@ -670,7 +682,7 @@ class AppUi(val scene: Scene, val host: Host) {
             l.add(URow(faceOf(lv) + pi, nm + " Lv" + lv + (if (on) " · 승선" else " · 쉬는 중"),
                 if (free > 0) "남은 점수 $free" else if (lv >= Fleet.maxCrewLevel) "최고 레벨이에요" else if (lv >= Game.crewCap()) "배 " + (lv / 5 + 1) + "단계에서 더 올라가요"
                 else Fleet.crewOf(id)?.skills?.firstOrNull { it.level > lv }?.let { sk -> "Lv" + sk.level + " 「" + sk.name + "」" } ?: "레벨이 오르면 점수 +2",
-                tc?.let { Data.Cost(it, 0, 0) }, tc != null && Game.gold >= tc, "+1", { Game.teach(id) }))
+                tc?.let { Data.Cost(it, 0, 0) }, tc != null && Game.gold >= tc, "+1", { Game.teach(id) }, costAt = { i -> Game.teachCostAt(id, i) }))
             val a = Game.pts(id)
             for (k in 0 until 4) {
                 val can = free > 0 && a[k] < Game.STAT_MAX
@@ -687,6 +699,7 @@ class AppUi(val scene: Scene, val host: Host) {
 
     private fun buyRow(u: URow) {
         if (!u.can) { host.toast("재료가 모자라요"); return }
+        multiCost(u)?.let { (_, tc) -> if (mult == 10 && !Game.canPay(tc)) { host.toast("10번 올리기엔 모자라요"); return } }
         val p0 = Game.myPower()
         val times = if (u.big || (u.btnText != null && u.cost == null && !u.small)) 1 else if (mult == 0) 999 else mult
         var n = 0
@@ -744,14 +757,16 @@ class AppUi(val scene: Scene, val host: Host) {
                 k.text(c, k.fit(u.sub, 8, bxx - tx - 4), tx, y + h / 2 + (if (u.small) 9 else 10), 8, k.col("#c8b896"))
                 // 오른쪽 버튼: 위에 값, 아래에 행동
                 if (u.cost != null) {
-                    k.button(c, bxx, y + 3, bw, h - 6, "", u.can)
-                    val cg = u.cost
+                    val mc = multiCost(u)
+                    val cg = mc?.second ?: u.cost
+                    val ok = u.can && (mc == null || Game.canPay(cg))
+                    k.button(c, bxx, y + 3, bw, h - 6, "", ok)
                     val main = if (cg.gold > 0) big(cg.gold) else if (cg.wood > 0) big(cg.wood) else big(cg.stone)
                     val ic = if (cg.gold > 0) "gold" else if (cg.wood > 0) "wood" else "stone"
                     k.icon(c, ic, bxx + 5, y + h / 2 - 9, .9f)
-                    k.text(c, k.fit(main, 9, bw - 20), bxx + 16, y + h / 2 - 1, 9, if (u.can) k.INK else k.col("#c8b896"), Paint.Align.LEFT, true)
-                    val extra = listOfNotNull(if (cg.gold > 0 && cg.wood > 0) "나무" + big(cg.wood) else null, if ((cg.gold > 0 || cg.wood > 0) && cg.stone > 0) "돌" + big(cg.stone) else null).joinToString(" ")
-                    k.text(c, k.fit(if (extra.isNotEmpty()) extra else u.label + (if (!u.big && mult != 1) (if (mult == 0) " 최대" else " x$mult") else ""), 7, bw - 4), bxx + bw / 2, y + h / 2 + 10, 7, if (u.can) k.INK else k.col("#a89878"), Paint.Align.CENTER)
+                    k.text(c, k.fit(main, 9, bw - 20), bxx + 16, y + h / 2 - 1, 9, if (ok) k.INK else k.col("#c8b896"), Paint.Align.LEFT, true)
+                    val extra = (if (mc != null) "+" + mc.first + " " else "") + listOfNotNull(if (cg.gold > 0 && cg.wood > 0) "나무" + big(cg.wood) else null, if ((cg.gold > 0 || cg.wood > 0) && cg.stone > 0) "돌" + big(cg.stone) else null).joinToString(" ")
+                    k.text(c, k.fit(if (extra.isNotBlank() && extra.trim() != "+" + (mc?.first ?: "")) extra else (if (mc != null) "+" + mc.first else u.label), 7, bw - 4), bxx + bw / 2, y + h / 2 + 10, 7, if (ok) k.INK else k.col("#a89878"), Paint.Align.CENTER)
                     upRects.add(Rect(bxx.toInt() - 2, maxOf(y, areaTop).toInt(), (bxx + bw).toInt() + 4, minOf(y + h, areaBot).toInt()) to u)
                 } else if (u.btnText != null) {
                     k.button(c, bxx, y + 3, bw, h - 6, k.fit(u.btnText, 9, bw - 4), u.can)

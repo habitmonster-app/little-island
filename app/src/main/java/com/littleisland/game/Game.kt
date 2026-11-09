@@ -958,7 +958,11 @@ object Game {
         "선원 대포술" to cs(ids, 0))
 
     // ---------- 선원 가르치기: 금화로 바로 다음 레벨 ----------
-    fun teachLong(id: String): Long? { val lv = crewLevel(id); return if (id !in promoted || lv >= crewCap()) null else Math.round(40 * Math.pow(1.15, lv - 1.0) * Math.pow(2.5, ((lv - 1) / 5).toDouble())) }
+    fun teachLong(id: String, lv: Int = crewLevel(id)): Long? = if (id !in promoted || lv >= crewCap()) null else Math.round(40 * Math.pow(1.15, lv - 1.0) * Math.pow(2.5, ((lv - 1) / 5).toDouble()))
+    /** i번째 다음 단계 값 (x10·최대 버튼에 합계를 보여 주려고) */
+    fun partCostAt(id: String, i: Int): Data.Cost? { val p = Fleet.part(id) ?: return null; val lv = partLevel(id) + i
+        if (lv >= Fleet.maxLevel(shipLevel)) return null; return p.levels.getOrNull(lv)?.takeIf { it.reqShip <= shipLevel }?.cost }
+    fun teachCostAt(id: String, i: Int): Data.Cost? = teachLong(id, crewLevel(id) + i)?.let { Data.Cost(min(it, Int.MAX_VALUE.toLong()).toInt(), 0, 0) }
     fun teachCost(id: String): Int? = teachLong(id)?.let { min(it, Int.MAX_VALUE.toLong()).toInt() }
     @Synchronized fun teach(id: String): Boolean {
         val g = teachCost(id) ?: return false

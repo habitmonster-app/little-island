@@ -37,7 +37,12 @@ class Scene {
     }
 
     val bitmap: Bitmap = Bitmap.createBitmap(W * SS, H * SS, Bitmap.Config.ARGB_8888)
-    private val c = Canvas(bitmap).apply { scale(SS.toFloat(), SS.toFloat()) }
+    private val mainC = Canvas(bitmap).apply { scale(SS.toFloat(), SS.toFloat()) }
+    private var c = mainC
+    /** 앱의 양옆 띠용: 배·섬·항구 없이 하늘과 바다만 그린 그림 (wantBg일 때만) */
+    var wantBg = false
+    val bgBitmap: Bitmap by lazy { Bitmap.createBitmap(W * SS, H * SS, Bitmap.Config.ARGB_8888) }
+    private val bgC by lazy { Canvas(bgBitmap).apply { scale(SS.toFloat(), SS.toFloat()) } }
     private fun aget(n: String, w: Int) = Art.get(n, w * SS)
     private fun acell(n: String, cols: Int, rows: Int, i: Int, w: Int) = Art.cell(n, cols, rows, i, w * SS)
     private val p = Paint().apply { isAntiAlias = false }
@@ -493,6 +498,13 @@ class Scene {
             p.color = Color.argb((dark * (if (Art.has("bg_sea_night")) .3f else .6f) * 255).roundToInt(), 8, 12, 40)
             c.drawRect(0f, 0f, W.toFloat(), H.toFloat(), p)
             ga = min(1f, dark * 1.6f); nightLights(time, io, po); ga = 1f
+        }
+        if (wantBg) {
+            c = bgC
+            if (!artBackground()) { sky(time, h); farIslands(); seaBody(time) }
+            skyWeather(time); foreWater(time)
+            if (dark > 0f) { p.color = Color.argb((dark * (if (Art.has("bg_sea_night")) .3f else .6f) * 255).roundToInt(), 8, 12, 40); c.drawRect(0f, 0f, W.toFloat(), H.toFloat(), p) }
+            c = mainC
         }
     }
 
