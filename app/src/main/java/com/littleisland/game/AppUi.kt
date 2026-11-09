@@ -18,7 +18,7 @@ class AppUi(val scene: Scene, val host: Host) {
     }
 
     /** 좌표는 가로 200도트 그대로 쓰고, 실제 그림은 SC배 크기로 그려서 글자·아이콘이 또렷하게 */
-    companion object { const val W = 200; const val SC = 6 }
+    companion object { const val W = 232; const val SC = 5 }
     var H = 440; private set
     var bitmap: Bitmap = Bitmap.createBitmap(W * SC, H * SC, Bitmap.Config.ARGB_8888); private set
     private var c = Canvas(bitmap).apply { scale(SC.toFloat(), SC.toFloat()) }
@@ -52,6 +52,8 @@ class AppUi(val scene: Scene, val host: Host) {
     private val bp = Paint().apply { isFilterBitmap = false }
     private val top = 16f
     private val sceneH = 184f
+    private val Z = .8f
+    private val dstF = android.graphics.RectF()
 
     // ---------- 칸 목록 ----------
     private fun need(keys: List<String>): String = keys.filter { !Game.has(it) }.joinToString(", ") { k ->
@@ -464,10 +466,18 @@ class AppUi(val scene: Scene, val host: Host) {
         val k = Pix
         k.rect(c, 0f, 0f, W.toFloat(), H.toFloat(), k.col("#0d0a08"))
         // 위: 장면 (바다 띠 부분을 잘라서)
-        val sy = (Scene.WL - sceneH * .55f).toInt()
-        src.set(0, sy * Scene.SS, Scene.W * Scene.SS, (sy + sceneH.toInt()) * Scene.SS)
-        dst.set(0, top.toInt(), W, (top + sceneH).toInt())
-        c.drawBitmap(scene.bitmap, src, dst, bp)
+        // 멀리서 보듯: 장면을 작게(Z배) 그리고, 양옆은 거울처럼 이어 붙인다
+        val vh = sceneH / Z; val sy = (Scene.WL - vh * .55f).toInt()
+        val sw = Scene.W * Z; val ox = (W - sw) / 2f
+        c.save(); c.clipRect(0f, top, W.toFloat(), top + sceneH)
+        fun band(x0: Float, flip: Boolean) {
+            src.set(0, sy * Scene.SS, Scene.W * Scene.SS, (sy + vh.toInt()) * Scene.SS)
+            if (flip) { c.save(); c.scale(-1f, 1f, x0 + sw / 2, 0f) }
+            dstF.set(x0, top, x0 + sw, top + sceneH); c.drawBitmap(scene.bitmap, src, dstF, bp)
+            if (flip) c.restore()
+        }
+        band(ox, false); band(ox - sw, true); band(ox + sw, true)
+        c.restore()
         label(c, 6f, top + 14)
         drawPower(top + 28)
         drawGoal(top + sceneH - 21)
@@ -849,7 +859,7 @@ class AppUi(val scene: Scene, val host: Host) {
         }
         // 위 장면: 병, 상자, 바다 동물, 조개를 앱에서도 톡 쳐서 줍는다
         goalRect?.let { r -> if (r.contains(ix, iy)) { openGoal(); return } }
-        if (y >= top && y < top + sceneH) { scene.tap(x, (Scene.WL - sceneH * .55f).toInt() + (y - top))?.let { host.toast(it) }; return }
+        if (y >= top && y < top + sceneH) { val vh = sceneH / Z; scene.tap((x - (W - Scene.W * Z) / 2f) / Z, (Scene.WL - vh * .55f).toInt() + (y - top) / Z)?.let { host.toast(it) }; return }
         for ((i, r) in tabRects.withIndex()) if (r.contains(ix, iy)) { tab = order[i]; page = 0; scrollY = 0f; return }
         treeBtn?.let { r -> if (r.contains(ix, iy)) {
             val p0 = Game.myPower(); val n = Game.TREE[treeSel]
