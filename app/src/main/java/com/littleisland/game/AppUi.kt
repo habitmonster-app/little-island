@@ -662,7 +662,8 @@ class AppUi(val scene: Scene, val host: Host) {
             val tc = Game.teachCost(id); val free = Game.ptsFree(id); val on = id in Game.aboard
             val nm = Fleet.crewOf(id)?.name ?: id
             l.add(URow((if (lv >= 11) "face15:" else "face:") + pi, nm + " Lv" + lv + (if (on) " · 승선" else " · 쉬는 중"),
-                if (free > 0) "남은 점수 $free" else "레벨이 오르면 점수 +2",
+                if (free > 0) "남은 점수 $free" else if (lv >= Fleet.maxCrewLevel) "최고 레벨이에요" else if (lv >= Game.crewCap()) "배 " + (lv / 5 + 1) + "단계에서 더 올라가요"
+                else if ((lv + 1) % 10 == 0) "Lv" + (lv + 1) + " 달성하면 판매 +5%" else "레벨이 오르면 점수 +2",
                 tc?.let { Data.Cost(it, 0, 0) }, tc != null && Game.gold >= tc, "+1", { Game.teach(id) }))
             val a = Game.pts(id)
             for (k in 0 until 4) {
@@ -693,7 +694,7 @@ class AppUi(val scene: Scene, val host: Host) {
         // 10레벨을 넘기면 크게 축하
         val lvBefore = u.title.substringAfter(" Lv", "").takeWhile { it.isDigit() }.toIntOrNull()
         if (lvBefore != null && (lvBefore + n) / 10 > lvBefore / 10) { host.sound("win"); coins(W / 2f, 200f, 30)
-            floats.add(Float3(W / 2f, 230f, "Lv" + ((lvBefore + n) / 10 * 10) + " 달성! " + (if (u.icon == "wood" || u.icon == "stone" || u.icon == "store") "2배!" else "판매 +10%"), fxAt)) }
+            floats.add(Float3(W / 2f, 230f, "Lv" + ((lvBefore + n) / 10 * 10) + " 달성! " + (if (u.icon == "wood" || u.icon == "stone" || u.icon == "store") "2배!" else if (u.icon.startsWith("face")) "판매 +5%" else "판매 +10%"), fxAt)) }
         if (u.cost != null || u.small) floats.add(Float3(W - 30f, upY[u.title] ?: 300f, if (u.big) "배가 커졌어요!" else nm + " +" + n, fxAt))
         if (u.big) coins(W / 2f, 120f, 30)
     }
@@ -1059,7 +1060,7 @@ class AppUi(val scene: Scene, val host: Host) {
         for (ln in lines) { k.text(c, ln, px + 12, y, 10, k.CREAM); y += 13 }
         t.cost?.let { cc ->
             var x = px + 12
-            for ((ic, need, have) in listOf(Triple("wood", cc.wood, Game.wood), Triple("stone", cc.stone, Game.stone), Triple("gold", cc.gold, Game.gold))) {
+            for ((ic, need, have) in listOf(Triple("wood", cc.wood.toLong(), Game.wood.toLong()), Triple("stone", cc.stone.toLong(), Game.stone.toLong()), Triple("gold", cc.gold.toLong(), Game.gold))) {
                 if (need <= 0) continue
                 k.icon(c, ic, x, y - 4, 1f)
                 val s = big(need)

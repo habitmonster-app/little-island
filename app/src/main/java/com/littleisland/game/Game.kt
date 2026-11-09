@@ -22,7 +22,7 @@ object Game {
     var wood = 12; private set
     var stone = 4; private set
     private var goldC = 0L                     // 금화 1/100 단위
-    val gold get() = (goldC / 100).toInt()
+    val gold get() = goldC / 100
     /** 초당 금화 (최근 항해 판매로 어림) */
     var gps = 0f
     /** 바다를 톡 치면 받는 금화: 배가 클수록, 짐칸이 넓을수록 많다 */
@@ -93,8 +93,8 @@ object Game {
     // ---------- 섬 생산 강화: 나무 캐기·돌 캐기·창고 (10레벨마다 2배) ----------
     var woodLv = 0; var stoneLv = 0; var storeLv = 0
     fun prodMul(lv: Int) = (1 + .1f * lv) * Math.pow(2.0, (lv / 10).toDouble()).toFloat()
-    fun prodCost(lv: Int) = Data.Cost(Math.round(20 * Math.pow(1.2, lv.toDouble())).toInt(), 0, 0)
-    fun storeCost(lv: Int) = Data.Cost(Math.round(60 * Math.pow(1.3, lv.toDouble())).toInt(), 0, 0)
+    fun prodCost(lv: Int) = Data.Cost(Math.round(20 * Math.pow(1.2, lv.toDouble())).coerceAtMost(2_000_000_000L).toInt(), 0, 0)
+    fun storeCost(lv: Int) = Data.Cost(Math.round(60 * Math.pow(1.3, lv.toDouble())).coerceAtMost(2_000_000_000L).toInt(), 0, 0)
     /** 초당 나무·돌 (주민+알바+짐배) */
     fun woodRate(): Float { var r = RESIDENTS * Data.gatherRate * Data.woodFrac; for (w in workers) Data.worker(w.id)?.let { d -> r += Data.gatherRate * Data.woodFrac * (1 + d.woodBonus) }
         if (dock) r += (Data.supplyW[0] + Data.supplyW[1]) / 2f / Data.supplyEvery; return r * prodMul(woodLv) }
@@ -108,7 +108,10 @@ object Game {
     }
     /** 부품 10레벨마다 판매 금화 +10% (곱해서 쌓임) */
     fun partMilestones() = Fleet.parts.sumOf { partLevel(it.id) / 10 }
-    fun milestoneSale() = Math.pow(1.1, partMilestones().toDouble()).toFloat()
+    fun crewMilestones() = promoted.sumOf { crewLevel(it) / 10 }
+    fun milestoneSale() = (Math.pow(1.1, partMilestones().toDouble()) * Math.pow(1.05, crewMilestones().toDouble())).toFloat()
+    /** 선원도 부품처럼 배 단계만큼 열린다 (배 1·2단계 Lv10, 그 뒤 단계마다 +5, 10단계 Lv50) */
+    fun crewCap() = min(Fleet.maxCrewLevel, max(10, shipLevel * 5))
     fun ship() = Data.ship(shipLevel)
     fun port() = Data.port(route)
 
@@ -595,8 +598,8 @@ object Game {
 
     // ---------- 선원 능력치 찍기: 레벨마다 2점, 네 가지에 나눠 찍는다 ----------
     val STAT_NAME = listOf("대포술", "돛 손질", "짐 꾸리기", "흥정")
-    val STAT_PER = floatArrayOf(.005f, .01f, .02f, .02f)
-    const val STAT_MAX = 10
+    val STAT_PER = floatArrayOf(.005f, .01f, .01f, .01f)
+    const val STAT_MAX = 20
     val crewPts = HashMap<String, IntArray>()
     fun pts(id: String): IntArray = crewPts.getOrPut(id) { IntArray(4) }
     fun ptsTotal(id: String) = (crewLevel(id) - 1) * 2
@@ -604,7 +607,7 @@ object Game {
     /** 배에 탄 선원들이 찍은 능력치 합 */
     fun cs(ids: List<String>, k: Int): Float = ids.filter { it in promoted }.sumOf { (crewPts[it]?.get(k) ?: 0).toDouble() }.toFloat() * STAT_PER[k] * (1 + partValue("cabin"))
     fun statText(k: Int, n: Int): String = when (k) { 0 -> "이길 확률 +" + "%.1f".format(n * STAT_PER[0] * 100).removeSuffix(".0") + "%p"
-        1 -> "항해 시간 -" + (n * 1) + "%"; 2 -> "짐칸 +" + (n * 2) + "%"; else -> "판매 +" + (n * 2) + "%" }
+        1 -> "항해 시간 -" + n + "%"; 2 -> "짐칸 +" + n + "%"; else -> "판매 +" + n + "%" }
     @Synchronized fun statAdd(id: String, k: Int, d: Int): Boolean {
         if (id !in promoted) return false
         val a = pts(id)
@@ -832,7 +835,7 @@ object Game {
         val credited = min(gap, OFFLINE_MAX_MS)
         advance(now)
         val full = wood >= cap() || stone >= cap()
-        report = Report((credited / 60000L).toInt(), max(0, wood - w0), max(0, stone - s0), max(0, gold - g0), voyages - v0, full)
+        report = Report((credited / 60000L).toInt(), max(0, wood - w0), max(0, stone - s0), max(0L, gold - g0).coerceAtMost(Int.MAX_VALUE.toLong()).toInt(), voyages - v0, full)
         save()
     }
 
@@ -955,7 +958,8 @@ object Game {
         "선원 대포술" to cs(ids, 0))
 
     // ---------- 선원 가르치기: 금화로 바로 다음 레벨 ----------
-    fun teachCost(id: String): Int? { val lv = crewLevel(id); return if (id !in promoted || lv >= Fleet.maxCrewLevel) null else 250 * lv * lv }
+    fun teachLong(id: String): Long? { val lv = crewLevel(id); return if (id !in promoted || lv >= crewCap()) null else Math.round(40 * Math.pow(1.15, lv - 1.0) * Math.pow(2.5, ((lv - 1) / 5).toDouble())) }
+    fun teachCost(id: String): Int? = teachLong(id)?.let { min(it, Int.MAX_VALUE.toLong()).toInt() }
     @Synchronized fun teach(id: String): Boolean {
         val g = teachCost(id) ?: return false
         if (gold < g) return false
@@ -1130,11 +1134,12 @@ object Game {
     /** 선원 경험치: 단계별로 깎으며 레벨을 올리고, Lv10이면 남는 건 버린다 */
     private fun giveXp(id: String, amount: Int) {
         run {
-            var lv = crewLevel(id); if (lv >= Fleet.maxCrewLevel) return
+            val top = crewCap()
+            var lv = crewLevel(id); if (lv >= top) return
             var xp = crewXp(id) + amount
             val before = lv
-            while (lv < Fleet.maxCrewLevel && xp >= (Fleet.xpTo.getOrNull(lv - 1) ?: Int.MAX_VALUE)) { xp -= Fleet.xpTo[lv - 1]; lv++ }
-            if (lv >= Fleet.maxCrewLevel) xp = 0
+            while (lv < top && xp >= (Fleet.xpTo.getOrNull(lv - 1) ?: Int.MAX_VALUE)) { xp -= Fleet.xpTo[lv - 1]; lv++ }
+            if (lv >= top) xp = 0
             crewLv[id] = lv; crewXp[id] = xp
             if (lv > before) {
                 levelUps++
@@ -1483,7 +1488,7 @@ object Game {
         return listOfNotNull(
             if (c.wood > 0) "나무 " + min(wood, c.wood) + "/" + c.wood else null,
             if (c.stone > 0) "돌 " + min(stone, c.stone) + "/" + c.stone else null,
-            if (c.gold > 0) "금화 " + big(min(gold, c.gold)) + "/" + big(c.gold) else null).joinToString(" · ")
+            if (c.gold > 0) "금화 " + big(min(gold, c.gold.toLong())) + "/" + big(c.gold) else null).joinToString(" · ")
     }
 
     private fun autoBuildStep() {

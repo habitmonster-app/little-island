@@ -138,6 +138,9 @@ object Fleet {
             }
         } catch (e: Exception) { }
         loadOrder8(c)
+        // 선원은 Lv50까지: 15 뒤로는 경험치가 10%씩 늘어난다
+        while (xpTo.size < 49) xpTo = xpTo + Math.round(xpTo.last() * 1.1f)
+        maxCrewLevel = 50
         try {
             val d = JSONObject(c.assets.open("21_crew_stories.json").bufferedReader(Charsets.UTF_8).use { it.readText() })
             fun strs(a: org.json.JSONArray?) = if (a == null) emptyList() else (0 until a.length()).map { a.getString(it) }
