@@ -147,6 +147,9 @@ class Scene {
 
     /** 톡 친 곳 근처의 물건을 줍는다 (그림 좌표). 주우면 보상 글 */
     fun tap(x: Float, y: Float): String? {
+        visX?.let { vx -> if (abs(vx - x) < 26 && y > visY - 34 && y < visY + 6) {
+            val ok = Game.canTrade(); val t = Game.trade()
+            pops.add(Pop(vx, visY - 36, t, 3.5f, ok)); return t } }
         val f = floaters.minByOrNull { abs(it.x - x) + abs(it.y - y) } ?: return null
         if (abs(f.x - x) > 22 || abs(f.y - y) > 26) return null
         floaters.remove(f)
@@ -160,10 +163,10 @@ class Scene {
     private var critter: Critter? = null
     private var critterWait = 20f + Random.nextFloat() * 40f
     private fun updateCritter(dt: Float) {
-        critter?.let { cr -> cr.t += dt; cr.x -= dt * (if (cr.kind == 2) 7f else if (cr.kind == 1) 9f else 16f); if (cr.x < -30f) critter = null }
+        critter?.let { cr -> cr.t += dt; cr.x -= dt * (when (cr.kind) { 2 -> 7f; 1 -> 9f; 4 -> 12f; 5 -> 4f; 6 -> 10f; 7 -> 5f; else -> 16f }); if (cr.x < -30f) critter = null }
         if (critter == null) {
             critterWait -= dt
-            if (critterWait <= 0f) { critterWait = 60f + Random.nextFloat() * 90f; critter = Critter(Random.nextInt(4), W + 24f, 0f) }
+            if (critterWait <= 0f) { critterWait = 60f + Random.nextFloat() * 90f; critter = Critter(Random.nextInt(if (Art.has("sea_creatures_2")) 8 else 4), W + 24f, 0f) }
         }
     }
     /** Lv11 이상이면 다 자란 선원 대사(40번)도 섞는다 */
@@ -178,7 +181,7 @@ class Scene {
         val fr = (floor(cr.t * (if (cr.kind == 1) 1.6f else 3f)) % 4).toInt()
         // 칸 가운데가 수면. 칸 크기 36도트 → 아래 끝을 수면 + 18에 맞춘다 (먼 바다라 약간 위)
         val sz = if (cr.kind == 1) 54 else 36          // 고래는 크게
-        val bm = acell("sea_creatures", 4, 4, cr.kind * 4 + fr, sz) ?: return
+        val bm = (if (cr.kind >= 4) acell("sea_creatures_2", 4, 4, (cr.kind - 4) * 4 + fr, sz) else acell("sea_creatures", 4, 4, cr.kind * 4 + fr, sz)) ?: return
         Art.draw(c, bm, cr.x, WL + 2 + sz / 2f)
     }
 
@@ -308,7 +311,7 @@ class Scene {
             val id = v.crew.random(); val l = voiceOf(id, true) ?: return false
             say(id, l); return true
         }
-        val pr = Fleet.pairs.filter { p -> p.ids.all { it in v.crew } }
+        val pr = Fleet.pairs.filter { p -> p.ids.all { it in v.crew && Game.crewLevel(it) >= p.minLv } }
         if (pr.isNotEmpty() && Random.nextInt(3) == 0) {
             val p = pr.random()
             pairIds = p.ids; pairQueue.clear()
@@ -316,6 +319,9 @@ class Scene {
             val (id, l) = pairQueue.removeFirst(); say(id, l); return true
         }
         // 특별 항해 중이면 주인공 선원이 임무 대사를 자주 한다
+        // 날씨와 계절 한마디
+        if (Random.nextInt(4) == 0) Game.weather()?.crewLine?.takeIf { it.isNotEmpty() }?.let { say(v.crew.random(), it); return true }
+        if (Random.nextInt(6) == 0) { val id = v.crew.random(); Game.season()?.crewLines?.get(id)?.let { say(id, it); return true } }
         Fleet.mission(v.mission)?.let { m -> if (m.crew in v.crew && m.homeLine.isNotEmpty() && Random.nextBoolean()) { say(m.crew, m.homeLine); return true } }
         val id = v.crew.random(); val l = voiceOf(id, false) ?: return false
         say(id, l); return true
@@ -350,7 +356,8 @@ class Scene {
             else -> "night"
         }
         val who = Random.nextInt(3)
-        val line = Story.pickLine(NAMES[who], time) ?: Story.pickLine(NAMES[who], "day") ?: return
+        val sl = Game.season()?.islandLine?.takeIf { it.isNotEmpty() && Random.nextInt(5) == 0 }
+        val line = sl ?: Story.pickLine(NAMES[who], time) ?: Story.pickLine(NAMES[who], "day") ?: return
         talkWho = who; talkCrew = null; talkName = NAMES[who]; talkText = line; talkT = 5f
     }
 
@@ -459,6 +466,7 @@ class Scene {
             farIslands()
             seaBody(time)
         }
+        skyWeather(time)
         birds(time)
         val io = islandOffset()
         val po = portOffset()
@@ -466,14 +474,62 @@ class Scene {
         if (po != null) port(time, po)
         drawCritter()
         pirates(time)
+        drawVisitor(time, io, po)
         shipX()?.let { ourShip(it, time) }
         drawFloaters(time)
         foreWater(time)
+        weatherFx(time)
         if (dark > 0f) {
             p.color = Color.argb((dark * (if (Art.has("bg_sea_night")) .3f else .6f) * 255).roundToInt(), 8, 12, 40)
             c.drawRect(0f, 0f, W.toFloat(), H.toFloat(), p)
             ga = min(1f, dark * 1.6f); nightLights(time, io, po); ga = 1f
         }
+    }
+
+    // ---------- 12차: 날씨와 손님 배 ----------
+    private fun skyWeather(time: Float) {
+        val w = Game.weather() ?: return
+        val i = when (w.layer) { "stars" -> 0; "sunrays" -> 1; "aurora" -> 2; "rainbow" -> 3; else -> return }
+        when (i) {
+            0 -> { acell("weather_sky", 4, 4, 0, 40)?.let { Art.draw(c, it, 34f, HOR - 26, alpha = if ((floor(time * 2) % 2).toInt() == 0) 255 else 200) }
+                   acell("weather_sky", 4, 4, 0, 34)?.let { Art.draw(c, it, 172f, HOR - 34, true) } }
+            1 -> acell("weather_sky", 4, 4, 1, 64)?.let { Art.draw(c, it, 156f, HOR - 6) }
+            2 -> acell("weather_sky", 4, 4, 2, 84)?.let { Art.draw(c, it, 126f, HOR + 2, alpha = 230) }
+            else -> acell("weather_sky", 4, 4, 3, 84)?.let { Art.draw(c, it, 150f, HOR + 10, alpha = 220) }
+        }
+    }
+    private fun weatherFx(time: Float) {
+        val w = Game.weather() ?: return
+        val row = when (w.layer) { "rain" -> 0; "snow" -> 1; "petals" -> 2; "leaves" -> 3; "fog" -> 4; else -> return }
+        val fr = (floor(time * (if (row == 0) 8f else 3f)) % 4).toInt()
+        if (row == 4) {   // 안개: 큰 덩어리가 천천히 흘러간다
+            val bm = acell("weather_fx", 4, 5, 16 + fr % 2, 110) ?: return
+            for (k in 0 until 4) { val x = ((k * 70f - time * 3f) % 280f + 280f) % 280f - 40f; Art.draw(c, bm, x, WL - 6 + (k % 2) * 14f, alpha = 200) }
+            return
+        }
+        val ts = 64f
+        val bm = acell("weather_fx", 4, 5, row * 4 + fr, ts.toInt()) ?: return
+        val vy = when (row) { 0 -> 90f; 1 -> 14f; 2 -> 12f; else -> 16f }; val vx = when (row) { 0 -> 30f; 1 -> 4f; else -> 10f }
+        val ox = ((time * vx) % ts); val oy = ((time * vy) % ts)
+        var y = HOR - 120 + oy - ts
+        c.save(); c.clipRect(0f, 0f, W.toFloat(), WL + 3)     // 물속에는 내리지 않게
+        while (y < WL) { var x = -ox; while (x < W + ts) { Art.draw(c, bm, x + ts / 2, y + ts); x += ts }; y += ts }
+        c.restore()
+    }
+    private var visX: Float? = null
+    private var visY = WL
+    private fun drawVisitor(time: Float, io: Float?, po: Float?) {
+        visX = null
+        val v = Game.visitor() ?: return
+        if (po != null || pirateU() >= 0f) return
+        val home = io != null
+        val x = if (home) 30f + io!! else 150f
+        if (x < -20 || x > W + 20) return
+        val bm = acell("visitor_boats", 4, 2, v.sprite, 46) ?: return
+        val by = if (home) WL + 7 else WL + 3          // 섬에 있을 땐 섬 앞 물에 떠 있다
+        Art.draw(c, bm, x, by + sin(time * 2f) * 1f)
+        visX = x; visY = by
+        if (!Game.visDone && (floor(time * 2) % 2).toInt() == 0) acell("fx", 6, 2, 6, 8)?.let { Art.draw(c, it, x + 14, by - 25) }
     }
 
     /** 그림 파일 bg_sea가 있으면 하늘·바다를 그 그림으로 (가로로 이어 붙여 흘러가게) */
@@ -631,7 +687,14 @@ class Scene {
         if (isl != null) {
             // 그림마다 풀밭 높이(위에서부터 비율)가 조금씩 달라서, 풀밭이 GROUND에 오도록 맞춘다
             val g = when (stage) { "island_2" -> .432f; "island_3" -> .438f; "island_4" -> .445f; else -> .431f }
-            Art.draw(c, isl, 98f, GROUND + isl.height / SS.toFloat() * (1 - g)); artIsland(time); c.restore(); return
+            Art.draw(c, isl, 98f, GROUND + isl.height / SS.toFloat() * (1 - g))
+            // 계절: 4단계 섬은 나무 덮개, 모든 섬은 계절 소품 두 개
+            val sea = Game.season()
+            val si = Fleet.seasons.indexOf(sea)
+            if (stage == "island_4" && si >= 0) acell("island_seasons", 1, 4, si, 196)?.let { Art.draw(c, it, 98f, GROUND + it.height / SS.toFloat() * (1 - g)) }
+            sea?.deco?.let { d -> d.getOrNull(0)?.let { acell("season_deco", 4, 4, it, 16)?.let { b -> Art.draw(c, b, 75f, GROUND + 1) } }
+                d.getOrNull(2)?.let { acell("season_deco", 4, 4, it, 15)?.let { b -> Art.draw(c, b, 96f, GROUND + 1) } } }
+            artIsland(time); c.restore(); return
         }
         // 물 밑 바위와 모래 (옆 단면)
         for (i in 0..40) {

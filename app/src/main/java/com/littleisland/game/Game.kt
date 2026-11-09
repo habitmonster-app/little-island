@@ -224,6 +224,12 @@ object Game {
         decoOwned.clear(); sp.getString("decoOwned", "")!!.split(",").filter { it.isNotEmpty() }.forEach { decoOwned.add(it) }
         decoOn.clear(); sp.getString("decoOn", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); if (v in decoOwned) decoOn[k] = v }
         sp.getString("crewXp", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewXp[k] = v.toIntOrNull() ?: 0 }
+        set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
+        set("festGot", festGot); weatherId = sp.getString("v_weather", null)
+        reqOffer.clear(); sp.getString("reqOffer", "")!!.split(",").filter { it.isNotEmpty() }.forEach { reqOffer.add(it) }
+        reqAcc.clear(); sp.getString("reqAcc", "")!!.split(",").filter { ":" in it }.forEach { val q = it.split(":"); reqAcc[q[0]] = intArrayOf(q.getOrNull(1)?.toIntOrNull() ?: 0, q.getOrNull(2)?.toIntOrNull() ?: 0) }
+        reqNext = sp.getLong("reqNext", 0L)
+        visId = sp.getString("visId", null); visOffer = sp.getInt("visOffer", 0); visUntil = sp.getLong("visUntil", 0L); visDone = sp.getBoolean("visDone", false); visNext = sp.getLong("visNext", 0L)
         // 항해
         voy = null
         if (sp.contains("v_start")) {
@@ -246,6 +252,7 @@ object Game {
         if (shipLevel >= 5) flags.add("ship_5")
         if (lighthouse) flags.add("lighthouse")
         if (market) flags.add("market")
+        checkTitles(false)
         storyDirty = true
     }
 
@@ -277,6 +284,10 @@ object Game {
             putString("missionQ", missionQ); putString("missionsDone", missionsDone.joinToString(","))
             putString("decoOwned", decoOwned.joinToString(",")); putString("decoOn", decoOn.entries.joinToString(",") { it.key + ":" + it.value })
             putString("crewXp", crewXp.entries.joinToString(",") { it.key + ":" + it.value })
+            putString("titlesGot", titlesGot.joinToString(",")); putString("titleOn", titleOn); putString("festGot", festGot.joinToString(","))
+            putString("reqOffer", reqOffer.joinToString(",")); putString("reqAcc", reqAcc.entries.joinToString(",") { it.key + ":" + it.value[0] + ":" + it.value[1] }); putLong("reqNext", reqNext)
+            putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
+            putString("v_weather", weatherId)
             putLong("voyStart", 0L)
             if (v == null) putLong("v_start", 0L) else {
                 putLong("v_start", v.start); putFloat("v_dur", v.dur); putString("v_port", v.port); putInt("v_cw", v.cw); putInt("v_cs", v.cs)
@@ -291,6 +302,142 @@ object Game {
     // 시뮬레이션
 
     /** 화면이 그려지는 동안 매 프레임 부른다. */
+    // ---------- 12차: 날씨, 칭호, 계절 축제, 항구 의뢰, 손님 배 ----------
+    var weatherId: String? = null; private set            // 이번 항해 날씨 (출항 때 정하고 귀항 때 지움)
+    fun weather(): Fleet.Weather? = if (voy == null) null else Fleet.weather(weatherId)
+    private fun cal(t: Long = System.currentTimeMillis()) = java.util.Calendar.getInstance().apply { timeInMillis = t }
+    var monthOverride: Int? = null                         // 미리보기용
+    fun month(): Int = monthOverride ?: (cal().get(java.util.Calendar.MONTH) + 1)
+    fun season(): Fleet.Season? = Fleet.season(month())
+    private fun rollWeather(t: Long): Fleet.Weather? {
+        val k = cal(t); val h = k.get(java.util.Calendar.HOUR_OF_DAY); val night = h < 6 || h >= 19
+        val sid = Fleet.season(k.get(java.util.Calendar.MONTH) + 1)?.id
+        val ok = Fleet.weathers.filter { w -> shipLevel >= w.minShip && (sid == null || sid in w.seasons) &&
+            (w.time == "any" || (w.time == "night") == night) }
+        return pickWeighted(ok) { it.weight }
+    }
+    private fun wv(kind: String): Float = Fleet.weather(weatherId)?.takeIf { it.kind == kind }?.value ?: 0f
+
+    val titlesGot = LinkedHashSet<String>()
+    var titleOn: String? = null; private set
+    fun counterOf(k: String): Int = when (k) {
+        "voyages" -> voyages; "treasures" -> treasures; "finds" -> finds; "boss_wins" -> bossWins.size; "souvenirs" -> souvOwned.size
+        "charms" -> charmLv.size; "missions" -> missionsDone.size; "decos" -> decoOwned.size; else -> 0 }
+    fun titleOk(t: Fleet.Title): Boolean = when (t.type) {
+        "counter_at_least" -> counterOf(t.key) >= t.value
+        "ship_level_at_least" -> shipLevel >= t.value
+        "any_promoted_crew_level_at_least" -> promoted.any { crewLevel(it) >= t.value }
+        "promoted_count_at_least" -> promoted.size >= t.value
+        "boss_first_win" -> t.key in bossWins
+        else -> false
+    }
+    /** 새로 채운 칭호를 연다. 한 번 연 칭호는 다시 잠그지 않는다 */
+    fun checkTitles(announce: Boolean = true) {
+        for (t in Fleet.titles) if (t.id !in titlesGot && titleOk(t)) {
+            titlesGot.add(t.id)
+            if (announce) card("새 칭호 · " + t.name, t.short + "\n앱 할 일 탭에서 달 수 있어요")
+        }
+    }
+    @Synchronized fun setTitle(id: String?): Boolean { if (id != null && id !in titlesGot) return false; titleOn = id; save(); return true }
+    fun titleName(): String? = Fleet.title(titleOn)?.name
+
+    private val festGot = HashSet<String>()
+    /** 오늘 계절 축제 기간이면 (축제, 이미 받았는지) */
+    fun festNow(): Pair<Fleet.Season, Boolean>? {
+        val k = cal(); val m = k.get(java.util.Calendar.MONTH) + 1; val d = k.get(java.util.Calendar.DAY_OF_MONTH)
+        val s = Fleet.seasons.firstOrNull { s -> s.festDays.size == 4 && s.festId.isNotEmpty() && run {
+            val a = s.festDays[0] * 100 + s.festDays[1]; val b = s.festDays[2] * 100 + s.festDays[3]; val x = m * 100 + d
+            if (a <= b) x in a..b else x >= a || x <= b } } ?: return null
+        return s to ((s.festId + ":" + k.get(java.util.Calendar.YEAR)) in festGot)
+    }
+    private fun festCheck() {
+        val (s, got) = festNow() ?: return
+        if (got) return
+        festGot.add(s.festId + ":" + cal().get(java.util.Calendar.YEAR))
+        tickets += s.festTickets; goldC += s.festGold * 100L
+        card("계절 축제 · " + s.festName, s.festShort + "\n쪽지 +" + s.festTickets + ", 금화 +" + s.festGold)
+        save()
+    }
+
+    // 항구 의뢰: 제시 중(reqOffer) + 받은 것(reqAcc: id → [나무, 돌] 넘긴 양)이 합쳐서 최대 reqMax
+    val reqOffer = ArrayList<String>()
+    val reqAcc = LinkedHashMap<String, IntArray>()
+    var reqNext = 0L; private set
+    fun reqOpen(r: Fleet.PortReq) = shipLevel >= r.minShip && Data.ports.firstOrNull { it.id == r.port }?.let { routeOk(it) } == true
+    @Synchronized fun reqRefresh(now: Long = System.currentTimeMillis()) {
+        if (Fleet.reqs.isEmpty()) return
+        if (now >= reqNext) { reqOffer.clear(); reqNext = now + Fleet.reqRefreshH * HOUR }
+        reqOffer.removeAll { id -> Fleet.req(id)?.let { !reqOpen(it) } ?: true }
+        val free = Fleet.reqMax - reqAcc.size - reqOffer.size
+        if (free > 0) Fleet.reqs.filter { it.id !in reqAcc && it.id !in reqOffer && reqOpen(it) }.shuffled().take(free).forEach { reqOffer.add(it.id) }
+    }
+    @Synchronized fun acceptReq(id: String): Boolean {
+        if (id !in reqOffer || reqAcc.size >= Fleet.reqMax) return false
+        reqOffer.remove(id); reqAcc[id] = intArrayOf(0, 0); save(); return true
+    }
+    @Synchronized fun cancelReq(id: String): Boolean {
+        val r = Fleet.req(id) ?: return false
+        if (voy?.port == r.port) return false          // 그 항구로 가는 중이면 귀항 뒤에
+        reqAcc.remove(id); reqRefresh(); save(); return true
+    }
+    /** 항구에 닿으면 받은 의뢰부터 짐을 넘긴다. 넘긴 짐은 팔지 않는다 */
+    private fun deliverReqs(v: Voyage): String {
+        var dw = 0; var ds = 0
+        for ((id, got) in reqAcc.entries.toList()) {
+            val r = Fleet.req(id) ?: continue
+            if (r.port != v.port) continue
+            val w = min(v.cw, r.needW - got[0]); val s = min(v.cs, r.needS - got[1])
+            if (w > 0) { got[0] += w; v.cw -= w; dw += w }
+            if (s > 0) { got[1] += s; v.cs -= s; ds += s }
+            if (got[0] >= r.needW && got[1] >= r.needS) {
+                reqAcc.remove(id)
+                goldC += r.gold * 100L; tickets += r.tickets
+                card("의뢰 완료 · " + r.title, r.client + ": “" + r.thanks + "”\n금화 +" + r.gold + (if (r.tickets > 0) ", 쪽지 +" + r.tickets else ""))
+            }
+        }
+        return if (dw + ds == 0) "" else "\n의뢰에 넘김" + (if (dw > 0) " 나무 $dw" else "") + (if (ds > 0) " 돌 $ds" else "")
+    }
+
+    // 손님 배: 한 번에 한 척, 머무는 동안 거래 한 번
+    var visId: String? = null; private set
+    var visOffer = 0; private set
+    var visUntil = 0L; private set
+    var visDone = false; private set
+    private var visNext = 0L
+    fun visitor(): Fleet.Visitor? = Fleet.visitor(visId)
+    fun visOfferNow(): Fleet.Offer? = visitor()?.offers?.getOrNull(visOffer)
+    private fun visCheck(now: Long) {
+        if (visId != null && now >= visUntil) visId = null
+        if (Fleet.visitors.isEmpty() || !dock) return
+        if (visNext == 0L) visNext = now + 10 * 60_000L
+        if (visId == null && now >= visNext) {
+            val v = Fleet.visitors.filter { shipLevel >= it.minShip }.randomOrNull() ?: return
+            visId = v.id; visOffer = Random.nextInt(v.offers.size); visDone = false
+            visUntil = now + Fleet.visStay * 60_000L
+            visNext = visUntil + (Fleet.visEvery[0] + Random.nextInt(max(1, Fleet.visEvery[1] - Fleet.visEvery[0] + 1))) * 60_000L
+            card(v.name + "이(가) 들렀어요", v.hello + "\n" + (v.offers[visOffer].short) + " · 배를 톡 하면 거래")
+            save()
+        }
+    }
+    fun resText(r: Fleet.Res) = listOfNotNull(r.wood.takeIf { it > 0 }?.let { "나무 $it" }, r.stone.takeIf { it > 0 }?.let { "돌 $it" },
+        r.gold.takeIf { it > 0 }?.let { "금화 $it" }, r.tickets.takeIf { it > 0 }?.let { "쪽지 $it" }).joinToString(", ")
+    fun canTrade(): Boolean { val o = visOfferNow() ?: return false
+        return !visDone && wood >= o.give.wood && stone >= o.give.stone && goldC >= o.give.gold * 100L && tickets >= o.give.tickets }
+    /** 손님과 거래. 결과 글 (못 하면 이유) */
+    @Synchronized fun trade(): String {
+        val v = visitor() ?: return "손님이 떠났어요"
+        val o = visOfferNow() ?: return ""
+        if (visDone) return v.bye
+        if (!canTrade()) return resText(o.give) + "이(가) 필요해요"
+        wood -= o.give.wood; stone -= o.give.stone; goldC -= o.give.gold * 100L; tickets -= o.give.tickets
+        add(o.get.wood, o.get.stone); goldC += o.get.gold * 100L; tickets += o.get.tickets
+        visDone = true
+        card(v.name + "과(와) 거래했어요", "“" + v.bye + "”\n받음 " + resText(o.get))
+        save()
+        return "거래 완료 " + resText(o.get)
+    }
+    private var t12 = 0f
+
     // ---------- 선원 항해 사건 ----------
     var cevId: String? = null; private set          // 이번 항해에 생길 선원 사건 (귀항 때 정산)
     private fun rollCrewEvent(crew: List<String>) {
@@ -379,6 +526,8 @@ object Game {
 
     @Synchronized fun tick(dt: Float) {
         advance(System.currentTimeMillis())
+        t12 += dt
+        if (t12 > 5f) { t12 = 0f; val now = System.currentTimeMillis(); festCheck(); visCheck(now); reqRefresh(now) }
         saveT += dt
         if (saveT > 10f) save()
     }
@@ -493,12 +642,14 @@ object Game {
         missionQ = null
         rollCrewEvent(crew)
         if (m != null) Data.ports.firstOrNull { it.id == m.port }?.let { p = it }
-        val cw = min(wood, loadW(crew)); val cs = min(stone, loadS(crew))
+        weatherId = rollWeather(t)?.id
+        val cm = 1f + wv("cargo")
+        val cw = min(wood, floor(loadW(crew) * cm).toInt()); val cs = min(stone, floor(loadS(crew) * cm).toInt())
         wood -= cw; stone -= cs
         flag("sail_1")
         // 해적: 첫 조우는 반드시, 그 뒤는 항구 위험도만큼
         val forced = !has("pirate_1") && !has("main_53")
-        val enc = forced || Random.nextFloat() < p.risk + (m?.pirateAdd ?: 0f)
+        val enc = forced || Random.nextFloat() < p.risk + (m?.pirateAdd ?: 0f) + wv("pirate_chance")
         var pirate: Data.Pirate? = null
         if (enc) {
             pirate = if (forced) Data.pirate("hook_minor") else {
@@ -515,6 +666,7 @@ object Game {
         }
         val win = pirate?.let { Random.nextFloat() < winChance(it, crew) } ?: true
         val sec = voyageSeconds(p, crew).let { if (m == null) it else ceil(it * m.durMult).coerceIn(Data.minSeconds, Data.maxSeconds) }
+            .let { if (wv("speed") == 0f) it else ceil(it * (1 - wv("speed"))).coerceIn(Data.minSeconds, Data.maxSeconds) }
         voy = Voyage(t, sec, p.id, cw, cs, pirate != null, pirate?.id, win, 0, 0L, null, 0L, crew, m?.id)
         if (m != null) card("특별 항해 출발", (Fleet.crewOf(m.crew)?.name ?: "") + " · " + m.title)
         storyDirty = true
@@ -559,6 +711,7 @@ object Game {
         }
         if (v.step == 1 && f >= Data.fArrive) {
             v.step = 2
+            val delivered = deliverReqs(v)
             val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f) + cb(v.crew, "sale_bonus")
             packed = false
             val sale = floor((v.cw * p.buyW * (1 + cb(v.crew, "wood_price_bonus")) + v.cs * p.buyS * (1 + cb(v.crew, "stone_price_bonus"))) * mul * 100).toLong()
@@ -566,7 +719,7 @@ object Game {
             flag("sale_1")
             v.hire = tryHire(p, t)
             v.hire?.let { goldC -= (Data.worker(it)?.wage ?: 0) * 100L }
-            card(p.name + "에 도착했어요", "짐을 팔아 금화 +" + sale / 100 + (v.hire?.let { ", " + (Data.worker(it)?.name ?: "") + " 고용" } ?: ""))
+            card(p.name + "에 도착했어요", "짐을 팔아 금화 +" + sale / 100 + (v.hire?.let { ", " + (Data.worker(it)?.name ?: "") + " 고용" } ?: "") + delivered)
             rollSouvenir(p.id)
         }
         if (v.step == 2 && f >= Data.fLeave) v.step = 3
@@ -612,6 +765,8 @@ object Game {
         voyages++
         voy = null
         lastReturnAt = t
+        Fleet.weather(weatherId)?.let { w -> line += "\n" + w.name + " · " + w.cardLine }
+        weatherId = null
         card("배가 돌아왔어요", line)
         for (id in v.crew) giveXp(id, Fleet.xpPerVoyage)
         tickets++
@@ -627,6 +782,7 @@ object Game {
         // 11화부터는 귀항할 때마다 최대 한 화씩
         Story.refresh(true).forEach { announce(it) }
         checkDeco()
+        checkTitles()
         if (isOpen("main_60")) flag("ending")
         save()
     }

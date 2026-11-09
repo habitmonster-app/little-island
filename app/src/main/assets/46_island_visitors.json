@@ -1,0 +1,262 @@
+{
+  "rules": {
+    "every_minutes": [
+      90,
+      240
+    ],
+    "stay_minutes": 30
+  },
+  "visitors": [
+    {
+      "id": "visitor_mail",
+      "name": "우편 배달부",
+      "sprite_index": 0,
+      "face_index": 0,
+      "hello": "편지함을 손볼 재료가 필요해요.",
+      "offers": [
+        {
+          "give": {
+            "wood": 30
+          },
+          "get": {
+            "gold": 36
+          },
+          "short": "우편함 판재를 나눠요"
+        },
+        {
+          "give": {
+            "stone": 15
+          },
+          "get": {
+            "gold": 36
+          },
+          "short": "우편함 받침을 나눠요"
+        }
+      ],
+      "bye": "다음 소식도 들고 올게요.",
+      "min_ship_level": 1
+    },
+    {
+      "id": "visitor_merchant",
+      "name": "떠돌이 상인",
+      "sprite_index": 1,
+      "face_index": 1,
+      "hello": "서로 쓸 만한 짐을 바꿔 볼까요?",
+      "offers": [
+        {
+          "give": {
+            "gold": 50
+          },
+          "get": {
+            "wood": 60
+          },
+          "short": "고른 판재를 받아요"
+        },
+        {
+          "give": {
+            "wood": 60
+          },
+          "get": {
+            "stone": 36
+          },
+          "short": "판재를 받침돌로 바꿔요"
+        },
+        {
+          "give": {
+            "stone": 30
+          },
+          "get": {
+            "gold": 72
+          },
+          "short": "남는 돌을 나눠요"
+        }
+      ],
+      "bye": "짐도 인연도 잘 챙겼네요.",
+      "min_ship_level": 1
+    },
+    {
+      "id": "visitor_fisher",
+      "name": "어부 할아버지",
+      "sprite_index": 2,
+      "face_index": 2,
+      "hello": "그물 말릴 틀을 고치려 왔지.",
+      "offers": [
+        {
+          "give": {
+            "wood": 40
+          },
+          "get": {
+            "gold": 48
+          },
+          "short": "그물틀 판재를 나눠요"
+        },
+        {
+          "give": {
+            "stone": 20
+          },
+          "get": {
+            "gold": 48
+          },
+          "short": "그물 받침을 나눠요"
+        }
+      ],
+      "bye": "그늘진 쉼터에도 들르렴.",
+      "min_ship_level": 1
+    },
+    {
+      "id": "visitor_scholar",
+      "name": "지도 학자",
+      "sprite_index": 3,
+      "face_index": 3,
+      "hello": "지도에 이 부두도 그려도 될까요?",
+      "offers": [
+        {
+          "give": {
+            "gold": 40
+          },
+          "get": {
+            "tickets": 1
+          },
+          "short": "항해 쪽지를 받아요"
+        },
+        {
+          "give": {
+            "stone": 25
+          },
+          "get": {
+            "gold": 60
+          },
+          "short": "지도 누름돌을 나눠요"
+        }
+      ],
+      "bye": "돌아올 길까지 그려 둘게요.",
+      "min_ship_level": 2
+    },
+    {
+      "id": "visitor_flowers",
+      "name": "꽃배달 소녀",
+      "sprite_index": 4,
+      "face_index": 4,
+      "hello": "꽃상자 만들 나무가 있나요?",
+      "offers": [
+        {
+          "give": {
+            "wood": 20
+          },
+          "get": {
+            "gold": 24
+          },
+          "short": "꽃상자 판재를 나눠요"
+        },
+        {
+          "give": {
+            "gold": 20
+          },
+          "get": {
+            "stone": 12
+          },
+          "short": "화분 받침돌을 받아요"
+        }
+      ],
+      "bye": "다음엔 활짝 핀 꽃도요.",
+      "min_ship_level": 1
+    },
+    {
+      "id": "visitor_repair",
+      "name": "등대 수리공",
+      "sprite_index": 5,
+      "face_index": 5,
+      "hello": "등대 난간을 손보는 길이에요.",
+      "offers": [
+        {
+          "give": {
+            "wood": 60,
+            "stone": 20
+          },
+          "get": {
+            "gold": 120
+          },
+          "short": "난간 재료를 나눠요"
+        },
+        {
+          "give": {
+            "gold": 75
+          },
+          "get": {
+            "stone": 45
+          },
+          "short": "고른 받침돌을 받아요"
+        }
+      ],
+      "bye": "다음 귀항도 비춰 줄게요.",
+      "min_ship_level": 2
+    },
+    {
+      "id": "visitor_children",
+      "name": "이웃 섬 아이들",
+      "sprite_index": 6,
+      "face_index": 6,
+      "hello": "뗏목에 달 작은 간판을 만들래요!",
+      "offers": [
+        {
+          "give": {
+            "wood": 20
+          },
+          "get": {
+            "stone": 12
+          },
+          "short": "판재와 둥근 돌을 바꿔요"
+        },
+        {
+          "give": {
+            "stone": 10
+          },
+          "get": {
+            "wood": 24
+          },
+          "short": "돌과 짧은 나무를 바꿔요"
+        }
+      ],
+      "bye": "다음엔 우리 섬에 와요!",
+      "min_ship_level": 2
+    },
+    {
+      "id": "visitor_antiques",
+      "name": "골동품 장수",
+      "sprite_index": 7,
+      "face_index": 7,
+      "hello": "비밀 물건은 아니고, 오래된 거지.",
+      "offers": [
+        {
+          "give": {
+            "gold": 40
+          },
+          "get": {
+            "tickets": 1
+          },
+          "short": "보관한 쪽지를 받아요"
+        },
+        {
+          "give": {
+            "wood": 80
+          },
+          "get": {
+            "gold": 104
+          },
+          "short": "진열대 판재를 나눠요"
+        },
+        {
+          "give": {
+            "stone": 40
+          },
+          "get": {
+            "wood": 104
+          },
+          "short": "돌과 묵은 판재를 바꿔요"
+        }
+      ],
+      "bye": "신비한 건 포장뿐이라네.",
+      "min_ship_level": 3
+    }
+  ]
+}

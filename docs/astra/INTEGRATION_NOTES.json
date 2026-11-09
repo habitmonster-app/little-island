@@ -1,0 +1,999 @@
+{
+  "titles_and_port_requests": {
+    "title_rules": {
+      "display_only": true,
+      "effect": null,
+      "equipped_max": 1,
+      "unequip_allowed": true,
+      "placement": "홈 위 글줄 앞에 작은 선택 칭호 한 개를 표시한다. 진행 수치는 앱에서 별도로 붙인다.",
+      "id_and_collection": "칭호 id별 해금을 영구 저장하며 한 번 해금한 칭호는 다시 잠그지 않는다. 선택해도 능력치, 가격, 확률, 속도 또는 짐칸을 바꾸지 않는다.",
+      "counter_semantics": {
+        "voyages": "기존 누적 완료 항해 수. 중간 장면이나 출항 클릭 수를 더하지 않는다.",
+        "treasures": "기존 보물 획득 누적 수. 같은 보물 보상 재표시를 세지 않는다.",
+        "finds": "기존 바다 줍기 완료 누적 수. 장식 바다 동물을 세지 않는다.",
+        "boss_wins": "서로 다른 우두머리의 첫 승리 수. 같은 보스를 다시 이긴 수는 제외하며 25와39의 유효 boss_id 합집합으로 최대12.",
+        "souvenirs": "서로 다른 기념품 id 보유 수, 최대33.",
+        "charms": "서로 다른 부적 id 보유 수, 최대36. 레벨·중복 조각·뽑기 총횟수를 세지 않는다.",
+        "missions": "서로 다른 특별 항해 id 완료 수, 최대36. 같은 임무 재시도를 세지 않는다.",
+        "decos": "서로 다른 꾸미기 id 보유 수, 최대48. 장착횟수·동일 아이템 재지급을 세지 않는다."
+      },
+      "promoted_conditions": "promoted_count는 승진한 서로 다른 선원 수이며 최대12. any_promoted_crew_level은 실제 승진 선원의 현재 레벨만 검사한다. 기존 선원/승진 저장을 그대로 참조한다.",
+      "migration": "기존 완료 기록과 소장품을 검사해 이미 조건을 채운 칭호를 해금한다. 기록을 초기화하거나 과거 보상을 다시 지급하지 않는다. 기존 저장에 없는 누적 기록을 임의로 추정해 채우지 않는다."
+    },
+    "port_request_rules": {
+      "capacity_resolution": "need는 의뢰 전체 요구량이다. 일반 나무·돌 짐칸을 사용하여 여러 항해에 나누어 납품할 수 있다. 한 항해 최대 용량을 늘리거나 무시하지 않는다.",
+      "board": "active_max3은 제시 중·수락 중을 합친 동시 의뢰 슬롯 수다. 같은 의뢰를 여러 슬롯에 중복 발급하지 않는다.",
+      "refresh": "6시간 갱신은 아직 수락하지 않은 제안만 교체한다. 수락한 의뢰와 부분 납품 진척은 완료 또는 사용자의 명시적 취소까지 보존한다. 갱신 시간이 지나도 출항 중 의뢰를 바꾸지 않는다.",
+      "availability": "현재 개방된 항구와 현재 배 단계 조건을 모두 확인한다. min_ship_level만 보고 잠긴 항로의 의뢰를 내지 않는다. 후보가 부족하면 있는 제안만 표시하며 조건을 낮추지 않는다.",
+      "acceptance": "의뢰를 수락할 때 자원이나 금화를 바로 차감하지 않는다. 의뢰 instance_id와 원본 request id, 고정 need/reward, 수락 시각과 잔여량을 저장한다.",
+      "departure": "선적은 기존 항해 자원 차감을 한 번만 수행한다. 출항 때 의뢰별 목적지·필요 잔량·배정 선적량을 항해 스냅샷으로 잠근다. need 이상을 추가로 싣지 않으며 자동 항해는 가능한 정수 수량만 싣는다.",
+      "cargo_assignment": "현재 목적지의 수락된 의뢰만 대상으로 수락 시각이 빠른 순서로 화물을 배정한다. 화물 한 단위는 의뢰 한 개에만 배정하고 두 의뢰나 일반 판매에 중복 계산하지 않는다.",
+      "delivery": "기존 항해 정산 흐름에서 목적지에 실제로 도착한 나무·돌 수량만 납품한다. 출항 후 해당 자원을 잃었다면 잃은 몫은 진척으로 세지 않는다. 현재 need에서 이미 납품한 양을 뺀 잔량까지만 차감한다.",
+      "sale": "납품된 짐은 해당 의뢰가 소비하므로 일반 판매 금화를 함께 지급하지 않는다. 의뢰에 쓰지 않고 남은 도착 화물은 기존 항구 판매 규약대로 정산한다. 창고에서 자원을 또 차감하지 않는다.",
+      "settlement": "도착 납품·진척·완료 보상을 기존 항해 거래와 같은 원자적 정산에 기록한다. 귀항 카드에는 이 저장된 결과만 보여 주고 납품/보상을 다시 실행하지 않는다. 기존 앱이 귀항에 정산을 일괄 확정한다면 도착 수량 스냅샷을 귀항 때 한 번만 적용한다.",
+      "specialty_cargo": "특산물 항해에서 이미 도착항에 인도한 기본 화물을 귀로 특산물 손실 때문에 소급해 빼지 않는다. 기존 outbound/inbound 손실 규약을 유지한다.",
+      "completion": "wood와stone의 납품량이 모두 need에 도달할 때 고정 reward를 한 번 지급하고 보상 완료 표식을 같은 저장에 기록한다. 마지막 항해의 초과 화물은 정상 판매한다. 보상 표식이 있는 instance를 다시 정산하지 않는다.",
+      "repeat_and_offline": "완료 후 나중에 새 의뢰로 다시 제시될 수 있지만 새 instance_id를 사용한다. 오프라인에서도 기존 최대8시간 안의 실제 완료 항해만 계산한다. 재접속·시계 역행·중복 콜백으로 같은 항해를 다시 세지 않는다.",
+      "cancel": "수락 취소는 사용자 선택으로만 한다. 이미 납품한 화물은 돌려주지 않으며 취소 전에 이를 표시한다. 취소해도 완료 보상을 지급하지 않는다. 출항 중 예약된 의뢰는 귀항 정산까지 취소를 보류하여 같은 화물을 중복 반환하지 않는다.",
+      "reward_basis": "03_ports.json buys의 기본 나무·돌 판매 단가로 전체 need의 보통 판매값을 계산했다. 각 고정 금화 보상은 그 기본값의1.5~2배다. 선원·시장·부적·날씨 가격 보정과 쪽지의 가치는 이 비교에 포함하지 않는다.",
+      "currency": "JSON reward.gold는 정수 금화다. 내부 지갑이 최소 화폐 단위를 사용하면 기존 money.units_per_gold100을 한 번 곱한다. 보상 금액에 항구 판매 배수를 추가로 적용하지 않는다."
+    },
+    "source_hashes": {
+      "01_economy.json": "b67093d940440b4892304249897a6c1fe7bc6b6dcb8789eb0d3e30fe5e5dcd42",
+      "02_ships.json": "e5c9bd461ee62f56209841e542065537286ede5e10ce1a4bf19a11739d218840",
+      "03_ports.json": "3c45e2bf3c5cecc61743e31c39c476cf6d4304b7a6a32678f752a904b0e2e01c"
+    },
+    "request_valuations": [
+      {
+        "id": "req_haesol_1",
+        "port": "port_haesol",
+        "unit_prices_gold": {
+          "wood": 1,
+          "stone": 2
+        },
+        "normal_base_sale_gold": 20.0,
+        "target_multiplier": 1.6,
+        "reward_gold": 32,
+        "actual_multiplier": 1.6,
+        "tickets_not_in_gold_ratio": 0
+      },
+      {
+        "id": "req_haesol_2",
+        "port": "port_haesol",
+        "unit_prices_gold": {
+          "wood": 1,
+          "stone": 2
+        },
+        "normal_base_sale_gold": 40.0,
+        "target_multiplier": 1.75,
+        "reward_gold": 70,
+        "actual_multiplier": 1.75,
+        "tickets_not_in_gold_ratio": 0
+      },
+      {
+        "id": "req_haesol_3",
+        "port": "port_haesol",
+        "unit_prices_gold": {
+          "wood": 1,
+          "stone": 2
+        },
+        "normal_base_sale_gold": 60.0,
+        "target_multiplier": 1.9,
+        "reward_gold": 114,
+        "actual_multiplier": 1.9,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_saltflat_1",
+        "port": "port_saltflat",
+        "unit_prices_gold": {
+          "wood": 1.25,
+          "stone": 2.4
+        },
+        "normal_base_sale_gold": 37.5,
+        "target_multiplier": 1.6,
+        "reward_gold": 60,
+        "actual_multiplier": 1.6,
+        "tickets_not_in_gold_ratio": 0
+      },
+      {
+        "id": "req_saltflat_2",
+        "port": "port_saltflat",
+        "unit_prices_gold": {
+          "wood": 1.25,
+          "stone": 2.4
+        },
+        "normal_base_sale_gold": 60.0,
+        "target_multiplier": 1.75,
+        "reward_gold": 105,
+        "actual_multiplier": 1.75,
+        "tickets_not_in_gold_ratio": 0
+      },
+      {
+        "id": "req_saltflat_3",
+        "port": "port_saltflat",
+        "unit_prices_gold": {
+          "wood": 1.25,
+          "stone": 2.4
+        },
+        "normal_base_sale_gold": 73.0,
+        "target_multiplier": 1.9,
+        "reward_gold": 139,
+        "actual_multiplier": 1.904109589041096,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_pottery_1",
+        "port": "port_pottery",
+        "unit_prices_gold": {
+          "wood": 1.45,
+          "stone": 2.65
+        },
+        "normal_base_sale_gold": 58.0,
+        "target_multiplier": 1.6,
+        "reward_gold": 93,
+        "actual_multiplier": 1.603448275862069,
+        "tickets_not_in_gold_ratio": 0
+      },
+      {
+        "id": "req_pottery_2",
+        "port": "port_pottery",
+        "unit_prices_gold": {
+          "wood": 1.45,
+          "stone": 2.65
+        },
+        "normal_base_sale_gold": 79.5,
+        "target_multiplier": 1.75,
+        "reward_gold": 139,
+        "actual_multiplier": 1.748427672955975,
+        "tickets_not_in_gold_ratio": 0
+      },
+      {
+        "id": "req_pottery_3",
+        "port": "port_pottery",
+        "unit_prices_gold": {
+          "wood": 1.45,
+          "stone": 2.65
+        },
+        "normal_base_sale_gold": 96.5,
+        "target_multiplier": 1.9,
+        "reward_gold": 183,
+        "actual_multiplier": 1.8963730569948187,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_windneck_1",
+        "port": "port_windneck",
+        "unit_prices_gold": {
+          "wood": 1.6,
+          "stone": 2.85
+        },
+        "normal_base_sale_gold": 96.0,
+        "target_multiplier": 1.6,
+        "reward_gold": 154,
+        "actual_multiplier": 1.6041666666666667,
+        "tickets_not_in_gold_ratio": 0
+      },
+      {
+        "id": "req_windneck_2",
+        "port": "port_windneck",
+        "unit_prices_gold": {
+          "wood": 1.6,
+          "stone": 2.85
+        },
+        "normal_base_sale_gold": 114.0,
+        "target_multiplier": 1.75,
+        "reward_gold": 200,
+        "actual_multiplier": 1.7543859649122806,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_windneck_3",
+        "port": "port_windneck",
+        "unit_prices_gold": {
+          "wood": 1.6,
+          "stone": 2.85
+        },
+        "normal_base_sale_gold": 165.5,
+        "target_multiplier": 1.9,
+        "reward_gold": 314,
+        "actual_multiplier": 1.8972809667673716,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_pineshade_1",
+        "port": "port_pineshade",
+        "unit_prices_gold": {
+          "wood": 1.45,
+          "stone": 2.65
+        },
+        "normal_base_sale_gold": 101.5,
+        "target_multiplier": 1.6,
+        "reward_gold": 162,
+        "actual_multiplier": 1.5960591133004927,
+        "tickets_not_in_gold_ratio": 0
+      },
+      {
+        "id": "req_pineshade_2",
+        "port": "port_pineshade",
+        "unit_prices_gold": {
+          "wood": 1.45,
+          "stone": 2.65
+        },
+        "normal_base_sale_gold": 119.25,
+        "target_multiplier": 1.75,
+        "reward_gold": 209,
+        "actual_multiplier": 1.7526205450733752,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_pineshade_3",
+        "port": "port_pineshade",
+        "unit_prices_gold": {
+          "wood": 1.45,
+          "stone": 2.65
+        },
+        "normal_base_sale_gold": 193.0,
+        "target_multiplier": 1.9,
+        "reward_gold": 367,
+        "actual_multiplier": 1.9015544041450778,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_redanchor_1",
+        "port": "port_redanchor",
+        "unit_prices_gold": {
+          "wood": 1.85,
+          "stone": 3.2
+        },
+        "normal_base_sale_gold": 148.0,
+        "target_multiplier": 1.6,
+        "reward_gold": 237,
+        "actual_multiplier": 1.6013513513513513,
+        "tickets_not_in_gold_ratio": 0
+      },
+      {
+        "id": "req_redanchor_2",
+        "port": "port_redanchor",
+        "unit_prices_gold": {
+          "wood": 1.85,
+          "stone": 3.2
+        },
+        "normal_base_sale_gold": 192.0,
+        "target_multiplier": 1.75,
+        "reward_gold": 336,
+        "actual_multiplier": 1.75,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_redanchor_3",
+        "port": "port_redanchor",
+        "unit_prices_gold": {
+          "wood": 1.85,
+          "stone": 3.2
+        },
+        "normal_base_sale_gold": 271.0,
+        "target_multiplier": 1.9,
+        "reward_gold": 515,
+        "actual_multiplier": 1.900369003690037,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_fogferry_1",
+        "port": "port_fogferry",
+        "unit_prices_gold": {
+          "wood": 2.1,
+          "stone": 3.6
+        },
+        "normal_base_sale_gold": 189.0,
+        "target_multiplier": 1.6,
+        "reward_gold": 302,
+        "actual_multiplier": 1.597883597883598,
+        "tickets_not_in_gold_ratio": 0
+      },
+      {
+        "id": "req_fogferry_2",
+        "port": "port_fogferry",
+        "unit_prices_gold": {
+          "wood": 2.1,
+          "stone": 3.6
+        },
+        "normal_base_sale_gold": 252.0,
+        "target_multiplier": 1.75,
+        "reward_gold": 441,
+        "actual_multiplier": 1.75,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_fogferry_3",
+        "port": "port_fogferry",
+        "unit_prices_gold": {
+          "wood": 2.1,
+          "stone": 3.6
+        },
+        "normal_base_sale_gold": 327.0,
+        "target_multiplier": 1.9,
+        "reward_gold": 621,
+        "actual_multiplier": 1.8990825688073394,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_glasscape_1",
+        "port": "port_glasscape",
+        "unit_prices_gold": {
+          "wood": 2.25,
+          "stone": 3.8
+        },
+        "normal_base_sale_gold": 380.0,
+        "target_multiplier": 1.6,
+        "reward_gold": 608,
+        "actual_multiplier": 1.6,
+        "tickets_not_in_gold_ratio": 0
+      },
+      {
+        "id": "req_glasscape_2",
+        "port": "port_glasscape",
+        "unit_prices_gold": {
+          "wood": 2.25,
+          "stone": 3.8
+        },
+        "normal_base_sale_gold": 180.0,
+        "target_multiplier": 1.75,
+        "reward_gold": 315,
+        "actual_multiplier": 1.75,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_glasscape_3",
+        "port": "port_glasscape",
+        "unit_prices_gold": {
+          "wood": 2.25,
+          "stone": 3.8
+        },
+        "normal_base_sale_gold": 363.0,
+        "target_multiplier": 1.9,
+        "reward_gold": 690,
+        "actual_multiplier": 1.9008264462809918,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_reedbay_1",
+        "port": "port_reedbay",
+        "unit_prices_gold": {
+          "wood": 2.5,
+          "stone": 4.2
+        },
+        "normal_base_sale_gold": 350.0,
+        "target_multiplier": 1.6,
+        "reward_gold": 560,
+        "actual_multiplier": 1.6,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_reedbay_2",
+        "port": "port_reedbay",
+        "unit_prices_gold": {
+          "wood": 2.5,
+          "stone": 4.2
+        },
+        "normal_base_sale_gold": 504.0,
+        "target_multiplier": 1.75,
+        "reward_gold": 882,
+        "actual_multiplier": 1.75,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_reedbay_3",
+        "port": "port_reedbay",
+        "unit_prices_gold": {
+          "wood": 2.5,
+          "stone": 4.2
+        },
+        "normal_base_sale_gold": 804.0,
+        "target_multiplier": 1.9,
+        "reward_gold": 1528,
+        "actual_multiplier": 1.900497512437811,
+        "tickets_not_in_gold_ratio": 2
+      },
+      {
+        "id": "req_paperwater_1",
+        "port": "port_paperwater",
+        "unit_prices_gold": {
+          "wood": 2.65,
+          "stone": 4.45
+        },
+        "normal_base_sale_gold": 424.0,
+        "target_multiplier": 1.6,
+        "reward_gold": 678,
+        "actual_multiplier": 1.599056603773585,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_paperwater_2",
+        "port": "port_paperwater",
+        "unit_prices_gold": {
+          "wood": 2.65,
+          "stone": 4.45
+        },
+        "normal_base_sale_gold": 623.0,
+        "target_multiplier": 1.75,
+        "reward_gold": 1090,
+        "actual_multiplier": 1.7495987158908508,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_paperwater_3",
+        "port": "port_paperwater",
+        "unit_prices_gold": {
+          "wood": 2.65,
+          "stone": 4.45
+        },
+        "normal_base_sale_gold": 905.0,
+        "target_multiplier": 1.9,
+        "reward_gold": 1720,
+        "actual_multiplier": 1.9005524861878453,
+        "tickets_not_in_gold_ratio": 2
+      },
+      {
+        "id": "req_whitesail_1",
+        "port": "port_whitesail",
+        "unit_prices_gold": {
+          "wood": 3.0,
+          "stone": 5.0
+        },
+        "normal_base_sale_gold": 600.0,
+        "target_multiplier": 1.6,
+        "reward_gold": 960,
+        "actual_multiplier": 1.6,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_whitesail_2",
+        "port": "port_whitesail",
+        "unit_prices_gold": {
+          "wood": 3.0,
+          "stone": 5.0
+        },
+        "normal_base_sale_gold": 900.0,
+        "target_multiplier": 1.75,
+        "reward_gold": 1575,
+        "actual_multiplier": 1.75,
+        "tickets_not_in_gold_ratio": 1
+      },
+      {
+        "id": "req_whitesail_3",
+        "port": "port_whitesail",
+        "unit_prices_gold": {
+          "wood": 3.0,
+          "stone": 5.0
+        },
+        "normal_base_sale_gold": 1180.0,
+        "target_multiplier": 1.9,
+        "reward_gold": 2242,
+        "actual_multiplier": 1.9,
+        "tickets_not_in_gold_ratio": 2
+      }
+    ]
+  },
+  "weather_and_seasons": {
+    "status": "integration_proposal_for_build39_not_runtime_tested",
+    "schema": "42 weather / 45 seasons 핵심 구조는 주문서 예시 그대로이며 규칙 메모는 게임 화면 문구가 아니다.",
+    "weather_selection": {
+      "when": "출항마다 하나. 항구·실제 배 단계·출항 시각이 정해진 뒤 최종 적재량과 항해 시간을 확정하기 전에 뽑는다.",
+      "filters": [
+        "출항 당시 계절이 seasons에 포함",
+        "time이 any이거나 출항 당시 낮밤과 일치",
+        "현재 배 단계가 min_ship_level 이상"
+      ],
+      "weight": "필터에 통과한 양의 정수 weight끼리 정규화한다. weight는 그대로 퍼센트가 아니며 파일 전체 합을 백으로 맞추지 않는다.",
+      "fallback": "후보가 없거나 파일을 읽지 못하면 weather_clear, effect none을 쓴다.",
+      "snapshot": [
+        "weather_id",
+        "effect kind와 value",
+        "계절",
+        "출항 시각과 시간대",
+        "최종 적재 상한",
+        "확정 항해 시간"
+      ],
+      "stable_draw": "항해 식별자에 날씨를 한 번 저장한다. 적재 화면 열기·닫기, 앱 재개, 저장 불러오기, 재시도로 다시 뽑지 않는다.",
+      "time_source": "현재 앱의 로컬 낮밤 판정 함수를 재사용한다. 별도 판정이 필요할 때만 day는 현지 시각 여섯 시부터 열아홉 시 전까지, night는 나머지로 정의한다. 황혼은 day로 다룬다.",
+      "season_source": "출항 시각의 기기 현지 달을45에 대입한다. 북반구 달 배치이며 언어나 계정 국가로 달을 바꾸지 않는다.",
+      "old_inflight_save": "기존 진행 중 항해에 날씨가 없으면 clear none만 표시한다. 이미 확정된 시간·짐·조우·보상을 재계산하지 않는다.",
+      "offline": "기존 부재 보상 최대 여덟 시간 안에서 실제 출항한 항해마다 그 출항 시각의 달과 낮밤으로 스냅샷을 만든다. 마지막 미완료 항해의 날씨를 이어 간다. 부재 동안의 그림과 말풍선은 몰아서 재생하지 않는다."
+    },
+    "effect_contract": {
+      "single_effect": "각 날씨는 effect 하나뿐이다. 안개에 숨은 속도 감소를 더하는 등 JSON에 없는 보정은 넣지 않는다.",
+      "none": "value는 영이며 자원·시간·확률을 바꾸지 않는다.",
+      "speed": "출항 당시 기존 speed_bonus 합산기에 value를 한 번 더한다. 기존 양수 상한을 유지하고 최종 합계가 음수일 때도 같은 시간 산식에 넣어 눈발의 작은 지연만 반영한다. 시간에 다시 날씨 계수를 곱하지 않는다.",
+      "cargo": "기존 cargo_bonus 합산기에 value를 한 번 더하고 기존 상한과 정수 적재 계산을 유지한다. 실제 창고 재고와 선택한 물량 안에서만 싣는다. 짐을 만들어 주거나 실은 짐/판매 보상에 값을 다시 곱하지 않는다.",
+      "ordinary_pirate_chance": "기존 일반 해적 조우 확률에 value를 한 번 더하고 영부터 일 사이로 제한한다. 승률이나 전리품 보정이 아니다. 기존 강제·스토리 전투는 건드리지 않는다.",
+      "boss_selection": "일반 조우가 성립한 뒤 기존25와39의 조건부 우두머리 후보 규칙을 그대로 쓴다. 날씨 때문에 우두머리 추첨이나 전투를 한 번 더 하지 않는다.",
+      "find_chance": "이번 데이터에서는 사용하지 않는다. 기존 바다 줍기의 출현 주기·동시 등장 수·수동 수령 규칙을 그대로 둔다.",
+      "unchanged": [
+        "기존 선원·부품·부적 합산 상한",
+        "기존07 보물 사건 확률",
+        "33·35 선원 사건의 단일 추첨",
+        "수집·주문·임무 보상",
+        "날씨 때문에 생기는 부상·사망·수리비 없음"
+      ],
+      "caps_reference": "20·28·30에 규정된 기존 합산 체계를 변경하지 않는다. 항해 속도 보너스 상한은 기존 값이며 눈발은 음수 효과를 그대로 처리한다.",
+      "cargo_preview": "날씨 확정 뒤 최종 용량을 계산한다. 적재 미리보기에서 기존보다 늘어난 여유만 보여 주고 미선택 재료를 자동 추가하지 않는다."
+    },
+    "weather_art": {
+      "sky_file": "art/weather_sky.png",
+      "sky_size": [
+        1024,
+        1024
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "icon_index": "42 fx.icon_index는 날씨 아이콘 안에서 영부터 센다. 실제 시트 셀은 icon_index에 넷을 더한다.",
+      "icon_sheet_cells": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "empty_sky_cells": [
+        14,
+        15
+      ],
+      "sky_layer_cells": {
+        "stars": 0,
+        "sunrays": 1,
+        "aurora": 2,
+        "rainbow": 3
+      },
+      "fx_file": "art/weather_fx.png",
+      "fx_size": [
+        1024,
+        1280
+      ],
+      "fx_rows": {
+        "rain": 0,
+        "snow": 1,
+        "petals": 2,
+        "leaves": 3,
+        "fog": 4
+      },
+      "frame_count": 4,
+      "none": "겹쳐 그릴 날씨 효과 없음. 아이콘은 표시 가능.",
+      "clear_night": "맑음은 time any와 layer none이므로 밤에 햇살 효과를 자동으로 띄우지 않는다.",
+      "season_only_layers": "petals·leaves는 봄·가을의 선택적 섬 장식 연출용이다. 별도 날씨나 보상 효과를 추가하지 않는다. sunrays는 낮 전용 환경 연출로만 선택적으로 쓴다.",
+      "presentation": "귀항 카드에 card_line 하나를 덧붙인다. crew_line은 현재 실제 승선 선원의 기존 말풍선 차례에 섞고 새로운 말을 중첩 출력하지 않는다."
+    },
+    "seasons": {
+      "calendar": "기기 현지 날짜의 월로 계절 하나를 결정한다. 봄은 삼월부터 오월, 여름은 유월부터 팔월, 가을은 구월부터 십일월, 겨울은 십이월부터 이월이다.",
+      "updates": "홈 화면 진입·앱 복귀·현지 날짜 변경 때 다시 판정한다. 진행 중 항해의 저장된 날씨는 바꾸지 않는다.",
+      "voices": "계절 대사는 기존 주민·선원 말풍선 자리에 섞는 문구이다. 새 말풍선 빈도를 만들지 않는다. 선원 대사는 해당 인물이 실제 승선했을 때만 사용한다.",
+      "deco_file": "기존 art/season_deco.png를 그대로 재사용한다. 봄·여름·가을·겨울 각 행의 네 칸이며 겨울 마지막 눈 더미도 사용한다.",
+      "overlay_file": "art/island_seasons.png",
+      "overlay_rows": {
+        "spring": 0,
+        "summer": 1,
+        "autumn": 2,
+        "winter": 3
+      },
+      "overlay_source_cell": [
+        1536,
+        1024
+      ],
+      "overlay_alignment": "island_4.png와 같은 원점·축척으로 해당 행만 올린다. 다른 섬 단계에 같은 덮개를 억지로 맞추지 않는다. 다른 단계는 기존 season_deco 소품만 올린다.",
+      "stacking": "계절 변경 시 기존 계절 소품과 덮개를 제거하고 새 계절 하나만 표시한다. 겹쳐 보이는 장식은 부두·주민·길을 가리지 않도록 기존 소품 슬롯에 배치한다.",
+      "effects": "계절·꽃잎·낙엽·눈 덮개 자체에는 생산·이동·전투 효과가 없다."
+    },
+    "festivals": {
+      "days_semantics": "days는 시작 월, 시작 일, 끝 월, 끝 일. 기기 현지 날짜 기준으로 양 끝 날짜를 포함한다.",
+      "claim": "축제 기간에 실제로 홈을 처음 연 때 지급한다. 축제 이름표를 누를 때마다 다시 지급하지 않는다.",
+      "claim_key": "save_id + festival.id + festival_start_local_year",
+      "yearly": "같은 연도 같은 축제에는 한 번, 다음 연도에는 다시 받을 수 있다. 저장 불러오기·시간대 변경·같은 기간 재진입으로 지급을 반복하지 않는다.",
+      "atomic": "수령 기록과 tickets/gold 지급을 같은 저장 처리로 확정한다. 금화는 정수 금화 단위이므로 기존 지갑의 센트 단위에 백을 곱해 지급한다.",
+      "absence": "기간이 지난 뒤 접속하면 지나간 축제 보상을 소급 지급하지 않는다. 오프라인 항해 반복은 축제 접속으로 세지 않는다.",
+      "separate_rewards": "축제 선물은 하루 주문 보상 상한과 별도의 계절 보상이며 기존 주문·훈련 보상을 변경하지 않는다.",
+      "schedule_year_basis": "이번 네 일정은 모두 같은 해 안에 끝나고 서로 겹치지 않는다. 윤년에도 유효한 날짜만 사용한다."
+    }
+  },
+  "pair_talks_and_visitors": {
+    "pair_talks": {
+      "schema": "The data file contains only the requested talks array and item fields.",
+      "level_gate": "Both members must be promoted, aboard the current departure snapshot, and individually at or above min_crew_level. The value is not the pair average or one member alone.",
+      "appearance": "Use the existing on-deck idle dialogue opportunity. Pick one eligible pair talk or one existing single line; do not independently increase bubble frequency per crew or per data file.",
+      "turn_order": "Show lines in stored order, with a bubble anchored to the indicated who. Do not render all lines at once. If combat, return card, or another modal interrupts, stop the remaining cosmetic dialogue without replaying it later.",
+      "selection": "Pair order is canonical for lookup but does not require a particular deck slot. Each eligible talk has equal weight; avoid the immediately preceding talk when another exists. A new pair does not give another 33/35 sea-event roll.",
+      "effects": "Dialogue only. No gold, experience, affinity, event probability, collection or synergy change. Existing20 synergy effects continue through their existing calculation only.",
+      "offline": "No offline dialogue queue and no backlog on resume. Cosmetic replay does not change any saved reward."
+    },
+    "visitors": {
+      "schema": "The data file contains only the requested rules and visitors fields. offers is a pool, not a multi-purchase shop.",
+      "valuation": {
+        "basis": "03_ports.json.rotating_market.island_host_price_table = port_haesol; home visitor barter compared with unmodified home host prices, not the best unlocked export port. This existing home-market reference is an explicit design choice for the new visitor system.",
+        "gold_per_wood": 1.0,
+        "gold_per_stone": 2.0,
+        "gold_per_gold": 1,
+        "comparison_gold_per_ticket": 50.0,
+        "ticket_source": "28_crew_charms.json.gacha.cost_gold / cost_tickets = 500 / 10. Comparative utility only; not a cash price or an introduced exchange rate.",
+        "bonuses": "Direct home barter has no market/crew/charm/weather sale multiplier. The fixed displayed give/get quantities are the full transaction. An export voyage may obtain a different, higher port price.",
+        "ratios": [
+          {
+            "visitor_id": "visitor_mail",
+            "offer_index": 0,
+            "give_value_gold": 30.0,
+            "get_value_gold": 36.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_mail",
+            "offer_index": 1,
+            "give_value_gold": 30.0,
+            "get_value_gold": 36.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_merchant",
+            "offer_index": 0,
+            "give_value_gold": 50.0,
+            "get_value_gold": 60.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_merchant",
+            "offer_index": 1,
+            "give_value_gold": 60.0,
+            "get_value_gold": 72.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_merchant",
+            "offer_index": 2,
+            "give_value_gold": 60.0,
+            "get_value_gold": 72.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_fisher",
+            "offer_index": 0,
+            "give_value_gold": 40.0,
+            "get_value_gold": 48.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_fisher",
+            "offer_index": 1,
+            "give_value_gold": 40.0,
+            "get_value_gold": 48.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_scholar",
+            "offer_index": 0,
+            "give_value_gold": 40.0,
+            "get_value_gold": 50.0,
+            "ratio": 1.25
+          },
+          {
+            "visitor_id": "visitor_scholar",
+            "offer_index": 1,
+            "give_value_gold": 50.0,
+            "get_value_gold": 60.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_flowers",
+            "offer_index": 0,
+            "give_value_gold": 20.0,
+            "get_value_gold": 24.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_flowers",
+            "offer_index": 1,
+            "give_value_gold": 20.0,
+            "get_value_gold": 24.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_repair",
+            "offer_index": 0,
+            "give_value_gold": 100.0,
+            "get_value_gold": 120.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_repair",
+            "offer_index": 1,
+            "give_value_gold": 75.0,
+            "get_value_gold": 90.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_children",
+            "offer_index": 0,
+            "give_value_gold": 20.0,
+            "get_value_gold": 24.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_children",
+            "offer_index": 1,
+            "give_value_gold": 20.0,
+            "get_value_gold": 24.0,
+            "ratio": 1.2
+          },
+          {
+            "visitor_id": "visitor_antiques",
+            "offer_index": 0,
+            "give_value_gold": 40.0,
+            "get_value_gold": 50.0,
+            "ratio": 1.25
+          },
+          {
+            "visitor_id": "visitor_antiques",
+            "offer_index": 1,
+            "give_value_gold": 80.0,
+            "get_value_gold": 104.0,
+            "ratio": 1.3
+          },
+          {
+            "visitor_id": "visitor_antiques",
+            "offer_index": 2,
+            "give_value_gold": 80.0,
+            "get_value_gold": 104.0,
+            "ratio": 1.3
+          }
+        ]
+      },
+      "selection": "One visitor instance at a time. Eligible min_ship_level visitors are equally weighted. Choose one offer uniformly from its offers at arrival, save that offer index with visit_id, and show only that offer; tapping or reopening does not reroll.",
+      "schedule": "After departure, sample one integer interval inclusively between90 and240 minutes and persist next_at. Use the save’s monotonic effective wall-clock. At a due time choose and persist the visitor, offered trade, arrived_at and expires_at=arrived_at+30minutes.",
+      "clock": "effective_now=max(last_observed_wall_time,device_wall_time). Never move a saved visit or next_at backwards on clock rollback. Reuse existing trusted clock if available. Pure local storage cannot prevent deliberate future clock jumps; do not claim server-grade anti-cheat.",
+      "resume": "If one due arrival is still inside its30minute window, restore that visit and original expiry. If it expired while away, mark it departed and schedule one next visit from effective_now without granting a trade or replaying every missed interval. No offline auto-trade.",
+      "lifetime": "A visit can settle exactly once. Closing the card leaves the same offer available until expiry. Trading successfully shows bye, departs, and schedules the next interval; expiry without trade also departs. Reentering the app cannot reset an expired or completed visit.",
+      "trade": "On manual acceptance recheck visit_id, active offer, unexpired state and every give balance. Atomically debit all give resources, credit all get resources, and mark that visit settled. Persist before animation. Replay a saved result without paying twice.",
+      "insufficient": "No debit, reward, reroll or settled marker on insufficient resources. A later retry in the same visit can accept the same offer.",
+      "capacity": "Before acceptance ensure all incoming wood/stone fits the existing warehouse rule. Do not silently discard or partially scale the offer. If capacity is insufficient, keep offer and balances unchanged.",
+      "tickets": "At most one accepted offer per visit, and every get.tickets is at most1; consequently at most1 ticket per visit. Do not sum or purchase all entries in offers. User-facing tickets maps to the existing voyage_note resource.",
+      "money": "JSON gold values are whole gold. Debit/credit wallet cents by gold*100 and preserve preexisting cents. Wood, stone and tickets are nonnegative integer counts.",
+      "progress": "A visitor trade is not a voyage, treasure, floater, mission or port-request completion. Do not increment those counters, apply sale bonuses, grant voyage XP, or cause a pirate encounter.",
+      "art": {
+        "boats_file": "art/visitor_boats.png",
+        "faces_file": "art/visitor_faces.png",
+        "boat_grid": [
+          4,
+          2
+        ],
+        "boat_cell": [
+          384,
+          256
+        ],
+        "boat_waterline_y_in_cell": 240,
+        "boat_facing": "left",
+        "face_grid": [
+          4,
+          2
+        ],
+        "face_cell": [
+          256,
+          256
+        ],
+        "background_key": "#FF00FF",
+        "boat_scale": "Small home dock visitors; final scene scale needs build-39 composition test."
+      }
+    },
+    "not_modified": [
+      "app source",
+      "18 economy rebalance",
+      "15 release paperwork",
+      "sound files",
+      "English app localization"
+    ],
+    "runtime_tested": false
+  },
+  "season_art_alignment": {
+    "status": "passed_with_alignment_scope_note",
+    "file": "art/island_seasons.png",
+    "size": [
+      1536,
+      4096
+    ],
+    "grid": [
+      1,
+      4
+    ],
+    "cell_size": [
+      1536,
+      1024
+    ],
+    "background_key": "#FF00FF",
+    "source_island": {
+      "file": "island_4.png",
+      "local_reference": "/workspace/scratch/fcc74722a914/art-order-2-individual/png/island_4.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "sha256": "3c4896723d6cbd200a7c2d0332dfcf9b2155c5159d0f1456327998da0cad12a5"
+    },
+    "rows": [
+      {
+        "season": "spring",
+        "index": 0,
+        "source_rect": [
+          0,
+          0,
+          1536,
+          1024
+        ],
+        "draw_at_base_origin": [
+          0,
+          0
+        ],
+        "source_canvas_size": [
+          1536,
+          1024
+        ],
+        "transform": {
+          "scale": [
+            1,
+            1
+          ],
+          "translation": [
+            0,
+            0
+          ]
+        },
+        "local_foreground_bbox": [
+          57,
+          213,
+          1482,
+          470
+        ],
+        "non_key_pixels": 29341,
+        "original_pixels_outside_overlay_unchanged": true,
+        "raw_sha256": "e7f68573754fd56bcfedf20bac2457d19fdcdeefd2676495a2553256da328a89"
+      },
+      {
+        "season": "summer",
+        "index": 1,
+        "source_rect": [
+          0,
+          1024,
+          1536,
+          1024
+        ],
+        "draw_at_base_origin": [
+          0,
+          0
+        ],
+        "source_canvas_size": [
+          1536,
+          1024
+        ],
+        "transform": {
+          "scale": [
+            1,
+            1
+          ],
+          "translation": [
+            0,
+            0
+          ]
+        },
+        "local_foreground_bbox": [
+          39,
+          201,
+          1499,
+          472
+        ],
+        "non_key_pixels": 109887,
+        "original_pixels_outside_overlay_unchanged": true,
+        "raw_sha256": "8e72acbb6b03f645956d380cea1a1b44160bc579d76a1a6bb745635cc63b8af8"
+      },
+      {
+        "season": "autumn",
+        "index": 2,
+        "source_rect": [
+          0,
+          2048,
+          1536,
+          1024
+        ],
+        "draw_at_base_origin": [
+          0,
+          0
+        ],
+        "source_canvas_size": [
+          1536,
+          1024
+        ],
+        "transform": {
+          "scale": [
+            1,
+            1
+          ],
+          "translation": [
+            0,
+            0
+          ]
+        },
+        "local_foreground_bbox": [
+          38,
+          201,
+          1500,
+          518
+        ],
+        "non_key_pixels": 75014,
+        "original_pixels_outside_overlay_unchanged": true,
+        "raw_sha256": "6fe33d64987b518f20a395612e41a24d320066aaf41f54d1e5157bbfccc37e38"
+      },
+      {
+        "season": "winter",
+        "index": 3,
+        "source_rect": [
+          0,
+          3072,
+          1536,
+          1024
+        ],
+        "draw_at_base_origin": [
+          0,
+          0
+        ],
+        "source_canvas_size": [
+          1536,
+          1024
+        ],
+        "transform": {
+          "scale": [
+            1,
+            1
+          ],
+          "translation": [
+            0,
+            0
+          ]
+        },
+        "local_foreground_bbox": [
+          22,
+          202,
+          1506,
+          532
+        ],
+        "non_key_pixels": 70587,
+        "original_pixels_outside_overlay_unchanged": true,
+        "raw_sha256": "71897514d8ed1033dc63f444f7a08b30a2383618922ec9f52c9fa0f57dc65ebc"
+      }
+    ],
+    "sha256": "52d41482344346ed724a38c2afd1499fdca3efed2b5aeb4b1513f77d5fd04645",
+    "bytes": 564083,
+    "generation": "built-in image_gen with source reference; winter nonsnow cleanup edit",
+    "technical_processing": [
+      "pure magenta key normalization",
+      "unchanged full-canvas 1:1 vertical stacking"
+    ],
+    "visual_checks": {
+      "four_season_order": true,
+      "source_tree_and_lantern_positions_aligned": true,
+      "no_cliff_or_ground_redraw": true,
+      "no_extra_houses": true,
+      "only_seasonal_coverings": true,
+      "no_text_or_numbers": true,
+      "no_crop_or_centering": true
+    },
+    "notes_ko": [
+      "기준은 주문서에 지정한1536×1024 원본 island_4이다. 1600×800 파생본과 섞어서 좌표를 쓰지 않는다.",
+      "원본에 집이 없으므로 겨울 지붕 눈은 원본에 실제 존재하는 양쪽 등불 지붕에만 놓았다.",
+      "생성한 덮개 전체 캔버스를 이동·확대·자르기 없이 그대로 쌓았다. 네 계절 모두 같은 원점과 크기로 원본에 겹친다.",
+      "정렬은 원본과의 합성 미리보기로 확인했다. 새 계절 잎의 내부 모양은 생성된 그림이며 원래 잎 픽셀을 그대로 재색칠한 것은 아니다.",
+      "실제 build-39 화면에서 island_4를 다른 크기로 자르거나 그리면 기준 원본과 동일한 변환을 덮개에도 적용해야 한다.",
+      "실제 앱 실행과 합성 코드는 이 작업에서 수정하거나 테스트하지 않았다."
+    ]
+  },
+  "scope": "Implementation contracts for connecting these data/assets to build-39. No app source changes or runtime test."
+}

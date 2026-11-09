@@ -1,0 +1,2474 @@
+{
+  "schema_version": 1,
+  "order": 12,
+  "index_order": "zero-based row-major",
+  "rect_semantics": "x,y,width,height",
+  "bbox_semantics": "left,top,right-exclusive,bottom-exclusive",
+  "sampling": "magenta-key removal followed by nearest-neighbor",
+  "sheets": [
+    {
+      "file": "art/title_badges.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "grid": [
+        4,
+        6
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "cells": [
+        {
+          "index": 0,
+          "id": "title_first_voyage",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            22,
+            19,
+            233,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "bronze"
+        },
+        {
+          "index": 1,
+          "id": "title_treasure_listener",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            21,
+            19,
+            234,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "bronze"
+        },
+        {
+          "index": 2,
+          "id": "title_shore_picker",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            22,
+            19,
+            234,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "bronze"
+        },
+        {
+          "index": 3,
+          "id": "title_keepsake_pocket",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            21,
+            19,
+            234,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "bronze"
+        },
+        {
+          "index": 4,
+          "id": "title_charm_keeper",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            22,
+            19,
+            234,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "bronze"
+        },
+        {
+          "index": 5,
+          "id": "title_errand_sail",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            21,
+            19,
+            234,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "bronze"
+        },
+        {
+          "index": 6,
+          "id": "title_deck_dresser",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            22,
+            19,
+            234,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "bronze"
+        },
+        {
+          "index": 7,
+          "id": "title_twin_sail",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            22,
+            19,
+            234,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "bronze"
+        },
+        {
+          "index": 8,
+          "id": "title_first_mate",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            21,
+            19,
+            234,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "bronze"
+        },
+        {
+          "index": 9,
+          "id": "title_hook_friend",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            21,
+            19,
+            234,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "bronze"
+        },
+        {
+          "index": 10,
+          "id": "title_sea_path",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            21,
+            19,
+            235,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "silver"
+        },
+        {
+          "index": 11,
+          "id": "title_treasure_chart",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            20,
+            19,
+            235,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "silver"
+        },
+        {
+          "index": 12,
+          "id": "title_tide_basket",
+          "source_rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            21,
+            19,
+            235,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "silver"
+        },
+        {
+          "index": 13,
+          "id": "title_keepsake_shelf",
+          "source_rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            20,
+            19,
+            235,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "silver"
+        },
+        {
+          "index": 14,
+          "id": "title_charms_ring",
+          "source_rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            20,
+            19,
+            235,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "silver"
+        },
+        {
+          "index": 15,
+          "id": "title_route_dispatch",
+          "source_rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            20,
+            19,
+            236,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "silver"
+        },
+        {
+          "index": 16,
+          "id": "title_fleet_watch",
+          "source_rect": [
+            0,
+            1024,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            20,
+            18,
+            235,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "silver"
+        },
+        {
+          "index": 17,
+          "id": "title_patient_teacher",
+          "source_rect": [
+            256,
+            1024,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            20,
+            18,
+            235,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "silver"
+        },
+        {
+          "index": 18,
+          "id": "title_thousand_returns",
+          "source_rect": [
+            512,
+            1024,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            18,
+            237,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "gold"
+        },
+        {
+          "index": 19,
+          "id": "title_all_rivals",
+          "source_rect": [
+            768,
+            1024,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            18,
+            238,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "gold"
+        },
+        {
+          "index": 20,
+          "id": "title_full_keepsakes",
+          "source_rect": [
+            0,
+            1280,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            17,
+            237,
+            238
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "gold"
+        },
+        {
+          "index": 21,
+          "id": "title_full_decorations",
+          "source_rect": [
+            256,
+            1280,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "gold"
+        },
+        {
+          "index": 22,
+          "id": "title_full_company",
+          "source_rect": [
+            512,
+            1280,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            238,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "gold"
+        },
+        {
+          "index": 23,
+          "id": "title_master_mentor",
+          "source_rect": [
+            768,
+            1280,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            238,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "tier": "gold"
+        }
+      ],
+      "sha256": "d4398451dd2747951291f4cdd92dd9a636f0781a32f88193466112426e1f10a7",
+      "bytes": 1736808
+    },
+    {
+      "file": "art/weather_fx.png",
+      "size": [
+        1024,
+        1280
+      ],
+      "grid": [
+        4,
+        5
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "cells": [
+        {
+          "index": 0,
+          "id": "rain_0",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            23,
+            235,
+            235
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 1,
+          "id": "rain_1",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            23,
+            234,
+            235
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 2,
+          "id": "rain_2",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            23,
+            234,
+            235
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 3,
+          "id": "rain_3",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            23,
+            233,
+            235
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 4,
+          "id": "snow_0",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            34,
+            27,
+            223,
+            225
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 5,
+          "id": "snow_1",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            32,
+            27,
+            222,
+            228
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 6,
+          "id": "snow_2",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            33,
+            27,
+            221,
+            228
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 7,
+          "id": "snow_3",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            31,
+            27,
+            221,
+            228
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 8,
+          "id": "petals_0",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            42,
+            30,
+            223,
+            217
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 9,
+          "id": "petals_1",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            41,
+            30,
+            222,
+            217
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 10,
+          "id": "petals_2",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            39,
+            30,
+            223,
+            217
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 11,
+          "id": "petals_3",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            40,
+            30,
+            224,
+            217
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 12,
+          "id": "leaves_0",
+          "source_rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            31,
+            21,
+            225,
+            234
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 13,
+          "id": "leaves_1",
+          "source_rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            31,
+            22,
+            222,
+            234
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 14,
+          "id": "leaves_2",
+          "source_rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            31,
+            22,
+            225,
+            234
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 15,
+          "id": "leaves_3",
+          "source_rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            31,
+            22,
+            224,
+            234
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 16,
+          "id": "fog_0",
+          "source_rect": [
+            0,
+            1024,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            25,
+            29,
+            226,
+            219
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 17,
+          "id": "fog_1",
+          "source_rect": [
+            256,
+            1024,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            25,
+            30,
+            226,
+            221
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 18,
+          "id": "fog_2",
+          "source_rect": [
+            512,
+            1024,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            25,
+            30,
+            226,
+            219
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        },
+        {
+          "index": 19,
+          "id": "fog_3",
+          "source_rect": [
+            768,
+            1024,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            24,
+            24,
+            226,
+            221
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "preserve_full_cell": true
+          },
+          "tile_border_all_key": true
+        }
+      ],
+      "sha256": "2480a12a79631a9ce1482c4ee4d995fe82d4f0d411c6d2f7648ba0f7f42d0d5b",
+      "bytes": 245176
+    },
+    {
+      "file": "art/weather_sky.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "cells": [
+        {
+          "index": 0,
+          "id": "stars",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            21,
+            240,
+            235
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        },
+        {
+          "index": 1,
+          "id": "sunrays",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            27,
+            240,
+            228
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        },
+        {
+          "index": 2,
+          "id": "aurora",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            21,
+            240,
+            235
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        },
+        {
+          "index": 3,
+          "id": "rainbow",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            58,
+            240,
+            198
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        },
+        {
+          "index": 4,
+          "id": "weather_clear",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "weather_icon_index": 0
+        },
+        {
+          "index": 5,
+          "id": "weather_fair_wind",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            238,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "weather_icon_index": 1
+        },
+        {
+          "index": 6,
+          "id": "weather_calm",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "weather_icon_index": 2
+        },
+        {
+          "index": 7,
+          "id": "weather_drizzle",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            238,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "weather_icon_index": 3
+        },
+        {
+          "index": 8,
+          "id": "weather_shower",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            17,
+            16,
+            238,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "weather_icon_index": 4
+        },
+        {
+          "index": 9,
+          "id": "weather_fog",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            17,
+            16,
+            238,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "weather_icon_index": 5
+        },
+        {
+          "index": 10,
+          "id": "weather_starry",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            238,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "weather_icon_index": 6
+        },
+        {
+          "index": 11,
+          "id": "weather_rainbow",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            17,
+            16,
+            238,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "weather_icon_index": 7
+        },
+        {
+          "index": 12,
+          "id": "weather_snow",
+          "source_rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "weather_icon_index": 8
+        },
+        {
+          "index": 13,
+          "id": "weather_aurora",
+          "source_rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "weather_icon_index": 9
+        },
+        {
+          "index": 14,
+          "id": "empty_14",
+          "source_rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": null,
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": true
+        },
+        {
+          "index": 15,
+          "id": "empty_15",
+          "source_rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": null,
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": true
+        }
+      ],
+      "sha256": "ee99bccc10bd344a5579b3a735244d97acaf7b4d1bf8abb2e51d3b774edc12f3",
+      "bytes": 842981
+    },
+    {
+      "file": "art/sea_creatures_2.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "cells": [
+        {
+          "index": 0,
+          "id": "seal_0",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            44,
+            85,
+            203,
+            128
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 0.9,
+            "paste_offset": [
+              13,
+              8
+            ],
+            "waterline": 128,
+            "source_waterline": 133
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 1,
+          "id": "seal_1",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            57,
+            61,
+            210,
+            138
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 0.9,
+            "paste_offset": [
+              13,
+              8
+            ],
+            "waterline": 128,
+            "source_waterline": 133
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 2,
+          "id": "seal_2",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            58,
+            19,
+            211,
+            137
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 0.9,
+            "paste_offset": [
+              13,
+              8
+            ],
+            "waterline": 128,
+            "source_waterline": 133
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 3,
+          "id": "seal_3",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            38,
+            50,
+            197,
+            140
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 0.9,
+            "paste_offset": [
+              13,
+              8
+            ],
+            "waterline": 128,
+            "source_waterline": 133
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 4,
+          "id": "jellyfish_0",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            34,
+            115,
+            221,
+            184
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              24
+            ],
+            "waterline": 128,
+            "source_waterline": 104
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 5,
+          "id": "jellyfish_1",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            35,
+            106,
+            223,
+            164
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              24
+            ],
+            "waterline": 128,
+            "source_waterline": 104
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 6,
+          "id": "jellyfish_2",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            34,
+            73,
+            222,
+            164
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              24
+            ],
+            "waterline": 128,
+            "source_waterline": 104
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 7,
+          "id": "jellyfish_3",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            37,
+            114,
+            224,
+            184
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              24
+            ],
+            "waterline": 128,
+            "source_waterline": 104
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 8,
+          "id": "gulls_0",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            24,
+            90,
+            231,
+            134
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              -8
+            ],
+            "waterline": 128,
+            "source_waterline": 136
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 9,
+          "id": "gulls_1",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            26,
+            65,
+            227,
+            133
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              -8
+            ],
+            "waterline": 128,
+            "source_waterline": 136
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 10,
+          "id": "gulls_2",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            22,
+            39,
+            229,
+            132
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              -8
+            ],
+            "waterline": 128,
+            "source_waterline": 136
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 11,
+          "id": "gulls_3",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            20,
+            38,
+            235,
+            133
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              -8
+            ],
+            "waterline": 128,
+            "source_waterline": 136
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 12,
+          "id": "octopus_0",
+          "source_rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            39,
+            71,
+            210,
+            128
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              -1
+            ],
+            "waterline": 128,
+            "source_waterline": 129
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 13,
+          "id": "octopus_1",
+          "source_rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            36,
+            50,
+            192,
+            128
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              -1
+            ],
+            "waterline": 128,
+            "source_waterline": 129
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 14,
+          "id": "octopus_2",
+          "source_rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            31,
+            64,
+            193,
+            128
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              -1
+            ],
+            "waterline": 128,
+            "source_waterline": 129
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        },
+        {
+          "index": 15,
+          "id": "octopus_3",
+          "source_rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            22,
+            84,
+            218,
+            128
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false,
+          "normalization": {
+            "row_common_scale": 1,
+            "paste_offset": [
+              0,
+              -1
+            ],
+            "waterline": 128,
+            "source_waterline": 129
+          },
+          "waterline_y": 128,
+          "facing": "left"
+        }
+      ],
+      "sha256": "0bee687a6ab982420dd967cc4d4b7e7934786ef44d056fa84b006771c850c675",
+      "bytes": 241626
+    },
+    {
+      "file": "art/visitor_boats.png",
+      "size": [
+        1536,
+        512
+      ],
+      "grid": [
+        4,
+        2
+      ],
+      "cell": [
+        384,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "cells": [
+        {
+          "index": 0,
+          "id": "visitor_mail",
+          "source_rect": [
+            0,
+            0,
+            384,
+            256
+          ],
+          "foreground_bbox": [
+            62,
+            27,
+            321,
+            241
+          ],
+          "anchor": [
+            192,
+            240
+          ],
+          "empty": false,
+          "waterline_y": 240,
+          "facing": "left"
+        },
+        {
+          "index": 1,
+          "id": "visitor_merchant",
+          "source_rect": [
+            384,
+            0,
+            384,
+            256
+          ],
+          "foreground_bbox": [
+            56,
+            25,
+            327,
+            241
+          ],
+          "anchor": [
+            192,
+            240
+          ],
+          "empty": false,
+          "waterline_y": 240,
+          "facing": "left"
+        },
+        {
+          "index": 2,
+          "id": "visitor_fisher",
+          "source_rect": [
+            768,
+            0,
+            384,
+            256
+          ],
+          "foreground_bbox": [
+            56,
+            72,
+            328,
+            241
+          ],
+          "anchor": [
+            192,
+            240
+          ],
+          "empty": false,
+          "waterline_y": 240,
+          "facing": "left"
+        },
+        {
+          "index": 3,
+          "id": "visitor_scholar",
+          "source_rect": [
+            1152,
+            0,
+            384,
+            256
+          ],
+          "foreground_bbox": [
+            54,
+            49,
+            329,
+            241
+          ],
+          "anchor": [
+            192,
+            240
+          ],
+          "empty": false,
+          "waterline_y": 240,
+          "facing": "left"
+        },
+        {
+          "index": 4,
+          "id": "visitor_flowers",
+          "source_rect": [
+            0,
+            256,
+            384,
+            256
+          ],
+          "foreground_bbox": [
+            59,
+            60,
+            325,
+            241
+          ],
+          "anchor": [
+            192,
+            240
+          ],
+          "empty": false,
+          "waterline_y": 240,
+          "facing": "left"
+        },
+        {
+          "index": 5,
+          "id": "visitor_repair",
+          "source_rect": [
+            384,
+            256,
+            384,
+            256
+          ],
+          "foreground_bbox": [
+            56,
+            57,
+            328,
+            241
+          ],
+          "anchor": [
+            192,
+            240
+          ],
+          "empty": false,
+          "waterline_y": 240,
+          "facing": "left"
+        },
+        {
+          "index": 6,
+          "id": "visitor_children",
+          "source_rect": [
+            768,
+            256,
+            384,
+            256
+          ],
+          "foreground_bbox": [
+            56,
+            40,
+            328,
+            241
+          ],
+          "anchor": [
+            192,
+            240
+          ],
+          "empty": false,
+          "waterline_y": 240,
+          "facing": "left"
+        },
+        {
+          "index": 7,
+          "id": "visitor_antiques",
+          "source_rect": [
+            1152,
+            256,
+            384,
+            256
+          ],
+          "foreground_bbox": [
+            51,
+            30,
+            332,
+            241
+          ],
+          "anchor": [
+            192,
+            240
+          ],
+          "empty": false,
+          "waterline_y": 240,
+          "facing": "left"
+        }
+      ],
+      "sha256": "009a482941a0768a92d27315896d518cbf200a0ba561906dea5b43b9929880b5",
+      "bytes": 610248
+    },
+    {
+      "file": "art/visitor_faces.png",
+      "size": [
+        1024,
+        512
+      ],
+      "grid": [
+        4,
+        2
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "cells": [
+        {
+          "index": 0,
+          "id": "visitor_mail",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            17,
+            16,
+            238,
+            239
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        },
+        {
+          "index": 1,
+          "id": "visitor_merchant",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            17,
+            16,
+            238,
+            239
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        },
+        {
+          "index": 2,
+          "id": "visitor_fisher",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            17,
+            16,
+            238,
+            239
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        },
+        {
+          "index": 3,
+          "id": "visitor_scholar",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            17,
+            16,
+            239,
+            239
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        },
+        {
+          "index": 4,
+          "id": "visitor_flowers",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            17,
+            16,
+            238,
+            239
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        },
+        {
+          "index": 5,
+          "id": "visitor_repair",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            17,
+            16,
+            238,
+            239
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        },
+        {
+          "index": 6,
+          "id": "visitor_children",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            16,
+            239,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        },
+        {
+          "index": 7,
+          "id": "visitor_antiques",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            17,
+            16,
+            239,
+            239
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "empty": false
+        }
+      ],
+      "sha256": "0358bb108e401c86d2917b858c33ad7d3b794699b1ae5689eade2ae4a3b62eb7",
+      "bytes": 495609
+    },
+    {
+      "file": "art/island_seasons.png",
+      "size": [
+        1536,
+        4096
+      ],
+      "grid": [
+        1,
+        4
+      ],
+      "cell": [
+        1536,
+        1024
+      ],
+      "background_key": "#FF00FF",
+      "source_island": {
+        "file": "island_4.png",
+        "local_reference": "/workspace/scratch/fcc74722a914/art-order-2-individual/png/island_4.png",
+        "size": [
+          1536,
+          1024
+        ],
+        "sha256": "3c4896723d6cbd200a7c2d0332dfcf9b2155c5159d0f1456327998da0cad12a5"
+      },
+      "cells": [
+        {
+          "index": 0,
+          "id": "spring",
+          "source_rect": [
+            0,
+            0,
+            1536,
+            1024
+          ],
+          "foreground_bbox": [
+            57,
+            213,
+            1482,
+            470
+          ],
+          "anchor": [
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "index": 1,
+          "id": "summer",
+          "source_rect": [
+            0,
+            1024,
+            1536,
+            1024
+          ],
+          "foreground_bbox": [
+            39,
+            201,
+            1499,
+            472
+          ],
+          "anchor": [
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "index": 2,
+          "id": "autumn",
+          "source_rect": [
+            0,
+            2048,
+            1536,
+            1024
+          ],
+          "foreground_bbox": [
+            38,
+            201,
+            1500,
+            518
+          ],
+          "anchor": [
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "index": 3,
+          "id": "winter",
+          "source_rect": [
+            0,
+            3072,
+            1536,
+            1024
+          ],
+          "foreground_bbox": [
+            22,
+            202,
+            1506,
+            532
+          ],
+          "anchor": [
+            0,
+            0
+          ],
+          "empty": false
+        }
+      ],
+      "sha256": "52d41482344346ed724a38c2afd1499fdca3efed2b5aeb4b1513f77d5fd04645",
+      "bytes": 564083
+    }
+  ],
+  "weather_fx_animation": "Four subtle particle-shape/twinkle phases loop; continuous downward/diagonal scrolling supplies drift. Pure-key margins make each frame spatially repeatable.",
+  "season_overlay": "Use exact 1536x1024 original canvas and origin; do not bbox-crop or independently recenter. Match any base-image crop/resize transform.",
+  "runtime_tested": false
+}

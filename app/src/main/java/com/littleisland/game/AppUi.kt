@@ -290,6 +290,35 @@ class AppUi(val scene: Scene, val host: Host) {
                     "먼 항구의 알바는 고용비가 더 들지만 솜씨가 좋아요.", null, if (Game.hireAny) "끄기" else "켜기", { Game.hireAny = !Game.hireAny; Game.save(); true }))
             }
             4 -> {
+                // 손님 배 (있을 때만)
+                Game.visitor()?.let { v ->
+                    val o = Game.visOfferNow()
+                    val left = ((Game.visUntil - System.currentTimeMillis()) / 60000L + 1).coerceAtLeast(1)
+                    l.add(Tile("visitor:" + v.face, v.name, if (Game.visDone) "거래함" else left.toString() + "분 머묾", if (Game.visDone) St.DONE else if (Game.canTrade()) St.READY else St.NORMAL,
+                        "“" + v.hello + "”\n\n" + (o?.short ?: "") + "\n줄 것  " + (o?.let { Game.resText(it.give) } ?: "") + "\n받을 것  " + (o?.let { Game.resText(it.get) } ?: "") +
+                            (if (Game.visDone) "\n\n“" + v.bye + "”" else ""), null, if (Game.canTrade()) "거래" else null, { Game.trade(); true }, "거래했어요"))
+                }
+                // 지금 항해 날씨
+                Game.weather()?.let { w ->
+                    val e = when (w.kind) { "speed" -> if (w.value > 0) "빨리 가요" else "조금 느려요"; "cargo" -> "짐을 더 실어요"; "pirate_chance" -> "해적을 덜 만나요"; else -> "평온해요" }
+                    l.add(Tile("weather:" + w.icon, "날씨 " + w.name, e, St.ON, "“" + w.crewLine + "”\n\n이번 항해  " + e + "\n날씨는 떠날 때 정해져요."))
+                }
+                // 항구 의뢰: 받은 것 → 제시 중
+                Game.reqRefresh()
+                for ((id, got) in Game.reqAcc) {
+                    val r = Fleet.req(id) ?: continue
+                    val pn = Data.port(r.port).name
+                    val need = listOfNotNull(if (r.needW > 0) "나무 " + got[0] + "/" + r.needW else null, if (r.needS > 0) "돌 " + got[1] + "/" + r.needS else null).joinToString(" · ")
+                    l.add(Tile("daily:0", r.title, need, St.ON, r.client + " · " + pn + "\n" + r.short + "\n\n" + need + "\n보상  금화 " + r.gold + (if (r.tickets > 0) " · 쪽지 " + r.tickets else "") +
+                        "\n\n" + pn + "로 항해하면 실은 짐을 넘겨요.", null, "포기", { Game.cancelReq(id) }, "의뢰를 접었어요"))
+                }
+                for (id in Game.reqOffer.toList()) {
+                    val r = Fleet.req(id) ?: continue
+                    val pn = Data.port(r.port).name
+                    val need = listOfNotNull(if (r.needW > 0) "나무 " + r.needW else null, if (r.needS > 0) "돌 " + r.needS else null).joinToString(" · ")
+                    l.add(Tile("daily:0", r.title, pn, St.NORMAL, r.client + " · " + pn + "\n" + r.short + "\n\n필요  " + need + "\n보상  금화 " + r.gold + (if (r.tickets > 0) " · 쪽지 " + r.tickets else "") +
+                        "\n\n받으면 " + pn + " 항해 때 짐을 넘겨요.", null, "받기", { Game.acceptReq(id) }, "의뢰를 받았어요"))
+                }
                 // 오늘의 항구 주문 3개 + 주간 상자
                 Game.ordCheckDay()
                 for (id in Game.ordIds) {
@@ -307,6 +336,23 @@ class AppUi(val scene: Scene, val host: Host) {
                     when { Game.treasurePending -> "지도를 맞췄어요. 다음 항해에 보물섬에 들러요."
                            else -> "홈 화면에 떠다니는 유리병·보물상자를 톡 쳐서 조각을 모아요. " + Game.MAP_NEED + "개면 밀기 퍼즐로 지도를 맞춰요." },
                     null, if (mp >= Game.MAP_NEED && !Game.treasurePending) "맞추기" else null, { host.openMap(); false }))
+                // 계절과 축제, 선장 칭호
+                Game.season()?.let { se ->
+                    val fe = Game.festNow()
+                    l.add(Tile("season:" + (se.deco.firstOrNull() ?: 0), se.name + " 섬", fe?.let { if (it.second) "축제 받음" else "축제 중" } ?: "계절", if (fe != null) St.ON else St.NORMAL,
+                        "“" + se.islandLine + "”\n\n" + se.festName + "  " + se.festDays.let { d -> if (d.size == 4) d[0].toString() + "/" + d[1] + "~" + d[2] + "/" + d[3] else "" } +
+                            "\n" + se.festShort + "\n보상  쪽지 " + se.festTickets + " · 금화 " + se.festGold))
+                }
+                if (Fleet.titles.isNotEmpty()) {
+                    Game.checkTitles()
+                    val got = Fleet.titles.filter { it.id in Game.titlesGot }
+                    val cur = Fleet.title(Game.titleOn)
+                    val nextT = if (got.isEmpty()) null else got.getOrNull(got.indexOf(cur) + 1)
+                    val locked = Fleet.titles.firstOrNull { it.id !in Game.titlesGot }
+                    l.add(Tile("title:" + (cur ?: got.lastOrNull())?.icon.let { it ?: 0 }, "선장 칭호", got.size.toString() + "/" + Fleet.titles.size, if (cur != null) St.ON else St.NORMAL,
+                        "지금  " + (cur?.name ?: "없음") + "\n홈 화면 글줄 앞에 붙어요.\n\n" + (locked?.let { "다음  " + it.name + "\n" + it.short } ?: "모든 칭호를 열었어요!"),
+                        null, if (got.isEmpty()) null else if (nextT != null) "바꾸기" else "떼기", { Game.setTitle(nextT?.id) }, nextT?.let { "칭호 " + it.name } ?: "칭호를 뗐어요"))
+                }
                 l.add(Tile("chest", "짐 정리", if (Game.packed) "정리 끝" else "+" + (Game.PACK_BONUS * 100).toInt() + "%", if (Game.packed) St.DONE else St.READY,
                     "짐칸을 상자로 빈틈없이 채우면 다음 항구 판매금이 " + (Game.PACK_BONUS * 100).toInt() + "% 늘어요.", null,
                     if (Game.packed) null else "정리하기", { host.openCargo(); false }))

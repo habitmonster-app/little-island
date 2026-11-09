@@ -1,0 +1,223 @@
+{
+  "weather": [
+    {
+      "id": "weather_clear",
+      "name": "맑음",
+      "weight": 40,
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "time": "any",
+      "min_ship_level": 1,
+      "card_line": "맑은 물길을 따라 돌아왔어요.",
+      "crew_line": "하늘이 말갛게 개었네요.",
+      "effect": {
+        "kind": "none",
+        "value": 0.0
+      },
+      "fx": {
+        "layer": "none",
+        "icon_index": 0
+      }
+    },
+    {
+      "id": "weather_fair_wind",
+      "name": "순풍",
+      "weight": 18,
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "time": "any",
+      "min_ship_level": 1,
+      "card_line": "등을 밀던 바람이 배웅했어요.",
+      "crew_line": "바람이 등을 밀어 줘요.",
+      "effect": {
+        "kind": "speed",
+        "value": 0.04
+      },
+      "fx": {
+        "layer": "none",
+        "icon_index": 1
+      }
+    },
+    {
+      "id": "weather_calm",
+      "name": "잔잔함",
+      "weight": 14,
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "time": "any",
+      "min_ship_level": 1,
+      "card_line": "잔잔한 물결에 짐도 고요했어요.",
+      "crew_line": "컵 속 물도 조용하네요.",
+      "effect": {
+        "kind": "cargo",
+        "value": 0.03
+      },
+      "fx": {
+        "layer": "none",
+        "icon_index": 2
+      }
+    },
+    {
+      "id": "weather_drizzle",
+      "name": "가랑비",
+      "weight": 10,
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn"
+      ],
+      "time": "any",
+      "min_ship_level": 1,
+      "card_line": "가느다란 빗소리를 데려왔어요.",
+      "crew_line": "빗소리에 귀 기울여 봐요.",
+      "effect": {
+        "kind": "pirate_chance",
+        "value": -0.01
+      },
+      "fx": {
+        "layer": "rain",
+        "icon_index": 3
+      }
+    },
+    {
+      "id": "weather_shower",
+      "name": "소나기",
+      "weight": 6,
+      "seasons": [
+        "summer"
+      ],
+      "time": "day",
+      "min_ship_level": 2,
+      "card_line": "소나기가 지난 바다를 건넜어요.",
+      "crew_line": "돛 끝에서 빗방울이 춤춰요.",
+      "effect": {
+        "kind": "pirate_chance",
+        "value": -0.03
+      },
+      "fx": {
+        "layer": "rain",
+        "icon_index": 4
+      }
+    },
+    {
+      "id": "weather_fog",
+      "name": "안개",
+      "weight": 8,
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "time": "any",
+      "min_ship_level": 1,
+      "card_line": "안개 사이로 등대를 찾았어요.",
+      "crew_line": "서두르지 말고 등대를 봐요.",
+      "effect": {
+        "kind": "pirate_chance",
+        "value": -0.04
+      },
+      "fx": {
+        "layer": "fog",
+        "icon_index": 5
+      }
+    },
+    {
+      "id": "weather_starry",
+      "name": "별밤",
+      "weight": 10,
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "time": "night",
+      "min_ship_level": 1,
+      "card_line": "별빛이 돌아오는 길을 비췄어요.",
+      "crew_line": "저 별은 우리 섬 위일까요.",
+      "effect": {
+        "kind": "none",
+        "value": 0.0
+      },
+      "fx": {
+        "layer": "stars",
+        "icon_index": 6
+      }
+    },
+    {
+      "id": "weather_rainbow",
+      "name": "무지개",
+      "weight": 2,
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn"
+      ],
+      "time": "day",
+      "min_ship_level": 1,
+      "card_line": "무지개 아래서 돛을 접었어요.",
+      "crew_line": "저 빛을 편지에 담고 싶어요.",
+      "effect": {
+        "kind": "cargo",
+        "value": 0.05
+      },
+      "fx": {
+        "layer": "rainbow",
+        "icon_index": 7
+      }
+    },
+    {
+      "id": "weather_snow",
+      "name": "눈발",
+      "weight": 8,
+      "seasons": [
+        "winter"
+      ],
+      "time": "any",
+      "min_ship_level": 1,
+      "card_line": "눈발을 털고 차를 나눴어요.",
+      "crew_line": "눈 구경은 천천히 해요.",
+      "effect": {
+        "kind": "speed",
+        "value": -0.02
+      },
+      "fx": {
+        "layer": "snow",
+        "icon_index": 8
+      }
+    },
+    {
+      "id": "weather_aurora",
+      "name": "오로라",
+      "weight": 1,
+      "seasons": [
+        "winter"
+      ],
+      "time": "night",
+      "min_ship_level": 1,
+      "card_line": "빛의 띠가 밤바다를 덮었어요.",
+      "crew_line": "밤하늘이 돛처럼 펄럭여요.",
+      "effect": {
+        "kind": "cargo",
+        "value": 0.08
+      },
+      "fx": {
+        "layer": "aurora",
+        "icon_index": 9
+      }
+    }
+  ]
+}

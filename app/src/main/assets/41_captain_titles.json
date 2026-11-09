@@ -1,0 +1,285 @@
+{
+  "titles": [
+    {
+      "id": "title_first_voyage",
+      "name": "작은닻",
+      "short": "항해를 차곡차곡 마치기",
+      "tier": "bronze",
+      "icon_index": 0,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "voyages",
+        "value": 10
+      }
+    },
+    {
+      "id": "title_treasure_listener",
+      "name": "보물눈",
+      "short": "바다 보물 찾아오기",
+      "tier": "bronze",
+      "icon_index": 1,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "treasures",
+        "value": 3
+      }
+    },
+    {
+      "id": "title_shore_picker",
+      "name": "물결줍기",
+      "short": "떠온 물건 건져 올리기",
+      "tier": "bronze",
+      "icon_index": 2,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "finds",
+        "value": 10
+      }
+    },
+    {
+      "id": "title_keepsake_pocket",
+      "name": "추억주머니",
+      "short": "항구 기념품 모으기",
+      "tier": "bronze",
+      "icon_index": 3,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "souvenirs",
+        "value": 3
+      }
+    },
+    {
+      "id": "title_charm_keeper",
+      "name": "작은행운",
+      "short": "서로 다른 부적 모으기",
+      "tier": "bronze",
+      "icon_index": 4,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "charms",
+        "value": 3
+      }
+    },
+    {
+      "id": "title_errand_sail",
+      "name": "심부름돛",
+      "short": "특별 항해 끝내기",
+      "tier": "bronze",
+      "icon_index": 5,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "missions",
+        "value": 3
+      }
+    },
+    {
+      "id": "title_deck_dresser",
+      "name": "갑판단장",
+      "short": "배 꾸미기 모으기",
+      "tier": "bronze",
+      "icon_index": 6,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "decos",
+        "value": 4
+      }
+    },
+    {
+      "id": "title_twin_sail",
+      "name": "겹돛선장",
+      "short": "배를 더 크게 키우기",
+      "tier": "bronze",
+      "icon_index": 7,
+      "condition": {
+        "type": "ship_level_at_least",
+        "value": 2
+      }
+    },
+    {
+      "id": "title_first_mate",
+      "name": "함께출항",
+      "short": "선원을 처음 승진시키기",
+      "tier": "bronze",
+      "icon_index": 8,
+      "condition": {
+        "type": "promoted_count_at_least",
+        "value": 1
+      }
+    },
+    {
+      "id": "title_hook_friend",
+      "name": "별닻친구",
+      "short": "갈고리별호에 첫 승리",
+      "tier": "bronze",
+      "icon_index": 9,
+      "condition": {
+        "type": "boss_first_win",
+        "boss_id": "boss_hook"
+      }
+    },
+    {
+      "id": "title_sea_path",
+      "name": "바닷길잡이",
+      "short": "익숙한 항로 오가기",
+      "tier": "silver",
+      "icon_index": 10,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "voyages",
+        "value": 100
+      }
+    },
+    {
+      "id": "title_treasure_chart",
+      "name": "보물지도",
+      "short": "보물 찾기를 이어 가기",
+      "tier": "silver",
+      "icon_index": 11,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "treasures",
+        "value": 20
+      }
+    },
+    {
+      "id": "title_tide_basket",
+      "name": "물결바구니",
+      "short": "바다의 선물 건져 모으기",
+      "tier": "silver",
+      "icon_index": 12,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "finds",
+        "value": 100
+      }
+    },
+    {
+      "id": "title_keepsake_shelf",
+      "name": "추억진열장",
+      "short": "여러 항구 기념품 모으기",
+      "tier": "silver",
+      "icon_index": 13,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "souvenirs",
+        "value": 20
+      }
+    },
+    {
+      "id": "title_charms_ring",
+      "name": "행운고리",
+      "short": "다채로운 부적 모으기",
+      "tier": "silver",
+      "icon_index": 14,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "charms",
+        "value": 24
+      }
+    },
+    {
+      "id": "title_route_dispatch",
+      "name": "항로우체부",
+      "short": "특별 항해를 이어 가기",
+      "tier": "silver",
+      "icon_index": 15,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "missions",
+        "value": 18
+      }
+    },
+    {
+      "id": "title_fleet_watch",
+      "name": "큰돛지기",
+      "short": "커다란 배 완성하기",
+      "tier": "silver",
+      "icon_index": 16,
+      "condition": {
+        "type": "ship_level_at_least",
+        "value": 4
+      }
+    },
+    {
+      "id": "title_patient_teacher",
+      "name": "든든한선장",
+      "short": "승진 선원과 오래 항해하기",
+      "tier": "silver",
+      "icon_index": 17,
+      "condition": {
+        "type": "any_promoted_crew_level_at_least",
+        "value": 10
+      }
+    },
+    {
+      "id": "title_thousand_returns",
+      "name": "귀항의전설",
+      "short": "아주 오래 항해 이어 가기",
+      "tier": "gold",
+      "icon_index": 18,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "voyages",
+        "value": 1000
+      }
+    },
+    {
+      "id": "title_all_rivals",
+      "name": "바다의벗",
+      "short": "모든 우두머리에 첫 승리",
+      "tier": "gold",
+      "icon_index": 19,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "boss_wins",
+        "value": 12
+      }
+    },
+    {
+      "id": "title_full_keepsakes",
+      "name": "섬들의기억",
+      "short": "모든 항구 기념품 모으기",
+      "tier": "gold",
+      "icon_index": 20,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "souvenirs",
+        "value": 33
+      }
+    },
+    {
+      "id": "title_full_decorations",
+      "name": "찬란한갑판",
+      "short": "모든 배 꾸미기 모으기",
+      "tier": "gold",
+      "icon_index": 21,
+      "condition": {
+        "type": "counter_at_least",
+        "counter": "decos",
+        "value": 48
+      }
+    },
+    {
+      "id": "title_full_company",
+      "name": "모두의선장",
+      "short": "모든 선원을 승진시키기",
+      "tier": "gold",
+      "icon_index": 22,
+      "condition": {
+        "type": "promoted_count_at_least",
+        "value": 12
+      }
+    },
+    {
+      "id": "title_master_mentor",
+      "name": "별빛길잡이",
+      "short": "승진 선원 끝까지 키우기",
+      "tier": "gold",
+      "icon_index": 23,
+      "condition": {
+        "type": "any_promoted_crew_level_at_least",
+        "value": 15
+      }
+    }
+  ]
+}

@@ -203,7 +203,7 @@ class IslandWallpaperService : WallpaperService() {
                 for ((dx, dy) in listOf(-2 to 0, 2 to 0, 0 to -2, 0 to 2, 2 to 2)) cv.drawText(t, x + dx * d, y + dy * d, shadow)
                 boardHi.color = cl; cv.drawText(t, x, y, boardHi)
             }
-            outlined(title, x0, y0, 17 * d, Color.parseColor("#ffe7a8"), Paint.Align.LEFT, w)
+            outlined((Game.titleName()?.let { "[$it] " } ?: "") + title, x0, y0, 17 * d, Color.parseColor("#ffe7a8"), Paint.Align.LEFT, w)
             val by = y0 + 9 * d; val bh = 9 * d
             cv.drawRect(x0, by, x0 + w, by + bh, barBg)
             cv.drawRect(x0 + 2 * d, by + 2 * d, x0 + 2 * d + (w - 4 * d) * frac.coerceIn(0f, 1f), by + bh - 2 * d, barFill)

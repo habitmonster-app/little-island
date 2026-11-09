@@ -1,0 +1,580 @@
+{
+  "talks": [
+    {
+      "id": "talk_yeoul_dori_1",
+      "pair": [
+        "yeoul",
+        "dori"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "yeoul",
+          "text": "도리, 모자도 묶을까요?"
+        },
+        {
+          "who": "dori",
+          "text": "키보다 먼저 날아가겠어요."
+        },
+        {
+          "who": "yeoul",
+          "text": "그럼 모자부터 붙잡을게요."
+        }
+      ]
+    },
+    {
+      "id": "talk_yeoul_dori_2",
+      "pair": [
+        "yeoul",
+        "dori"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "yeoul",
+          "text": "도리, 이 매듭은 무슨 꽃?"
+        },
+        {
+          "who": "dori",
+          "text": "꽃보단 안 풀리는 약속이죠."
+        }
+      ]
+    },
+    {
+      "id": "talk_yeoul_dori_3",
+      "pair": [
+        "yeoul",
+        "dori"
+      ],
+      "min_crew_level": 5,
+      "lines": [
+        {
+          "who": "yeoul",
+          "text": "도리, 컵이 얌전해졌네요."
+        },
+        {
+          "who": "dori",
+          "text": "여울 덕에 짐이 안 굴러요."
+        }
+      ]
+    },
+    {
+      "id": "talk_yeoul_dori_4",
+      "pair": [
+        "yeoul",
+        "dori"
+      ],
+      "min_crew_level": 10,
+      "lines": [
+        {
+          "who": "yeoul",
+          "text": "도리, 구령 없이도 아네요."
+        },
+        {
+          "who": "dori",
+          "text": "여울 손짓이 먼저 오니까요."
+        }
+      ]
+    },
+    {
+      "id": "talk_yeoul_dori_5",
+      "pair": [
+        "yeoul",
+        "dori"
+      ],
+      "min_crew_level": 12,
+      "lines": [
+        {
+          "who": "yeoul",
+          "text": "도리, 돌아갈 길도 보여요?"
+        },
+        {
+          "who": "dori",
+          "text": "여울 모자가 보이면 집이죠."
+        },
+        {
+          "who": "yeoul",
+          "text": "모자만 돌아가면 안 돼요."
+        }
+      ]
+    },
+    {
+      "id": "talk_mungi_onyu_1",
+      "pair": [
+        "mungi",
+        "onyu"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "mungi",
+          "text": "온유, 바퀴가 삐걱대요."
+        },
+        {
+          "who": "onyu",
+          "text": "문기, 인사하는 소린가요?"
+        },
+        {
+          "who": "mungi",
+          "text": "기름을 달라는 인사예요."
+        }
+      ]
+    },
+    {
+      "id": "talk_mungi_onyu_2",
+      "pair": [
+        "mungi",
+        "onyu"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "mungi",
+          "text": "온유, 솔은 어디 있나요?"
+        },
+        {
+          "who": "onyu",
+          "text": "문기 점검표 옆에서 쉬어요."
+        }
+      ]
+    },
+    {
+      "id": "talk_mungi_onyu_3",
+      "pair": [
+        "mungi",
+        "onyu"
+      ],
+      "min_crew_level": 5,
+      "lines": [
+        {
+          "who": "mungi",
+          "text": "온유, 받침은 제가 봤어요."
+        },
+        {
+          "who": "onyu",
+          "text": "그럼 저는 쉬는 자리 볼게요."
+        }
+      ]
+    },
+    {
+      "id": "talk_mungi_onyu_4",
+      "pair": [
+        "mungi",
+        "onyu"
+      ],
+      "min_crew_level": 10,
+      "lines": [
+        {
+          "who": "mungi",
+          "text": "온유, 대포도 잠잠하네요."
+        },
+        {
+          "who": "onyu",
+          "text": "오늘은 파도 소리만 듣죠."
+        }
+      ]
+    },
+    {
+      "id": "talk_mungi_onyu_5",
+      "pair": [
+        "mungi",
+        "onyu"
+      ],
+      "min_crew_level": 12,
+      "lines": [
+        {
+          "who": "mungi",
+          "text": "온유, 확인은 끝났어요."
+        },
+        {
+          "who": "onyu",
+          "text": "문기, 이제 제 쉬는 차례죠?"
+        },
+        {
+          "who": "mungi",
+          "text": "옆자리는 제 몫이에요."
+        }
+      ]
+    },
+    {
+      "id": "talk_sori_deul_1",
+      "pair": [
+        "sori",
+        "deul"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "sori",
+          "text": "들, 냄비가 또 노래해요."
+        },
+        {
+          "who": "deul",
+          "text": "소리 발소리에 맞췄지요."
+        }
+      ]
+    },
+    {
+      "id": "talk_sori_deul_2",
+      "pair": [
+        "sori",
+        "deul"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "sori",
+          "text": "들, 빈 포대 남겨 둘까요?"
+        },
+        {
+          "who": "deul",
+          "text": "소리 간식도 같이 담아요."
+        },
+        {
+          "who": "sori",
+          "text": "숨기지 말고 나눠 먹어요."
+        }
+      ]
+    },
+    {
+      "id": "talk_sori_deul_3",
+      "pair": [
+        "sori",
+        "deul"
+      ],
+      "min_crew_level": 5,
+      "lines": [
+        {
+          "who": "sori",
+          "text": "들, 소금은 어디 둘까요?"
+        },
+        {
+          "who": "deul",
+          "text": "소리 손 닿는 곳이면 돼요."
+        }
+      ]
+    },
+    {
+      "id": "talk_sori_deul_4",
+      "pair": [
+        "sori",
+        "deul"
+      ],
+      "min_crew_level": 10,
+      "lines": [
+        {
+          "who": "sori",
+          "text": "들, 제 그릇도 챙겼나요?"
+        },
+        {
+          "who": "deul",
+          "text": "소리 몫 곁에 제 것도 뒀죠."
+        }
+      ]
+    },
+    {
+      "id": "talk_sori_deul_5",
+      "pair": [
+        "sori",
+        "deul"
+      ],
+      "min_crew_level": 12,
+      "lines": [
+        {
+          "who": "sori",
+          "text": "들, 오늘 포대가 가벼워요."
+        },
+        {
+          "who": "deul",
+          "text": "함께 먹어 빈자리예요."
+        },
+        {
+          "who": "sori",
+          "text": "그 자리에 내일을 담아요."
+        }
+      ]
+    },
+    {
+      "id": "talk_nuri_saei_1",
+      "pair": [
+        "nuri",
+        "saei"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "nuri",
+          "text": "새이, 상자도 이름이 있나요?"
+        },
+        {
+          "who": "saei",
+          "text": "누리 상자는 얼굴이 있네요."
+        }
+      ]
+    },
+    {
+      "id": "talk_nuri_saei_2",
+      "pair": [
+        "nuri",
+        "saei"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "nuri",
+          "text": "새이, 빈칸은 왜 남겼나요?"
+        },
+        {
+          "who": "saei",
+          "text": "누리 칭찬 넣어 두려고요."
+        }
+      ]
+    },
+    {
+      "id": "talk_nuri_saei_3",
+      "pair": [
+        "nuri",
+        "saei"
+      ],
+      "min_crew_level": 5,
+      "lines": [
+        {
+          "who": "nuri",
+          "text": "새이, 받는 손도 떠올려요."
+        },
+        {
+          "who": "saei",
+          "text": "그럼 장부에 길이 생기죠."
+        }
+      ]
+    },
+    {
+      "id": "talk_nuri_saei_4",
+      "pair": [
+        "nuri",
+        "saei"
+      ],
+      "min_crew_level": 10,
+      "lines": [
+        {
+          "who": "nuri",
+          "text": "새이, 포장 끝을 남겼어요."
+        },
+        {
+          "who": "saei",
+          "text": "펴는 사람 손을 위한 틈이죠?"
+        }
+      ]
+    },
+    {
+      "id": "talk_nuri_saei_5",
+      "pair": [
+        "nuri",
+        "saei"
+      ],
+      "min_crew_level": 12,
+      "lines": [
+        {
+          "who": "nuri",
+          "text": "새이, 이 표는 함께 썼죠."
+        },
+        {
+          "who": "saei",
+          "text": "누리 글씨는 틈이 넉넉해요."
+        },
+        {
+          "who": "nuri",
+          "text": "상자처럼 숨 쉴 자리예요."
+        }
+      ]
+    },
+    {
+      "id": "talk_bada_haneul_1",
+      "pair": [
+        "bada",
+        "haneul"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "bada",
+          "text": "하늘, 바람도 편지를 쓰나요?"
+        },
+        {
+          "who": "haneul",
+          "text": "바다 돛에 쓴 걸 읽어 봐요."
+        }
+      ]
+    },
+    {
+      "id": "talk_bada_haneul_2",
+      "pair": [
+        "bada",
+        "haneul"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "bada",
+          "text": "하늘, 실땀이 글씨 같나요?"
+        },
+        {
+          "who": "haneul",
+          "text": "바다에게 온 비밀 편지 같죠."
+        }
+      ]
+    },
+    {
+      "id": "talk_bada_haneul_3",
+      "pair": [
+        "bada",
+        "haneul"
+      ],
+      "min_crew_level": 5,
+      "lines": [
+        {
+          "who": "bada",
+          "text": "하늘, 답장 천은 남겼어요."
+        },
+        {
+          "who": "haneul",
+          "text": "바다에게 보낼 말도 있죠."
+        }
+      ]
+    },
+    {
+      "id": "talk_bada_haneul_4",
+      "pair": [
+        "bada",
+        "haneul"
+      ],
+      "min_crew_level": 10,
+      "lines": [
+        {
+          "who": "bada",
+          "text": "하늘, 신호가 잘 닿았대요."
+        },
+        {
+          "who": "haneul",
+          "text": "바다가 돛을 비켜 줬잖아요."
+        }
+      ]
+    },
+    {
+      "id": "talk_bada_haneul_5",
+      "pair": [
+        "bada",
+        "haneul"
+      ],
+      "min_crew_level": 12,
+      "lines": [
+        {
+          "who": "bada",
+          "text": "하늘, 이 돛도 오래됐네요."
+        },
+        {
+          "who": "haneul",
+          "text": "바다가 고친 자리마다 소식이죠."
+        },
+        {
+          "who": "bada",
+          "text": "다음 편지도 여기 남겨요."
+        }
+      ]
+    },
+    {
+      "id": "talk_geonu_bityeo_1",
+      "pair": [
+        "geonu",
+        "bityeo"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "geonu",
+          "text": "빛여, 저건 반짝 돌인가요?"
+        },
+        {
+          "who": "bityeo",
+          "text": "건우 단추가 비친 거예요."
+        }
+      ]
+    },
+    {
+      "id": "talk_geonu_bityeo_2",
+      "pair": [
+        "geonu",
+        "bityeo"
+      ],
+      "min_crew_level": 1,
+      "lines": [
+        {
+          "who": "geonu",
+          "text": "빛여, 톱밥도 별이 되나요?"
+        },
+        {
+          "who": "bityeo",
+          "text": "건우 손끝에서 막 나왔네요."
+        }
+      ]
+    },
+    {
+      "id": "talk_geonu_bityeo_3",
+      "pair": [
+        "geonu",
+        "bityeo"
+      ],
+      "min_crew_level": 5,
+      "lines": [
+        {
+          "who": "geonu",
+          "text": "빛여, 틈이 어디 보이나요?"
+        },
+        {
+          "who": "bityeo",
+          "text": "건우 손 닿기 좋은 쪽이요."
+        }
+      ]
+    },
+    {
+      "id": "talk_geonu_bityeo_4",
+      "pair": [
+        "geonu",
+        "bityeo"
+      ],
+      "min_crew_level": 10,
+      "lines": [
+        {
+          "who": "geonu",
+          "text": "빛여, 렌즈 받침 괜찮나요?"
+        },
+        {
+          "who": "bityeo",
+          "text": "건우가 제 눈높이를 알죠."
+        }
+      ]
+    },
+    {
+      "id": "talk_geonu_bityeo_5",
+      "pair": [
+        "geonu",
+        "bityeo"
+      ],
+      "min_crew_level": 12,
+      "lines": [
+        {
+          "who": "geonu",
+          "text": "빛여, 먼 곳도 함께 볼까요?"
+        },
+        {
+          "who": "bityeo",
+          "text": "건우가 만든 의자에 앉아요."
+        },
+        {
+          "who": "geonu",
+          "text": "이번엔 연장도 쉬게 두죠."
+        }
+      ]
+    }
+  ]
+}
