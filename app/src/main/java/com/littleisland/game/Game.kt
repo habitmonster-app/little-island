@@ -147,6 +147,7 @@ object Game {
     fun isRead(id: String) = id in read
     fun markRead(id: String) { if (read.add(id)) save() }
     fun unread() = opened.count { it !in read }
+    fun markAllRead() { if (read.addAll(opened)) save() }
     private var storyDirty = true
 
     // ---------- 카드 ----------

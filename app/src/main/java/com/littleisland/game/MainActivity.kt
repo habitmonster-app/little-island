@@ -136,16 +136,20 @@ class MainActivity : Activity(), AppUi.Host {
     }
 
     private fun openJournalList() {
-        val list = Story.entries.filter { Game.isOpen(it.id) }
-            .sortedWith(compareBy({ it.kind }, { Story.entries.indexOf(it) }))
-        if (list.isEmpty()) { toast("아직 일지가 없어요"); return }
-        val items = list.map { (if (Game.isRead(it.id)) "" else "● ") + it.label + " · " + it.title }.toTypedArray()
+        val all = Story.entries.filter { Game.isOpen(it.id) }
+        if (all.isEmpty()) { toast("아직 일지가 없어요"); return }
+        // 새 글은 맨 위에, 목록을 열면 모두 읽음으로
+        val fresh = all.filter { !Game.isRead(it.id) }.map { it.id }.toSet()
+        val list = all.sortedWith(compareBy({ it.id !in fresh }, { it.kind }, { Story.entries.indexOf(it) }))
+        Game.markAllRead()
+        val items = list.map { (if (it.id in fresh) "● 새 글 · " else "") + it.label + " · " + it.title }.toTypedArray()
         AlertDialog.Builder(this).setTitle("항해일지")
-            .setItems(items) { _, i -> openEntry(list[i]) }
+            .setItems(items) { _, i -> openEntry(list, i) }
             .setNegativeButton("닫기", null).show()
     }
 
-    private fun openEntry(e: Story.Entry) {
+    private fun openEntry(list: List<Story.Entry>, i: Int) {
+        val e = list[i]
         Game.markRead(e.id)
         val tv = TextView(this).apply {
             text = (if (e.summary.isNotEmpty()) Story.fill(e.summary) + "\n\n" else "") + Story.fill(e.body)
@@ -173,7 +177,8 @@ class MainActivity : Activity(), AppUi.Host {
         }
         box.addView(tv)
         AlertDialog.Builder(this).setTitle(e.label + " · " + e.title).setView(ScrollView(this).apply { addView(box) })
-            .setPositiveButton("목록") { _, _ -> openJournal() }
+            .apply { if (i + 1 < list.size) setPositiveButton("다음 글") { _, _ -> openEntry(list, i + 1) } }
+            .setNeutralButton("목록") { _, _ -> openJournal() }
             .setNegativeButton("닫기", null).show()
     }
 
