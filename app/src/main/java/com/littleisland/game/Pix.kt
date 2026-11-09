@@ -48,6 +48,9 @@ object Pix {
         tp.color = color; c.drawText(s, x, y, tp)
     }
     @Synchronized fun width(s: String, size: Int): Float { font(size); return tp.measureText(s) }
+    /** 자르기·줄나눔용 폭: 굵은 글자와 테두리가 조금 더 넓게 그려지므로 여유를 둔다 */
+    private fun wsafe(s: String, size: Int) = width(s, size) * 1.1f + 2f
+    fun fits(s: String, size: Int, maxW: Float) = wsafe(s, size) <= maxW
 
     /** 폭에 맞게 줄을 나눈다 (한글은 글자 단위로도 끊는다) */
     @Synchronized fun wrap(s: String, size: Int, maxW: Float): List<String> {
@@ -56,13 +59,13 @@ object Pix {
             var line = ""
             for (word in para.split(" ")) {
                 val t = if (line.isEmpty()) word else "$line $word"
-                if (width(t, size) <= maxW) { line = t; continue }
+                if (wsafe(t, size) <= maxW) { line = t; continue }
                 if (line.isNotEmpty()) out.add(line)
                 line = ""
                 var w = word
-                while (width(w, size) > maxW) {
+                while (wsafe(w, size) > maxW) {
                     var k = w.length
-                    while (k > 1 && width(w.substring(0, k), size) > maxW) k--
+                    while (k > 1 && wsafe(w.substring(0, k), size) > maxW) k--
                     out.add(w.substring(0, k)); w = w.substring(k)
                 }
                 line = w
@@ -74,9 +77,9 @@ object Pix {
 
     /** 글자가 폭을 넘으면 끝을 줄인다 */
     @Synchronized fun fit(s: String, size: Int, maxW: Float): String {
-        if (width(s, size) <= maxW) return s
+        if (wsafe(s, size) <= maxW) return s
         var t = s
-        while (t.length > 1 && width("$t…", size) > maxW) t = t.dropLast(1)
+        while (t.length > 1 && wsafe("$t…", size) > maxW) t = t.dropLast(1)
         return "$t…"
     }
 
