@@ -924,6 +924,8 @@ class Scene {
     private val DECKP = arrayOf(intArrayOf(40, 96), intArrayOf(40, 76), intArrayOf(36, 73), intArrayOf(31, 78), intArrayOf(22, 65))
 
     /** 이 단계 배 그림 한 칸 (5단계는 따로 된 시트) */
+    /** 앱의 배 화면에 그릴 지금 배 그림 */
+    fun shipArt(w: Int): android.graphics.Bitmap? = shipCell(Game.shipLevel, Game.lookStage(), w, false)
     private fun shipCell(lv: Int, look: Int, sw: Int, cutFlag: Boolean): android.graphics.Bitmap? {
         val five = lv >= 5
         val sheet = if (lv >= 6 && Art.has("ship_stage6")) "ship_stage6" else if (five) "ship_stage5" else "ship_stages"

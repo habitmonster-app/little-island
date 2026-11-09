@@ -34,9 +34,9 @@ class AppUi(val scene: Scene, val host: Host) {
                val keep: Boolean = false,
                val btn2: String? = null, val act2: (() -> Boolean)? = null, val done2: String? = null)   // 두 번째 버튼 (선원: 태우기/내리기)   // keep: 버튼을 눌러도 창을 닫지 않고 새 내용으로 (부품 연속 올리기)
 
-    private val tabs = listOf("store" to "짓기", "ship" to "배", "anchor" to "항로", "person" to "선원", "map" to "할 일", "book" to "기록", "gear" to "설정")
+    private val tabs = listOf("store" to "짓기", "ship" to "배", "anchor" to "항로", "person" to "선원", "map" to "할 일", "book" to "기록", "gear" to "설정", "skill:9" to "스킬")
     /** 화면에 놓는 탭 순서: 배와 선원이 맨 앞 */
-    private val order = intArrayOf(1, 3, 0, 2, 4, 5, 6)
+    private val order = intArrayOf(1, 3, 7, 0, 2, 4, 5, 6)
     var tab = if (Game.dock) 1 else 0
     private var popup: Tile? = null
     var fxAt = 0L                        // 올리기 성공 반짝임 시작 시각
@@ -476,23 +476,38 @@ class AppUi(val scene: Scene, val host: Host) {
         tabRects.clear()
         for ((i, ti) in order.withIndex()) {
             val t = tabs[ti]
-            val x = 3f + i * 27f + (if (i == tabs.size - 1) 6f else 0f)
-            k.rect(c, x, ty, 25f, 25f, k.INK)
-            k.rect(c, x + 1, ty + 1, 23f, 23f, if (ti == tab) k.col("#c8903a") else k.col("#8a6030"))
-            k.rect(c, x + 1, ty + 1, 23f, 2f, if (ti == tab) k.col("#f0c060") else k.col("#a87444"))
-            k.icon(c, t.first, x + 2.5f, ty + 3f, 2f)
-            if (ti == 5 && Game.unread() > 0) k.rect(c, x + 20, ty - 1, 5f, 5f, k.RED)
-            tabRects.add(Rect(x.toInt(), ty.toInt(), (x + 25).toInt(), (ty + 25).toInt()))
+            val st = (W - 6f) / order.size
+            val x = 3f + i * st; val bw = st - 2f
+            k.rect(c, x, ty, bw, 25f, k.INK)
+            k.rect(c, x + 1, ty + 1, bw - 2, 23f, if (ti == tab) k.col("#c8903a") else k.col("#8a6030"))
+            k.rect(c, x + 1, ty + 1, bw - 2, 2f, if (ti == tab) k.col("#f0c060") else k.col("#a87444"))
+            if (t.first.contains(":")) k.icon(c, t.first, x + (bw - 18) / 2, ty + 3.5f, 1.8f) else k.icon(c, t.first, x + (bw - 20) / 2, ty + 3f, 2f)
+            if (ti == 5 && Game.unread() > 0) k.rect(c, x + bw - 5, ty - 1, 5f, 5f, k.RED)
+            if (ti == 7 && (0 until 25).any { Game.treeOpen(it) && Game.gold >= Game.treeCost(it) }) k.rect(c, x + bw - 5, ty - 1, 5f, 5f, k.GOLD)
+            tabRects.add(Rect(x.toInt(), ty.toInt(), (x + bw).toInt(), (ty + 25).toInt()))
         }
         // 판넬
         val py = ty + 30; val ph = H - py - 26
         k.panel(c, 2f, py, W - 4f, ph)
-        k.text(c, tabs[tab].second, W / 2f, py + 17, 12, k.CREAM, Paint.Align.CENTER, true)
-        val list = tiles()
-        tileRects.clear()
+        if (tab != 7) k.text(c, tabs[tab].second, W / 2f, py + 17, 12, k.CREAM, Paint.Align.CENTER, true)
+        tileRects.clear(); treeRects.clear(); treeBtn = null; slotRects.clear(); modeRects.clear(); statRects.clear(); faceRects.clear()
+        if (tab == 7) {
+            // 위의 두 버튼: 선원 능력치 / 항해술 나무
+            k.rect(c, 6f, py + 3, W - 12f, 19f, k.col("#3a2614"))
+            for ((m, nm) in listOf("선원 능력치", "항해술 나무").withIndex()) {
+                val bx = 8f + m * (W - 16f) / 2; val bw = (W - 16f) / 2 - 2
+                k.button(c, bx, py + 4, bw, 16f, nm, skillMode == m)
+                modeRects.add(Rect(bx.toInt(), (py + 1).toInt(), (bx + bw).toInt(), (py + 23).toInt()) to m)
+            }
+            if (skillMode == 0) drawStats(py, ph) else drawTree(py, ph)
+            drawBar(k); popup?.let { drawPopup(it) }; return
+        }
+        val all = tiles()
+        var head = 0f
+        val list = if (tab == 1) { head = drawShipHead(py + 24, all); all.filter { !it.icon.startsWith("part:") && it.sub != "지나옴" } } else all
         val tw = 58f; val th = 60f; val gx = 6f
-        val x0 = (W - (tw * 3 + gx * 2)) / 2f; val y0 = py + 24
-        val perPage = (((ph - 30) + gx) / (th + gx)).toInt().coerceAtLeast(1) * 3
+        val x0 = (W - (tw * 3 + gx * 2)) / 2f; val y0 = py + 24 + head
+        val perPage = (((ph - 30 - head) + gx) / (th + gx)).toInt().coerceAtLeast(1) * 3
         perPageNow = perPage
         val pages = (list.size + perPage - 1) / perPage
         if (page >= pages) page = (pages - 1).coerceAtLeast(0)
@@ -508,6 +523,11 @@ class AppUi(val scene: Scene, val host: Host) {
             if (page < pages - 1) { k.button(c, W - 52f, py + 4, 44f, 16f, "다음 ▶", true); pageRects.add(Rect(W - 58, (py - 2).toInt(), W - 2, (py + 24).toInt()) to page + 1) }
         }
         if (pages > 1) k.text(c, (page + 1).toString() + " / " + pages + " 쪽" + (if (page < pages - 1) "  · 옆으로 밀어도 돼요" else ""), W / 2f, py + ph - 4, 9, k.GOLD, Paint.Align.CENTER, true)
+        drawBar(k)
+        popup?.let { drawPopup(it) }
+    }
+
+    private fun drawBar(k: Pix) {
         // 자원 막대
         val by = H - 22f
         k.rect(c, 20f, by, W - 40f, 18f, k.INK); k.rect(c, 21f, by + 1, W - 42f, 16f, k.col("#5d3a1f")); k.rect(c, 21f, by + 1, W - 42f, 1f, k.col("#a87444"))
@@ -516,7 +536,131 @@ class AppUi(val scene: Scene, val host: Host) {
         val gap = floatArrayOf(34f, 34f, 60f, 0f)
         var x = 26f
         for ((i, iv) in items.withIndex()) { val (ic, v) = iv; k.icon(c, ic, x, by + 4, 1f); k.text(c, v, x + 12, by + 13, 10, k.GOLD); x += gap[i] }
-        popup?.let { drawPopup(it) }
+    }
+
+    // ---------- 배 화면: 가운데 배, 양옆에 부품 넷 ----------
+    private val slotRects = ArrayList<Pair<Rect, Tile>>()
+    private fun drawShipHead(y: Float, all: List<Tile>): Float {
+        val k = Pix
+        val h = 78f
+        k.rect(c, 8f, y, W - 16f, h - 4, k.col("#2a1a10"))
+        k.rect(c, 9f, y + 1, W - 18f, h - 6, k.col("#1d3550"))
+        k.rect(c, 9f, y + h * .62f, W - 18f, h * .38f - 5, k.col("#17496e"))
+        scene.shipArt(64)?.let { bm -> src.set(0, 0, bm.width, bm.height); dst.set((W / 2 - 34), (y + 2).toInt(), (W / 2 + 34), (y + 70).toInt()); c.drawBitmap(bm, src, dst, bp) }
+        k.text(c, Game.ship().name, W / 2f, y + h - 8, 8, k.CREAM, Paint.Align.CENTER, true)
+        val parts = all.filter { it.icon.startsWith("part:") }
+        for ((i, t) in parts.withIndex()) {
+            val left = i < 2
+            val sx = if (left) 14f else W - 14f - 46f; val sy = y + 4 + (i % 2) * 35f
+            k.slot(c, sx, sy, 46f, 32f, t.st == St.READY, false)
+            k.icon(c, t.icon, sx + 3, sy + 6, 1f)
+            val nm = t.name.substringBefore(" Lv"); val lv = t.name.substringAfter(" Lv", "")
+            k.text(c, nm, sx + 27, sy + 13, 8, k.CREAM, Paint.Align.CENTER)
+            k.text(c, "Lv$lv", sx + 27, sy + 25, 10, if (t.st == St.READY) k.GOLD else k.col("#c8b896"), Paint.Align.CENTER, true)
+            if (t.st == St.READY) k.text(c, "!", sx + 42, sy + 9, 10, k.GOLD, Paint.Align.CENTER, true)
+            slotRects.add(Rect(sx.toInt(), sy.toInt(), (sx + 46).toInt(), (sy + 32).toInt()) to t)
+        }
+        return h
+    }
+
+    // ---------- 선원 능력치 ----------
+    var skillMode = 0
+    private val modeRects = ArrayList<Pair<Rect, Int>>()
+    private val statRects = ArrayList<Pair<Rect, Pair<Int, Int>>>()   // (칸, (능력치, +1/-1))
+    private val faceRects = ArrayList<Pair<Rect, String>>()
+    private var statSel: String? = null
+    private fun drawStats(py: Float, ph: Float) {
+        val k = Pix
+        val crew = Game.aboard.filter { it in Game.promoted } + Game.promoted.filter { it !in Game.aboard }
+        if (crew.isEmpty()) {
+            k.text(c, "아직 선원이 없어요.", W / 2f, py + 60, 11, k.CREAM, Paint.Align.CENTER, true)
+            k.text(c, "선원 탭에서 알바를 선원으로 올려요.", W / 2f, py + 78, 9, k.col("#c8b896"), Paint.Align.CENTER)
+            return
+        }
+        if (statSel !in crew) statSel = crew.first()
+        val id = statSel!!
+        // 선원 얼굴 줄
+        var fx = 10f
+        for (cid in crew) {
+            val pi = Data.workers.indexOfFirst { it.id == cid }
+            val sel = cid == id
+            k.slot(c, fx, py + 26, 26f, 26f, Game.ptsFree(cid) > 0, sel)
+            k.icon(c, (if (Game.crewLevel(cid) >= 11) "face15:" else "face:") + pi, fx + 3, py + 29, 2f)
+            if (Game.ptsFree(cid) > 0) k.rect(c, fx + 21, py + 25, 5f, 5f, k.GOLD)
+            if (cid in Game.aboard) k.rect(c, fx + 2, py + 48, 22f, 2f, k.GREEN)
+            faceRects.add(Rect(fx.toInt(), (py + 24).toInt(), (fx + 26).toInt(), (py + 54).toInt()) to cid)
+            fx += 30
+        }
+        val cn = Fleet.crewOf(id)?.name ?: ""
+        val free = Game.ptsFree(id)
+        k.text(c, cn + " Lv" + Game.crewLevel(id) + (if (id in Game.aboard) " · 탑승" else " · 대기 (타야 효과)"), 12f, py + 66, 10, k.CREAM, Paint.Align.LEFT, true)
+        k.text(c, "남은 점수 " + free + " / " + Game.ptsTotal(id), W - 12f, py + 66, 10, if (free > 0) k.GOLD else k.col("#c8b896"), Paint.Align.RIGHT, true)
+        val a = Game.pts(id)
+        val rowH = minOf(28f, (ph - 76 - 16) / 4f)
+        for (st in 0 until 4) {
+            val y = py + 72 + st * rowH
+            k.rect(c, 8f, y, W - 16f, rowH - 3, k.INK); k.rect(c, 9f, y + 1, W - 18f, rowH - 5, k.col("#3a2614"))
+            val canM = a[st] > 0; val canP = free > 0 && a[st] < Game.STAT_MAX
+            k.button(c, 11f, y + 3, 20f, rowH - 9, "-", canM)
+            k.button(c, W - 31f, y + 3, 20f, rowH - 9, "+", canP)
+            k.text(c, Game.STAT_NAME[st] + "  Lv" + a[st] + "/" + Game.STAT_MAX, 37f, y + 11, 9, k.CREAM, Paint.Align.LEFT, true)
+            k.text(c, Game.statText(st, a[st]) + (if (a[st] < Game.STAT_MAX) "  →  " + Game.statText(st, a[st] + 1).substringAfterLast(" ") else ""), 37f, y + rowH - 7, 9, kindColor(listOf("win", "speed", "cargo", "sale")[st]))
+            statRects.add(Rect(6, y.toInt(), 36, (y + rowH).toInt()) to (st to -1))
+            statRects.add(Rect(W - 36, y.toInt(), W - 6, (y + rowH).toInt()) to (st to 1))
+        }
+        k.text(c, "레벨마다 2점 · 배에 탄 선원만 효과", W / 2f, py + ph - 6, 8, k.col("#c8b896"), Paint.Align.CENTER)
+    }
+
+    // ---------- 항해술 나무 ----------
+    private val treeRects = ArrayList<Pair<Rect, Int>>()
+    private var treeBtn: Rect? = null
+    private var treeSel = -1
+    private fun kindColor(kind: String) = Pix.col(when (kind) { "win" -> "#c8503a"; "speed" -> "#3aa0c8"; "cargo" -> "#a8743a"; "sale" -> "#e0b030"; "xp" -> "#70b84a"; else -> "#9a6ad0" })
+    private fun drawTree(py: Float, ph: Float) {
+        val k = Pix
+        if (treeSel < 0 || treeSel >= 25) treeSel = (0 until 25).firstOrNull { Game.treeOpen(it) } ?: 12
+        val infoH = 50f
+        val avail = ph - 28 - infoH - 6
+        val step = minOf(36f, avail / 5f, (W - 24f) / 5f)
+        val ns = step * .72f
+        val gx = (W - step * 5) / 2f + (step - ns) / 2; val gy = py + 24 + (avail - step * 5) / 2 + (step - ns) / 2
+        fun cx(i: Int) = gx + (i % 5) * step + ns / 2
+        fun cy(i: Int) = gy + (i / 5) * step + ns / 2
+        // 줄: 이웃한 칸끼리
+        for (i in 0 until 25) for (j in listOf(i + 1, i + 5)) {
+            if (j >= 25 || (j == i + 1 && i % 5 == 4)) continue
+            val on = i in Game.treeOwned && j in Game.treeOwned
+            val half = (i in Game.treeOwned) != (j in Game.treeOwned)
+            val col = if (on) k.col("#f0c060") else if (half) k.col("#8a6a3a") else k.col("#3a2a18")
+            if (j == i + 1) k.rect(c, cx(i), cy(i) - 1.5f, step, 3f, col) else k.rect(c, cx(i) - 1.5f, cy(i), 3f, step, col)
+        }
+        for (n in Game.TREE) {
+            val i = n.i; val x = gx + (i % 5) * step; val y = gy + (i / 5) * step
+            val own = i in Game.treeOwned; val open = Game.treeOpen(i)
+            val kc = kindColor(n.kind)
+            k.rect(c, x - 1, y - 1, ns + 2, ns + 2, if (i == treeSel) k.col("#fff2b0") else k.INK)
+            k.rect(c, x, y, ns, ns, if (own) kc else if (open) k.col("#4a3420") else k.col("#24180e"))
+            k.rect(c, x + 1, y + 1, ns - 2, 1.5f, if (own) k.col("#ffffff") else kc)
+            if (n.big) { k.rect(c, x, y, 3f, 3f, k.GOLD); k.rect(c, x + ns - 3, y, 3f, 3f, k.GOLD); k.rect(c, x, y + ns - 3, 3f, 3f, k.GOLD); k.rect(c, x + ns - 3, y + ns - 3, 3f, 3f, k.GOLD) }
+            k.icon(c, "skill:" + n.icon, x + (ns - ns * .8f) / 2, y + (ns - ns * .8f) / 2, ns * .8f / 10f, if (own || open) 255 else 90)
+            treeRects.add(Rect(x.toInt() - 3, y.toInt() - 3, (x + ns).toInt() + 3, (y + ns).toInt() + 3) to i)
+        }
+        // 아래 설명 띠
+        val n = Game.TREE[treeSel]
+        val iy = py + ph - infoH - 4
+        k.rect(c, 8f, iy, W - 16f, infoH, k.INK); k.rect(c, 9f, iy + 1, W - 18f, infoH - 2, k.col("#3a2614"))
+        k.text(c, n.name + (if (n.big) " ★" else ""), 14f, iy + 14, 10, k.CREAM, Paint.Align.LEFT, true)
+        k.text(c, Game.treeKindText(n), 14f, iy + 28, 9, kindColor(n.kind))
+        val own = treeSel in Game.treeOwned
+        if (own) k.text(c, "✓ 배움", W - 14f, iy + 14, 10, k.GREEN, Paint.Align.RIGHT, true)
+        else if (Game.treeOpen(treeSel)) {
+            val g = Game.treeCost(treeSel); val ok = Game.gold >= g
+            val label = "배우기 · 금화 " + "%,d".format(g)
+            val bw = k.width(label, 10) + 14
+            k.button(c, W - 14 - bw, iy + 32, bw, 15f, label, ok)
+            if (ok) treeBtn = Rect((W - 14 - bw).toInt() - 3, (iy + 28).toInt(), W - 10, (iy + 50).toInt())
+        } else k.text(c, "옆 칸을 먼저 배워요", W - 14f, iy + 43, 9, k.DIM, Paint.Align.RIGHT)
+        k.text(c, "배운 칸 " + Game.treeOwned.size + "/25", 14f, iy + 43, 9, k.GOLD, Paint.Align.LEFT, true)
     }
 
     /** 함대 힘 표시 (오른쪽 위). 올리면 +숫자가 잠깐 떠오른다 */
@@ -559,6 +703,7 @@ class AppUi(val scene: Scene, val host: Host) {
         Game.dbReady() -> Game.Goal("d:boss", "오늘의 우두머리", null, true, false)
         Game.seasonReady() -> Game.Goal("d:season", "시즌 보상 받기", null, true, false)
         Game.renownReady() -> Game.Goal("d:renown", "명성 새 항해", null, true, false)
+        Game.promoted.any { Game.ptsFree(it) > 0 } -> Game.Goal("d:stats", "선원 능력치 찍기", null, true, false)
         Data.workers.any { Game.canPromote(it.id) } -> Data.workers.first { Game.canPromote(it.id) }.let { w -> Game.Goal("d:promote", w.name + " 선원 승진", Data.Cost(Fleet.promoteGold, 0, 0), true, false) }
         else -> Game.goal()
     }
@@ -566,6 +711,7 @@ class AppUi(val scene: Scene, val host: Host) {
     private fun openGoal() {
         val g = appGoal() ?: return
         val key = g.key
+        if (key == "d:stats") { tab = 7; skillMode = 0; statSel = Game.promoted.firstOrNull { Game.ptsFree(it) > 0 }; return }
         if (key.startsWith("d:")) {
             tab = when (key) { "d:renown" -> 1; "d:promote" -> 3; else -> 4 }; page = 0
             val list = tiles()
@@ -692,6 +838,20 @@ class AppUi(val scene: Scene, val host: Host) {
         goalRect?.let { r -> if (r.contains(ix, iy)) { openGoal(); return } }
         if (y >= top && y < top + sceneH) { scene.tap(x, (Scene.WL - sceneH * .55f).toInt() + (y - top))?.let { host.toast(it) }; return }
         for ((i, r) in tabRects.withIndex()) if (r.contains(ix, iy)) { tab = order[i]; page = 0; return }
+        treeBtn?.let { r -> if (r.contains(ix, iy)) {
+            val p0 = Game.myPower(); val n = Game.TREE[treeSel]
+            if (Game.learn(treeSel)) { fxAt = System.currentTimeMillis(); val dp = Game.myPower() - p0
+                if (dp > 0) { powFx = dp; powFxAt = fxAt }
+                host.toast(n.name + "! " + Game.treeKindText(n) + (if (dp > 0) "  함대 힘 +" + "%,d".format(dp) else "")) }
+            return } }
+        for ((r, i) in treeRects) if (r.contains(ix, iy)) { treeSel = i; return }
+        for ((r, m) in modeRects) if (r.contains(ix, iy)) { skillMode = m; return }
+        for ((r, cid) in faceRects) if (r.contains(ix, iy)) { statSel = cid; return }
+        for ((r, sd) in statRects) if (r.contains(ix, iy)) { val id = statSel ?: return
+            val p0 = Game.myPower()
+            if (Game.statAdd(id, sd.first, sd.second)) { val dp = Game.myPower() - p0; if (dp > 0) { powFx = dp; powFxAt = System.currentTimeMillis() } }
+            return }
+        for ((r, t) in slotRects) if (r.contains(ix, iy)) { popup = t; return }
         for ((r, pg) in pageRects) if (r.contains(ix, iy)) { page = pg; return }
         for ((r, t) in tileRects) if (r.contains(ix, iy)) { popup = t; return }
     }

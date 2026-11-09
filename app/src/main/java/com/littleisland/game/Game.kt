@@ -100,8 +100,8 @@ object Game {
     /** 배 그림 단계(0~3): 이번 배 단계 기준 레벨을 넘은 부품 수 */
     fun lookStage(): Int { val t = Fleet.lookThreshold(shipLevel); return minOf(3, Fleet.parts.count { partLevel(it.id) >= t }) }
 
-    fun loadW(ids: List<String> = aboard) = floor(ship().cargoW * (1 + min(1.35f, partValue("hull") + cb(ids, "cargo_bonus")))).toInt()
-    fun loadS(ids: List<String> = aboard) = floor(ship().cargoS * (1 + min(1.35f, partValue("hull") + cb(ids, "cargo_bonus")))).toInt()
+    fun loadW(ids: List<String> = aboard) = floor(ship().cargoW * (1 + min(1.35f, partValue("hull") + cb(ids, "cargo_bonus") + tree("cargo") + cs(ids, 2)))).toInt()
+    fun loadS(ids: List<String> = aboard) = floor(ship().cargoS * (1 + min(1.35f, partValue("hull") + cb(ids, "cargo_bonus") + tree("cargo") + cs(ids, 2)))).toInt()
 
     // ---------- 항해 ----------
     class Voyage(var start: Long, val dur: Float, val port: String, var cw: Int, var cs: Int, val encounter: Boolean,
@@ -227,6 +227,8 @@ object Game {
         critSeen.clear(); sp.getString("critSeen", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { critSeen.add(it) }
         bookGot.clear(); sp.getString("bookGot", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { bookGot.add(it) }
         pearlUntil = sp.getLong("pearlUntil", 0L); pearlNext = sp.getLong("pearlNext", 0L)
+        crewPts.clear(); sp.getString("crewPts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewPts[k] = v.split(".").map { x -> x.toIntOrNull() ?: 0 }.plus(listOf(0, 0, 0, 0)).take(4).toIntArray() }
+        treeOwned.clear(); sp.getString("tree", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { treeOwned.add(it) }
         renown = sp.getInt("renown", 0); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
         dbDay = sp.getLong("dbDay", -1L); seasonKey = sp.getString("seasonKey", "") ?: ""; seasonPts = sp.getInt("seasonPts", 0); seasonGot = sp.getInt("seasonGot", 0)
         visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
@@ -296,7 +298,7 @@ object Game {
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
             putLong("pearlUntil", pearlUntil); putLong("pearlNext", pearlNext)
-            putInt("renown", renown); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
+            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
             putString("seasonKey", seasonKey); putInt("seasonPts", seasonPts); putInt("seasonGot", seasonGot)
             putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
@@ -508,10 +510,65 @@ object Game {
         return "진주! " + resText(r)
     }
 
+    // ---------- 선원 능력치 찍기: 레벨마다 2점, 네 가지에 나눠 찍는다 ----------
+    val STAT_NAME = listOf("대포술", "돛 손질", "짐 꾸리기", "흥정")
+    val STAT_PER = floatArrayOf(.005f, .01f, .02f, .02f)
+    const val STAT_MAX = 10
+    val crewPts = HashMap<String, IntArray>()
+    fun pts(id: String): IntArray = crewPts.getOrPut(id) { IntArray(4) }
+    fun ptsTotal(id: String) = (crewLevel(id) - 1) * 2
+    fun ptsFree(id: String) = ptsTotal(id) - pts(id).sum()
+    /** 배에 탄 선원들이 찍은 능력치 합 */
+    fun cs(ids: List<String>, k: Int): Float = ids.filter { it in promoted }.sumOf { (crewPts[it]?.get(k) ?: 0).toDouble() }.toFloat() * STAT_PER[k]
+    fun statText(k: Int, n: Int): String = when (k) { 0 -> "이길 확률 +" + "%.1f".format(n * STAT_PER[0] * 100).removeSuffix(".0") + "%p"
+        1 -> "항해 시간 -" + (n * 1) + "%"; 2 -> "짐칸 +" + (n * 2) + "%"; else -> "판매 +" + (n * 2) + "%" }
+    @Synchronized fun statAdd(id: String, k: Int, d: Int): Boolean {
+        if (id !in promoted) return false
+        val a = pts(id)
+        if (d > 0 && (ptsFree(id) <= 0 || a[k] >= STAT_MAX)) return false
+        if (d < 0 && a[k] <= 0) return false
+        a[k] += d; save(); return true
+    }
+
+    // ---------- 항해술 나무: 5x5 칸, 이웃한 칸을 배우면 다음 칸이 열린다 ----------
+    class Node(val i: Int, val kind: String, val big: Boolean, val icon: Int, val name: String) {
+        val value get() = when (kind) { "win" -> if (big) .03f else .01f; "speed" -> if (big) .05f else .02f; "cargo" -> if (big) .12f else .05f
+            "sale" -> if (big) .10f else .04f; "xp" -> if (big) .30f else .10f; else -> if (big) .25f else .10f }
+    }
+    val TREE: List<Node> = listOf(
+        Node(0, "find", false, 14, "지도 읽기"), Node(1, "find", false, 4, "행운"), Node(2, "win", true, 10, "매의 눈"), Node(3, "win", false, 2, "포탄 쌓기"), Node(4, "xp", true, 13, "밤샘 공부"),
+        Node(5, "speed", false, 1, "바람 타기"), Node(6, "win", false, 2, "조준 연습"), Node(7, "win", false, 2, "포수 훈련"), Node(8, "xp", false, 11, "든든한 밥"), Node(9, "xp", false, 13, "등불 아래"),
+        Node(10, "speed", true, 9, "별 보고 가기"), Node(11, "speed", false, 1, "돛 다루기"), Node(12, "cargo", false, 0, "첫 항해술"), Node(13, "sale", false, 3, "값 매기기"), Node(14, "sale", true, 15, "단골 상인"),
+        Node(15, "speed", false, 1, "물길 읽기"), Node(16, "cargo", false, 0, "밧줄 묶기"), Node(17, "cargo", false, 0, "짐 쌓기"), Node(18, "sale", false, 3, "흥정"), Node(19, "sale", false, 3, "장부 쓰기"),
+        Node(20, "find", false, 4, "네잎 클로버"), Node(21, "cargo", true, 6, "큰 짐칸"), Node(22, "cargo", false, 7, "통나무 싣기"), Node(23, "cargo", false, 8, "돌 싣기"), Node(24, "find", true, 14, "보물 지도"))
+    val treeOwned = LinkedHashSet<Int>()
+    fun tree(kind: String): Float = treeOwned.sumOf { i -> TREE[i].takeIf { it.kind == kind }?.value?.toDouble() ?: 0.0 }.toFloat()
+    fun treeOpen(i: Int): Boolean {
+        if (i in treeOwned) return false
+        if (i == 12) return true
+        val c = i % 5; val r = i / 5
+        return listOf(if (c > 0) i - 1 else -1, if (c < 4) i + 1 else -1, if (r > 0) i - 5 else -1, if (r < 4) i + 5 else -1).any { it in treeOwned }
+    }
+    fun treeCost(i: Int): Int = Math.round(150.0 * Math.pow(1.4, treeOwned.size.toDouble()) * (if (TREE[i].big) 2 else 1) / 10).toInt() * 10
+    fun treeKindText(n: Node): String = when (n.kind) {
+        "win" -> "해적 이길 확률 +" + Math.round(n.value * 100) + "%p"
+        "speed" -> "항해 시간 -" + Math.round(n.value * 100) + "%"
+        "cargo" -> "짐칸 +" + Math.round(n.value * 100) + "%"
+        "sale" -> "판매 금화 +" + Math.round(n.value * 100) + "%"
+        "xp" -> "선원 경험치 +" + Math.round(n.value * 100) + "%"
+        else -> "떠다니는 보물 금화 +" + Math.round(n.value * 100) + "%"
+    }
+    @Synchronized fun learn(i: Int): Boolean {
+        if (!treeOpen(i)) return false
+        val g = treeCost(i); if (gold < g) return false
+        goldC -= g * 100L; treeOwned.add(i); bump("skill_learn")
+        save(); return true
+    }
+
     // ---------- 15차: 함대 힘, 출석, 오늘의 우두머리, 명성, 시즌 ----------
     /** 함대 힘: 이길 확률 식에서 해적 쪽을 뺀 내 쪽 합 × 10000. 해적 힘과 같으면 반반 */
     fun myPower(ids: List<String> = aboard.filter { it in promoted }.take(slots())): Int =
-        Math.round((ship().pirateWin + (if (lighthouse) Data.lighthouseBonus else 0f) + workerPirateBonus() + partValue("cannon") + cb(ids, "pirate_win_bonus") + renownWin()) * 10000)
+        Math.round((ship().pirateWin + (if (lighthouse) Data.lighthouseBonus else 0f) + workerPirateBonus() + partValue("cannon") + cb(ids, "pirate_win_bonus") + renownWin() + tree("win") + cs(ids, 0)) * 10000)
     fun enemyPower(p: Data.Pirate): Int = Math.round((.5f + Data.powerCoef * (p.power - 1f)) * 10000)
     fun powerLine(p: Data.Pirate, ids: List<String>) = "함대 힘 " + "%,d".format(myPower(ids)) + " vs " + "%,d".format(enemyPower(p))
 
@@ -778,7 +835,7 @@ object Game {
     fun workerSaleBonus() = min(Data.saleCap, workers.sumOf { (Data.worker(it.id)?.saleBonus ?: 0f).toDouble() }.toFloat())
 
     fun winChance(p: Data.Pirate, ids: List<String> = aboard): Float = (ship().pirateWin - Data.powerCoef * (p.power - 1f) +
-        (if (lighthouse) Data.lighthouseBonus else 0f) + workerPirateBonus() + partValue("cannon") + cb(ids, "pirate_win_bonus") + renownWin()).coerceIn(Data.winMin, Data.winMax)
+        (if (lighthouse) Data.lighthouseBonus else 0f) + workerPirateBonus() + partValue("cannon") + cb(ids, "pirate_win_bonus") + renownWin() + tree("win") + cs(ids, 0)).coerceIn(Data.winMin, Data.winMax)
 
     // ---------- 해적 대응: 배·대포·선원이 얼마나 도와주는지 ----------
     /** 지금 항로에서 만날 수 있는 보통 해적 (출항 때와 같은 조건) */
@@ -801,7 +858,9 @@ object Game {
         "선원 스킬·부적" to cb(ids, "pirate_win_bonus"),
         "등대" to (if (lighthouse) Data.lighthouseBonus else 0f),
         "알바" to workerPirateBonus(),
-        "명성 " + renown to renownWin())
+        "명성 " + renown to renownWin(),
+        "항해술" to tree("win"),
+        "선원 대포술" to cs(ids, 0))
 
     // ---------- 선원 가르치기: 금화로 바로 다음 레벨 ----------
     fun teachCost(id: String): Int? { val lv = crewLevel(id); return if (id !in promoted || lv >= Fleet.maxCrewLevel) null else 250 * lv * lv }
@@ -813,7 +872,7 @@ object Game {
         giveXp(id, need.coerceAtLeast(1)); bump("crew_teach"); save(); return true
     }
 
-    fun speedCut(ids: List<String> = aboard) = min(.35f, partValue("sail") + cb(ids, "speed_bonus"))
+    fun speedCut(ids: List<String> = aboard) = min(.35f, partValue("sail") + cb(ids, "speed_bonus") + tree("speed") + cs(ids, 1))
     fun voyageSeconds(p: Data.Port = port(), ids: List<String> = aboard): Float =
         ceil(Data.baseSeconds * p.distance / ship().speed * (1 - speedCut(ids))).coerceIn(Data.minSeconds, Data.maxSeconds)
 
@@ -896,7 +955,7 @@ object Game {
         if (v.step == 1 && f >= Data.fArrive) {
             v.step = 2
             val delivered = deliverReqs(v)
-            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f) + cb(v.crew, "sale_bonus") + renownSale()
+            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f) + cb(v.crew, "sale_bonus") + renownSale() + tree("sale") + cs(v.crew, 3)
             packed = false
             val sale = floor((v.cw * p.buyW * (1 + cb(v.crew, "wood_price_bonus")) + v.cs * p.buyS * (1 + cb(v.crew, "stone_price_bonus"))) * mul * 100).toLong()
             goldC += sale; v.saleC = sale
@@ -954,7 +1013,7 @@ object Game {
         Fleet.weather(weatherId)?.let { w -> line += "\n" + w.name + " · " + w.cardLine }
         weatherId = null
         card("배가 돌아왔어요", line)
-        for (id in v.crew) giveXp(id, Fleet.xpPerVoyage)
+        for (id in v.crew) giveXp(id, Math.round(Fleet.xpPerVoyage * (1 + tree("xp"))))
         tickets++
         bump("voyage_return")
         settleCrewEvent()
@@ -1344,10 +1403,10 @@ object Game {
         finds++; bump("floater_pick")
         val lv = shipLevel
         val text = when (kind) {
-            1 -> { val g = (20 + kotlin.random.Random.nextInt(21)) * lv; goldC += g * 100L; mapPieces++; "보물상자! 금화 +$g, 지도 조각 +1" }
+            1 -> { val g = Math.round((20 + kotlin.random.Random.nextInt(21)) * lv * (1 + tree("find"))); goldC += g * 100L; mapPieces++; "보물상자! 금화 +$g, 지도 조각 +1" }
             2 -> { val w = 4 + kotlin.random.Random.nextInt(5); add(w, 0); "갈매기가 떨어뜨린 나무 +$w" }
             else -> if (kotlin.random.Random.nextFloat() < .3f) { mapPieces++; "유리병 속 지도 조각 +1" }
-                    else { val g = (3 + kotlin.random.Random.nextInt(6)) * lv; goldC += g * 100L; "유리병 속 금화 +$g" }
+                    else { val g = Math.round((3 + kotlin.random.Random.nextInt(6)) * lv * (1 + tree("find"))); goldC += g * 100L; "유리병 속 금화 +$g" }
         }
         save(); return text
     }
