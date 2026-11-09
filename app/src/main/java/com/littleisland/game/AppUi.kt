@@ -220,7 +220,7 @@ class AppUi(val scene: Scene, val host: Host) {
                 for (cr in Fleet.crew) {
                     if (cr.id !in Game.promoted) continue
                     val m = Fleet.missions.firstOrNull { it.crew == cr.id && it.id !in Game.missionsDone } ?: continue
-                    val face = (if (Game.crewLevel(cr.id) >= 11) "face15:" else "face:") + cr.portrait
+                    val face = faceOf(Game.crewLevel(cr.id)) + cr.portrait
                     val port = Data.ports.firstOrNull { it.id == m.port }?.name ?: m.port
                     val rw = listOfNotNull(m.gold.takeIf { it > 0 }?.let { "금화 $it" }, m.wood.takeIf { it > 0 }?.let { "나무 $it" },
                         m.stone.takeIf { it > 0 }?.let { "돌 $it" }, m.maps.takeIf { it > 0 }?.let { "지도 조각 $it" }, m.xp.takeIf { it > 0 }?.let { cr.name + " 경험치 $it" })
@@ -291,7 +291,7 @@ class AppUi(val scene: Scene, val host: Host) {
                     val full = !on && Game.aboard.size >= Game.slots()
                     val tc = Game.teachCost(id)
                     val canT = tc != null && Game.gold >= tc
-                    l.add(Tile((if (lv >= 11) "face15:" else "face:") + pi, c.name + " Lv" + lv, if (canT) "가르치기!" else if (on) "탑승" else "대기", if (canT) St.READY else if (on) St.ON else St.NORMAL,
+                    l.add(Tile(faceOf(lv) + pi, c.name + " Lv" + lv, if (canT) "가르치기!" else if (on) "탑승" else "대기", if (canT) St.READY else if (on) St.ON else St.NORMAL,
                         c.role + " · " + Fleet.short("crew_roles", id, c.roleDesc) + "\n경험치 " + (if (next != null) Game.crewXp(id).toString() + "/" + next else "최고") + "\n\n" + skills +
                             (if (syn.isNotEmpty()) "\n\n$syn" else "") + (Game.charmOn[id]?.let { Fleet.charm(it) }?.let { "\n\n부적: " + it.name + " (" + eff(it.effect, Game.charmValue(it, id)) + ")" } ?: "") + (if (full) "\n\n자리가 꽉 찼어요. 다른 선원을 내리면 태울 수 있어요." else ""),
                         tc?.let { Data.Cost(it, 0, 0) }, if (tc != null) "Lv" + (lv + 1) + "로 가르치기" else null, { Game.teach(id) }, c.name + " Lv" + (lv + 1) + "!", keep = true,
@@ -616,8 +616,12 @@ class AppUi(val scene: Scene, val host: Host) {
                 null, w == 0L, "", { fight(); true }, btnText = if (w > 0) "쉬는 중 " + (w / 60000 + 1) + "분" else "도전!"))
         }
         // 명성: 다 키우면 새 항해 (영구 보너스)
-        if (Game.renownReady()) l.add(URow("title:0", "명성 새 항해!", "부품을 내려놓고 영원히 더 강해져요", null, true, "", { popup = renownTile(); true }, btnText = "보기"))
-        else if (Game.shipLevel >= 4 || Game.renown > 0) l.add(URow("title:0", "명성 " + Game.renown, "배 5단계, 부품 모두 최고면 새 항해", null, false, "", { false }, btnText = "대기"))
+        if (Game.renownReady()) l.add(URow("title:0", "다시 출항! 명성 " + (Game.renown + 1), "판매 +10% · 승률 +2%p", null, true, "", { popup = renownTile(); true }, btnText = "출항", big = false))
+        else if (Game.shipLevel >= 5 || Game.renown > 0) {
+            val cap = Fleet.maxLevel(Game.shipLevel); val low = Fleet.core.minOf { Game.partLevel(it.id) }
+            l.add(URow("title:0", "다시 출항 · 명성 " + Game.renown, if (Game.shipLevel < 5) "배 5단계부터 열려요" else "판매 +10% · 승률 +2%p", null, false, "", { popup = renownTile(); true },
+                btnText = if (Game.shipLevel < 5) "배 5단계" else "부품 $low/$cap"))
+        }
         // 다음 배 단계
         val nx = Game.shipLevel + 1
         Data.unlock("ship_$nx")?.takeIf { !Game.has(it.key) && Data.ships.any { s -> s.level == nx } }?.let { u ->
@@ -648,6 +652,8 @@ class AppUi(val scene: Scene, val host: Host) {
         }
         return l
     }
+    /** 선원 얼굴: Lv11·30·50에서 그림이 바뀐다 (30·50 그림이 없으면 15 그림) */
+    private fun faceOf(lv: Int) = if (lv >= 50) "face50:" else if (lv >= 30) "face30:" else if (lv >= 11) "face15:" else "face:"
     private val STAT_ICON = listOf("skill:6", "skill:1", "skill:0", "skill:3")
     fun crewRows(): List<URow> {
         val l = ArrayList<URow>()
@@ -661,9 +667,9 @@ class AppUi(val scene: Scene, val host: Host) {
             val pi = Data.workers.indexOfFirst { it.id == id }; val lv = Game.crewLevel(id)
             val tc = Game.teachCost(id); val free = Game.ptsFree(id); val on = id in Game.aboard
             val nm = Fleet.crewOf(id)?.name ?: id
-            l.add(URow((if (lv >= 11) "face15:" else "face:") + pi, nm + " Lv" + lv + (if (on) " · 승선" else " · 쉬는 중"),
+            l.add(URow(faceOf(lv) + pi, nm + " Lv" + lv + (if (on) " · 승선" else " · 쉬는 중"),
                 if (free > 0) "남은 점수 $free" else if (lv >= Fleet.maxCrewLevel) "최고 레벨이에요" else if (lv >= Game.crewCap()) "배 " + (lv / 5 + 1) + "단계에서 더 올라가요"
-                else if ((lv + 1) % 10 == 0) "Lv" + (lv + 1) + " 달성하면 판매 +5%" else "레벨이 오르면 점수 +2",
+                else Fleet.crewOf(id)?.skills?.firstOrNull { it.level > lv }?.let { sk -> "Lv" + sk.level + " 「" + sk.name + "」" } ?: "레벨이 오르면 점수 +2",
                 tc?.let { Data.Cost(it, 0, 0) }, tc != null && Game.gold >= tc, "+1", { Game.teach(id) }))
             val a = Game.pts(id)
             for (k in 0 until 4) {
@@ -695,6 +701,9 @@ class AppUi(val scene: Scene, val host: Host) {
         val lvBefore = u.title.substringAfter(" Lv", "").takeWhile { it.isDigit() }.toIntOrNull()
         if (lvBefore != null && (lvBefore + n) / 10 > lvBefore / 10) { host.sound("win"); coins(W / 2f, 200f, 30)
             floats.add(Float3(W / 2f, 230f, "Lv" + ((lvBefore + n) / 10 * 10) + " 달성! " + (if (u.icon == "wood" || u.icon == "stone" || u.icon == "store") "2배!" else if (u.icon.startsWith("face")) "판매 +5%" else "판매 +10%"), fxAt)) }
+        // 선원 새 스킬: 뽑기처럼 크게
+        if (lvBefore != null && u.icon.startsWith("face")) Fleet.crew.firstOrNull { it.name == nm }?.skills?.lastOrNull { it.level in (lvBefore + 1)..(lvBefore + n) }?.let { sk ->
+            host.sound("chest"); coins(W / 2f, 180f, 20); floats.add(Float3(W / 2f, 205f, "새 스킬! 「" + sk.name + "」", fxAt)) }
         if (u.cost != null || u.small) floats.add(Float3(W - 30f, upY[u.title] ?: 300f, if (u.big) "배가 커졌어요!" else nm + " +" + n, fxAt))
         if (u.big) coins(W / 2f, 120f, 30)
     }
@@ -773,13 +782,84 @@ class AppUi(val scene: Scene, val host: Host) {
         repeat(n) { coinList.add(Coin(x, y, (Math.random() * 120 - 60).toFloat(), (-Math.random() * 120 - 60).toFloat(), now + (Math.random() * 200).toLong())) }
     }
     private var seenBattle = Game.lastBattleAt
+    // ---------- 해적 토벌: 보스 도전처럼 대포와 피해 숫자가 터지는 싸움 장면 ----------
+    private class Battle(val t0: Long, val win: Boolean, val my: Int, val en: Int, val title: String, val boss: Boolean, val gold: Long, val sprite: Int,
+                         val hits: List<Triple<Boolean, Int, Boolean>>)   // (내가 쐈나, 피해, 치명타)
+    private var battle: Battle? = null
+    private var battleShot = -1
+    private val SHOT_MS = 430L
+    private fun battleEnd(b: Battle) = b.hits.size * SHOT_MS + 400L
     private fun fight() {
-        host.sound("boom")
+        if (battle != null) return
+        val n = Game.pStage; val title = Game.stageName(n); val boss = (n + 1) % 10 == 0
+        val my = Game.myPower(); val en = Game.enemyPower(Game.stagePirate(n)); val gold = Game.stageGold(n).toLong()
         val res = Game.challengeStage()
-        if (res == 1) { host.sound("win"); coins(W / 2f, 110f, 30); floats.add(Float3(W / 2f, 110f, "토벌 성공! +" + big(Game.stageGold(Game.pStage - 1)), System.currentTimeMillis())) }
-        else if (res == -1) { host.sound("lose"); floats.add(Float3(W / 2f, 110f, "졌어요… 5분 쉬어요", System.currentTimeMillis())) }
+        if (res == 0) return
+        val win = res == 1
+        fun split(total: Int): List<Int> { val w = List(4) { .6 + Math.random() }; val s = w.sum(); val l = w.map { (total * it / s).toInt().coerceAtLeast(1) }.toMutableList(); l[3] += total - l.sum(); return l }
+        val mine = split(if (win) en else (en * (.55 + Math.random() * .3)).toInt())
+        val theirs = split(if (win) (my * (.25 + Math.random() * .45)).toInt() else my)
+        val hits = ArrayList<Triple<Boolean, Int, Boolean>>()
+        for (i in 0 until 4) { hits.add(Triple(true, mine[i], mine[i] > en * .3f)); if (win && i == 3) break; hits.add(Triple(false, theirs[i], theirs[i] > my * .3f)) }
+        battle = Battle(System.currentTimeMillis(), win, my, en, title, boss, gold, n % 8, hits); battleShot = -1
+    }
+    private fun drawBattle() {
+        val b = battle ?: return
+        val k = Pix; val now = System.currentTimeMillis(); val t = now - b.t0
+        if (t > battleEnd(b) + 2600) { battle = null; return }
+        val wl = top + sceneH * .6f
+        // 바탕: 하늘과 바다를 덮는다
+        k.rect(c, 0f, top, W.toFloat(), wl - top, k.col(if (b.boss) "#5a3a5e" else "#5d9fc4"))
+        k.rect(c, 0f, wl, W.toFloat(), top + sceneH - wl, k.col(if (b.boss) "#2b2550" else "#2d5f94"))
+        for (i in 0 until 9) k.rect(c, ((i * 29 + t / 40) % (W + 20)).toFloat() - 10, wl + 8 + (i % 3) * 14, 10f, 1f, k.col("#9cc8e8"))
+        // 지금까지 맞은 피해
+        var myHp = b.my.toFloat(); var enHp = b.en.toFloat()
+        for ((i, h) in b.hits.withIndex()) if (t >= i * SHOT_MS + 260) { if (h.first) enHp -= h.second else myHp -= h.second }
+        myHp = myHp.coerceAtLeast(0f); enHp = enHp.coerceAtLeast(0f)
+        val cur = ((t - 0) / SHOT_MS).toInt()
+        if (cur != battleShot && cur < b.hits.size) { battleShot = cur; host.sound("boom") }
+        // 배 두 척 (맞으면 살짝 흔들린다)
+        fun shake(mine: Boolean): Float { for ((i, h) in b.hits.withIndex()) { val d = t - (i * SHOT_MS + 260); if (h.first != mine && d in 0..180) return ((d / 30) % 2 * 2 - 1).toFloat() * 2f }; return 0f }
+        val sink = t > battleEnd(b)
+        scene.shipArt(64)?.let { bm -> src.set(0, 0, bm.width, bm.height)
+            val dy = if (sink && !b.win) ((t - battleEnd(b)) / 60f).coerceAtMost(30f) else 0f
+            dst.set((22 + shake(true)).toInt(), (wl - 46 + dy).toInt(), (86 + shake(true)).toInt(), (wl + 18 + dy).toInt()); c.drawBitmap(bm, src, dst, bp) }
+        (if (b.boss) Art.cell("pirate_bosses", 4, 2, b.sprite, 72) else Art.cell("pirates_all", 4, 2, b.sprite, 64))?.let { bm -> src.set(0, 0, bm.width, bm.height)
+            val dy = if (sink && b.win) ((t - battleEnd(b)) / 60f).coerceAtMost(30f) else 0f
+            dst.set((146 + shake(false)).toInt(), (wl - 44 + dy).toInt(), (210 + shake(false)).toInt(), (wl + 20 + dy).toInt()); c.drawBitmap(bm, src, dst, bp) }
+        // 대포알과 터짐, 피해 숫자
+        for ((i, h) in b.hits.withIndex()) {
+            val d = t - i * SHOT_MS
+            val x0 = if (h.first) 78f else 154f; val x1 = if (h.first) 172f else 56f; val y0 = wl - 16
+            if (d in 0..259) { val e = d / 260f; val x = x0 + (x1 - x0) * e; val y = y0 - 26 * 4 * e * (1 - e)
+                k.rect(c, x - 3, y - 3, 6f, 6f, k.INK); k.rect(c, x - 2, y - 2, 3f, 3f, k.col("#6a6a6a"))
+                if (d < 90) k.rect(c, x0 - 3, y0 - 3, 6f, 6f, k.col("#fff2c0")) }
+            val e2 = d - 260
+            if (e2 in 0..220) { val r = 3 + e2 / 25f
+                k.rect(c, x1 - r, y0 - r, r * 2, r * 2, k.col("#ff9a3c")); k.rect(c, x1 - r / 2, y0 - r / 2, r, r, k.col("#fff2a0")) }
+            if (e2 in 0..900) { val a = (255 * (1 - e2 / 900f)).toInt().coerceIn(0, 255)
+                val sz = if (h.third) 15 else 11
+                if (h.third) k.text(c, "치명타!", x1, y0 - 30 - e2 / 40f, 8, android.graphics.Color.argb(a, 255, 120, 80), Paint.Align.CENTER, true)
+                k.text(c, "-" + big(h.second), x1, y0 - 18 - e2 / 40f, sz, if (h.first) android.graphics.Color.argb(a, 255, 230, 120) else android.graphics.Color.argb(a, 255, 110, 100), Paint.Align.CENTER, true) }
+        }
+        // 위: 이름과 힘 막대
+        k.text(c, (if (b.boss) "우두머리 " else "해적 토벌 ") + b.title, W / 2f, top + 13, 11, if (b.boss) k.col("#ff8a7a") else k.CREAM, Paint.Align.CENTER, true)
+        fun hp(x: Float, f: Float, col: Int, label: String, right: Boolean) {
+            k.rect(c, x, top + 19, 96f, 8f, k.INK); k.rect(c, x + 1 + if (right) 94 * (1 - f) else 0f, top + 20, 94 * f, 6f, col)
+            k.text(c, label, if (right) x + 96 else x, top + 37, 8, k.CREAM, if (right) Paint.Align.RIGHT else Paint.Align.LEFT, true) }
+        hp(8f, myHp / b.my, k.GREEN, "내 함대 " + big(myHp.toLong()), false)
+        hp(W - 104f, enHp / b.en, k.RED, "해적 " + big(enHp.toLong()), true)
+        // 끝: 승리 / 패배
+        if (sink) {
+            val e = t - battleEnd(b)
+            if (battleShot != 99) { battleShot = 99; if (b.win) { host.sound("win"); coins(W / 2f, wl + 20, 36) } else host.sound("lose") }
+            k.rect(c, W / 2f - 70, wl - 50, 140f, 44f, android.graphics.Color.argb(200, 30, 20, 12))
+            k.text(c, if (b.win) "승리!" else "패배…", W / 2f, wl - 28, 20, if (b.win) k.GOLD else k.RED, Paint.Align.CENTER, true)
+            k.text(c, if (b.win) "금화 +" + big(b.gold) + (if (b.boss) " · 쪽지 +3" else "") else "5분 쉬고 다시 도전해요", W / 2f, wl - 13, 9, k.CREAM, Paint.Align.CENTER, true)
+        }
     }
     private fun drawFloats() {
+        drawBattle()
         val now = System.currentTimeMillis()
         // 항해 중 해적을 이기면 앱에서도 금화가 쏟아진다
         if (Game.lastBattleAt != seenBattle) { seenBattle = Game.lastBattleAt
@@ -853,7 +933,7 @@ class AppUi(val scene: Scene, val host: Host) {
         for (cid in crew) {
             val pi = Data.workers.indexOfFirst { it.id == cid }
             k.slot(c, fx, py + 25, 22f, 22f, Game.ptsFree(cid) > 0, cid == id)
-            k.icon(c, (if (Game.crewLevel(cid) >= 11) "face15:" else "face:") + pi, fx + 2, py + 27, 1.8f)
+            k.icon(c, faceOf(Game.crewLevel(cid)) + pi, fx + 2, py + 27, 1.8f)
             if (Game.ptsFree(cid) > 0) k.rect(c, fx + 17, py + 24, 5f, 5f, k.GOLD)
             faceRects.add(Rect(fx.toInt(), (py + 23).toInt(), (fx + 24).toInt(), (py + 49).toInt()) to cid)
             fx += 25
@@ -1004,7 +1084,7 @@ class AppUi(val scene: Scene, val host: Host) {
         val list = tiles()
         val t = when {
             key.startsWith("part:") -> Fleet.part(key.removePrefix("part:"))?.let { p -> list.firstOrNull { it.icon == "part:" + p.icon } }
-            key.startsWith("crew:") -> Data.workers.indexOfFirst { it.id == key.removePrefix("crew:") }.let { pi -> list.firstOrNull { it.icon == "face:$pi" || it.icon == "face15:$pi" } }
+            key.startsWith("crew:") -> Data.workers.indexOfFirst { it.id == key.removePrefix("crew:") }.let { pi -> list.firstOrNull { it.icon.startsWith("face") && it.icon.endsWith(":$pi") } }
             key.startsWith("ship_") -> list.firstOrNull { it.name == key.removePrefix("ship_") + "단계" }
             key.startsWith("port_") -> list.firstOrNull { it.name == Data.port(key).name }
             else -> { val ic = when (key) { "ware" -> "store"; else -> key }; list.firstOrNull { it.icon == ic } }
@@ -1087,6 +1167,7 @@ class AppUi(val scene: Scene, val host: Host) {
 
     // ---------- 누르기 ----------
     fun tap(x: Float, y: Float) {
+        battle?.let { b -> if (System.currentTimeMillis() - b.t0 > battleEnd(b)) battle = null; return }
         val ix = x.toInt(); val iy = y.toInt()
         val pop = popup
         if (pop != null) {

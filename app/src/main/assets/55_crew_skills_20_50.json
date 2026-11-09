@@ -1,0 +1,486 @@
+{
+ "schema_version": 1,
+ "note": "선원 Lv20~50 새 스킬 (임시 이름, 아스트라 16차에서 다듬기)",
+ "skills": [
+  {
+   "crew": "yeoul",
+   "level": 20,
+   "id": "yeoul_lv20",
+   "name": "단단한 갑판",
+   "effect": "cargo_bonus",
+   "value": 0.03,
+   "short": "짐을 더 많이 실어요",
+   "icon_index": 0
+  },
+  {
+   "crew": "yeoul",
+   "level": 30,
+   "id": "yeoul_lv30",
+   "name": "갑판장의 장부",
+   "effect": "sale_bonus",
+   "value": 0.02,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "yeoul",
+   "level": 40,
+   "id": "yeoul_lv40",
+   "name": "흔들림 없는 구령",
+   "effect": "pirate_win_bonus",
+   "value": 0.015,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  },
+  {
+   "crew": "yeoul",
+   "level": 50,
+   "id": "yeoul_lv50",
+   "name": "모두의 갑판",
+   "effect": "cargo_bonus",
+   "value": 0.05,
+   "short": "짐을 더 많이 실어요",
+   "icon_index": 0
+  },
+  {
+   "crew": "mungi",
+   "level": 20,
+   "id": "mungi_lv20",
+   "name": "불꽃 포구",
+   "effect": "pirate_win_bonus",
+   "value": 0.02,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  },
+  {
+   "crew": "mungi",
+   "level": 30,
+   "id": "mungi_lv30",
+   "name": "포탄 아끼기",
+   "effect": "sale_bonus",
+   "value": 0.02,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "mungi",
+   "level": 40,
+   "id": "mungi_lv40",
+   "name": "두 번째 일제 사격",
+   "effect": "pirate_win_bonus",
+   "value": 0.02,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  },
+  {
+   "crew": "mungi",
+   "level": 50,
+   "id": "mungi_lv50",
+   "name": "바다를 가르는 포성",
+   "effect": "pirate_win_bonus",
+   "value": 0.03,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  },
+  {
+   "crew": "sori",
+   "level": 20,
+   "id": "sori_lv20",
+   "name": "든든한 창고",
+   "effect": "cargo_bonus",
+   "value": 0.03,
+   "short": "짐을 더 많이 실어요",
+   "icon_index": 0
+  },
+  {
+   "crew": "sori",
+   "level": 30,
+   "id": "sori_lv30",
+   "name": "알뜰 보급",
+   "effect": "sale_bonus",
+   "value": 0.02,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "sori",
+   "level": 40,
+   "id": "sori_lv40",
+   "name": "쉼 없는 손",
+   "effect": "speed_bonus",
+   "value": 0.02,
+   "short": "더 빨리 다녀와요",
+   "icon_index": 1
+  },
+  {
+   "crew": "sori",
+   "level": 50,
+   "id": "sori_lv50",
+   "name": "끝까지 채운 짐",
+   "effect": "cargo_bonus",
+   "value": 0.05,
+   "short": "짐을 더 많이 실어요",
+   "icon_index": 0
+  },
+  {
+   "crew": "nuri",
+   "level": 20,
+   "id": "nuri_lv20",
+   "name": "겹쳐 쌓기",
+   "effect": "cargo_bonus",
+   "value": 0.03,
+   "short": "짐을 더 많이 실어요",
+   "icon_index": 0
+  },
+  {
+   "crew": "nuri",
+   "level": 30,
+   "id": "nuri_lv30",
+   "name": "값을 아는 손",
+   "effect": "sale_bonus",
+   "value": 0.02,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "nuri",
+   "level": 40,
+   "id": "nuri_lv40",
+   "name": "젖지 않는 짐",
+   "effect": "repair_after_loss",
+   "value": 0.05,
+   "short": "져도 덜 잃어요",
+   "icon_index": 5
+  },
+  {
+   "crew": "nuri",
+   "level": 50,
+   "id": "nuri_lv50",
+   "name": "바다만큼 큰 짐칸",
+   "effect": "cargo_bonus",
+   "value": 0.05,
+   "short": "짐을 더 많이 실어요",
+   "icon_index": 0
+  },
+  {
+   "crew": "bada",
+   "level": 20,
+   "id": "bada_lv20",
+   "name": "바람 잡기",
+   "effect": "speed_bonus",
+   "value": 0.02,
+   "short": "더 빨리 다녀와요",
+   "icon_index": 1
+  },
+  {
+   "crew": "bada",
+   "level": 30,
+   "id": "bada_lv30",
+   "name": "항구 먼저",
+   "effect": "sale_bonus",
+   "value": 0.02,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "bada",
+   "level": 40,
+   "id": "bada_lv40",
+   "name": "돛 그림자",
+   "effect": "pirate_win_bonus",
+   "value": 0.015,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  },
+  {
+   "crew": "bada",
+   "level": 50,
+   "id": "bada_lv50",
+   "name": "바람의 친구",
+   "effect": "speed_bonus",
+   "value": 0.03,
+   "short": "더 빨리 다녀와요",
+   "icon_index": 1
+  },
+  {
+   "crew": "geonu",
+   "level": 20,
+   "id": "geonu_lv20",
+   "name": "이음매 다지기",
+   "effect": "repair_after_loss",
+   "value": 0.05,
+   "short": "져도 덜 잃어요",
+   "icon_index": 5
+  },
+  {
+   "crew": "geonu",
+   "level": 30,
+   "id": "geonu_lv30",
+   "name": "좋은 판재 값",
+   "effect": "wood_price_bonus",
+   "value": 0.03,
+   "short": "나무를 비싸게 팔아요",
+   "icon_index": 7
+  },
+  {
+   "crew": "geonu",
+   "level": 40,
+   "id": "geonu_lv40",
+   "name": "단단한 뱃머리",
+   "effect": "pirate_win_bonus",
+   "value": 0.015,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  },
+  {
+   "crew": "geonu",
+   "level": 50,
+   "id": "geonu_lv50",
+   "name": "다시 짓는 배",
+   "effect": "cargo_bonus",
+   "value": 0.04,
+   "short": "짐을 더 많이 실어요",
+   "icon_index": 0
+  },
+  {
+   "crew": "dori",
+   "level": 20,
+   "id": "dori_lv20",
+   "name": "물길 지름길",
+   "effect": "speed_bonus",
+   "value": 0.02,
+   "short": "더 빨리 다녀와요",
+   "icon_index": 1
+  },
+  {
+   "crew": "dori",
+   "level": 30,
+   "id": "dori_lv30",
+   "name": "잔잔한 키",
+   "effect": "pirate_win_bonus",
+   "value": 0.015,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  },
+  {
+   "crew": "dori",
+   "level": 40,
+   "id": "dori_lv40",
+   "name": "빠른 귀항",
+   "effect": "sale_bonus",
+   "value": 0.02,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "dori",
+   "level": 50,
+   "id": "dori_lv50",
+   "name": "별을 보는 키",
+   "effect": "speed_bonus",
+   "value": 0.03,
+   "short": "더 빨리 다녀와요",
+   "icon_index": 1
+  },
+  {
+   "crew": "haneul",
+   "level": 20,
+   "id": "haneul_lv20",
+   "name": "먼저 온 소식",
+   "effect": "event_good_bonus",
+   "value": 0.02,
+   "short": "좋은 일이 더 자주 생겨요",
+   "icon_index": 4
+  },
+  {
+   "crew": "haneul",
+   "level": 30,
+   "id": "haneul_lv30",
+   "name": "값 소문",
+   "effect": "sale_bonus",
+   "value": 0.02,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "haneul",
+   "level": 40,
+   "id": "haneul_lv40",
+   "name": "경고 신호",
+   "effect": "pirate_win_bonus",
+   "value": 0.015,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  },
+  {
+   "crew": "haneul",
+   "level": 50,
+   "id": "haneul_lv50",
+   "name": "모두를 잇는 신호",
+   "effect": "sale_bonus",
+   "value": 0.03,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "bityeo",
+   "level": 20,
+   "id": "bityeo_lv20",
+   "name": "반짝이는 수면",
+   "effect": "treasure_find_bonus",
+   "value": 0.02,
+   "short": "보물을 더 잘 찾아요",
+   "icon_index": 10
+  },
+  {
+   "crew": "bityeo",
+   "level": 30,
+   "id": "bityeo_lv30",
+   "name": "먼저 본 해적",
+   "effect": "pirate_win_bonus",
+   "value": 0.015,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  },
+  {
+   "crew": "bityeo",
+   "level": 40,
+   "id": "bityeo_lv40",
+   "name": "보물 냄새",
+   "effect": "treasure_find_bonus",
+   "value": 0.03,
+   "short": "보물을 더 잘 찾아요",
+   "icon_index": 10
+  },
+  {
+   "crew": "bityeo",
+   "level": 50,
+   "id": "bityeo_lv50",
+   "name": "등대 같은 눈",
+   "effect": "sale_bonus",
+   "value": 0.03,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "deul",
+   "level": 20,
+   "id": "deul_lv20",
+   "name": "든든한 아침",
+   "effect": "speed_bonus",
+   "value": 0.02,
+   "short": "더 빨리 다녀와요",
+   "icon_index": 1
+  },
+  {
+   "crew": "deul",
+   "level": 30,
+   "id": "deul_lv30",
+   "name": "항구 장터 요리",
+   "effect": "sale_bonus",
+   "value": 0.02,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "deul",
+   "level": 40,
+   "id": "deul_lv40",
+   "name": "힘 나는 국",
+   "effect": "pirate_win_bonus",
+   "value": 0.015,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  },
+  {
+   "crew": "deul",
+   "level": 50,
+   "id": "deul_lv50",
+   "name": "모두의 식탁",
+   "effect": "cargo_bonus",
+   "value": 0.05,
+   "short": "짐을 더 많이 실어요",
+   "icon_index": 0
+  },
+  {
+   "crew": "saei",
+   "level": 20,
+   "id": "saei_lv20",
+   "name": "흥정의 달인",
+   "effect": "sale_bonus",
+   "value": 0.02,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "saei",
+   "level": 30,
+   "id": "saei_lv30",
+   "name": "돌 장부",
+   "effect": "stone_price_bonus",
+   "value": 0.03,
+   "short": "돌을 비싸게 팔아요",
+   "icon_index": 8
+  },
+  {
+   "crew": "saei",
+   "level": 40,
+   "id": "saei_lv40",
+   "name": "나무 장부",
+   "effect": "wood_price_bonus",
+   "value": 0.03,
+   "short": "나무를 비싸게 팔아요",
+   "icon_index": 7
+  },
+  {
+   "crew": "saei",
+   "level": 50,
+   "id": "saei_lv50",
+   "name": "바다 시장의 이름",
+   "effect": "sale_bonus",
+   "value": 0.04,
+   "short": "더 비싸게 팔아요",
+   "icon_index": 3
+  },
+  {
+   "crew": "onyu",
+   "level": 20,
+   "id": "onyu_lv20",
+   "name": "두 번 점검",
+   "effect": "repair_after_loss",
+   "value": 0.05,
+   "short": "져도 덜 잃어요",
+   "icon_index": 5
+  },
+  {
+   "crew": "onyu",
+   "level": 30,
+   "id": "onyu_lv30",
+   "name": "침착한 손",
+   "effect": "pirate_win_bonus",
+   "value": 0.015,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  },
+  {
+   "crew": "onyu",
+   "level": 40,
+   "id": "onyu_lv40",
+   "name": "안전한 짐",
+   "effect": "cargo_bonus",
+   "value": 0.03,
+   "short": "짐을 더 많이 실어요",
+   "icon_index": 0
+  },
+  {
+   "crew": "onyu",
+   "level": 50,
+   "id": "onyu_lv50",
+   "name": "모두 함께 귀항",
+   "effect": "pirate_win_bonus",
+   "value": 0.02,
+   "short": "해적과 싸울 때 강해요",
+   "icon_index": 2
+  }
+ ]
+}

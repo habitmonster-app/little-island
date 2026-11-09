@@ -560,13 +560,13 @@
   "stone_price_bonus"
  ],
  "effect_caps": {
-  "cargo_bonus": 0.35,
-  "speed_bonus": 0.15,
-  "pirate_win_bonus": 0.1,
-  "sale_bonus": 0.15,
+  "cargo_bonus": 0.5,
+  "speed_bonus": 0.2,
+  "pirate_win_bonus": 0.15,
+  "sale_bonus": 0.25,
   "event_good_bonus": 0.1,
-  "repair_after_loss": 0.35,
-  "treasure_find_bonus": 0.1,
+  "repair_after_loss": 0.45,
+  "treasure_find_bonus": 0.15,
   "wood_price_bonus": 0.1,
   "stone_price_bonus": 0.1
  },

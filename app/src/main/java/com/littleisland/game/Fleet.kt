@@ -361,8 +361,7 @@ object Fleet {
                 xpTo = xpTo + (0 until add.length()).map { add.getInt(it) }
                 maxCrewLevel = d.optInt("max_level", maxCrewLevel)
             }
-            val sk = d.optJSONArray("skills")
-            if (sk != null) for (i in 0 until sk.length()) {
+            for (sk in listOf(d.optJSONArray("skills"), try { json(c, "55_crew_skills_20_50.json").optJSONArray("skills") } catch (e: Exception) { null })) if (sk != null) for (i in 0 until sk.length()) {
                 val x = sk.getJSONObject(i)
                 val cr = crewOf(x.optString("crew")) ?: continue
                 if (cr.skills.any { it.id == x.optString("id") }) continue
