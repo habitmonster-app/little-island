@@ -211,6 +211,62 @@
    "upgrade_requires_building_levels": {
     "warehouse": 3
    }
+  },
+  {
+   "level": 6,
+   "name": "귀항호 · 먼바다의 집",
+   "unlock": "ship_6",
+   "cargo_wood": 180,
+   "cargo_stone": 90,
+   "cargo_special": 54,
+   "speed": 1.5,
+   "pirate_win": 0.92,
+   "upgrade_cost": {
+    "gold": 324000,
+    "wood": 1080,
+    "stone": 900
+   },
+   "upgrade_requires": [
+    "ship_5"
+   ],
+   "requires_previous_level": 5,
+   "look": "세 돛이 넓은 갑판을 감싸요",
+   "sprite_id": "ship_6",
+   "size": [
+    60,
+    46
+   ],
+   "mast_count": 3,
+   "cannon_count": 2,
+   "palette": [
+    "#785136",
+    "#C49A62",
+    "#F4E6B8",
+    "#3B8F91",
+    "#D4A64F"
+   ],
+   "carry_forward": [
+    "ship_name",
+    "blue_cord",
+    "keepsake_nameplate",
+    "cosmetic_collection",
+    "part_levels",
+    "crew_levels_and_xp",
+    "crew_assignments",
+    "equipped_cosmetics"
+   ],
+   "home_news": "더 먼 바다도 함께 돌아와요.",
+   "desc": "먼바다도 함께 잇는 배예요",
+   "crew_slots": 6,
+   "upgrade_requires_parts": {
+    "hull": 25,
+    "sail": 25,
+    "cannon": 25,
+    "helm": 25
+   },
+   "upgrade_requires_building_levels": {
+    "warehouse": 4
+   }
   }
  ],
  "rules": {

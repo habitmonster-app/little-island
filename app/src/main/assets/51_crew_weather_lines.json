@@ -1,0 +1,148 @@
+{
+  "lines": {
+    "yeoul": {
+      "weather_clear": "맑을 때 매듭을 다시 봐요.",
+      "weather_fair_wind": "줄이 팽팽해요. 함께 당겨요.",
+      "weather_calm": "조용하니 구령도 낮게요.",
+      "weather_drizzle": "젖은 매듭은 제가 풀게요.",
+      "weather_shower": "빗소리보다 짧게 말할게요.",
+      "weather_fog": "앞사람 손짓을 이어 주세요.",
+      "weather_starry": "별 아래 매듭도 잘 보여요.",
+      "weather_rainbow": "파란 끈 곁에 빛이 걸렸네.",
+      "weather_snow": "매듭에 앉은 눈을 털어요.",
+      "weather_aurora": "하늘의 끈은 누가 묶었죠?"
+    },
+    "mungi": {
+      "weather_clear": "포각 표시가 또렷하네요.",
+      "weather_fair_wind": "바람 쪽 받침부터 볼게요.",
+      "weather_calm": "바퀴 소리까지 들리네요.",
+      "weather_drizzle": "점검 천은 마른 쪽으로요.",
+      "weather_shower": "포 덮개를 다시 눌러 둬요.",
+      "weather_fog": "보일 때까지 포구는 쉬어요.",
+      "weather_starry": "별빛에 바퀴가 반짝여요.",
+      "weather_rainbow": "대포 위에도 색이 앉네요.",
+      "weather_snow": "쐐기 곁 눈은 쓸어 둘게요.",
+      "weather_aurora": "오늘은 하늘이 더 화려하네."
+    },
+    "sori": {
+      "weather_clear": "접어 둔 포대를 말릴게요.",
+      "weather_fair_wind": "가벼운 천부터 묶어 둬요.",
+      "weather_calm": "남은 물자를 펴 볼까요.",
+      "weather_drizzle": "젖은 천은 따로 받아요.",
+      "weather_shower": "마른 수건은 안쪽 칸이에요.",
+      "weather_fog": "덮개 찾기 쉽게 펴 둘게요.",
+      "weather_starry": "밤참 꾸러미도 챙겨 뒀어요.",
+      "weather_rainbow": "남은 천도 저 색이면 좋겠네.",
+      "weather_snow": "보온 덮개는 여기 있어요.",
+      "weather_aurora": "이 빛은 보따리에 못 담네요."
+    },
+    "nuri": {
+      "weather_clear": "짐표의 그림이 잘 보여요.",
+      "weather_fair_wind": "빈 상자는 낮게 놓을게요.",
+      "weather_calm": "찻잔 상자도 얌전하네요.",
+      "weather_drizzle": "짐표 모서리를 접어 넣어요.",
+      "weather_shower": "상자 덮개끼리 맞닿게요.",
+      "weather_fog": "손 닿는 짐부터 확인해요.",
+      "weather_starry": "별무늬 그릇도 잠들었네요.",
+      "weather_rainbow": "포장 끈을 저 색으로 할까.",
+      "weather_snow": "눈 젖은 상자는 바깥이에요.",
+      "weather_aurora": "저 빛엔 칸막이가 없네요."
+    },
+    "bada": {
+      "weather_clear": "돛의 덧댐까지 환하네요.",
+      "weather_fair_wind": "돛이 먼저 고개를 끄덕여요.",
+      "weather_calm": "느슨한 실땀을 살필게요.",
+      "weather_drizzle": "돛천에 빗방울이 맺혔네.",
+      "weather_shower": "젖은 돛은 천천히 접어요.",
+      "weather_fog": "돛끝이 안개를 헤치네요.",
+      "weather_starry": "돛 그림자 너머 별을 봐요.",
+      "weather_rainbow": "저 색을 실에 옮겨 볼까요.",
+      "weather_snow": "접힌 돛 사이 눈부터 털어요.",
+      "weather_aurora": "하늘도 커다란 돛 같아요."
+    },
+    "geonu": {
+      "weather_clear": "나뭇결 따라 햇빛이 가요.",
+      "weather_fair_wind": "연장 걸이를 꼭 잠가 둬요.",
+      "weather_calm": "판재 두드리는 소리가 맑네.",
+      "weather_drizzle": "젖은 이음새를 살필게요.",
+      "weather_shower": "대패는 마른 천에 싸 둬요.",
+      "weather_fog": "손끝으로 받침을 확인해요.",
+      "weather_starry": "톱밥에도 별빛이 앉네요.",
+      "weather_rainbow": "나무에도 저 색을 입힐까.",
+      "weather_snow": "작업대 눈은 제가 털게요.",
+      "weather_aurora": "저런 곡선은 어떻게 깎죠?"
+    },
+    "dori": {
+      "weather_clear": "먼 물길이 한눈에 들어와요.",
+      "weather_fair_wind": "키를 조금만 보태도 되네요.",
+      "weather_calm": "컵의 물이 기울지 않아요.",
+      "weather_drizzle": "빗방울 따라 물살을 봐요.",
+      "weather_shower": "서두르지 않고 넓게 돌아요.",
+      "weather_fog": "익숙한 고리 쪽으로 가요.",
+      "weather_starry": "별을 보고 돌아갈 길을 잡죠.",
+      "weather_rainbow": "빛 아래로 물길이 이어져요.",
+      "weather_snow": "키 잡은 장갑을 바꿔 낄게요.",
+      "weather_aurora": "길은 바다에, 눈은 하늘에."
+    },
+    "haneul": {
+      "weather_clear": "맑다는 안부부터 전할게요.",
+      "weather_fair_wind": "깃발 신호가 시원하게 펴져요.",
+      "weather_calm": "작은 대답도 잘 들리네요.",
+      "weather_drizzle": "봉투 끝을 안으로 넣어요.",
+      "weather_shower": "소식은 비 그친 뒤 전해요.",
+      "weather_fog": "등불 신호를 다시 확인해요.",
+      "weather_starry": "밤 편지엔 별 얘기를 쓸래요.",
+      "weather_rainbow": "봉투엔 빛깔을 다 못 담겠네.",
+      "weather_snow": "흰 봉투 같은 눈이 오네요.",
+      "weather_aurora": "길게 쓸 안부가 생겼어요."
+    },
+    "bityeo": {
+      "weather_clear": "망원경 끝에 섬이 선명해요.",
+      "weather_fair_wind": "흔들리는 깃발부터 볼게요.",
+      "weather_calm": "물결 사이 작은 빛을 봐요.",
+      "weather_drizzle": "렌즈에 맺힌 빗방울을 닦죠.",
+      "weather_shower": "비 걷히는 쪽을 살필게요.",
+      "weather_fog": "희미한 등불도 놓치지 않죠.",
+      "weather_starry": "바다 불빛과 별을 나눠 봐요.",
+      "weather_rainbow": "가까이 보니 더 넓은 빛이네.",
+      "weather_snow": "눈발 사이로 돛이 보여요.",
+      "weather_aurora": "망원경 없이도 가득 보여요."
+    },
+    "deul": {
+      "weather_clear": "볕 드는 자리에서 식사해요.",
+      "weather_fair_wind": "국물은 덮고 빵부터 나눠요.",
+      "weather_calm": "오늘은 국자가 안 흔들리네.",
+      "weather_drizzle": "비 오는 날엔 맑은국이죠.",
+      "weather_shower": "따뜻한 국물 먼저 드세요.",
+      "weather_fog": "김 너머 얼굴도 차례로 봐요.",
+      "weather_starry": "별 보며 늦은 차를 마셔요.",
+      "weather_rainbow": "그릇에도 빛깔이 담기네요.",
+      "weather_snow": "수프가 식기 전에 모여요.",
+      "weather_aurora": "국자도 내려놓고 봐야겠네."
+    },
+    "saei": {
+      "weather_clear": "밝으니 장부의 칸도 넓네요.",
+      "weather_fair_wind": "거래표 모서리를 눌러 둬요.",
+      "weather_calm": "받은 짐표를 맞춰 볼게요.",
+      "weather_drizzle": "젖기 전에 장부를 덮어요.",
+      "weather_shower": "계산은 마른 자리에서요.",
+      "weather_fog": "안 보이는 값은 묻고 적어요.",
+      "weather_starry": "별빛으로는 잉크가 옅네요.",
+      "weather_rainbow": "값을 매길 수 없는 빛이네.",
+      "weather_snow": "차가운 잉크를 안에 들여요.",
+      "weather_aurora": "장부 밖에 적을 소식이네요."
+    },
+    "onyu": {
+      "weather_clear": "볕 좋을 때 통로를 살펴요.",
+      "weather_fair_wind": "모자 끈도 확인하고 가요.",
+      "weather_calm": "점검 마치면 함께 쉬어요.",
+      "weather_drizzle": "미끄러운 자리는 닦아 둬요.",
+      "weather_shower": "빗물 고인 곳부터 비워요.",
+      "weather_fog": "앞사람이 보이게 붙어 가요.",
+      "weather_starry": "별구경 자리도 비워 뒀어요.",
+      "weather_rainbow": "난간 안에서 천천히 봐요.",
+      "weather_snow": "발밑 눈부터 쓸고 구경해요.",
+      "weather_aurora": "고개 들기 전 짐은 내려요."
+    }
+  }
+}

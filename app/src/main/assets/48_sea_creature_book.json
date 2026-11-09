@@ -1,0 +1,125 @@
+{
+  "milestones": [
+    {
+      "count": 4,
+      "reward": {
+        "tickets": 3,
+        "gold": 300
+      }
+    },
+    {
+      "count": 8,
+      "reward": {
+        "tickets": 5,
+        "gold": 800,
+        "title_name": "물결의친구"
+      }
+    }
+  ],
+  "creatures": [
+    {
+      "id": "crit_dolphin",
+      "kind": 0,
+      "name": "돌고래",
+      "short": "물길을 톡 뛰어넘는 친구",
+      "first_line": "물길을 먼저 짚어 주네요.",
+      "seen_by": "dori",
+      "reward": {
+        "tickets": 1,
+        "gold": 50
+      },
+      "icon_index": 0
+    },
+    {
+      "id": "crit_whale",
+      "kind": 1,
+      "name": "고래",
+      "short": "느긋하게 큰 숨을 쉬어요",
+      "first_line": "큰 숨소리가 구령 같네요.",
+      "seen_by": "mungi",
+      "reward": {
+        "tickets": 1,
+        "gold": 80
+      },
+      "icon_index": 1
+    },
+    {
+      "id": "crit_turtle",
+      "kind": 2,
+      "name": "바다거북",
+      "short": "작은 노처럼 발을 저어요",
+      "first_line": "천천히 와도 잘 만났네요.",
+      "seen_by": "onyu",
+      "reward": {
+        "tickets": 1,
+        "gold": 40
+      },
+      "icon_index": 2
+    },
+    {
+      "id": "crit_flying_fish",
+      "kind": 3,
+      "name": "날치 떼",
+      "short": "물결 위를 나란히 날아요",
+      "first_line": "지느러미도 작은 돛 같아요.",
+      "seen_by": "bada",
+      "reward": {
+        "tickets": 1,
+        "gold": 40
+      },
+      "icon_index": 3
+    },
+    {
+      "id": "crit_seal",
+      "kind": 4,
+      "name": "물개",
+      "short": "공을 받으면 수염이 씰룩",
+      "first_line": "공 받을 빈칸은 여기예요.",
+      "seen_by": "nuri",
+      "reward": {
+        "tickets": 1,
+        "gold": 50
+      },
+      "icon_index": 4
+    },
+    {
+      "id": "crit_jellyfish",
+      "kind": 5,
+      "name": "해파리 떼",
+      "short": "물빛 우산이 둥둥 떠요",
+      "first_line": "물속에도 반짝임이 있네요.",
+      "seen_by": "bityeo",
+      "reward": {
+        "tickets": 1,
+        "gold": 60
+      },
+      "icon_index": 5
+    },
+    {
+      "id": "crit_gulls",
+      "kind": 6,
+      "name": "갈매기 떼",
+      "short": "부두 소식을 싣고 날아요",
+      "first_line": "어느 섬 소식을 들었나요?",
+      "seen_by": "haneul",
+      "reward": {
+        "tickets": 1,
+        "gold": 30
+      },
+      "icon_index": 6
+    },
+    {
+      "id": "crit_octopus",
+      "kind": 7,
+      "name": "작은 문어",
+      "short": "다리를 흔들며 물방울 인사",
+      "first_line": "매듭 대신 손을 흔드네요.",
+      "seen_by": "yeoul",
+      "reward": {
+        "tickets": 1,
+        "gold": 50
+      },
+      "icon_index": 7
+    }
+  ]
+}

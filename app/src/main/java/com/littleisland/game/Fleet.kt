@@ -163,6 +163,7 @@ object Fleet {
             }
         } catch (e: Exception) { }
         loadOrder12(c)
+        loadOrder13(c)
     }
 
     // ---------- 12차: 칭호, 날씨, 항구 의뢰, 계절, 손님 배 ----------
@@ -191,6 +192,30 @@ object Fleet {
     fun visitor(id: String?) = visitors.firstOrNull { it.id == id }
     fun season(month: Int) = seasons.firstOrNull { month in it.months }
     private fun res(o: JSONObject?) = Res(o?.optInt("wood") ?: 0, o?.optInt("stone") ?: 0, o?.optInt("gold") ?: 0, o?.optInt("tickets") ?: 0)
+    // ---------- 13차: 바다 동물 도감, 주간 바다 소식, 손님 이야기, 선원 날씨 말 ----------
+    class Creature(val id: String, val kind: Int, val name: String, val short: String, val firstLine: String, val seenBy: String, val reward: Res, val icon: Int)
+    class BookMile(val count: Int, val reward: Res, val titleName: String)
+    class Tide(val id: String, val name: String, val short: String, val news: String, val kind: String, val value: Float, val target: String, val icon: Int)
+    class VStory(val id: String, val visitor: String, val trades: Int, val title: String, val cardLine: String, val reward: Res, val art: Int)
+    val creatures = ArrayList<Creature>()
+    val bookMiles = ArrayList<BookMile>()
+    val tides = ArrayList<Tide>()
+    val vstories = ArrayList<VStory>()
+    val weatherLines = HashMap<String, Map<String, String>>()
+    fun creature(kind: Int) = creatures.firstOrNull { it.kind == kind }
+    private fun loadOrder13(c: Context) {
+        try { val d = json(c, "48_sea_creature_book.json"); val a = d.getJSONArray("creatures"); for (i in 0 until a.length()) { val x = a.getJSONObject(i)
+            creatures.add(Creature(x.getString("id"), x.optInt("kind", i), x.optString("name"), x.optString("short"), x.optString("first_line"), x.optString("seen_by"), res(x.optJSONObject("reward")), x.optInt("icon_index", i))) }
+            d.optJSONArray("milestones")?.let { m -> for (i in 0 until m.length()) { val x = m.getJSONObject(i); val r = x.optJSONObject("reward")
+                bookMiles.add(BookMile(x.optInt("count"), res(r), r?.optString("title_name") ?: "")) } }
+            bookMiles.firstOrNull { it.titleName.isNotEmpty() }?.let { titles.add(Title("title_creature_book", it.titleName, "바다 동물을 모두 보기", "gold", 2, "creature_book", "", it.count)) }
+        } catch (e: Exception) { }
+        try { val a = json(c, "49_weekly_tides.json").getJSONArray("tides"); for (i in 0 until a.length()) { val x = a.getJSONObject(i); val ef = x.optJSONObject("effect")
+            tides.add(Tide(x.getString("id"), x.optString("name"), x.optString("short"), x.optString("news"), ef?.optString("kind") ?: "none", (ef?.optDouble("value") ?: 0.0).toFloat(), ef?.optString("target") ?: "", x.optInt("icon_index", i))) } } catch (e: Exception) { }
+        try { val a = json(c, "50_visitor_stories.json").getJSONArray("stories"); for (i in 0 until a.length()) { val x = a.getJSONObject(i)
+            vstories.add(VStory(x.getString("id"), x.optString("visitor"), x.optInt("trades", 1), x.optString("title"), x.optString("card_line"), res(x.optJSONObject("reward")), x.optInt("art_index"))) } } catch (e: Exception) { }
+        try { val o = json(c, "51_crew_weather_lines.json").getJSONObject("lines"); o.keys().forEach { k -> val m = o.getJSONObject(k); val h = HashMap<String, String>(); m.keys().forEach { w -> h[w] = m.getString(w) }; weatherLines[k] = h } } catch (e: Exception) { }
+    }
     private fun loadOrder12(c: Context) {
         try { val a = json(c, "41_captain_titles.json").getJSONArray("titles"); for (i in 0 until a.length()) { val x = a.getJSONObject(i); val k = x.getJSONObject("condition")
             titles.add(Title(x.getString("id"), x.optString("name"), x.optString("short"), x.optString("tier"), x.optInt("icon_index", i), k.optString("type"),

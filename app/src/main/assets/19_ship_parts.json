@@ -259,6 +259,56 @@
       "stone": 175
      },
      "requires_ship_level": 5
+    },
+    {
+     "level": 26,
+     "value": 1.27,
+     "cost": {
+      "gold": 64000,
+      "wood": 530,
+      "stone": 186
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 27,
+     "value": 1.29,
+     "cost": {
+      "gold": 74000,
+      "wood": 560,
+      "stone": 196
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 28,
+     "value": 1.31,
+     "cost": {
+      "gold": 85000,
+      "wood": 590,
+      "stone": 206
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 29,
+     "value": 1.33,
+     "cost": {
+      "gold": 97000,
+      "wood": 620,
+      "stone": 217
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 30,
+     "value": 1.35,
+     "cost": {
+      "gold": 110000,
+      "wood": 650,
+      "stone": 227
+     },
+     "requires_ship_level": 6
     }
    ]
   },
@@ -518,6 +568,56 @@
       "stone": 100
      },
      "requires_ship_level": 5
+    },
+    {
+     "level": 26,
+     "value": 0.256,
+     "cost": {
+      "gold": 64000,
+      "wood": 424,
+      "stone": 106
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 27,
+     "value": 0.262,
+     "cost": {
+      "gold": 74000,
+      "wood": 448,
+      "stone": 112
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 28,
+     "value": 0.268,
+     "cost": {
+      "gold": 85000,
+      "wood": 472,
+      "stone": 118
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 29,
+     "value": 0.274,
+     "cost": {
+      "gold": 97000,
+      "wood": 496,
+      "stone": 124
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 30,
+     "value": 0.28,
+     "cost": {
+      "gold": 110000,
+      "wood": 520,
+      "stone": 130
+     },
+     "requires_ship_level": 6
     }
    ]
   },
@@ -777,6 +877,56 @@
       "stone": 400
      },
      "requires_ship_level": 5
+    },
+    {
+     "level": 26,
+     "value": 0.102,
+     "cost": {
+      "gold": 70400,
+      "wood": 318,
+      "stone": 424
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 27,
+     "value": 0.104,
+     "cost": {
+      "gold": 81400,
+      "wood": 336,
+      "stone": 448
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 28,
+     "value": 0.106,
+     "cost": {
+      "gold": 93500,
+      "wood": 354,
+      "stone": 472
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 29,
+     "value": 0.108,
+     "cost": {
+      "gold": 106700,
+      "wood": 372,
+      "stone": 496
+     },
+     "requires_ship_level": 6
+    },
+    {
+     "level": 30,
+     "value": 0.11,
+     "cost": {
+      "gold": 121000,
+      "wood": 390,
+      "stone": 520
+     },
+     "requires_ship_level": 6
     }
    ]
   },
@@ -1111,25 +1261,92 @@
      "secondary_effects": {
       "bad_event_loss_reduction": 0.1
      }
+    },
+    {
+     "level": 26,
+     "value": 0.05,
+     "cost": {
+      "gold": 57600,
+      "wood": 318,
+      "stone": 212
+     },
+     "requires_ship_level": 6,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 27,
+     "value": 0.05,
+     "cost": {
+      "gold": 66600,
+      "wood": 336,
+      "stone": 224
+     },
+     "requires_ship_level": 6,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 28,
+     "value": 0.05,
+     "cost": {
+      "gold": 76500,
+      "wood": 354,
+      "stone": 236
+     },
+     "requires_ship_level": 6,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 29,
+     "value": 0.05,
+     "cost": {
+      "gold": 87300,
+      "wood": 372,
+      "stone": 248
+     },
+     "requires_ship_level": 6,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
+    },
+    {
+     "level": 30,
+     "value": 0.05,
+     "cost": {
+      "gold": 99000,
+      "wood": 390,
+      "stone": 260
+     },
+     "requires_ship_level": 6,
+     "secondary_effects": {
+      "bad_event_loss_reduction": 0.1
+     }
     }
    ]
   }
  ],
  "initial_level": 0,
  "initial_value": 0,
- "max_level": 25,
+ "max_level": 30,
  "max_level_per_ship_level": {
   "1": 5,
   "2": 10,
   "3": 15,
   "4": 20,
-  "5": 25
+  "5": 25,
+  "6": 30
  },
  "ship_upgrade_needs_parts_level": {
   "2": 5,
   "3": 10,
   "4": 15,
-  "5": 20
+  "5": 20,
+  "6": 25
  },
  "look_stage_rule": "현재 큰 배 단계의 부품 구간 중간 레벨 이상인 부품 수를 세고 min(3, 개수)를 적용해 0~3열을 골라요.",
  "look_stages": {
@@ -1142,7 +1359,8 @@
    "2": 8,
    "3": 13,
    "4": 18,
-   "5": 23
+   "5": 23,
+   "6": 28
   },
   "threshold_comparison": "part.level >= threshold_by_ship_level[ship_level]",
   "column_formula": "min(3, count(parts whose level >= current_threshold))",

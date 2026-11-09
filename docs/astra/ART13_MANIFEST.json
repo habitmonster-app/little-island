@@ -1,0 +1,1551 @@
+{
+  "package": "little-island-order13",
+  "source_baseline": "build-41 per user order",
+  "sheet_count": 7,
+  "cell_count": 52,
+  "coordinate_convention": "Zero-based indices, row-major order; rects are x,y,width,height; bbox and crop endpoints exclusive.",
+  "runtime_tested": false,
+  "sheets": [
+    {
+      "file": "art/ship_stage6.png",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGB",
+      "grid": [
+        4,
+        1
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "cell_count": 4,
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor",
+      "bytes": 287132,
+      "sha256": "ba6ae8e15c93850be60ca2f644f3b29034378c301537867910d18a517ebb0194",
+      "cells": [
+        {
+          "index": 0,
+          "id": "base",
+          "rect_xywh": [
+            0,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 1,
+          "id": "patched_sails",
+          "rect_xywh": [
+            256,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 2,
+          "id": "teal_edges",
+          "rect_xywh": [
+            512,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 3,
+          "id": "gold_and_flags",
+          "rect_xywh": [
+            768,
+            0,
+            256,
+            256
+          ]
+        }
+      ],
+      "source_raw_size": [
+        2172,
+        724
+      ],
+      "source_raw_sha256": "9fc370a9d9a253bc1a0e211d2ebd240b2b3c756d1cf10f16cd2fe8e486726c61",
+      "processing": {
+        "crop_box_xyxy": [
+          0,
+          90,
+          2172,
+          632
+        ],
+        "resize_to": [
+          1024,
+          256
+        ],
+        "method": "nearest_neighbor",
+        "per_cell_recenter": false
+      },
+      "anchors": {
+        "bottom_anchor_y": 246,
+        "last_hull_pixel_y": 247,
+        "crew_footline_visual_y_approx": 184,
+        "reference_stage5_bottom_anchor_y": 123,
+        "reference_scale": 2,
+        "display_size_preserved": [
+          60,
+          46
+        ]
+      },
+      "geometry_scope": "Waterline normalized from stage5 y123 to y246. Crew footline approximately y184 by side-by-side visual inspection; exact runtime attachment positions were not tested. Keep existing stage5 display/attachment coordinates.",
+      "cell_foreground_bboxes": [
+        [
+          9,
+          23,
+          248,
+          248
+        ],
+        [
+          9,
+          23,
+          248,
+          248
+        ],
+        [
+          9,
+          23,
+          248,
+          248
+        ],
+        [
+          9,
+          17,
+          249,
+          248
+        ]
+      ]
+    },
+    {
+      "file": "art/island_seasons_2.png",
+      "size": [
+        1536,
+        4096
+      ],
+      "mode": "RGB",
+      "grid": [
+        1,
+        4
+      ],
+      "cell_size": [
+        1536,
+        1024
+      ],
+      "cell_count": 4,
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor",
+      "bytes": 616851,
+      "sha256": "85e020855e4b6f27fc3f551bda0ef9df11babf92bb88ca2acc6fb2419d662329",
+      "cells": [
+        {
+          "index": 0,
+          "id": "spring",
+          "rect_xywh": [
+            0,
+            0,
+            1536,
+            1024
+          ]
+        },
+        {
+          "index": 1,
+          "id": "summer",
+          "rect_xywh": [
+            0,
+            1024,
+            1536,
+            1024
+          ]
+        },
+        {
+          "index": 2,
+          "id": "autumn",
+          "rect_xywh": [
+            0,
+            2048,
+            1536,
+            1024
+          ]
+        },
+        {
+          "index": 3,
+          "id": "winter",
+          "rect_xywh": [
+            0,
+            3072,
+            1536,
+            1024
+          ]
+        }
+      ],
+      "source_file": "island_2.png",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "source_sha256": "7958a7b4c6a1b9d573088c317fa4433e2f71a8e5f6b439eada2029570386b60b",
+      "draw_origin": [
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "processing": "key normalization and full-canvas 1:1 vertical stacking only; no crop, translation or resizing",
+      "alignment_scope": "Original-canvas origin and visual composite alignment verified; generated internal leaf shapes are not asserted pixel-identical recolors. Apply the same runtime crop and transform to base and overlay."
+    },
+    {
+      "file": "art/island_seasons_3.png",
+      "size": [
+        1536,
+        4096
+      ],
+      "mode": "RGB",
+      "grid": [
+        1,
+        4
+      ],
+      "cell_size": [
+        1536,
+        1024
+      ],
+      "cell_count": 4,
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor",
+      "bytes": 494581,
+      "sha256": "f1c4992a3f9feda9ed0bc3ddea64d481eb220446ccf419f4615f7a2f4ca52e6f",
+      "cells": [
+        {
+          "index": 0,
+          "id": "spring",
+          "rect_xywh": [
+            0,
+            0,
+            1536,
+            1024
+          ]
+        },
+        {
+          "index": 1,
+          "id": "summer",
+          "rect_xywh": [
+            0,
+            1024,
+            1536,
+            1024
+          ]
+        },
+        {
+          "index": 2,
+          "id": "autumn",
+          "rect_xywh": [
+            0,
+            2048,
+            1536,
+            1024
+          ]
+        },
+        {
+          "index": 3,
+          "id": "winter",
+          "rect_xywh": [
+            0,
+            3072,
+            1536,
+            1024
+          ]
+        }
+      ],
+      "source_file": "island_3.png",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "source_sha256": "e6a22fb2ac33f5c7c3ee9fadb45bed59c727298330b59a5bde7524b2519dad5e",
+      "draw_origin": [
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1
+      ],
+      "processing": "key normalization and full-canvas 1:1 vertical stacking only; no crop, translation or resizing",
+      "alignment_scope": "Original-canvas origin and visual composite alignment verified; generated internal leaf shapes are not asserted pixel-identical recolors. Apply the same runtime crop and transform to base and overlay."
+    },
+    {
+      "file": "art/creature_book.png",
+      "size": [
+        1024,
+        512
+      ],
+      "mode": "RGB",
+      "grid": [
+        4,
+        2
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "cell_count": 8,
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor",
+      "bytes": 504030,
+      "sha256": "5e17cd67ba3a1bf608ad1ca04b42ccb2436e48a24ad16402cbf1ca0b280b9a2c",
+      "cells": [
+        {
+          "index": 0,
+          "id": "crit_dolphin",
+          "rect_xywh": [
+            0,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 1,
+          "id": "crit_whale",
+          "rect_xywh": [
+            256,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 2,
+          "id": "crit_turtle",
+          "rect_xywh": [
+            512,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 3,
+          "id": "crit_flying_fish",
+          "rect_xywh": [
+            768,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 4,
+          "id": "crit_seal",
+          "rect_xywh": [
+            0,
+            256,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 5,
+          "id": "crit_jellyfish",
+          "rect_xywh": [
+            256,
+            256,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 6,
+          "id": "crit_gulls",
+          "rect_xywh": [
+            512,
+            256,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 7,
+          "id": "crit_octopus",
+          "rect_xywh": [
+            768,
+            256,
+            256,
+            256
+          ]
+        }
+      ],
+      "source_raw_size": [
+        1774,
+        887
+      ],
+      "source_raw_sha256": "2c0522ee1a749c849a6e79788792eb77c42e0f8634422c441d70ae9279357cf8",
+      "processing": "exact equal grid extraction, foreground key bbox, one common scale for all icons, centered in 256px cells with at least16px margin",
+      "common_scale": 0.5503685503685504,
+      "cell_transforms": [
+        {
+          "source_cell_box_xyxy": [
+            0,
+            0,
+            444,
+            444
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            23,
+            424,
+            426
+          ],
+          "target_xy": [
+            16,
+            17
+          ],
+          "target_size": [
+            224,
+            222
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            444,
+            0,
+            887,
+            444
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            23,
+            424,
+            426
+          ],
+          "target_xy": [
+            272,
+            17
+          ],
+          "target_size": [
+            224,
+            222
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            887,
+            0,
+            1330,
+            444
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            23,
+            424,
+            426
+          ],
+          "target_xy": [
+            528,
+            17
+          ],
+          "target_size": [
+            224,
+            222
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            1330,
+            0,
+            1774,
+            444
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            18,
+            23,
+            425,
+            426
+          ],
+          "target_xy": [
+            784,
+            17
+          ],
+          "target_size": [
+            224,
+            222
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            0,
+            444,
+            444,
+            887
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            22,
+            424,
+            425
+          ],
+          "target_xy": [
+            16,
+            273
+          ],
+          "target_size": [
+            224,
+            222
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            444,
+            444,
+            887,
+            887
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            22,
+            424,
+            425
+          ],
+          "target_xy": [
+            272,
+            273
+          ],
+          "target_size": [
+            224,
+            222
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            887,
+            444,
+            1330,
+            887
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            22,
+            424,
+            425
+          ],
+          "target_xy": [
+            528,
+            273
+          ],
+          "target_size": [
+            224,
+            222
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            1330,
+            444,
+            1774,
+            887
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            18,
+            22,
+            425,
+            425
+          ],
+          "target_xy": [
+            784,
+            273
+          ],
+          "target_size": [
+            224,
+            222
+          ]
+        }
+      ]
+    },
+    {
+      "file": "art/tide_icons.png",
+      "size": [
+        1024,
+        768
+      ],
+      "mode": "RGB",
+      "grid": [
+        4,
+        3
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "cell_count": 12,
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor",
+      "bytes": 972187,
+      "sha256": "dbe3e2321658e32df2b62cdd2447125fd5fba1e5603cd2733c32c15640043326",
+      "cells": [
+        {
+          "index": 0,
+          "id": "tide_whale_week",
+          "rect_xywh": [
+            0,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 1,
+          "id": "tide_mail_week",
+          "rect_xywh": [
+            256,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 2,
+          "id": "tide_mist_week",
+          "rect_xywh": [
+            512,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 3,
+          "id": "tide_helping_week",
+          "rect_xywh": [
+            768,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 4,
+          "id": "tide_bottle_week",
+          "rect_xywh": [
+            0,
+            256,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 5,
+          "id": "tide_keepsake_week",
+          "rect_xywh": [
+            256,
+            256,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 6,
+          "id": "tide_fairwind_week",
+          "rect_xywh": [
+            512,
+            256,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 7,
+          "id": "tide_playful_week",
+          "rect_xywh": [
+            768,
+            256,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 8,
+          "id": "tide_dock_week",
+          "rect_xywh": [
+            0,
+            512,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 9,
+          "id": "tide_calm_week",
+          "rect_xywh": [
+            256,
+            512,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 10,
+          "id": "tide_shared_week",
+          "rect_xywh": [
+            512,
+            512,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 11,
+          "id": "tide_rest_week",
+          "rect_xywh": [
+            768,
+            512,
+            256,
+            256
+          ]
+        }
+      ],
+      "source_raw_size": [
+        1448,
+        1086
+      ],
+      "source_raw_sha256": "7e0907ad21563a24ef12b75fd437ccf622afbab25594ba27ce8656ff75944898",
+      "processing": "exact equal grid extraction, foreground key bbox, one common scale for all icons, centered in 256px cells with at least16px margin",
+      "common_scale": 0.6829268292682927,
+      "cell_transforms": [
+        {
+          "source_cell_box_xyxy": [
+            0,
+            0,
+            362,
+            362
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            43,
+            345,
+            346
+          ],
+          "target_xy": [
+            16,
+            24
+          ],
+          "target_size": [
+            224,
+            207
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            362,
+            0,
+            724,
+            362
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            43,
+            345,
+            346
+          ],
+          "target_xy": [
+            272,
+            24
+          ],
+          "target_size": [
+            224,
+            207
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            724,
+            0,
+            1086,
+            362
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            43,
+            345,
+            346
+          ],
+          "target_xy": [
+            528,
+            24
+          ],
+          "target_size": [
+            224,
+            207
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            1086,
+            0,
+            1448,
+            362
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            43,
+            345,
+            346
+          ],
+          "target_xy": [
+            784,
+            24
+          ],
+          "target_size": [
+            224,
+            207
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            0,
+            362,
+            362,
+            724
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            20,
+            345,
+            326
+          ],
+          "target_xy": [
+            16,
+            279
+          ],
+          "target_size": [
+            224,
+            209
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            362,
+            362,
+            724,
+            724
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            18,
+            20,
+            345,
+            326
+          ],
+          "target_xy": [
+            272,
+            279
+          ],
+          "target_size": [
+            223,
+            209
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            724,
+            362,
+            1086,
+            724
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            20,
+            345,
+            326
+          ],
+          "target_xy": [
+            528,
+            279
+          ],
+          "target_size": [
+            224,
+            209
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            1086,
+            362,
+            1448,
+            724
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            18,
+            20,
+            345,
+            326
+          ],
+          "target_xy": [
+            784,
+            279
+          ],
+          "target_size": [
+            223,
+            209
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            0,
+            724,
+            362,
+            1086
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            6,
+            345,
+            322
+          ],
+          "target_xy": [
+            16,
+            532
+          ],
+          "target_size": [
+            224,
+            216
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            362,
+            724,
+            724,
+            1086
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            6,
+            345,
+            322
+          ],
+          "target_xy": [
+            272,
+            532
+          ],
+          "target_size": [
+            224,
+            216
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            724,
+            724,
+            1086,
+            1086
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            17,
+            6,
+            345,
+            322
+          ],
+          "target_xy": [
+            528,
+            532
+          ],
+          "target_size": [
+            224,
+            216
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            1086,
+            724,
+            1448,
+            1086
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            18,
+            6,
+            346,
+            322
+          ],
+          "target_xy": [
+            784,
+            532
+          ],
+          "target_size": [
+            224,
+            216
+          ]
+        }
+      ]
+    },
+    {
+      "file": "art/port_icons.png",
+      "size": [
+        1024,
+        768
+      ],
+      "mode": "RGB",
+      "grid": [
+        4,
+        3
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "cell_count": 12,
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor",
+      "bytes": 856927,
+      "sha256": "4ff2d966e2f4acf9176b56abc9f95976c3117e1ffc757ff4011c6d4554822767",
+      "cells": [
+        {
+          "index": 0,
+          "id": "port_haesol",
+          "rect_xywh": [
+            0,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 1,
+          "id": "port_saltflat",
+          "rect_xywh": [
+            256,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 2,
+          "id": "port_pottery",
+          "rect_xywh": [
+            512,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 3,
+          "id": "port_windneck",
+          "rect_xywh": [
+            768,
+            0,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 4,
+          "id": "port_pineshade",
+          "rect_xywh": [
+            0,
+            256,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 5,
+          "id": "port_redanchor",
+          "rect_xywh": [
+            256,
+            256,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 6,
+          "id": "port_fogferry",
+          "rect_xywh": [
+            512,
+            256,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 7,
+          "id": "port_glasscape",
+          "rect_xywh": [
+            768,
+            256,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 8,
+          "id": "port_reedbay",
+          "rect_xywh": [
+            0,
+            512,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 9,
+          "id": "port_paperwater",
+          "rect_xywh": [
+            256,
+            512,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 10,
+          "id": "port_whitesail",
+          "rect_xywh": [
+            512,
+            512,
+            256,
+            256
+          ]
+        },
+        {
+          "index": 11,
+          "id": "request_board",
+          "rect_xywh": [
+            768,
+            512,
+            256,
+            256
+          ]
+        }
+      ],
+      "source_raw_size": [
+        1448,
+        1086
+      ],
+      "source_raw_sha256": "a91803e274af33467d5f302e7d01e5d80a29d25368fb18a6b9c190502228ad3c",
+      "processing": "exact equal grid extraction, foreground key bbox, one common scale for all icons, centered in 256px cells with at least16px margin",
+      "common_scale": 0.6588235294117647,
+      "cell_transforms": [
+        {
+          "source_cell_box_xyxy": [
+            0,
+            0,
+            362,
+            362
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            12,
+            347,
+            351
+          ],
+          "target_xy": [
+            18,
+            16
+          ],
+          "target_size": [
+            219,
+            223
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            362,
+            0,
+            724,
+            362
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            12,
+            347,
+            351
+          ],
+          "target_xy": [
+            274,
+            16
+          ],
+          "target_size": [
+            219,
+            223
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            724,
+            0,
+            1086,
+            362
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            12,
+            347,
+            351
+          ],
+          "target_xy": [
+            530,
+            16
+          ],
+          "target_size": [
+            219,
+            223
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            1086,
+            0,
+            1448,
+            362
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            12,
+            347,
+            351
+          ],
+          "target_xy": [
+            786,
+            16
+          ],
+          "target_size": [
+            219,
+            223
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            0,
+            362,
+            362,
+            724
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            11,
+            347,
+            351
+          ],
+          "target_xy": [
+            18,
+            272
+          ],
+          "target_size": [
+            219,
+            224
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            362,
+            362,
+            724,
+            724
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            11,
+            347,
+            351
+          ],
+          "target_xy": [
+            274,
+            272
+          ],
+          "target_size": [
+            219,
+            224
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            724,
+            362,
+            1086,
+            724
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            11,
+            347,
+            351
+          ],
+          "target_xy": [
+            530,
+            272
+          ],
+          "target_size": [
+            219,
+            224
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            1086,
+            362,
+            1448,
+            724
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            11,
+            347,
+            351
+          ],
+          "target_xy": [
+            786,
+            272
+          ],
+          "target_size": [
+            219,
+            224
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            0,
+            724,
+            362,
+            1086
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            11,
+            347,
+            350
+          ],
+          "target_xy": [
+            18,
+            528
+          ],
+          "target_size": [
+            219,
+            223
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            362,
+            724,
+            724,
+            1086
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            11,
+            347,
+            350
+          ],
+          "target_xy": [
+            274,
+            528
+          ],
+          "target_size": [
+            219,
+            223
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            724,
+            724,
+            1086,
+            1086
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            11,
+            347,
+            350
+          ],
+          "target_xy": [
+            530,
+            528
+          ],
+          "target_size": [
+            219,
+            223
+          ]
+        },
+        {
+          "source_cell_box_xyxy": [
+            1086,
+            724,
+            1448,
+            1086
+          ],
+          "foreground_box_in_source_cell_xyxy": [
+            15,
+            11,
+            348,
+            350
+          ],
+          "target_xy": [
+            786,
+            528
+          ],
+          "target_size": [
+            219,
+            223
+          ]
+        }
+      ]
+    },
+    {
+      "file": "art/visitor_story_art.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "grid": [
+        4,
+        2
+      ],
+      "cell_size": [
+        384,
+        512
+      ],
+      "cell_count": 8,
+      "background_key": null,
+      "sampling": "nearest_neighbor",
+      "bytes": 3322970,
+      "sha256": "87ce639620a9d9b38accff6c58b6a1da9c74d5ac50ac67d64682f17c1d6515eb",
+      "cells": [
+        {
+          "index": 0,
+          "id": "visitor_mail",
+          "rect_xywh": [
+            0,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 1,
+          "id": "visitor_merchant",
+          "rect_xywh": [
+            384,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 2,
+          "id": "visitor_fisher",
+          "rect_xywh": [
+            768,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 3,
+          "id": "visitor_scholar",
+          "rect_xywh": [
+            1152,
+            0,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 4,
+          "id": "visitor_flowers",
+          "rect_xywh": [
+            0,
+            512,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 5,
+          "id": "visitor_repair",
+          "rect_xywh": [
+            384,
+            512,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 6,
+          "id": "visitor_children",
+          "rect_xywh": [
+            768,
+            512,
+            384,
+            512
+          ]
+        },
+        {
+          "index": 7,
+          "id": "visitor_antiques",
+          "rect_xywh": [
+            1152,
+            512,
+            384,
+            512
+          ]
+        }
+      ],
+      "source_raw_size": [
+        1536,
+        1024
+      ],
+      "source_raw_sha256": "3688d5f7eb4934105b31cf112237af714f10c878e4942aed429f8bee12e24bba",
+      "processing": "Full-scene atlas; imagegen-corrected panels2 and4 mechanically placed into original grid. Other six original panels preserved byte-for-byte at pixel level.",
+      "identity_repairs": [
+        {
+          "index": 2,
+          "raw_size": [
+            1086,
+            1448
+          ],
+          "raw_sha256": "61a0157e6470c7e677e4de13042c819b6d2d44d540b1e2a94796f4d7ea549f2b",
+          "correction": "Deul: brown hair and beige brimmed knit cap",
+          "processing": "full panel nearest resize to384x512, no crop or key removal"
+        },
+        {
+          "index": 4,
+          "raw_size": [
+            1086,
+            1448
+          ],
+          "raw_sha256": "bf619385f7168e8e92027dfc618009a157ca917b81c7ae18ae75db9238e4dafe",
+          "correction": "Sori: brown hair and periwinkle blue tied headscarf",
+          "processing": "full panel nearest resize to384x512, no crop or key removal"
+        }
+      ],
+      "crew_companion_order": [
+        "haneul",
+        "saei",
+        "deul",
+        "dori",
+        "sori",
+        "geonu",
+        "nuri",
+        "onyu"
+      ],
+      "no_key_removal": true,
+      "frame_note": "Thin dark frames are included in scene artwork."
+    }
+  ]
+}

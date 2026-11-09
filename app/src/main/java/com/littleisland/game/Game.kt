@@ -224,6 +224,9 @@ object Game {
         decoOwned.clear(); sp.getString("decoOwned", "")!!.split(",").filter { it.isNotEmpty() }.forEach { decoOwned.add(it) }
         decoOn.clear(); sp.getString("decoOn", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); if (v in decoOwned) decoOn[k] = v }
         sp.getString("crewXp", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewXp[k] = v.toIntOrNull() ?: 0 }
+        critSeen.clear(); sp.getString("critSeen", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { critSeen.add(it) }
+        bookGot.clear(); sp.getString("bookGot", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { bookGot.add(it) }
+        visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
         set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
         set("festGot", festGot); weatherId = sp.getString("v_weather", null)
         reqOffer.clear(); sp.getString("reqOffer", "")!!.split(",").filter { it.isNotEmpty() }.forEach { reqOffer.add(it) }
@@ -250,6 +253,7 @@ object Game {
         if (shipLevel >= 3) flags.add("ship_3")
         if (shipLevel >= 4) flags.add("ship_4")
         if (shipLevel >= 5) flags.add("ship_5")
+        if (shipLevel >= 6) flags.add("ship_6")
         if (lighthouse) flags.add("lighthouse")
         if (market) flags.add("market")
         checkTitles(false)
@@ -288,6 +292,7 @@ object Game {
             putString("reqOffer", reqOffer.joinToString(",")); putString("reqAcc", reqAcc.entries.joinToString(",") { it.key + ":" + it.value[0] + ":" + it.value[1] }); putLong("reqNext", reqNext)
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
+            putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
             if (v == null) putLong("v_start", 0L) else {
                 putLong("v_start", v.start); putFloat("v_dur", v.dur); putString("v_port", v.port); putInt("v_cw", v.cw); putInt("v_cs", v.cs)
@@ -314,8 +319,10 @@ object Game {
         val sid = Fleet.season(k.get(java.util.Calendar.MONTH) + 1)?.id
         val ok = Fleet.weathers.filter { w -> shipLevel >= w.minShip && (sid == null || sid in w.seasons) &&
             (w.time == "any" || (w.time == "night") == night) }
-        return pickWeighted(ok) { it.weight }
+        val tb = tide()?.takeIf { it.kind == "weather_boost" }
+        return pickWeighted(ok) { if (tb != null && it.id == tb.target) (it.weight * tb.value).roundToIntSafe() else it.weight }
     }
+    private fun Float.roundToIntSafe() = Math.round(this)
     private fun wv(kind: String): Float = Fleet.weather(weatherId)?.takeIf { it.kind == kind }?.value ?: 0f
 
     val titlesGot = LinkedHashSet<String>()
@@ -329,6 +336,7 @@ object Game {
         "any_promoted_crew_level_at_least" -> promoted.any { crewLevel(it) >= t.value }
         "promoted_count_at_least" -> promoted.size >= t.value
         "boss_first_win" -> t.key in bossWins
+        "creature_book" -> critSeen.size >= t.value
         else -> false
     }
     /** 새로 채운 칭호를 연다. 한 번 연 칭호는 다시 잠그지 않는다 */
@@ -391,8 +399,9 @@ object Game {
             if (s > 0) { got[1] += s; v.cs -= s; ds += s }
             if (got[0] >= r.needW && got[1] >= r.needS) {
                 reqAcc.remove(id)
-                goldC += r.gold * 100L; tickets += r.tickets
-                card("의뢰 완료 · " + r.title, r.client + ": “" + r.thanks + "”\n금화 +" + r.gold + (if (r.tickets > 0) ", 쪽지 +" + r.tickets else ""))
+                val rg = Math.round(r.gold * (1 + tideV("request_bonus", 0f)))
+                goldC += rg * 100L; tickets += r.tickets
+                card("의뢰 완료 · " + r.title, r.client + ": “" + r.thanks + "”\n금화 +" + rg + (if (r.tickets > 0) ", 쪽지 +" + r.tickets else ""))
             }
         }
         return if (dw + ds == 0) "" else "\n의뢰에 넘김" + (if (dw > 0) " 나무 $dw" else "") + (if (ds > 0) " 돌 $ds" else "")
@@ -414,7 +423,7 @@ object Game {
             val v = Fleet.visitors.filter { shipLevel >= it.minShip }.randomOrNull() ?: return
             visId = v.id; visOffer = Random.nextInt(v.offers.size); visDone = false
             visUntil = now + Fleet.visStay * 60_000L
-            visNext = visUntil + (Fleet.visEvery[0] + Random.nextInt(max(1, Fleet.visEvery[1] - Fleet.visEvery[0] + 1))) * 60_000L
+            visNext = visUntil + ((Fleet.visEvery[0] + Random.nextInt(max(1, Fleet.visEvery[1] - Fleet.visEvery[0] + 1))) * 60_000L / tideV("visitor_more", 1f)).toLong()
             card(v.name + "이(가) 들렀어요", v.hello + "\n" + (v.offers[visOffer].short) + " · 배를 톡 하면 거래")
             save()
         }
@@ -432,11 +441,44 @@ object Game {
         wood -= o.give.wood; stone -= o.give.stone; goldC -= o.give.gold * 100L; tickets -= o.give.tickets
         add(o.get.wood, o.get.stone); goldC += o.get.gold * 100L; tickets += o.get.tickets
         visDone = true
+        val n = (visTrades[v.id] ?: 0) + 1; visTrades[v.id] = n
+        for (st in Fleet.vstories) if (st.visitor == v.id && st.trades <= n && !has(st.id)) {
+            flag(st.id); tickets += st.reward.tickets; goldC += st.reward.gold * 100L
+            card("손님 이야기 · " + st.title, st.cardLine + "\n일지에 적었어요" + (if (st.reward.tickets + st.reward.gold > 0) " · " + resText(st.reward) else ""))
+        }
+        Story.refresh(false)
         card(v.name + "과(와) 거래했어요", "“" + v.bye + "”\n받음 " + resText(o.get))
         save()
         return "거래 완료 " + resText(o.get)
     }
     private var t12 = 0f
+
+    // ---------- 13차: 도감, 주간 바다 소식, 손님 이야기 ----------
+    val critSeen = LinkedHashSet<Int>()               // 본 바다 동물 kind
+    private val bookGot = HashSet<Int>()              // 받은 도감 문턱 count
+    /** 바다 동물을 톡: 처음이면 도감에 적고 보상. 화면에 띄울 글 */
+    @Synchronized fun seeCritter(kind: Int): String {
+        val cr = Fleet.creature(kind) ?: return ""
+        if (!critSeen.add(kind)) return cr.name
+        tickets += cr.reward.tickets; goldC += cr.reward.gold * 100L
+        card("도감 · " + cr.name, (Fleet.crewOf(cr.seenBy)?.name?.let { "$it: “" + cr.firstLine + "”\n" } ?: "") + "쪽지 +" + cr.reward.tickets + ", 금화 +" + cr.reward.gold)
+        for (m in Fleet.bookMiles) if (critSeen.size >= m.count && bookGot.add(m.count)) {
+            tickets += m.reward.tickets; goldC += m.reward.gold * 100L
+            card("도감 " + m.count + "마리!", "쪽지 +" + m.reward.tickets + ", 금화 +" + m.reward.gold)
+        }
+        checkTitles(); save()
+        return "도감 " + critSeen.size + "/" + Fleet.creatures.size + " " + cr.name + "!"
+    }
+    /** 이번 주 바다 소식: 2026-01-05(월)부터 7일마다 다음 소식 */
+    fun tide(): Fleet.Tide? {
+        if (Fleet.tides.isEmpty()) return null
+        val base = java.util.Calendar.getInstance().apply { clear(); set(2026, 0, 5) }
+        val k = cal(); val now = java.util.Calendar.getInstance().apply { clear(); set(k.get(java.util.Calendar.YEAR), k.get(java.util.Calendar.MONTH), k.get(java.util.Calendar.DAY_OF_MONTH)) }
+        val days = Math.round((now.timeInMillis - base.timeInMillis) / 86_400_000.0).toInt()
+        return Fleet.tides[Math.floorMod(Math.floorDiv(days, 7), Fleet.tides.size)]
+    }
+    fun tideV(kind: String, def: Float): Float = tide()?.takeIf { it.kind == kind }?.value ?: def
+    val visTrades = HashMap<String, Int>()
 
     // ---------- 선원 항해 사건 ----------
     var cevId: String? = null; private set          // 이번 항해에 생길 선원 사건 (귀항 때 정산)
@@ -991,7 +1033,7 @@ object Game {
     private fun rollSouvenir(port: String) {
         val all = Fleet.souvenirs.filter { it.port == port }
         val left = all.filter { it.id !in souvOwned }
-        if (left.isEmpty() || Random.nextFloat() >= (all.firstOrNull()?.chance ?: .2f)) return
+        if (left.isEmpty() || Random.nextFloat() >= (all.firstOrNull()?.chance ?: .2f) + tideV("souvenir_more", 0f)) return
         val s = left.random()
         souvOwned.add(s.id); bump("souvenir_get")
         card("기념품을 얻었어요", s.name + " · 도감 " + souvOwned.size + "/" + Fleet.souvenirs.size)

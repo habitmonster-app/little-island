@@ -79,6 +79,18 @@ object Story {
                         b.optString("captain") + " 선장의 배를 처음 이긴 날", st.optString("body"), "우두머리 이야기가 열렸어요"))
                 }
             } catch (e: Exception) { }
+            // 손님 이야기 (50_visitor_stories.json): 그 손님과 거래한 횟수로 열림. 그림은 200+
+            try {
+                val vn = HashMap<String, String>()
+                JSONObject(c.assets.open("46_island_visitors.json").bufferedReader(Charsets.UTF_8).use { it.readText() }).getJSONArray("visitors").let { a ->
+                    for (i in 0 until a.length()) a.getJSONObject(i).let { vn[it.getString("id")] = it.optString("name") } }
+                val ss = JSONObject(c.assets.open("50_visitor_stories.json").bufferedReader(Charsets.UTF_8).use { it.readText() }).getJSONArray("stories")
+                for (i in 0 until ss.length()) {
+                    val x = ss.getJSONObject(i); val id = x.getString("id")
+                    entries.add(Entry(id, SIDE, "손님 · " + (vn[x.optString("visitor")] ?: ""), x.optString("title"), id, null,
+                        x.optString("card_line"), x.optString("story"), x.optString("card_line"), 200 + x.optInt("art_index")))
+                }
+            } catch (e: Exception) { }
             // 특별 항해 이야기 (23_crew_missions.json): 첫 성공 때 열림
             for ((file, artBase) in listOf("23_crew_missions.json" to 0, "32_crew_missions_3.json" to 100)) try {
                 val ms = JSONObject(c.assets.open(file).bufferedReader(Charsets.UTF_8).use { it.readText() }).getJSONArray("missions")

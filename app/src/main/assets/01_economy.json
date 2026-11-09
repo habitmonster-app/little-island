@@ -452,6 +452,28 @@
    },
    "purchase_mode": "app_one_time",
    "required_for_main_ending": false
+  },
+  {
+   "unlock": "ship_6",
+   "requires": [
+    "ship_5"
+   ],
+   "cost": {
+    "gold": 324000,
+    "wood": 1080,
+    "stone": 900
+   },
+   "requires_building_levels": {
+    "warehouse": 4
+   },
+   "requires_parts_at_least": {
+    "hull": 25,
+    "sail": 25,
+    "cannon": 25,
+    "helm": 25
+   },
+   "purchase_mode": "app_one_time",
+   "required_for_main_ending": false
   }
  ],
  "fixed_rules": {

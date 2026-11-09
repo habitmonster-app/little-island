@@ -150,6 +150,8 @@ class Scene {
         visX?.let { vx -> if (abs(vx - x) < 26 && y > visY - 34 && y < visY + 6) {
             val ok = Game.canTrade(); val t = Game.trade()
             pops.add(Pop(vx, visY - 36, t, 3.5f, ok)); return t } }
+        // 바다 동물을 톡 치면 도감에 적는다
+        critter?.let { cr -> if (abs(cr.x - x) < 22 && abs(y - WL) < 26) { val t = Game.seeCritter(cr.kind); if (t.isNotEmpty()) { pops.add(Pop(cr.x, WL - 30, t, 3.5f, true)); return t } } }
         val f = floaters.minByOrNull { abs(it.x - x) + abs(it.y - y) } ?: return null
         if (abs(f.x - x) > 22 || abs(f.y - y) > 26) return null
         floaters.remove(f)
@@ -166,7 +168,7 @@ class Scene {
         critter?.let { cr -> cr.t += dt; cr.x -= dt * (when (cr.kind) { 2 -> 7f; 1 -> 9f; 4 -> 12f; 5 -> 4f; 6 -> 10f; 7 -> 5f; else -> 16f }); if (cr.x < -30f) critter = null }
         if (critter == null) {
             critterWait -= dt
-            if (critterWait <= 0f) { critterWait = 60f + Random.nextFloat() * 90f; critter = Critter(Random.nextInt(if (Art.has("sea_creatures_2")) 8 else 4), W + 24f, 0f) }
+            if (critterWait <= 0f) { critterWait = (60f + Random.nextFloat() * 90f) / Game.tideV("critter_more", 1f); critter = Critter(Random.nextInt(if (Art.has("sea_creatures_2")) 8 else 4), W + 24f, 0f) }
         }
     }
     /** Lv11 이상이면 다 자란 선원 대사(40번)도 섞는다 */
@@ -188,7 +190,7 @@ class Scene {
     private fun updateFloaters(dt: Float) {
         floatWait -= dt
         if (floatWait <= 0f && floaters.size < 2) {
-            floatWait = 35f + Random.nextFloat() * 50f
+            floatWait = (35f + Random.nextFloat() * 50f) / Game.tideV("find_more", 1f)
             val k = Random.nextFloat()
             floaters.add(when {
                 k < .12f -> Floater(W + 10f, WL + 1, 1, 40f)
@@ -320,7 +322,7 @@ class Scene {
         }
         // 특별 항해 중이면 주인공 선원이 임무 대사를 자주 한다
         // 날씨와 계절 한마디
-        if (Random.nextInt(4) == 0) Game.weather()?.crewLine?.takeIf { it.isNotEmpty() }?.let { say(v.crew.random(), it); return true }
+        if (Random.nextInt(4) == 0) Game.weather()?.let { w -> val id = v.crew.random(); (Fleet.weatherLines[id]?.get(w.id) ?: w.crewLine).takeIf { it.isNotEmpty() }?.let { say(id, it); return true } }
         if (Random.nextInt(6) == 0) { val id = v.crew.random(); Game.season()?.crewLines?.get(id)?.let { say(id, it); return true } }
         Fleet.mission(v.mission)?.let { m -> if (m.crew in v.crew && m.homeLine.isNotEmpty() && Random.nextBoolean()) { say(m.crew, m.homeLine); return true } }
         val id = v.crew.random(); val l = voiceOf(id, false) ?: return false
@@ -691,7 +693,8 @@ class Scene {
             // 계절: 4단계 섬은 나무 덮개, 모든 섬은 계절 소품 두 개
             val sea = Game.season()
             val si = Fleet.seasons.indexOf(sea)
-            if (stage == "island_4" && si >= 0) acell("island_seasons", 1, 4, si, 196)?.let { Art.draw(c, it, 98f, GROUND + it.height / SS.toFloat() * (1 - g)) }
+            val sheet = when (stage) { "island_4" -> "island_seasons"; "island_3" -> "island_seasons_3"; "island_2" -> "island_seasons_2"; else -> null }
+            if (sheet != null && si >= 0) acell(sheet, 1, 4, si, 196)?.let { Art.draw(c, it, 98f, GROUND + it.height / SS.toFloat() * (1 - g)) }
             sea?.deco?.let { d -> d.getOrNull(0)?.let { acell("season_deco", 4, 4, it, 16)?.let { b -> Art.draw(c, b, 75f, GROUND + 1) } }
                 d.getOrNull(2)?.let { acell("season_deco", 4, 4, it, 15)?.let { b -> Art.draw(c, b, 96f, GROUND + 1) } } }
             artIsland(time); c.restore(); return
@@ -855,7 +858,7 @@ class Scene {
     /** 이 단계 배 그림 한 칸 (5단계는 따로 된 시트) */
     private fun shipCell(lv: Int, look: Int, sw: Int, cutFlag: Boolean): android.graphics.Bitmap? {
         val five = lv >= 5
-        val sheet = if (five) "ship_stage5" else "ship_stages"
+        val sheet = if (lv >= 6 && Art.has("ship_stage6")) "ship_stage6" else if (five) "ship_stage5" else "ship_stages"
         val rows = if (five) 1 else 4
         val idx = if (five) look else (lv - 1) * 4 + look
         if (cutFlag && look == 3) {

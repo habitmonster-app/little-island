@@ -1,0 +1,148 @@
+{
+  "tides": [
+    {
+      "id": "tide_whale_week",
+      "name": "큰 숨의 물길",
+      "short": "바다 친구가 자주 찾아와요",
+      "news": "물결 사이 큰 숨을 찾아보세요.",
+      "effect": {
+        "kind": "critter_more",
+        "value": 1.6,
+        "target": ""
+      },
+      "icon_index": 0
+    },
+    {
+      "id": "tide_mail_week",
+      "name": "오가는 안부",
+      "short": "손님 배가 부지런히 와요",
+      "news": "부두에 새 안부가 자주 닿아요.",
+      "effect": {
+        "kind": "visitor_more",
+        "value": 1.5,
+        "target": ""
+      },
+      "icon_index": 1
+    },
+    {
+      "id": "tide_mist_week",
+      "name": "등불 산책",
+      "short": "안개 낀 물길이 잦아져요",
+      "news": "희미한 물길에서 등불을 찾아요.",
+      "effect": {
+        "kind": "weather_boost",
+        "value": 2.5,
+        "target": "weather_fog"
+      },
+      "icon_index": 2
+    },
+    {
+      "id": "tide_helping_week",
+      "name": "든든한 품앗이",
+      "short": "항구 의뢰 금화가 늘어요",
+      "news": "이웃의 부탁에 넉넉한 답이 와요.",
+      "effect": {
+        "kind": "request_bonus",
+        "value": 0.15,
+        "target": ""
+      },
+      "icon_index": 3
+    },
+    {
+      "id": "tide_bottle_week",
+      "name": "떠오는 반짝임",
+      "short": "병과 상자가 자주 떠와요",
+      "news": "바다 위 작은 선물을 건져 봐요.",
+      "effect": {
+        "kind": "find_more",
+        "value": 1.3,
+        "target": ""
+      },
+      "icon_index": 4
+    },
+    {
+      "id": "tide_keepsake_week",
+      "name": "항구의 선물",
+      "short": "기념품을 만날 기회가 늘어요",
+      "news": "항구에서 새 기억을 챙겨 와요.",
+      "effect": {
+        "kind": "souvenir_more",
+        "value": 0.05,
+        "target": ""
+      },
+      "icon_index": 5
+    },
+    {
+      "id": "tide_fairwind_week",
+      "name": "기분 좋은 바람",
+      "short": "순풍을 만날 기회가 늘어요",
+      "news": "등을 미는 바람에 돛을 맡겨요.",
+      "effect": {
+        "kind": "weather_boost",
+        "value": 3.0,
+        "target": "weather_fair_wind"
+      },
+      "icon_index": 6
+    },
+    {
+      "id": "tide_playful_week",
+      "name": "물방울 놀이터",
+      "short": "바다 친구가 더 자주 와요",
+      "news": "잠깐 멈춰 물방울 인사를 봐요.",
+      "effect": {
+        "kind": "critter_more",
+        "value": 1.8,
+        "target": ""
+      },
+      "icon_index": 7
+    },
+    {
+      "id": "tide_dock_week",
+      "name": "북적이는 부두",
+      "short": "손님 배가 자주 쉬어 가요",
+      "news": "빈 부두에 반가운 배가 닿아요.",
+      "effect": {
+        "kind": "visitor_more",
+        "value": 1.8,
+        "target": ""
+      },
+      "icon_index": 8
+    },
+    {
+      "id": "tide_calm_week",
+      "name": "고요한 찻자리",
+      "short": "잔잔한 물길이 잦아져요",
+      "news": "물결을 보며 차 한 모금 쉬어요.",
+      "effect": {
+        "kind": "weather_boost",
+        "value": 2.5,
+        "target": "weather_calm"
+      },
+      "icon_index": 9
+    },
+    {
+      "id": "tide_shared_week",
+      "name": "함께 메운 빈칸",
+      "short": "의뢰 금화가 넉넉해져요",
+      "news": "이웃의 빈 선반을 함께 채워요.",
+      "effect": {
+        "kind": "request_bonus",
+        "value": 0.2,
+        "target": ""
+      },
+      "icon_index": 10
+    },
+    {
+      "id": "tide_rest_week",
+      "name": "느긋한 바다",
+      "short": "익숙한 물길을 바라봐요",
+      "news": "이번 주는 평소처럼 쉬어 가요.",
+      "effect": {
+        "kind": "none",
+        "value": 0.0,
+        "target": ""
+      },
+      "icon_index": 11
+    }
+  ]
+}

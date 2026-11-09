@@ -198,8 +198,8 @@ class AppUi(val scene: Scene, val host: Host) {
                     val info = p.name + "\n나무 " + fmt(p.buyW) + " · 돌 " + fmt(p.buyS) + "금화에 사요\n해적 " + (p.risk * 100).toInt() + "% · 거리 " + fmt(p.distance) + "\n" + p.look +
                         (if (sv.isNotEmpty()) "\n\n기념품 " + sv.count { it.id in Game.souvOwned } + "/" + sv.size else "")
                     l.add(when {
-                        open && Game.route == p.id -> Tile("anchor", p.name, "지금 항로", St.ON, info)
-                        open && Game.routeOk(p) -> Tile("anchor", p.name, "고르기", St.NORMAL, info, null, "이 항로로", { Game.setRoute(p.id) }, p.name + "로 다음 출항부터 가요")
+                        open && Game.route == p.id -> Tile("port:" + Data.ports.indexOf(p), p.name, "지금 항로", St.ON, info)
+                        open && Game.routeOk(p) -> Tile("port:" + Data.ports.indexOf(p), p.name, "고르기", St.NORMAL, info, null, "이 항로로", { Game.setRoute(p.id) }, p.name + "로 다음 출항부터 가요")
                         open -> Tile("lock", p.name, "배 " + p.minShip + "단계", St.LOCKED, info + "\n\n배 " + p.minShip + "단계부터 갈 수 있어요")
                         u != null -> buyTile("anchor", p.name, Game.unlockReady(u), u.cost, info, u.requires, "항로 열기", { Game.buyUnlock(p.id) }, p.name + " 항로가 열렸어요")
                         else -> Tile("lock", p.name, "잠김", St.LOCKED, info)
@@ -298,6 +298,10 @@ class AppUi(val scene: Scene, val host: Host) {
                         "“" + v.hello + "”\n\n" + (o?.short ?: "") + "\n줄 것  " + (o?.let { Game.resText(it.give) } ?: "") + "\n받을 것  " + (o?.let { Game.resText(it.get) } ?: "") +
                             (if (Game.visDone) "\n\n“" + v.bye + "”" else ""), null, if (Game.canTrade()) "거래" else null, { Game.trade(); true }, "거래했어요"))
                 }
+                // 이번 주 바다 소식
+                Game.tide()?.let { t ->
+                    l.add(Tile("tide:" + t.icon, t.name, "이번 주", St.ON, t.short + "\n\n" + t.news + "\n\n월요일마다 새 소식이 와요."))
+                }
                 // 지금 항해 날씨
                 Game.weather()?.let { w ->
                     val e = when (w.kind) { "speed" -> if (w.value > 0) "빨리 가요" else "조금 느려요"; "cargo" -> "짐을 더 실어요"; "pirate_chance" -> "해적을 덜 만나요"; else -> "평온해요" }
@@ -309,14 +313,14 @@ class AppUi(val scene: Scene, val host: Host) {
                     val r = Fleet.req(id) ?: continue
                     val pn = Data.port(r.port).name
                     val need = listOfNotNull(if (r.needW > 0) "나무 " + got[0] + "/" + r.needW else null, if (r.needS > 0) "돌 " + got[1] + "/" + r.needS else null).joinToString(" · ")
-                    l.add(Tile("daily:0", r.title, need, St.ON, r.client + " · " + pn + "\n" + r.short + "\n\n" + need + "\n보상  금화 " + r.gold + (if (r.tickets > 0) " · 쪽지 " + r.tickets else "") +
+                    l.add(Tile("port:" + Data.ports.indexOfFirst { it.id == r.port }.coerceAtLeast(0), r.title, need, St.ON, r.client + " · " + pn + "\n" + r.short + "\n\n" + need + "\n보상  금화 " + r.gold + (if (r.tickets > 0) " · 쪽지 " + r.tickets else "") +
                         "\n\n" + pn + "로 항해하면 실은 짐을 넘겨요.", null, "포기", { Game.cancelReq(id) }, "의뢰를 접었어요"))
                 }
                 for (id in Game.reqOffer.toList()) {
                     val r = Fleet.req(id) ?: continue
                     val pn = Data.port(r.port).name
                     val need = listOfNotNull(if (r.needW > 0) "나무 " + r.needW else null, if (r.needS > 0) "돌 " + r.needS else null).joinToString(" · ")
-                    l.add(Tile("daily:0", r.title, pn, St.NORMAL, r.client + " · " + pn + "\n" + r.short + "\n\n필요  " + need + "\n보상  금화 " + r.gold + (if (r.tickets > 0) " · 쪽지 " + r.tickets else "") +
+                    l.add(Tile("port:" + Data.ports.indexOfFirst { it.id == r.port }.coerceAtLeast(0), r.title, pn, St.NORMAL, r.client + " · " + pn + "\n" + r.short + "\n\n필요  " + need + "\n보상  금화 " + r.gold + (if (r.tickets > 0) " · 쪽지 " + r.tickets else "") +
                         "\n\n받으면 " + pn + " 항해 때 짐을 넘겨요.", null, "받기", { Game.acceptReq(id) }, "의뢰를 받았어요"))
                 }
                 // 오늘의 항구 주문 3개 + 주간 상자
@@ -336,6 +340,14 @@ class AppUi(val scene: Scene, val host: Host) {
                     when { Game.treasurePending -> "지도를 맞췄어요. 다음 항해에 보물섬에 들러요."
                            else -> "홈 화면에 떠다니는 유리병·보물상자를 톡 쳐서 조각을 모아요. " + Game.MAP_NEED + "개면 밀기 퍼즐로 지도를 맞춰요." },
                     null, if (mp >= Game.MAP_NEED && !Game.treasurePending) "맞추기" else null, { host.openMap(); false }))
+                // 바다 동물 도감
+                if (Fleet.creatures.isNotEmpty()) {
+                    val seen = Fleet.creatures.filter { it.kind in Game.critSeen }
+                    val list = Fleet.creatures.chunked(2).joinToString("\n") { r -> r.joinToString("   ") { c -> (if (c.kind in Game.critSeen) "●" else "○") + c.name } }
+                    val nm = Fleet.bookMiles.firstOrNull { it.count > seen.size }
+                    l.add(Tile("crit:" + (seen.lastOrNull()?.icon ?: 0), "바다 동물 도감", seen.size.toString() + "/" + Fleet.creatures.size, if (seen.isNotEmpty()) St.ON else St.NORMAL,
+                        "홈 화면 바다에 지나가는 동물을 톡 쳐요.\n처음 보면 보상을 받아요.\n\n" + list + (nm?.let { "\n\n" + it.count + "마리  " + Game.resText(it.reward) + (if (it.titleName.isNotEmpty()) " · 칭호" else "") } ?: "")))
+                }
                 // 계절과 축제, 선장 칭호
                 Game.season()?.let { se ->
                     val fe = Game.festNow()
