@@ -1,0 +1,128 @@
+{
+  "creatures": [
+    {
+      "id": "crit_crab",
+      "kind": 8,
+      "name": "꽃게",
+      "short": "모래 길을 옆으로 걸어요",
+      "first_line": "집게로 매듭도 묶겠네요.",
+      "seen_by": "yeoul",
+      "reward": {
+        "tickets": 1,
+        "gold": 50
+      },
+      "icon_index": 0
+    },
+    {
+      "id": "crit_clownfish",
+      "kind": 9,
+      "name": "흰동가리 떼",
+      "short": "산호 사이 줄무늬 친구들",
+      "first_line": "작은 줄도 간격이 고르네요.",
+      "seen_by": "nuri",
+      "reward": {
+        "tickets": 1,
+        "gold": 50
+      },
+      "icon_index": 1
+    },
+    {
+      "id": "crit_starfish",
+      "kind": 10,
+      "name": "불가사리",
+      "short": "바닥에 내려앉은 주황 별",
+      "first_line": "바닥에서 별 인사를 하네요.",
+      "seen_by": "haneul",
+      "reward": {
+        "tickets": 1,
+        "gold": 30
+      },
+      "icon_index": 2
+    },
+    {
+      "id": "crit_seahorse",
+      "kind": 11,
+      "name": "해마",
+      "short": "말린 꼬리로 둥실 인사",
+      "first_line": "꼬리로 살며시 기대 있네요.",
+      "seen_by": "sori",
+      "reward": {
+        "tickets": 1,
+        "gold": 60
+      },
+      "icon_index": 3
+    },
+    {
+      "id": "crit_boxfish",
+      "kind": 12,
+      "name": "거북복",
+      "short": "노란 작은 상자가 둥둥",
+      "first_line": "둥근 돌처럼 단단해 보여요.",
+      "seen_by": "mungi",
+      "reward": {
+        "tickets": 1,
+        "gold": 60
+      },
+      "icon_index": 4
+    },
+    {
+      "id": "crit_ray",
+      "kind": 13,
+      "name": "작은 가오리",
+      "short": "물속에서 날개를 펼쳐요",
+      "first_line": "물속에도 작은 돛이 있네요.",
+      "seen_by": "bada",
+      "reward": {
+        "tickets": 1,
+        "gold": 80
+      },
+      "icon_index": 5
+    }
+  ],
+  "garden": [
+    {
+      "voyages": 0,
+      "coral": 2,
+      "seaweed": 2,
+      "news": ""
+    },
+    {
+      "voyages": 30,
+      "coral": 3,
+      "seaweed": 2,
+      "news": "산호가 이웃을 맞았어요."
+    },
+    {
+      "voyages": 80,
+      "coral": 3,
+      "seaweed": 3,
+      "news": "해초도 나란히 자랐어요."
+    },
+    {
+      "voyages": 150,
+      "coral": 4,
+      "seaweed": 4,
+      "news": "바닷속 쉼터가 넓어져요."
+    },
+    {
+      "voyages": 300,
+      "coral": 5,
+      "seaweed": 5,
+      "news": "물길마다 초록이 늘어요."
+    },
+    {
+      "voyages": 500,
+      "coral": 6,
+      "seaweed": 6,
+      "news": "풍성한 정원이 되었어요."
+    }
+  ],
+  "pearl": {
+    "chance_per_hour": 0.5,
+    "reward": {
+      "tickets": 1,
+      "gold": 80
+    },
+    "line": "작은 반짝임을 챙겼어요."
+  }
+}

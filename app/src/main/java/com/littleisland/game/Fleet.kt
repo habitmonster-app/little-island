@@ -164,6 +164,7 @@ object Fleet {
         } catch (e: Exception) { }
         loadOrder12(c)
         loadOrder13(c)
+        loadOrder14(c)
     }
 
     // ---------- 12차: 칭호, 날씨, 항구 의뢰, 계절, 손님 배 ----------
@@ -203,6 +204,24 @@ object Fleet {
     val vstories = ArrayList<VStory>()
     val weatherLines = HashMap<String, Map<String, String>>()
     fun creature(kind: Int) = creatures.firstOrNull { it.kind == kind }
+    // ---------- 14차: 바닷속 ----------
+    class Garden(val voyages: Int, val coral: Int, val seaweed: Int, val news: String)
+    val garden = ArrayList<Garden>()
+    var pearlChance = .5f; private set
+    var pearlReward = Res(0, 0, 80, 1); private set
+    var pearlLine = ""; private set
+    val seabedLines = HashMap<String, List<String>>()
+    fun gardenAt(voyages: Int) = garden.lastOrNull { voyages >= it.voyages }
+    private fun loadOrder14(c: Context) {
+        try { val d = json(c, "52_seabed.json")
+            d.optJSONArray("creatures")?.let { a -> for (i in 0 until a.length()) { val x = a.getJSONObject(i)
+                creatures.add(Creature(x.getString("id"), x.optInt("kind"), x.optString("name"), x.optString("short"), x.optString("first_line"), x.optString("seen_by"), res(x.optJSONObject("reward")), 100 + x.optInt("icon_index", i))) } }
+            d.optJSONArray("garden")?.let { a -> for (i in 0 until a.length()) { val x = a.getJSONObject(i); garden.add(Garden(x.optInt("voyages"), x.optInt("coral"), x.optInt("seaweed"), x.optString("news"))) } }
+            d.optJSONObject("pearl")?.let { p -> pearlChance = p.optDouble("chance_per_hour", .5).toFloat(); pearlReward = res(p.optJSONObject("reward")); pearlLine = p.optString("line") }
+        } catch (e: Exception) { }
+        try { val o = json(c, "53_seabed_lines.json").getJSONObject("lines"); o.keys().forEach { k -> seabedLines[k] = strs(o.getJSONArray(k)) } } catch (e: Exception) { }
+        // 도감 8마리 칭호 → 전체 수로 (바닷속 친구까지)
+    }
     private fun loadOrder13(c: Context) {
         try { val d = json(c, "48_sea_creature_book.json"); val a = d.getJSONArray("creatures"); for (i in 0 until a.length()) { val x = a.getJSONObject(i)
             creatures.add(Creature(x.getString("id"), x.optInt("kind", i), x.optString("name"), x.optString("short"), x.optString("first_line"), x.optString("seen_by"), res(x.optJSONObject("reward")), x.optInt("icon_index", i))) }

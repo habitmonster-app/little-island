@@ -150,6 +150,9 @@ class Scene {
         visX?.let { vx -> if (abs(vx - x) < 26 && y > visY - 34 && y < visY + 6) {
             val ok = Game.canTrade(); val t = Game.trade()
             pops.add(Pop(vx, visY - 36, t, 3.5f, ok)); return t } }
+        // 바닷속: 진주 조개, 지나가는 친구
+        clamX?.let { cx -> if (abs(cx - x) < 14 && abs(y - (SAND - 6)) < 14) { val t = Game.takePearl(); if (t != null) { pops.add(Pop(cx, SAND - 24, t, 3.5f, true)); return t } } }
+        swimmer?.let { sw -> val sy = swimY(sw); if (abs(sw.x - x) < 18 && abs(y - sy) < 18) { val t = Game.seeCritter(sw.kind); if (t.isNotEmpty()) { pops.add(Pop(sw.x, sy - 18, t, 3.5f, true)); return t } } }
         // 바다 동물을 톡 치면 도감에 적는다
         critter?.let { cr -> if (abs(cr.x - x) < 22 && abs(y - WL) < 26) { val t = Game.seeCritter(cr.kind); if (t.isNotEmpty()) { pops.add(Pop(cr.x, WL - 30, t, 3.5f, true)); return t } } }
         val f = floaters.minByOrNull { abs(it.x - x) + abs(it.y - y) } ?: return null
@@ -324,6 +327,7 @@ class Scene {
         // 날씨와 계절 한마디
         if (Random.nextInt(4) == 0) Game.weather()?.let { w -> val id = v.crew.random(); (Fleet.weatherLines[id]?.get(w.id) ?: w.crewLine).takeIf { it.isNotEmpty() }?.let { say(id, it); return true } }
         if (Random.nextInt(6) == 0) { val id = v.crew.random(); Game.season()?.crewLines?.get(id)?.let { say(id, it); return true } }
+        if (Random.nextInt(7) == 0) { val id = v.crew.random(); Fleet.seabedLines[id]?.randomOrNull()?.let { say(id, it); return true } }
         Fleet.mission(v.mission)?.let { m -> if (m.crew in v.crew && m.homeLine.isNotEmpty() && Random.nextBoolean()) { say(m.crew, m.homeLine); return true } }
         val id = v.crew.random(); val l = voiceOf(id, false) ?: return false
         say(id, l); return true
@@ -439,6 +443,7 @@ class Scene {
         updateTalk(dt)
         updateFloaters(dt)
         updateCritter(dt)
+        updateSeabed(dt)
         if (sailing()) scroll += dt * 16f
         if (Game.levelUps > 0) { pops.add(Pop(dockX - 10, GROUND - 30, "선원 레벨 업!", 3.5f, true)); Game.levelUps = 0 }
         if (Game.arrived > 0) { pops.add(Pop(dockX, GROUND - 24, "알바 도착", 3f)); Game.arrived = 0 }
@@ -469,6 +474,7 @@ class Scene {
             seaBody(time)
         }
         skyWeather(time)
+        drawSeabed(time)
         birds(time)
         val io = islandOffset()
         val po = portOffset()
@@ -486,6 +492,66 @@ class Scene {
             c.drawRect(0f, 0f, W.toFloat(), H.toFloat(), p)
             ga = min(1f, dark * 1.6f); nightLights(time, io, po); ga = 1f
         }
+    }
+
+    // ---------- 14차: 바닷속 (모래 바닥, 정원, 거품, 물고기, 진주 조개) ----------
+    private val FLOOR = 386f          // 바닥 띠 아래 끝 (배경 그림의 바닥 위를 덮는다)
+    private val SAND = 362f           // 해초·산호 밑동 높이
+    private class Swimmer(val kind: Int, var x: Float, var t: Float)
+    private var swimmer: Swimmer? = null
+    private var swimWait = 12f + Random.nextFloat() * 20f
+    private var schoolX = -99f; private var schoolWait = 6f
+    private val bubbles = ArrayList<FloatArray>()          // x, y, t
+    private var bubbleWait = 1f
+    private var clamX: Float? = null
+    private val WEED_X = floatArrayOf(18f, 92f, 168f, 246f, 318f, 372f)
+    private val CORAL_X = floatArrayOf(52f, 132f, 206f, 282f, 344f, 392f)
+    private fun seaX(base: Float): Float { val v = ((base - scroll) % 400f + 400f) % 400f; return v - 100f }
+    private fun swimY(sw: Swimmer): Float = when (sw.kind) { 8, 10 -> SAND - 7; 9 -> 300f; 11 -> 318f + sin(sw.t * 1.5f) * 4f; 12 -> 292f; else -> 328f }
+    fun spawnSwimmer(kind: Int, x: Float) { swimmer = Swimmer(kind, x, 0f); schoolX = 150f }
+    private fun updateSeabed(dt: Float) {
+        val drift = if (sailing()) dt * 16f else 0f
+        swimmer?.let { sw -> sw.t += dt
+            sw.x -= when (sw.kind) { 8 -> 3f * dt + drift; 10 -> drift; 9 -> 10f * dt; 11 -> 4f * dt; 12 -> 6f * dt; else -> 9f * dt }
+            if (sw.x < -30f) swimmer = null }
+        if (swimmer == null) { swimWait -= dt; if (swimWait <= 0f && Fleet.creatures.any { it.kind >= 8 }) {
+            swimWait = (35f + Random.nextFloat() * 60f) / Game.tideV("critter_more", 1f); swimmer = Swimmer(8 + Random.nextInt(6), W + 20f, 0f) } }
+        if (schoolX > -40f) schoolX -= dt * 14f else { schoolWait -= dt; if (schoolWait <= 0f) { schoolWait = 25f + Random.nextFloat() * 40f; schoolX = W + 30f } }
+        bubbleWait -= dt
+        if (bubbleWait <= 0f) { bubbleWait = 1.2f + Random.nextFloat() * 2f
+            val n = Fleet.gardenAt(Game.voyages)?.seaweed ?: 2
+            val bx = seaX(WEED_X[Random.nextInt(n.coerceIn(1, WEED_X.size))])
+            if (bx in 0f..W.toFloat()) bubbles.add(floatArrayOf(bx, SAND - 24, 0f)) }
+        for (b in bubbles) { b[2] += dt; b[1] -= dt * 11f; b[0] += sin(b[2] * 3f) * dt * 3f - drift }
+        bubbles.removeAll { it[1] < WL + 8 || it[0] < -10 }
+    }
+    private fun drawSeabed(time: Float) {
+        if (!Art.has("seabed")) return
+        // 낮에는 빛줄기
+        if (dark < .5f) acell("light_rays", 4, 1, (floor(time * 1.2f) % 4).toInt(), 70)?.let { bm ->
+            val a = ((1 - dark * 2) * 150).roundToInt()
+            for (k in 0..1) Art.draw(c, bm, ((60f + k * 110f - scroll * .3f) % 260f + 260f) % 260f - 30f, WL + 140, alpha = a) }
+        // 모래 바닥 (배가 가면 흘러간다) + 그 아래는 모래색
+        gp.shader = LinearGradient(0f, FLOOR - 1, 0f, H.toFloat(), col("#e9cf8c"), col("#a8925c"), Shader.TileMode.CLAMP)
+        c.drawRect(0f, FLOOR - 1, W.toFloat(), H.toFloat(), gp); gp.shader = null
+        aget("seabed", 400)?.let { bm -> val x0 = -(((scroll % 400f) + 400f) % 400f); Art.draw(c, bm, x0 + 200f, FLOOR); Art.draw(c, bm, x0 + 600f, FLOOR) }
+        p.color = Color.argb(70, 10, 70, 130); c.drawRect(0f, SAND - 14, W.toFloat(), H.toFloat(), p)   // 물속이라 살짝 푸르게
+        val g = Fleet.gardenAt(Game.voyages)
+        for (i in 0 until (g?.seaweed ?: 2).coerceAtMost(WEED_X.size)) { val x = seaX(WEED_X[i]); if (x < -20 || x > W + 20) continue
+            acell("coral_sway", 4, 4, (i % 2) * 4 + (floor(time * 2f + i * .7f) % 4).toInt(), 40)?.let { Art.draw(c, it, x, SAND + 1.4f) } }
+        for (i in 0 until (g?.coral ?: 2).coerceAtMost(CORAL_X.size)) { val x = seaX(CORAL_X[i]); if (x < -20 || x > W + 20) continue
+            acell("coral_sway", 4, 4, (2 + i % 2) * 4 + (floor(time * 1.5f + i * .9f) % 4).toInt(), 34)?.let { Art.draw(c, it, x, SAND + 1.2f) } }
+        // 진주 조개
+        val cx = seaX(228f); clamX = if (cx in 0f..W.toFloat()) cx else null
+        if (clamX != null) acell("seabed_life", 4, 6, 20 + if (Game.pearlOpen()) 2 else if ((floor(time * .5f) % 6).toInt() == 0) 1 else 0, 22)?.let { Art.draw(c, it, cx, SAND + 1f) }
+        // 노란 물고기 떼, 바닷속 친구, 거품
+        if (schoolX > -40f) acell("seabed_life", 4, 6, 4 + (floor(time * 4f) % 4).toInt(), 36)?.let { Art.draw(c, it, schoolX, 300f) }
+        swimmer?.let { sw ->
+            val (sheet, rows, row) = when (sw.kind) { 8 -> Triple("seabed_life", 6, 2); 9 -> Triple("seabed_life", 6, 3); 10 -> Triple("seabed_life_2", 3, 0); 11 -> Triple("seabed_life", 6, 4); 12 -> Triple("seabed_life_2", 3, 1); else -> Triple("seabed_life_2", 3, 2) }
+            val sz = if (sw.kind == 13) 34 else 26
+            val fr = if (sw.kind == 10) (floor(sw.t * 1.5f) % 4).toInt() else (floor(sw.t * 4f) % 4).toInt()
+            acell(sheet, 4, rows, row * 4 + fr, sz)?.let { val y = swimY(sw); Art.draw(c, it, sw.x, if (sw.kind == 8 || sw.kind == 10) SAND + 1f else y + sz / 2f) } }
+        for (b in bubbles) acell("seabed_life", 4, 6, (floor(b[2] * 3f) % 4).toInt(), 12)?.let { Art.draw(c, it, b[0], b[1] + 6f) }
     }
 
     // ---------- 12차: 날씨와 손님 배 ----------

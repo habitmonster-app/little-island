@@ -355,7 +355,7 @@ object Pix {
                 "weather" -> Art.cell("weather_sky", 4, 4, 4 + idx, px)
                 "visitor" -> Art.cell("visitor_faces", 4, 2, idx, px)
                 "season" -> Art.cell("season_deco", 4, 4, idx, px)
-                "crit" -> Art.cell("creature_book", 4, 2, idx, px)
+                "crit" -> if (idx >= 100) Art.cell("seabed_book", 4, 2, idx - 100, px) else Art.cell("creature_book", 4, 2, idx, px)
                 "tide" -> Art.cell("tide_icons", 4, 3, idx, px)
                 "port" -> Art.cell("port_icons", 4, 3, idx, px)
                 "chest" -> Art.cell("gacha_chest", 4, 1, idx, px)

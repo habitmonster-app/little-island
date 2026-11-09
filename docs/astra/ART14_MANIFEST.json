@@ -1,0 +1,2855 @@
+{
+  "package": "little-island-order14",
+  "baseline": "build-43 per user order",
+  "sheet_count": 6,
+  "cell_count": 65,
+  "nonempty_cell_count": 63,
+  "coordinate_convention": "Zero-based row-major indices; rect=[x,y,width,height], bbox/crop endpoints exclusive. All geometry uses source pixels, not game logical display units.",
+  "runtime_tested": false,
+  "sheets": [
+    {
+      "file": "art/seabed.png",
+      "size": [
+        2048,
+        256
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "cell_size": [
+        2048,
+        256
+      ],
+      "cell_count": 1,
+      "nonempty_cell_count": 1,
+      "mode": "RGB",
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor",
+      "bytes": 196493,
+      "sha256": "ac3f54002043b6dda845778a72fbfbc1803b168e998f287a91558a27645dc75c",
+      "cells": [
+        {
+          "index": 0,
+          "row": 0,
+          "column": 0,
+          "id": "sandy_floor",
+          "rect_xywh": [
+            0,
+            0,
+            2048,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            0,
+            89,
+            2048,
+            256
+          ]
+        }
+      ],
+      "art_notes": {
+        "status": "passed",
+        "file": "art/seabed.png",
+        "size": [
+          2048,
+          256
+        ],
+        "mode": "RGB",
+        "grid": [
+          1,
+          1
+        ],
+        "cell_size": [
+          2048,
+          256
+        ],
+        "background_key": "#FF00FF",
+        "sampling": "nearest_neighbor",
+        "raw_filename": "seabed_raw.png",
+        "raw_size": [
+          2172,
+          724
+        ],
+        "raw_sha256": "1fad73bf8bc5932ebbfba58d5e49a8ed77802a548fc20e699c8776baeb563ed2",
+        "output_sha256": "ac3f54002043b6dda845778a72fbfbc1803b168e998f287a91558a27645dc75c",
+        "output_bytes": 196493,
+        "processing": {
+          "source_crop_box_xyxy": [
+            0,
+            228,
+            1086,
+            644
+          ],
+          "first_half_resize": [
+            1024,
+            256
+          ],
+          "key_normalization": "R>220 G<80 B>220 -> exact #FF00FF",
+          "assembly": "First normalized half followed by its horizontal reflection. No hand-painted pixels or procedural scenery.",
+          "second_half_transform": "horizontal_reflection",
+          "reason": "Guarantees a continuous scroll seam at both the center and the outer repeat boundary; object-free cut regions prevent doubled clipped objects."
+        },
+        "foreground_bbox_exclusive": [
+          0,
+          89,
+          2048,
+          256
+        ],
+        "minimum_object_y": 89,
+        "anchors": {
+          "bottom_y": 255,
+          "ground_surface_y_approx": 123
+        },
+        "checks": {
+          "exact_dimensions": true,
+          "rgb_mode": true,
+          "top_85_rows_pure_magenta": true,
+          "lower_half_fully_sand": true,
+          "left_right_pixels_equal": true,
+          "center_join_pixels_equal": true,
+          "left_edge_neighbor_mirrors_right": true,
+          "center_neighborhood_mirrors": true,
+          "no_empty_bottom": true
+        },
+        "checks_count": 9,
+        "visual_review": {
+          "daytime_sand_pebbles_empty_shells_low_rocks_only": true,
+          "no_water_coral_seaweed_animals": true,
+          "top_third_empty": true,
+          "seam_preview": "Two complete tiles placed side by side and viewed; matched boundary pixels and no height discontinuity.",
+          "mirror_repetition_disclosed": true
+        },
+        "limits": [
+          "Seamless repeat is obtained by technical mirrored tile assembly, not an assertion that the original generated left and right edges matched.",
+          "Actual build-43 rendering and scrolling were not executed."
+        ],
+        "prompts_file": "prompts_seabed.json",
+        "runtime_tested": false
+      }
+    },
+    {
+      "file": "art/coral_sway.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "cell_count": 16,
+      "nonempty_cell_count": 16,
+      "mode": "RGB",
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor",
+      "bytes": 664105,
+      "sha256": "bcbeba698ac60a3cf5d6edc3d26a0c0dd0a9463163b7120f359f1445d3577bb9",
+      "cells": [
+        {
+          "index": 0,
+          "row": 0,
+          "column": 0,
+          "id": "green_seaweed",
+          "rect_xywh": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            58,
+            31,
+            204,
+            248
+          ]
+        },
+        {
+          "index": 1,
+          "row": 0,
+          "column": 1,
+          "id": "green_seaweed",
+          "rect_xywh": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            29,
+            40,
+            200,
+            248
+          ]
+        },
+        {
+          "index": 2,
+          "row": 0,
+          "column": 2,
+          "id": "green_seaweed",
+          "rect_xywh": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            57,
+            28,
+            204,
+            248
+          ]
+        },
+        {
+          "index": 3,
+          "row": 0,
+          "column": 3,
+          "id": "green_seaweed",
+          "rect_xywh": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            69,
+            40,
+            225,
+            248
+          ]
+        },
+        {
+          "index": 4,
+          "row": 1,
+          "column": 0,
+          "id": "brown_kelp",
+          "rect_xywh": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            44,
+            26,
+            212,
+            248
+          ]
+        },
+        {
+          "index": 5,
+          "row": 1,
+          "column": 1,
+          "id": "brown_kelp",
+          "rect_xywh": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            27,
+            29,
+            201,
+            248
+          ]
+        },
+        {
+          "index": 6,
+          "row": 1,
+          "column": 2,
+          "id": "brown_kelp",
+          "rect_xywh": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            44,
+            25,
+            209,
+            248
+          ]
+        },
+        {
+          "index": 7,
+          "row": 1,
+          "column": 3,
+          "id": "brown_kelp",
+          "rect_xywh": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            51,
+            28,
+            223,
+            248
+          ]
+        },
+        {
+          "index": 8,
+          "row": 2,
+          "column": 0,
+          "id": "pink_branch_coral",
+          "rect_xywh": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            30,
+            41,
+            228,
+            248
+          ]
+        },
+        {
+          "index": 9,
+          "row": 2,
+          "column": 1,
+          "id": "pink_branch_coral",
+          "rect_xywh": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            27,
+            37,
+            228,
+            248
+          ]
+        },
+        {
+          "index": 10,
+          "row": 2,
+          "column": 2,
+          "id": "pink_branch_coral",
+          "rect_xywh": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            21,
+            31,
+            237,
+            248
+          ]
+        },
+        {
+          "index": 11,
+          "row": 2,
+          "column": 3,
+          "id": "pink_branch_coral",
+          "rect_xywh": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            26,
+            37,
+            229,
+            248
+          ]
+        },
+        {
+          "index": 12,
+          "row": 3,
+          "column": 0,
+          "id": "orange_anemone",
+          "rect_xywh": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            35,
+            33,
+            217,
+            248
+          ]
+        },
+        {
+          "index": 13,
+          "row": 3,
+          "column": 1,
+          "id": "orange_anemone",
+          "rect_xywh": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            20,
+            38,
+            206,
+            248
+          ]
+        },
+        {
+          "index": 14,
+          "row": 3,
+          "column": 2,
+          "id": "orange_anemone",
+          "rect_xywh": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            39,
+            33,
+            219,
+            248
+          ]
+        },
+        {
+          "index": 15,
+          "row": 3,
+          "column": 3,
+          "id": "orange_anemone",
+          "rect_xywh": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            54,
+            39,
+            235,
+            248
+          ]
+        }
+      ],
+      "art_notes": {
+        "status": "passed_with_animation_scope_note",
+        "file": "art/coral_sway.png",
+        "size": [
+          1024,
+          1024
+        ],
+        "grid": [
+          4,
+          4
+        ],
+        "cell_size": [
+          256,
+          256
+        ],
+        "cell_count": 16,
+        "mode": "RGB",
+        "background_key": "#FF00FF",
+        "source_raw_size": [
+          1254,
+          1254
+        ],
+        "source_raw_sha256": "8dd20e5c11aa3cc2537a8e2c66dc1bee57263c900890589a1d9091a212f1bd04",
+        "sha256": "bcbeba698ac60a3cf5d6edc3d26a0c0dd0a9463163b7120f359f1445d3577bb9",
+        "bytes": 664105,
+        "sampling": "nearest_neighbor",
+        "creation": "Built-in imagegen, reference creature_book.png for cozy pixel-art style only.",
+        "technical_processing": [
+          "Normalize near-magenta background to pure #FF00FF.",
+          "Resize the complete 1254x1254 atlas uniformly to1024x1024 with nearest-neighbor.",
+          "Translate every cell in a given row by the same dx,dy to place the stationary roots on y247. No per-frame bounding-box scaling or centering."
+        ],
+        "rows": [
+          {
+            "row": 0,
+            "id": "green_seaweed",
+            "cell_anchor": [
+              128,
+              247
+            ],
+            "uniform_translation_after_full_sheet_resize": [
+              0,
+              11
+            ],
+            "frames": [
+              {
+                "column": 0,
+                "rect_xywh": [
+                  0,
+                  0,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  58,
+                  31,
+                  204,
+                  248
+                ],
+                "foreground_pixels": 14381
+              },
+              {
+                "column": 1,
+                "rect_xywh": [
+                  256,
+                  0,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  29,
+                  40,
+                  200,
+                  248
+                ],
+                "foreground_pixels": 15491
+              },
+              {
+                "column": 2,
+                "rect_xywh": [
+                  512,
+                  0,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  57,
+                  28,
+                  204,
+                  248
+                ],
+                "foreground_pixels": 14769
+              },
+              {
+                "column": 3,
+                "rect_xywh": [
+                  768,
+                  0,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  69,
+                  40,
+                  225,
+                  248
+                ],
+                "foreground_pixels": 15199
+              }
+            ],
+            "adjacent_pixel_change_counts_including_wrap": [
+              18875,
+              19289,
+              18648,
+              18363
+            ]
+          },
+          {
+            "row": 1,
+            "id": "brown_kelp",
+            "cell_anchor": [
+              128,
+              247
+            ],
+            "uniform_translation_after_full_sheet_resize": [
+              0,
+              9
+            ],
+            "frames": [
+              {
+                "column": 0,
+                "rect_xywh": [
+                  0,
+                  256,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  44,
+                  26,
+                  212,
+                  248
+                ],
+                "foreground_pixels": 18053
+              },
+              {
+                "column": 1,
+                "rect_xywh": [
+                  256,
+                  256,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  27,
+                  29,
+                  201,
+                  248
+                ],
+                "foreground_pixels": 17939
+              },
+              {
+                "column": 2,
+                "rect_xywh": [
+                  512,
+                  256,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  44,
+                  25,
+                  209,
+                  248
+                ],
+                "foreground_pixels": 18051
+              },
+              {
+                "column": 3,
+                "rect_xywh": [
+                  768,
+                  256,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  51,
+                  28,
+                  223,
+                  248
+                ],
+                "foreground_pixels": 18233
+              }
+            ],
+            "adjacent_pixel_change_counts_including_wrap": [
+              22840,
+              22805,
+              21170,
+              21048
+            ]
+          },
+          {
+            "row": 2,
+            "id": "pink_branch_coral",
+            "cell_anchor": [
+              128,
+              247
+            ],
+            "uniform_translation_after_full_sheet_resize": [
+              1,
+              12
+            ],
+            "frames": [
+              {
+                "column": 0,
+                "rect_xywh": [
+                  0,
+                  512,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  30,
+                  41,
+                  228,
+                  248
+                ],
+                "foreground_pixels": 18165
+              },
+              {
+                "column": 1,
+                "rect_xywh": [
+                  256,
+                  512,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  27,
+                  37,
+                  228,
+                  248
+                ],
+                "foreground_pixels": 19151
+              },
+              {
+                "column": 2,
+                "rect_xywh": [
+                  512,
+                  512,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  21,
+                  31,
+                  237,
+                  248
+                ],
+                "foreground_pixels": 23184
+              },
+              {
+                "column": 3,
+                "rect_xywh": [
+                  768,
+                  512,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  26,
+                  37,
+                  229,
+                  248
+                ],
+                "foreground_pixels": 19537
+              }
+            ],
+            "adjacent_pixel_change_counts_including_wrap": [
+              19335,
+              23335,
+              23348,
+              19745
+            ]
+          },
+          {
+            "row": 3,
+            "id": "orange_anemone",
+            "cell_anchor": [
+              128,
+              247
+            ],
+            "uniform_translation_after_full_sheet_resize": [
+              0,
+              12
+            ],
+            "frames": [
+              {
+                "column": 0,
+                "rect_xywh": [
+                  0,
+                  768,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  35,
+                  33,
+                  217,
+                  248
+                ],
+                "foreground_pixels": 22174
+              },
+              {
+                "column": 1,
+                "rect_xywh": [
+                  256,
+                  768,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  20,
+                  38,
+                  206,
+                  248
+                ],
+                "foreground_pixels": 22249
+              },
+              {
+                "column": 2,
+                "rect_xywh": [
+                  512,
+                  768,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  39,
+                  33,
+                  219,
+                  248
+                ],
+                "foreground_pixels": 22046
+              },
+              {
+                "column": 3,
+                "rect_xywh": [
+                  768,
+                  768,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  54,
+                  39,
+                  235,
+                  248
+                ],
+                "foreground_pixels": 21725
+              }
+            ],
+            "adjacent_pixel_change_counts_including_wrap": [
+              26567,
+              26525,
+              26365,
+              26534
+            ]
+          }
+        ],
+        "loop": {
+          "frame_order": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "green_seaweed": "center,left,center,right; stable three-blade root",
+          "brown_kelp": "center,left,center,right; stable branching root",
+          "pink_branch_coral": "polyps closed,half-open,open,half-closed; branches anchored",
+          "orange_anemone": "tentacles center,left,center,right; base anchored",
+          "suggested_frame_ms": [
+            420,
+            520,
+            600,
+            420
+          ],
+          "preview_frame_ms": 400,
+          "review_scope": "All16 frames visually inspected and four-frame animation preview created. Loop is a discrete four-pose animation, not interpolated motion; runtime timing and mobile renderer were not tested."
+        },
+        "visual_checks": {
+          "four_rows_correct": true,
+          "no_water_ground_text_or_animals": true,
+          "same_species_and_palette_each_row": true,
+          "stable_base_positions": true,
+          "motion_shapes_and_wrap_reviewed": true,
+          "foreground_not_clipped": true
+        },
+        "technical_checks": {
+          "green_seaweed.0.no_foreground_clipped": true,
+          "green_seaweed.0.base_y247": true,
+          "green_seaweed.0.height60to90percent": true,
+          "green_seaweed.0.key_border": true,
+          "green_seaweed.1.no_foreground_clipped": true,
+          "green_seaweed.1.base_y247": true,
+          "green_seaweed.1.height60to90percent": true,
+          "green_seaweed.1.key_border": true,
+          "green_seaweed.2.no_foreground_clipped": true,
+          "green_seaweed.2.base_y247": true,
+          "green_seaweed.2.height60to90percent": true,
+          "green_seaweed.2.key_border": true,
+          "green_seaweed.3.no_foreground_clipped": true,
+          "green_seaweed.3.base_y247": true,
+          "green_seaweed.3.height60to90percent": true,
+          "green_seaweed.3.key_border": true,
+          "brown_kelp.0.no_foreground_clipped": true,
+          "brown_kelp.0.base_y247": true,
+          "brown_kelp.0.height60to90percent": true,
+          "brown_kelp.0.key_border": true,
+          "brown_kelp.1.no_foreground_clipped": true,
+          "brown_kelp.1.base_y247": true,
+          "brown_kelp.1.height60to90percent": true,
+          "brown_kelp.1.key_border": true,
+          "brown_kelp.2.no_foreground_clipped": true,
+          "brown_kelp.2.base_y247": true,
+          "brown_kelp.2.height60to90percent": true,
+          "brown_kelp.2.key_border": true,
+          "brown_kelp.3.no_foreground_clipped": true,
+          "brown_kelp.3.base_y247": true,
+          "brown_kelp.3.height60to90percent": true,
+          "brown_kelp.3.key_border": true,
+          "pink_branch_coral.0.no_foreground_clipped": true,
+          "pink_branch_coral.0.base_y247": true,
+          "pink_branch_coral.0.height60to90percent": true,
+          "pink_branch_coral.0.key_border": true,
+          "pink_branch_coral.1.no_foreground_clipped": true,
+          "pink_branch_coral.1.base_y247": true,
+          "pink_branch_coral.1.height60to90percent": true,
+          "pink_branch_coral.1.key_border": true,
+          "pink_branch_coral.2.no_foreground_clipped": true,
+          "pink_branch_coral.2.base_y247": true,
+          "pink_branch_coral.2.height60to90percent": true,
+          "pink_branch_coral.2.key_border": true,
+          "pink_branch_coral.3.no_foreground_clipped": true,
+          "pink_branch_coral.3.base_y247": true,
+          "pink_branch_coral.3.height60to90percent": true,
+          "pink_branch_coral.3.key_border": true,
+          "orange_anemone.0.no_foreground_clipped": true,
+          "orange_anemone.0.base_y247": true,
+          "orange_anemone.0.height60to90percent": true,
+          "orange_anemone.0.key_border": true,
+          "orange_anemone.1.no_foreground_clipped": true,
+          "orange_anemone.1.base_y247": true,
+          "orange_anemone.1.height60to90percent": true,
+          "orange_anemone.1.key_border": true,
+          "orange_anemone.2.no_foreground_clipped": true,
+          "orange_anemone.2.base_y247": true,
+          "orange_anemone.2.height60to90percent": true,
+          "orange_anemone.2.key_border": true,
+          "orange_anemone.3.no_foreground_clipped": true,
+          "orange_anemone.3.base_y247": true,
+          "orange_anemone.3.height60to90percent": true,
+          "orange_anemone.3.key_border": true,
+          "green_seaweed.all_adjacent_frames_change": true,
+          "brown_kelp.all_adjacent_frames_change": true,
+          "pink_branch_coral.all_adjacent_frames_change": true,
+          "orange_anemone.all_adjacent_frames_change": true
+        },
+        "checks_count": 68,
+        "runtime_tested": false
+      }
+    },
+    {
+      "file": "art/seabed_life.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "grid": [
+        4,
+        6
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "cell_count": 24,
+      "nonempty_cell_count": 24,
+      "mode": "RGB",
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor",
+      "bytes": 679395,
+      "sha256": "a6ca1b3bc197873ab415b5037a1d4c7d8b94a417a0dc4537cf8a256e310175a4",
+      "cells": [
+        {
+          "index": 0,
+          "row": 0,
+          "column": 0,
+          "id": "bubbles",
+          "rect_xywh": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            79,
+            78,
+            185,
+            182
+          ]
+        },
+        {
+          "index": 1,
+          "row": 0,
+          "column": 1,
+          "id": "bubbles",
+          "rect_xywh": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            71,
+            66,
+            185,
+            187
+          ]
+        },
+        {
+          "index": 2,
+          "row": 0,
+          "column": 2,
+          "id": "bubbles",
+          "rect_xywh": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            70,
+            57,
+            186,
+            193
+          ]
+        },
+        {
+          "index": 3,
+          "row": 0,
+          "column": 3,
+          "id": "bubbles",
+          "rect_xywh": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            75,
+            73,
+            181,
+            182
+          ]
+        },
+        {
+          "index": 4,
+          "row": 1,
+          "column": 0,
+          "id": "yellow_fish_school",
+          "rect_xywh": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            31,
+            59,
+            231,
+            192
+          ]
+        },
+        {
+          "index": 5,
+          "row": 1,
+          "column": 1,
+          "id": "yellow_fish_school",
+          "rect_xywh": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            30,
+            59,
+            235,
+            192
+          ]
+        },
+        {
+          "index": 6,
+          "row": 1,
+          "column": 2,
+          "id": "yellow_fish_school",
+          "rect_xywh": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            30,
+            59,
+            229,
+            192
+          ]
+        },
+        {
+          "index": 7,
+          "row": 1,
+          "column": 3,
+          "id": "yellow_fish_school",
+          "rect_xywh": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            30,
+            59,
+            235,
+            192
+          ]
+        },
+        {
+          "index": 8,
+          "row": 2,
+          "column": 0,
+          "id": "crab",
+          "rect_xywh": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            31,
+            120,
+            228,
+            248
+          ]
+        },
+        {
+          "index": 9,
+          "row": 2,
+          "column": 1,
+          "id": "crab",
+          "rect_xywh": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            30,
+            120,
+            228,
+            248
+          ]
+        },
+        {
+          "index": 10,
+          "row": 2,
+          "column": 2,
+          "id": "crab",
+          "rect_xywh": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            30,
+            120,
+            226,
+            248
+          ]
+        },
+        {
+          "index": 11,
+          "row": 2,
+          "column": 3,
+          "id": "crab",
+          "rect_xywh": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            32,
+            119,
+            228,
+            248
+          ]
+        },
+        {
+          "index": 12,
+          "row": 3,
+          "column": 0,
+          "id": "clownfish_school",
+          "rect_xywh": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            26,
+            45,
+            232,
+            201
+          ]
+        },
+        {
+          "index": 13,
+          "row": 3,
+          "column": 1,
+          "id": "clownfish_school",
+          "rect_xywh": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            26,
+            45,
+            232,
+            201
+          ]
+        },
+        {
+          "index": 14,
+          "row": 3,
+          "column": 2,
+          "id": "clownfish_school",
+          "rect_xywh": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            26,
+            45,
+            226,
+            201
+          ]
+        },
+        {
+          "index": 15,
+          "row": 3,
+          "column": 3,
+          "id": "clownfish_school",
+          "rect_xywh": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            26,
+            45,
+            231,
+            201
+          ]
+        },
+        {
+          "index": 16,
+          "row": 4,
+          "column": 0,
+          "id": "seahorse",
+          "rect_xywh": [
+            0,
+            1024,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            65,
+            39,
+            181,
+            218
+          ]
+        },
+        {
+          "index": 17,
+          "row": 4,
+          "column": 1,
+          "id": "seahorse",
+          "rect_xywh": [
+            256,
+            1024,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            64,
+            27,
+            184,
+            208
+          ]
+        },
+        {
+          "index": 18,
+          "row": 4,
+          "column": 2,
+          "id": "seahorse",
+          "rect_xywh": [
+            512,
+            1024,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            64,
+            19,
+            183,
+            198
+          ]
+        },
+        {
+          "index": 19,
+          "row": 4,
+          "column": 3,
+          "id": "seahorse",
+          "rect_xywh": [
+            768,
+            1024,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            64,
+            41,
+            181,
+            218
+          ]
+        },
+        {
+          "index": 20,
+          "row": 5,
+          "column": 0,
+          "id": "pearl_clam",
+          "rect_xywh": [
+            0,
+            1280,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            37,
+            113,
+            218,
+            248
+          ]
+        },
+        {
+          "index": 21,
+          "row": 5,
+          "column": 1,
+          "id": "pearl_clam",
+          "rect_xywh": [
+            256,
+            1280,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            37,
+            105,
+            219,
+            248
+          ]
+        },
+        {
+          "index": 22,
+          "row": 5,
+          "column": 2,
+          "id": "pearl_clam",
+          "rect_xywh": [
+            512,
+            1280,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            33,
+            84,
+            222,
+            248
+          ]
+        },
+        {
+          "index": 23,
+          "row": 5,
+          "column": 3,
+          "id": "pearl_clam",
+          "rect_xywh": [
+            768,
+            1280,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            37,
+            112,
+            218,
+            248
+          ]
+        }
+      ],
+      "art_notes": {
+        "file": "art/seabed_life.png",
+        "size": [
+          1024,
+          1536
+        ],
+        "grid": [
+          4,
+          6
+        ],
+        "cell_size": [
+          256,
+          256
+        ],
+        "background_key": "#FF00FF",
+        "raw_sha256": "51a5c98adedb35380df7e437086baed0316c47a79c875dadd37c1f68b7f9316e",
+        "sha256": "a6ca1b3bc197873ab415b5037a1d4c7d8b94a417a0dc4537cf8a256e310175a4",
+        "bytes": 679395,
+        "processing": "Imagegen corrected the bubble count to four per cell; only the corrected top row is inserted. Other five source rows are preserved except magenta key normalization and vertical bottom-anchor registration for crab/clam cells. No per-frame scale or horizontal recentering.",
+        "bubble_repair_raw_sha256": "9656519157070f8f9111fad9bea7a13e8a637383187101ce316f29ed4d04a75e",
+        "bubble_count_each_frame": 4,
+        "ground_transforms": [
+          {
+            "row": 2,
+            "column": 0,
+            "translation": [
+              0,
+              43
+            ],
+            "scale": [
+              1,
+              1
+            ],
+            "ground_anchor": [
+              128,
+              247
+            ]
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "translation": [
+              0,
+              43
+            ],
+            "scale": [
+              1,
+              1
+            ],
+            "ground_anchor": [
+              128,
+              247
+            ]
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "translation": [
+              0,
+              43
+            ],
+            "scale": [
+              1,
+              1
+            ],
+            "ground_anchor": [
+              128,
+              247
+            ]
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "translation": [
+              0,
+              43
+            ],
+            "scale": [
+              1,
+              1
+            ],
+            "ground_anchor": [
+              128,
+              247
+            ]
+          },
+          {
+            "row": 5,
+            "column": 0,
+            "translation": [
+              0,
+              40
+            ],
+            "scale": [
+              1,
+              1
+            ],
+            "ground_anchor": [
+              128,
+              247
+            ]
+          },
+          {
+            "row": 5,
+            "column": 1,
+            "translation": [
+              0,
+              41
+            ],
+            "scale": [
+              1,
+              1
+            ],
+            "ground_anchor": [
+              128,
+              247
+            ]
+          },
+          {
+            "row": 5,
+            "column": 2,
+            "translation": [
+              0,
+              41
+            ],
+            "scale": [
+              1,
+              1
+            ],
+            "ground_anchor": [
+              128,
+              247
+            ]
+          },
+          {
+            "row": 5,
+            "column": 3,
+            "translation": [
+              0,
+              40
+            ],
+            "scale": [
+              1,
+              1
+            ],
+            "ground_anchor": [
+              128,
+              247
+            ]
+          }
+        ],
+        "rows": [
+          {
+            "row": 0,
+            "id": "bubbles",
+            "book_kind": null,
+            "anchor": [
+              128,
+              128
+            ],
+            "frame_ms_proposal": 260,
+            "loop": true,
+            "world_motion": "Translate instance upward over time; sprite phase alone is not the whole rise."
+          },
+          {
+            "row": 1,
+            "id": "yellow_fish_school",
+            "book_kind": null,
+            "anchor": [
+              128,
+              128
+            ],
+            "frame_ms_proposal": 180,
+            "loop": true,
+            "world_motion": "Leftward drift; decorative school only."
+          },
+          {
+            "row": 2,
+            "id": "crab",
+            "book_kind": 8,
+            "anchor": [
+              128,
+              247
+            ],
+            "frame_ms_proposal": 280,
+            "loop": true,
+            "world_motion": "Small sideways walk along seabed; keep the ground anchor at the sand line."
+          },
+          {
+            "row": 3,
+            "id": "clownfish_school",
+            "book_kind": 9,
+            "anchor": [
+              128,
+              128
+            ],
+            "frame_ms_proposal": 220,
+            "loop": true,
+            "world_motion": "Leftward drift; the three fish are one kind9 instance."
+          },
+          {
+            "row": 4,
+            "id": "seahorse",
+            "book_kind": 11,
+            "anchor": [
+              128,
+              128
+            ],
+            "frame_ms_proposal": 450,
+            "loop": true,
+            "world_motion": "Small bob is already in artwork; do not cancel by per-frame bbox recentering or double its amplitude."
+          },
+          {
+            "row": 5,
+            "id": "pearl_clam",
+            "book_kind": null,
+            "anchor": [
+              128,
+              247
+            ],
+            "loop": false,
+            "states": [
+              "closed",
+              "slightly_open",
+              "pearl_visible",
+              "closed_again"
+            ],
+            "world_motion": "Static floor reward clam. Drive states by stored pearl event. Hold frame2 during valid pickup window; no autonomous reward or endless open-loop."
+          }
+        ],
+        "cell_foreground_bbox_xyxy": [
+          [
+            79,
+            78,
+            185,
+            182
+          ],
+          [
+            71,
+            66,
+            185,
+            187
+          ],
+          [
+            70,
+            57,
+            186,
+            193
+          ],
+          [
+            75,
+            73,
+            181,
+            182
+          ],
+          [
+            31,
+            59,
+            231,
+            192
+          ],
+          [
+            30,
+            59,
+            235,
+            192
+          ],
+          [
+            30,
+            59,
+            229,
+            192
+          ],
+          [
+            30,
+            59,
+            235,
+            192
+          ],
+          [
+            31,
+            120,
+            228,
+            248
+          ],
+          [
+            30,
+            120,
+            228,
+            248
+          ],
+          [
+            30,
+            120,
+            226,
+            248
+          ],
+          [
+            32,
+            119,
+            228,
+            248
+          ],
+          [
+            26,
+            45,
+            232,
+            201
+          ],
+          [
+            26,
+            45,
+            232,
+            201
+          ],
+          [
+            26,
+            45,
+            226,
+            201
+          ],
+          [
+            26,
+            45,
+            231,
+            201
+          ],
+          [
+            65,
+            39,
+            181,
+            218
+          ],
+          [
+            64,
+            27,
+            184,
+            208
+          ],
+          [
+            64,
+            19,
+            183,
+            198
+          ],
+          [
+            64,
+            41,
+            181,
+            218
+          ],
+          [
+            37,
+            113,
+            218,
+            248
+          ],
+          [
+            37,
+            105,
+            219,
+            248
+          ],
+          [
+            33,
+            84,
+            222,
+            248
+          ],
+          [
+            37,
+            112,
+            218,
+            248
+          ]
+        ],
+        "runtime_tested": false
+      }
+    },
+    {
+      "file": "art/seabed_life_2.png",
+      "size": [
+        1024,
+        768
+      ],
+      "grid": [
+        4,
+        3
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "cell_count": 12,
+      "nonempty_cell_count": 12,
+      "mode": "RGB",
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor",
+      "bytes": 315911,
+      "sha256": "74555d8487193f497140a67564266ec81d673a7d2dafe7dad7ffac527d30b6b4",
+      "cells": [
+        {
+          "index": 0,
+          "row": 0,
+          "column": 0,
+          "id": "starfish",
+          "rect_xywh": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            35,
+            79,
+            220,
+            248
+          ]
+        },
+        {
+          "index": 1,
+          "row": 0,
+          "column": 1,
+          "id": "starfish",
+          "rect_xywh": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            40,
+            79,
+            216,
+            248
+          ]
+        },
+        {
+          "index": 2,
+          "row": 0,
+          "column": 2,
+          "id": "starfish",
+          "rect_xywh": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            36,
+            79,
+            220,
+            248
+          ]
+        },
+        {
+          "index": 3,
+          "row": 0,
+          "column": 3,
+          "id": "starfish",
+          "rect_xywh": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            35,
+            84,
+            219,
+            248
+          ]
+        },
+        {
+          "index": 4,
+          "row": 1,
+          "column": 0,
+          "id": "boxfish",
+          "rect_xywh": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            38,
+            64,
+            219,
+            180
+          ]
+        },
+        {
+          "index": 5,
+          "row": 1,
+          "column": 1,
+          "id": "boxfish",
+          "rect_xywh": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            38,
+            54,
+            219,
+            180
+          ]
+        },
+        {
+          "index": 6,
+          "row": 1,
+          "column": 2,
+          "id": "boxfish",
+          "rect_xywh": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            38,
+            64,
+            219,
+            180
+          ]
+        },
+        {
+          "index": 7,
+          "row": 1,
+          "column": 3,
+          "id": "boxfish",
+          "rect_xywh": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            38,
+            67,
+            220,
+            182
+          ]
+        },
+        {
+          "index": 8,
+          "row": 2,
+          "column": 0,
+          "id": "ray",
+          "rect_xywh": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            23,
+            79,
+            240,
+            182
+          ]
+        },
+        {
+          "index": 9,
+          "row": 2,
+          "column": 1,
+          "id": "ray",
+          "rect_xywh": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            23,
+            67,
+            241,
+            168
+          ]
+        },
+        {
+          "index": 10,
+          "row": 2,
+          "column": 2,
+          "id": "ray",
+          "rect_xywh": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            23,
+            79,
+            240,
+            182
+          ]
+        },
+        {
+          "index": 11,
+          "row": 2,
+          "column": 3,
+          "id": "ray",
+          "rect_xywh": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            23,
+            83,
+            240,
+            192
+          ]
+        }
+      ],
+      "art_notes": {
+        "status": "passed",
+        "file": "art/seabed_life_2.png",
+        "size": [
+          1024,
+          768
+        ],
+        "grid": [
+          4,
+          3
+        ],
+        "cell_size": [
+          256,
+          256
+        ],
+        "mode": "RGB",
+        "background_key": "#FF00FF",
+        "source_raw_size": [
+          1448,
+          1086
+        ],
+        "source_raw_sha256": "039c46cf74868d739e422d6082bad0e24f69e259a5d716df98439a11925a297e",
+        "sha256": "74555d8487193f497140a67564266ec81d673a7d2dafe7dad7ffac527d30b6b4",
+        "bytes": 315911,
+        "rows": [
+          {
+            "row": 0,
+            "kind": 10,
+            "id": "crit_starfish",
+            "anchor_in_cell": [
+              128,
+              247
+            ],
+            "anchor_role": "ground contact baseline",
+            "source_column_order": [
+              0,
+              1,
+              3,
+              2
+            ],
+            "frames": [
+              {
+                "column": 0,
+                "source_column": 0,
+                "rect_xywh": [
+                  0,
+                  0,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  35,
+                  79,
+                  220,
+                  248
+                ],
+                "normalized_translation": [
+                  0,
+                  22
+                ],
+                "pixel_sha256": "0d508e0cd3ed39345801f1bc840848b02789763b38c63c508939b31a92537ebb"
+              },
+              {
+                "column": 1,
+                "source_column": 1,
+                "rect_xywh": [
+                  256,
+                  0,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  40,
+                  79,
+                  216,
+                  248
+                ],
+                "normalized_translation": [
+                  0,
+                  22
+                ],
+                "pixel_sha256": "6fbb3b47720570d09cde068d0692f387420616db8d1a45bd2c8046be18707a12"
+              },
+              {
+                "column": 2,
+                "source_column": 3,
+                "rect_xywh": [
+                  512,
+                  0,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  36,
+                  79,
+                  220,
+                  248
+                ],
+                "normalized_translation": [
+                  0,
+                  22
+                ],
+                "pixel_sha256": "ba48e70a3b35888c6203f06ca562daadfa5bb65e0c1794e2470068377e3058aa"
+              },
+              {
+                "column": 3,
+                "source_column": 2,
+                "rect_xywh": [
+                  768,
+                  0,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  35,
+                  84,
+                  219,
+                  248
+                ],
+                "normalized_translation": [
+                  0,
+                  22
+                ],
+                "pixel_sha256": "755f2c5ed7717332c2afdd1df77dc952381af3645d3d4bb33b5cad8d6771176d"
+              }
+            ]
+          },
+          {
+            "row": 1,
+            "kind": 12,
+            "id": "crit_boxfish",
+            "anchor_in_cell": [
+              128,
+              128
+            ],
+            "anchor_role": "fixed render origin for swimming",
+            "source_column_order": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "frames": [
+              {
+                "column": 0,
+                "source_column": 0,
+                "rect_xywh": [
+                  0,
+                  256,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  38,
+                  64,
+                  219,
+                  180
+                ],
+                "normalized_translation": [
+                  0,
+                  0
+                ],
+                "pixel_sha256": "a56e30f24516e33dd7c1b25c57ee4ba0898a2babafa27b14e7c49901cc613188"
+              },
+              {
+                "column": 1,
+                "source_column": 1,
+                "rect_xywh": [
+                  256,
+                  256,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  38,
+                  54,
+                  219,
+                  180
+                ],
+                "normalized_translation": [
+                  0,
+                  0
+                ],
+                "pixel_sha256": "f6feef38257095261447f731a230a710475a2be9372ff1a972e076687576e236"
+              },
+              {
+                "column": 2,
+                "source_column": 2,
+                "rect_xywh": [
+                  512,
+                  256,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  38,
+                  64,
+                  219,
+                  180
+                ],
+                "normalized_translation": [
+                  0,
+                  0
+                ],
+                "pixel_sha256": "1b3f8e2450c52948464467a940e1d529df5c0a848c624ab4462db6b5443d4f40"
+              },
+              {
+                "column": 3,
+                "source_column": 3,
+                "rect_xywh": [
+                  768,
+                  256,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  38,
+                  67,
+                  220,
+                  182
+                ],
+                "normalized_translation": [
+                  0,
+                  0
+                ],
+                "pixel_sha256": "d7949148f8eb3d5ff7ab1c18944a64da3fa282428e94c25079301b06a7df93bb"
+              }
+            ]
+          },
+          {
+            "row": 2,
+            "kind": 13,
+            "id": "crit_ray",
+            "anchor_in_cell": [
+              128,
+              128
+            ],
+            "anchor_role": "fixed render origin for swimming",
+            "source_column_order": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "frames": [
+              {
+                "column": 0,
+                "source_column": 0,
+                "rect_xywh": [
+                  0,
+                  512,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  23,
+                  79,
+                  240,
+                  182
+                ],
+                "normalized_translation": [
+                  0,
+                  0
+                ],
+                "pixel_sha256": "e22b82ccf3bf5dd13b88568f8df5663b9e91594901a4926964230364f83f98c1"
+              },
+              {
+                "column": 1,
+                "source_column": 1,
+                "rect_xywh": [
+                  256,
+                  512,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  23,
+                  67,
+                  241,
+                  168
+                ],
+                "normalized_translation": [
+                  0,
+                  0
+                ],
+                "pixel_sha256": "59869ac078fe967c05e466a08241f4ca4dc9c1c99fabcc8a3e09f19fe79e0518"
+              },
+              {
+                "column": 2,
+                "source_column": 2,
+                "rect_xywh": [
+                  512,
+                  512,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  23,
+                  79,
+                  240,
+                  182
+                ],
+                "normalized_translation": [
+                  0,
+                  0
+                ],
+                "pixel_sha256": "08f77cf39c649d5f1983821c17b694945efb3ca052a16b82a9e5146363641c34"
+              },
+              {
+                "column": 3,
+                "source_column": 3,
+                "rect_xywh": [
+                  768,
+                  512,
+                  256,
+                  256
+                ],
+                "foreground_bbox_exclusive": [
+                  23,
+                  83,
+                  240,
+                  192
+                ],
+                "normalized_translation": [
+                  0,
+                  0
+                ],
+                "pixel_sha256": "00c9755d455a0638b8754b2632bdb8a3ef75a180961b4f608781c8b8a73c471a"
+              }
+            ]
+          }
+        ],
+        "processing": [
+          "RGB conversion and near-magenta key normalization",
+          "one uniform whole-grid nearest resize from1448x1086 to1024x768",
+          "shared +22px baseline translation for all four starfish cells",
+          "starfish source columns reordered0,1,3,2 for neutral/up/neutral/down loop; other rows retain0,1,2,3"
+        ],
+        "visual_review": {
+          "starfish": "Exactly five arms, orange palette, friendly face, lower arm baselines aligned. Small arm-tip changes with constant body scale.",
+          "boxfish": "Yellow squared body, brown spots and turquoise fins; left-facing head and right-facing tail in all frames. Not inflated or spiny.",
+          "ray": "Small teal ray with pale belly and light spots, left-facing snout and long right tail; fins alternate neutral/raised/neutral/lowered.",
+          "consistency": "All frame directions and identities inspected; no water, sand, panels, text or numerals.",
+          "loop_scope": "Four-frame slow loops reviewed at atlas level and exported as GIF. Small shape/redraw variations are part of generated animation; not a rigged or in-app runtime animation test."
+        },
+        "checks": {
+          "row0_frame0_key_perimeter": true,
+          "row0_frame0_not_empty": true,
+          "row0_frame0_contained": true,
+          "row0_frame0_baseline247": true,
+          "row0_frame1_key_perimeter": true,
+          "row0_frame1_not_empty": true,
+          "row0_frame1_contained": true,
+          "row0_frame1_baseline247": true,
+          "row0_frame2_key_perimeter": true,
+          "row0_frame2_not_empty": true,
+          "row0_frame2_contained": true,
+          "row0_frame2_baseline247": true,
+          "row0_frame3_key_perimeter": true,
+          "row0_frame3_not_empty": true,
+          "row0_frame3_contained": true,
+          "row0_frame3_baseline247": true,
+          "row1_frame0_key_perimeter": true,
+          "row1_frame0_not_empty": true,
+          "row1_frame0_contained": true,
+          "row1_frame1_key_perimeter": true,
+          "row1_frame1_not_empty": true,
+          "row1_frame1_contained": true,
+          "row1_frame2_key_perimeter": true,
+          "row1_frame2_not_empty": true,
+          "row1_frame2_contained": true,
+          "row1_frame3_key_perimeter": true,
+          "row1_frame3_not_empty": true,
+          "row1_frame3_contained": true,
+          "row2_frame0_key_perimeter": true,
+          "row2_frame0_not_empty": true,
+          "row2_frame0_contained": true,
+          "row2_frame1_key_perimeter": true,
+          "row2_frame1_not_empty": true,
+          "row2_frame1_contained": true,
+          "row2_frame2_key_perimeter": true,
+          "row2_frame2_not_empty": true,
+          "row2_frame2_contained": true,
+          "row2_frame3_key_perimeter": true,
+          "row2_frame3_not_empty": true,
+          "row2_frame3_contained": true,
+          "exact_dimensions": true,
+          "mode_rgb": true,
+          "row0_four_distinct_frames": true,
+          "row1_four_distinct_frames": true,
+          "row2_four_distinct_frames": true
+        },
+        "total_checks": 45,
+        "runtime_tested": false,
+        "animation_proposal": {
+          "frame_ms": 300,
+          "frame_order": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "repeat": true,
+          "body_world_translation": "Handled by app; do not translate the atlas frames again to infer movement. Starfish remains grounded; swimming travel direction is left."
+        },
+        "prompts_file": "prompts_life2.json",
+        "preview": "life2_animation_preview.gif"
+      }
+    },
+    {
+      "file": "art/seabed_book.png",
+      "size": [
+        1024,
+        512
+      ],
+      "grid": [
+        4,
+        2
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "cell_count": 8,
+      "nonempty_cell_count": 6,
+      "mode": "RGB",
+      "background_key": "#FF00FF",
+      "sampling": "nearest_neighbor",
+      "bytes": 396816,
+      "sha256": "b32e51585738de836b390ba2dd7f7b82af841c6bde6fb5d27f167051d58e4eb8",
+      "cells": [
+        {
+          "index": 0,
+          "row": 0,
+          "column": 0,
+          "id": "crit_crab",
+          "rect_xywh": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            15,
+            16,
+            242,
+            242
+          ]
+        },
+        {
+          "index": 1,
+          "row": 0,
+          "column": 1,
+          "id": "crit_clownfish",
+          "rect_xywh": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            15,
+            16,
+            242,
+            242
+          ]
+        },
+        {
+          "index": 2,
+          "row": 0,
+          "column": 2,
+          "id": "crit_starfish",
+          "rect_xywh": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            15,
+            16,
+            242,
+            242
+          ]
+        },
+        {
+          "index": 3,
+          "row": 0,
+          "column": 3,
+          "id": "crit_seahorse",
+          "rect_xywh": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            15,
+            16,
+            242,
+            242
+          ]
+        },
+        {
+          "index": 4,
+          "row": 1,
+          "column": 0,
+          "id": "crit_boxfish",
+          "rect_xywh": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            15,
+            15,
+            242,
+            242
+          ]
+        },
+        {
+          "index": 5,
+          "row": 1,
+          "column": 1,
+          "id": "crit_ray",
+          "rect_xywh": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            15,
+            15,
+            242,
+            242
+          ]
+        },
+        {
+          "index": 6,
+          "row": 1,
+          "column": 2,
+          "id": "empty",
+          "rect_xywh": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "empty": true,
+          "foreground_bbox_xyxy": null
+        },
+        {
+          "index": 7,
+          "row": 1,
+          "column": 3,
+          "id": "empty",
+          "rect_xywh": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "empty": true,
+          "foreground_bbox_xyxy": null
+        }
+      ],
+      "art_notes": {
+        "file": "art/seabed_book.png",
+        "size": [
+          1024,
+          512
+        ],
+        "grid": [
+          4,
+          2
+        ],
+        "cell_size": [
+          256,
+          256
+        ],
+        "background_key": "#FF00FF",
+        "raw_size": [
+          1774,
+          887
+        ],
+        "raw_sha256": "9ecf8459f2f61ce5069a69908ae690eccd832b8166ff6046d8d5a7b2bee801e8",
+        "sha256": "b32e51585738de836b390ba2dd7f7b82af841c6bde6fb5d27f167051d58e4eb8",
+        "bytes": 396816,
+        "processing": "Full eight-cell grid nearest resized with key normalization, preserving six portraits and two empty cells.",
+        "kind_by_index": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          null,
+          null
+        ],
+        "empty_indices": [
+          6,
+          7
+        ],
+        "cell_foreground_bbox_xyxy": [
+          [
+            15,
+            16,
+            242,
+            242
+          ],
+          [
+            15,
+            16,
+            242,
+            242
+          ],
+          [
+            15,
+            16,
+            242,
+            242
+          ],
+          [
+            15,
+            16,
+            242,
+            242
+          ],
+          [
+            15,
+            15,
+            242,
+            242
+          ],
+          [
+            15,
+            15,
+            242,
+            242
+          ],
+          null,
+          null
+        ],
+        "runtime_tested": false
+      }
+    },
+    {
+      "file": "art/light_rays.png",
+      "size": [
+        1024,
+        512
+      ],
+      "grid": [
+        4,
+        1
+      ],
+      "cell_size": [
+        256,
+        512
+      ],
+      "cell_count": 4,
+      "nonempty_cell_count": 4,
+      "mode": "RGB",
+      "background_key": "#000000",
+      "sampling": "nearest_neighbor",
+      "bytes": 63931,
+      "sha256": "d1cfeceba3b94a05ac879b9547187e8acc31255c6dc917547273a08185935aad",
+      "cells": [
+        {
+          "index": 0,
+          "row": 0,
+          "column": 0,
+          "id": "underwater_light",
+          "rect_xywh": [
+            0,
+            0,
+            256,
+            512
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            68,
+            27,
+            227,
+            429
+          ]
+        },
+        {
+          "index": 1,
+          "row": 0,
+          "column": 1,
+          "id": "underwater_light",
+          "rect_xywh": [
+            256,
+            0,
+            256,
+            512
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            62,
+            27,
+            219,
+            429
+          ]
+        },
+        {
+          "index": 2,
+          "row": 0,
+          "column": 2,
+          "id": "underwater_light",
+          "rect_xywh": [
+            512,
+            0,
+            256,
+            512
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            67,
+            27,
+            227,
+            429
+          ]
+        },
+        {
+          "index": 3,
+          "row": 0,
+          "column": 3,
+          "id": "underwater_light",
+          "rect_xywh": [
+            768,
+            0,
+            256,
+            512
+          ],
+          "empty": false,
+          "foreground_bbox_xyxy": [
+            69,
+            27,
+            222,
+            428
+          ]
+        }
+      ],
+      "art_notes": {
+        "file": "art/light_rays.png",
+        "size": [
+          1024,
+          512
+        ],
+        "grid": [
+          4,
+          1
+        ],
+        "cell_size": [
+          256,
+          512
+        ],
+        "background_key": "#000000",
+        "raw_size": [
+          1774,
+          887
+        ],
+        "raw_sha256": "3697153eb575ddcfe13b5dc16c56847c68807040ca34187b0cee32488257349e",
+        "sha256": "d1cfeceba3b94a05ac879b9547187e8acc31255c6dc917547273a08185935aad",
+        "bytes": 63931,
+        "processing": "Full four-column strip nearest resized, near-black max RGB<=12 normalized to pure black; no per-frame crop or recentering.",
+        "frame_ms_proposal": 1000,
+        "loop": true,
+        "lit_fraction_by_frame": [
+          0.03112030029296875,
+          0.03173065185546875,
+          0.031768798828125,
+          0.0310211181640625
+        ],
+        "cell_foreground_bbox_xyxy": [
+          [
+            68,
+            27,
+            227,
+            429
+          ],
+          [
+            62,
+            27,
+            219,
+            429
+          ],
+          [
+            67,
+            27,
+            227,
+            429
+          ],
+          [
+            69,
+            27,
+            222,
+            428
+          ]
+        ],
+        "compositing": "Pure-black key removal or screen/additive blending. Never remove black outlines from other art. Daytime only; retain existing night overlay.",
+        "runtime_tested": false
+      }
+    }
+  ]
+}

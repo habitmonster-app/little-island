@@ -226,6 +226,7 @@ object Game {
         sp.getString("crewXp", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewXp[k] = v.toIntOrNull() ?: 0 }
         critSeen.clear(); sp.getString("critSeen", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { critSeen.add(it) }
         bookGot.clear(); sp.getString("bookGot", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { bookGot.add(it) }
+        pearlUntil = sp.getLong("pearlUntil", 0L); pearlNext = sp.getLong("pearlNext", 0L)
         visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
         set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
         set("festGot", festGot); weatherId = sp.getString("v_weather", null)
@@ -292,6 +293,7 @@ object Game {
             putString("reqOffer", reqOffer.joinToString(",")); putString("reqAcc", reqAcc.entries.joinToString(",") { it.key + ":" + it.value[0] + ":" + it.value[1] }); putLong("reqNext", reqNext)
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
+            putLong("pearlUntil", pearlUntil); putLong("pearlNext", pearlNext)
             putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
             if (v == null) putLong("v_start", 0L) else {
@@ -480,6 +482,27 @@ object Game {
     fun tideV(kind: String, def: Float): Float = tide()?.takeIf { it.kind == kind }?.value ?: def
     val visTrades = HashMap<String, Int>()
 
+    // ---------- 14차: 진주 조개 ----------
+    var pearlUntil = 0L; private set                // 이 시각까지 조개가 열려 있다
+    private var pearlNext = 0L
+    fun pearlOpen(now: Long = System.currentTimeMillis()) = now < pearlUntil
+    private fun pearlCheck(now: Long) {
+        if (pearlNext == 0L) pearlNext = now + 20 * 60_000L
+        if (now >= pearlNext && !pearlOpen(now)) {
+            pearlUntil = now + 10 * 60_000L
+            pearlNext = now + ((60f / Fleet.pearlChance.coerceAtLeast(.05f)) * (.5f + Random.nextFloat()) * 60_000L).toLong()
+        }
+    }
+    @Synchronized fun takePearl(): String? {
+        if (!pearlOpen()) return null
+        pearlUntil = 0L
+        val r = Fleet.pearlReward
+        tickets += r.tickets; goldC += r.gold * 100L
+        card("진주를 주웠어요", Fleet.pearlLine + "\n" + resText(r))
+        save()
+        return "진주! " + resText(r)
+    }
+
     // ---------- 선원 항해 사건 ----------
     var cevId: String? = null; private set          // 이번 항해에 생길 선원 사건 (귀항 때 정산)
     private fun rollCrewEvent(crew: List<String>) {
@@ -569,7 +592,7 @@ object Game {
     @Synchronized fun tick(dt: Float) {
         advance(System.currentTimeMillis())
         t12 += dt
-        if (t12 > 5f) { t12 = 0f; val now = System.currentTimeMillis(); festCheck(); visCheck(now); reqRefresh(now) }
+        if (t12 > 5f) { t12 = 0f; val now = System.currentTimeMillis(); festCheck(); visCheck(now); reqRefresh(now); pearlCheck(now) }
         saveT += dt
         if (saveT > 10f) save()
     }
@@ -804,7 +827,9 @@ object Game {
             goldC += g * 100L; add(30, 15)
             card("보물섬에 다녀왔어요!", "금화 +$g, 나무 +30, 돌 +15")
         }
+        val g0 = Fleet.gardenAt(voyages)
         voyages++
+        Fleet.gardenAt(voyages)?.takeIf { it !== g0 && it.news.isNotEmpty() }?.let { line += "\n바닷속 정원 · " + it.news }
         voy = null
         lastReturnAt = t
         Fleet.weather(weatherId)?.let { w -> line += "\n" + w.name + " · " + w.cardLine }
