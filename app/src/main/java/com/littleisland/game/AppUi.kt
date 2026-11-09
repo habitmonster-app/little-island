@@ -483,7 +483,9 @@ class AppUi(val scene: Scene, val host: Host) {
             dstF.set(x0, top, x0 + sw, top + sceneH); c.drawBitmap(scene.bitmap, src, dstF, bp)
             if (flip) c.restore()
         }
-        band(ox, false); band(ox - sw, true); band(ox + sw, true)
+        band(ox, false)
+        // 양옆: 배가 없는 오른쪽 끝을 이어 붙인다 (왼쪽은 그대로 이어서, 오른쪽은 거울로)
+        band(ox - sw, false); band(ox + sw, true)
         c.restore()
         label(c, 6f, top + 14)
         drawPower(top + 28)

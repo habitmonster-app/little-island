@@ -270,7 +270,7 @@
   },
   {
    "level": 7,
-   "name": "귀항호 · 별을 잇는 돛",
+   "name": "귀항호 · 별길의 약속",
    "unlock": "ship_7",
    "cargo_wood": 225,
    "cargo_stone": 112,
@@ -286,7 +286,7 @@
     "ship_6"
    ],
    "requires_previous_level": 6,
-   "look": "네 돛대에 별자리 무늬 돛",
+   "look": "별무늬 돛이 높은 돛대에 걸렸어요",
    "sprite_id": "ship_7",
    "size": [
     60,
@@ -311,8 +311,8 @@
     "crew_assignments",
     "equipped_cosmetics"
    ],
-   "home_news": "먼 별까지 길을 잇는 배예요",
-   "desc": "먼 별까지 길을 잇는 배예요",
+   "home_news": "별길 끝에도 우리 섬이 기다려요.",
+   "desc": "별빛 따라 함께 돌아와요",
    "crew_slots": 6,
    "upgrade_requires_parts": {
     "hull": 30,
@@ -342,7 +342,7 @@
     "ship_7"
    ],
    "requires_previous_level": 7,
-   "look": "선미 등불탑과 철판 덧댄 뱃머리",
+   "look": "선미 등불탑과 철판 뱃머리가 빛나요",
    "sprite_id": "ship_8",
    "size": [
     60,
@@ -367,8 +367,8 @@
     "crew_assignments",
     "equipped_cosmetics"
    ],
-   "home_news": "밤바다도 밝히는 배예요",
-   "desc": "밤바다도 밝히는 배예요",
+   "home_news": "먼 물길에도 집의 불빛을 실어요.",
+   "desc": "돌아올 길을 밝히는 배",
    "crew_slots": 6,
    "upgrade_requires_parts": {
     "hull": 35,
@@ -382,7 +382,7 @@
   },
   {
    "level": 9,
-   "name": "귀항호 · 폭풍을 넘는 배",
+   "name": "귀항호 · 폭풍 너머",
    "unlock": "ship_9",
    "cargo_wood": 351,
    "cargo_stone": 175,
@@ -398,7 +398,7 @@
     "ship_8"
    ],
    "requires_previous_level": 8,
-   "look": "두꺼운 철판 선체와 대포 세 줄",
+   "look": "층층이 난 대포 구멍과 두꺼운 철판",
    "sprite_id": "ship_9",
    "size": [
     60,
@@ -423,8 +423,8 @@
     "crew_assignments",
     "equipped_cosmetics"
    ],
-   "home_news": "폭풍도 넘는 튼튼한 배예요",
-   "desc": "폭풍도 넘는 튼튼한 배예요",
+   "home_news": "거센 물결 너머도 함께 돌아와요.",
+   "desc": "함께 건널 든든한 쉼터",
    "crew_slots": 6,
    "upgrade_requires_parts": {
     "hull": 40,
@@ -438,7 +438,7 @@
   },
   {
    "level": 10,
-   "name": "귀항호 · 돌아오는 바다의 왕",
+   "name": "귀항호 · 모두의 귀항",
    "unlock": "ship_10",
    "cargo_wood": 438,
    "cargo_stone": 218,
@@ -454,7 +454,7 @@
     "ship_9"
    ],
    "requires_previous_level": 9,
-   "look": "금빛 장식, 다섯 돛, 큰 깃발",
+   "look": "금빛 장식과 넓은 돛에 큰 깃발이 펄럭여요",
    "sprite_id": "ship_10",
    "size": [
     60,
@@ -479,8 +479,8 @@
     "crew_assignments",
     "equipped_cosmetics"
    ],
-   "home_news": "모든 바다가 기다리는 배예요",
-   "desc": "모든 바다가 기다리는 배예요",
+   "home_news": "먼 항해 끝에 모두의 자리가 있어요.",
+   "desc": "모두의 귀항을 품는 배",
    "crew_slots": 6,
    "upgrade_requires_parts": {
     "hull": 45,

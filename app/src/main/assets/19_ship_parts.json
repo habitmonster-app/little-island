@@ -2194,7 +2194,7 @@
    "name": "망루",
    "stat": "lookout",
    "desc": "해적을 먼저 보고 피해요",
-   "icon_index": 110,
+   "icon_index": 200,
    "extra": true,
    "levels": [
     {
@@ -2704,7 +2704,7 @@
    "name": "선실",
    "stat": "cabin",
    "desc": "선원 능력치 효과가 커져요",
-   "icon_index": 4,
+   "icon_index": 201,
    "extra": true,
    "levels": [
     {
