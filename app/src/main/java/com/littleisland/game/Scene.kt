@@ -452,6 +452,8 @@ class Scene {
         val f = Game.voyFrac()
         val v = Game.voy
         if (v != null && lastF >= 0f) {
+            if (v.encounter && lastF < Data.fPirate - .05f && f >= Data.fPirate - .05f) Data.pirate(v.pirate ?: "")?.let { pr ->
+                pops.add(Pop(100f, WL - 50, "힘 " + "%,d".format(Game.myPower(v.crew)) + " vs " + "%,d".format(Game.enemyPower(pr)), 3.5f, true)) }
             if (v.encounter && lastF < Data.fPirate && f >= Data.fPirate)
                 pops.add(if (v.win) Pop(150f, WL - 34, "승리! 보물", 3f, true) else Pop(SAIL_X, WL - 34, "짐을 빼앗겼어요", 3f))
             if (lastF < Data.fArrive && f >= Data.fArrive) pops.add(Pop(SAIL_X + 30, WL - 40, "판매 +" + (v.saleC / 100) + "금화", 3.5f, true))

@@ -227,6 +227,8 @@ object Game {
         critSeen.clear(); sp.getString("critSeen", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { critSeen.add(it) }
         bookGot.clear(); sp.getString("bookGot", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { bookGot.add(it) }
         pearlUntil = sp.getLong("pearlUntil", 0L); pearlNext = sp.getLong("pearlNext", 0L)
+        renown = sp.getInt("renown", 0); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
+        dbDay = sp.getLong("dbDay", -1L); seasonKey = sp.getString("seasonKey", "") ?: ""; seasonPts = sp.getInt("seasonPts", 0); seasonGot = sp.getInt("seasonGot", 0)
         visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
         set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
         set("festGot", festGot); weatherId = sp.getString("v_weather", null)
@@ -294,6 +296,8 @@ object Game {
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
             putLong("pearlUntil", pearlUntil); putLong("pearlNext", pearlNext)
+            putInt("renown", renown); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
+            putString("seasonKey", seasonKey); putInt("seasonPts", seasonPts); putInt("seasonGot", seasonGot)
             putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
             if (v == null) putLong("v_start", 0L) else {
@@ -462,6 +466,7 @@ object Game {
     @Synchronized fun seeCritter(kind: Int): String {
         val cr = Fleet.creature(kind) ?: return ""
         if (!critSeen.add(kind)) return cr.name
+        seasonAdd(1)
         tickets += cr.reward.tickets; goldC += cr.reward.gold * 100L
         card("도감 · " + cr.name, (Fleet.crewOf(cr.seenBy)?.name?.let { "$it: “" + cr.firstLine + "”\n" } ?: "") + "쪽지 +" + cr.reward.tickets + ", 금화 +" + cr.reward.gold)
         for (m in Fleet.bookMiles) if (critSeen.size >= m.count && bookGot.add(m.count)) {
@@ -501,6 +506,86 @@ object Game {
         card("진주를 주웠어요", Fleet.pearlLine + "\n" + resText(r))
         save()
         return "진주! " + resText(r)
+    }
+
+    // ---------- 15차: 함대 힘, 출석, 오늘의 우두머리, 명성, 시즌 ----------
+    /** 함대 힘: 이길 확률 식에서 해적 쪽을 뺀 내 쪽 합 × 10000. 해적 힘과 같으면 반반 */
+    fun myPower(ids: List<String> = aboard.filter { it in promoted }.take(slots())): Int =
+        Math.round((ship().pirateWin + (if (lighthouse) Data.lighthouseBonus else 0f) + workerPirateBonus() + partValue("cannon") + cb(ids, "pirate_win_bonus") + renownWin()) * 10000)
+    fun enemyPower(p: Data.Pirate): Int = Math.round((.5f + Data.powerCoef * (p.power - 1f)) * 10000)
+    fun powerLine(p: Data.Pirate, ids: List<String>) = "함대 힘 " + "%,d".format(myPower(ids)) + " vs " + "%,d".format(enemyPower(p))
+
+    var renown = 0; private set
+    fun renownWin() = renown * .02f
+    fun renownSale() = renown * .1f
+    /** 명성: 배 5단계 이상, 부품 넷 다 지금 최고 레벨이면 다시 시작할 수 있다 */
+    fun renownReady() = shipLevel >= 5 && Fleet.parts.all { partNext(it.id) == null && partLevel(it.id) > 1 }
+    @Synchronized fun doRenown(): Boolean {
+        if (!renownReady()) return false
+        renown++
+        for (p in Fleet.parts) parts[p.id] = 1
+        goldC = 0L
+        card("명성 " + renown + "!", "부품과 금화를 내려놓고 새 항해를 시작해요.\n해적 이길 확률 +" + (renown * 2) + "%p, 판매 +" + (renown * 10) + "%")
+        save(); return true
+    }
+
+    // 출석 상자: 하루 한 번, 7칸을 돌아가며
+    var attDay = -1L; private set
+    var attIdx = 0; private set
+    fun attReady() = today() != attDay
+    fun attReward(i: Int = attIdx): Fleet.Res = Fleet.Res(0, 0, 100 * shipLevel * intArrayOf(1, 1, 2, 2, 3, 3, 6)[i % 7], intArrayOf(1, 1, 1, 2, 2, 2, 5)[i % 7])
+    @Synchronized fun claimAtt(): Boolean {
+        if (!attReady()) return false
+        val r = attReward(); tickets += r.tickets; goldC += r.gold * 100L
+        card("출석 " + (attIdx % 7 + 1) + "일째", resText(r))
+        attDay = today(); attIdx = (attIdx + 1) % 7; seasonAdd(1); save(); return true
+    }
+
+    // 오늘의 우두머리: 하루 한 번 도전
+    var dbDay = -1L; private set
+    fun dailyBoss(): Data.Pirate? {
+        val ok = Fleet.bosses.filter { it.minShip <= max(2, shipLevel) }.mapNotNull { Data.pirate(it.id) }
+        if (ok.isEmpty()) return null
+        return ok[Math.floorMod(today().toInt() * 7 + 3, ok.size)]
+    }
+    fun dbReady() = dock && today() != dbDay && dailyBoss() != null
+    @Synchronized fun challengeBoss(): String? {
+        if (!dbReady()) return null
+        val p = dailyBoss() ?: return null
+        val ids = aboard.filter { it in promoted }.take(slots())
+        val win = Random.nextFloat() < winChance(p, ids)
+        dbDay = today()
+        val txt = if (win) {
+            val g = (p.winGold[0] + p.winGold[1]) / 2
+            tickets += 2; goldC += g * 100L; bump("boss_win")
+            "이겼어요! 금화 +" + g + ", 쪽지 +2"
+        } else { tickets += 1; "졌어요. 쪽지 +1 · 내일 다시!" }
+        val nm = Fleet.boss(p.id)?.name ?: p.name
+        card("오늘의 우두머리 " + nm, powerLine(p, ids) + "\n" + txt)
+        save(); return txt
+    }
+
+    // 시즌 보상: 계절마다 점수를 모아 칸을 연다
+    private var seasonKey = ""
+    var seasonPts = 0; private set
+    var seasonGot = 0; private set
+    val SEASON_AT = intArrayOf(10, 25, 45, 70, 100, 140, 190, 250, 320, 400)
+    private fun seasonNow(): String {
+        val se = season() ?: return ""
+        val k = cal(); val y = k.get(java.util.Calendar.YEAR) + (if (k.get(java.util.Calendar.MONTH) == 11) 1 else 0)
+        return se.id + y
+    }
+    private fun seasonCheck() { val k = seasonNow(); if (k != seasonKey) { seasonKey = k; seasonPts = 0; seasonGot = 0 } }
+    fun seasonInfo(): Pair<Int, Int> { seasonCheck(); return seasonPts to seasonGot }
+    private fun seasonAdd(n: Int) { seasonCheck(); seasonPts += n }
+    fun seasonReward(i: Int): Fleet.Res = Fleet.Res(0, 0, 200 * shipLevel * (1 + i / 3), if (i % 3 == 2) 3 else 1)
+    fun seasonReady(): Boolean { seasonCheck(); return seasonGot < SEASON_AT.size && seasonPts >= SEASON_AT[seasonGot] }
+    @Synchronized fun claimSeason(): Boolean {
+        if (!seasonReady()) return false
+        val r = seasonReward(seasonGot); tickets += r.tickets; goldC += r.gold * 100L
+        seasonGot++
+        card("시즌 보상 " + seasonGot + "칸", resText(r))
+        save(); return true
     }
 
     // ---------- 선원 항해 사건 ----------
@@ -571,6 +656,7 @@ object Game {
     }
     /** 일이 하나 끝날 때마다: 오늘 주문 중 맞는 것의 진행을 올리고, 다 되면 바로 보상 */
     @Synchronized fun bump(counter: String, n: Int = 1) {
+        seasonAdd(when (counter) { "voyage_return", "pirate_win", "training_clear" -> 2; "boss_win" -> 5; "mission_clear" -> 3; else -> 1 } * n)
         ordCheckDay()
         var changed = false
         for (id in ordIds) {
@@ -578,7 +664,7 @@ object Game {
             if (o.counter != counter || id in ordDone) continue
             ordProg[id] = min(o.target, (ordProg[id] ?: 0) + n); changed = true
             if (ordProg[id]!! >= o.target) {
-                ordDone.add(id); tickets += o.tickets; goldC += o.gold * 100L; weekCount++
+                ordDone.add(id); tickets += o.tickets; goldC += o.gold * 100L; weekCount++; seasonAdd(3)
                 card("주문 완료! " + o.title, listOfNotNull(o.tickets.takeIf { it > 0 }?.let { "쪽지 +$it" }, o.gold.takeIf { it > 0 }?.let { "금화 +$it" }).joinToString(", "))
                 if (weekCount >= Fleet.weeklyGoal && !weekGot) {
                     weekGot = true; tickets += Fleet.weeklyTickets; goldC += Fleet.weeklyGold * 100L
@@ -692,7 +778,7 @@ object Game {
     fun workerSaleBonus() = min(Data.saleCap, workers.sumOf { (Data.worker(it.id)?.saleBonus ?: 0f).toDouble() }.toFloat())
 
     fun winChance(p: Data.Pirate, ids: List<String> = aboard): Float = (ship().pirateWin - Data.powerCoef * (p.power - 1f) +
-        (if (lighthouse) Data.lighthouseBonus else 0f) + workerPirateBonus() + partValue("cannon") + cb(ids, "pirate_win_bonus")).coerceIn(Data.winMin, Data.winMax)
+        (if (lighthouse) Data.lighthouseBonus else 0f) + workerPirateBonus() + partValue("cannon") + cb(ids, "pirate_win_bonus") + renownWin()).coerceIn(Data.winMin, Data.winMax)
 
     // ---------- 해적 대응: 배·대포·선원이 얼마나 도와주는지 ----------
     /** 지금 항로에서 만날 수 있는 보통 해적 (출항 때와 같은 조건) */
@@ -714,7 +800,8 @@ object Game {
         "대포 Lv" + partLevel("cannon") to partValue("cannon"),
         "선원 스킬·부적" to cb(ids, "pirate_win_bonus"),
         "등대" to (if (lighthouse) Data.lighthouseBonus else 0f),
-        "알바" to workerPirateBonus())
+        "알바" to workerPirateBonus(),
+        "명성 " + renown to renownWin())
 
     // ---------- 선원 가르치기: 금화로 바로 다음 레벨 ----------
     fun teachCost(id: String): Int? { val lv = crewLevel(id); return if (id !in promoted || lv >= Fleet.maxCrewLevel) null else 250 * lv * lv }
@@ -785,23 +872,23 @@ object Game {
                     if (v.win) {
                         val g = Random.nextInt(pr.winGold[0], max(pr.winGold[0], pr.winGold[1]) + 1)
                         v.rewardC = g * 100L
-                        card("우두머리 " + boss.name + "을 물리쳤어요!", "귀항하면 금화 +$g\n" + boss.captain + ": “" + boss.loseLine + "”")
+                        card("우두머리 " + boss.name + "을 물리쳤어요!", powerLine(pr, v.crew) + "\n귀항하면 금화 +$g\n" + boss.captain + ": “" + boss.loseLine + "”")
                     } else {
                         val lose = pr.lose * (1 - min(.5f, partLossCut() + cb(v.crew, "repair_after_loss")))
                         val lw = v.cw - floor(v.cw * (1 - lose)).toInt(); val ls = v.cs - floor(v.cs * (1 - lose)).toInt()
                         v.cw -= lw; v.cs -= ls
-                        card("우두머리 " + boss.name + "에게 당했어요", "짐을 빼앗겼어요 나무 -$lw 돌 -$ls\n" + boss.captain + ": “" + boss.winLine + "”")
+                        card("우두머리 " + boss.name + "에게 당했어요", powerLine(pr, v.crew) + "\n짐을 빼앗겼어요 나무 -$lw 돌 -$ls\n" + boss.captain + ": “" + boss.winLine + "”")
                     }
                 } else if (pr != null) {
                     if (v.win) {
                         val g = Random.nextInt(pr.winGold[0], max(pr.winGold[0], pr.winGold[1]) + 1)
                         v.rewardC = g * 100L
-                        card(pr.name + "을 물리쳤어요!", "귀항하면 금화 +$g")
+                        card(pr.name + "을 물리쳤어요!", powerLine(pr, v.crew) + "\n귀항하면 금화 +$g")
                     } else {
                         val lose = pr.lose * (1 - min(.5f, partLossCut() + cb(v.crew, "repair_after_loss")))
                         val lw = v.cw - floor(v.cw * (1 - lose)).toInt(); val ls = v.cs - floor(v.cs * (1 - lose)).toInt()
                         v.cw -= lw; v.cs -= ls
-                        card(pr.name + "에게 당했어요", "짐을 빼앗겼어요 나무 -$lw 돌 -$ls")
+                        card(pr.name + "에게 당했어요", powerLine(pr, v.crew) + "\n짐을 빼앗겼어요 나무 -$lw 돌 -$ls")
                     }
                 }
             }
@@ -809,7 +896,7 @@ object Game {
         if (v.step == 1 && f >= Data.fArrive) {
             v.step = 2
             val delivered = deliverReqs(v)
-            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f) + cb(v.crew, "sale_bonus")
+            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f) + cb(v.crew, "sale_bonus") + renownSale()
             packed = false
             val sale = floor((v.cw * p.buyW * (1 + cb(v.crew, "wood_price_bonus")) + v.cs * p.buyS * (1 + cb(v.crew, "stone_price_bonus"))) * mul * 100).toLong()
             goldC += sale; v.saleC = sale

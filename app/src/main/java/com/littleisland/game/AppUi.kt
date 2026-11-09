@@ -82,9 +82,45 @@ class AppUi(val scene: Scene, val host: Host) {
     private fun fightTile(): Tile {
         val n = Game.normalOdds(); val b = Game.bossOdds()
         val parts = Game.fightParts().filter { it.second > 0f }.joinToString("\n") { (nm, v) -> nm + "  " + (if (nm.startsWith("배 ")) Fleet.pct(v) else "+" + Fleet.pts(v)) }
-        return Tile("boss:0", "해적 대응", Fleet.pct(n), if (n >= .8f) St.ON else St.NORMAL,
-            "이번 항로 해적을 이길 확률\n보통 해적  " + Fleet.pct(n) + (b?.let { "\n우두머리  " + Fleet.pct(it) } ?: "") +
+        val my = Game.myPower()
+        val ep = Game.routePirates().maxByOrNull { it.power }?.let { Game.enemyPower(it) }
+        val bp = Game.routeBosses().maxByOrNull { it.power }?.let { Game.enemyPower(it) }
+        return Tile("boss:0", "함대 힘", "%,d".format(my), if (n >= .8f) St.ON else St.NORMAL,
+            "내 함대 힘  " + "%,d".format(my) + (ep?.let { "\n센 해적 힘  " + "%,d".format(it) } ?: "") + (bp?.let { "\n우두머리 힘  " + "%,d".format(it) } ?: "") +
+                "\n힘이 1,000 더 크면 10%p 더 잘 이겨요.\n\n이길 확률\n보통 해적  " + Fleet.pct(n) + (b?.let { "\n우두머리  " + Fleet.pct(it) } ?: "") +
                 "\n\n" + parts + "\n\n대포를 올리고, 선원 레벨을 올리면 더 잘 싸워요.")
+    }
+
+    private fun renownTile(): Tile? {
+        if (Game.shipLevel < 4 && Game.renown == 0) return null
+        val ok = Game.renownReady()
+        val cap = Fleet.maxLevel(Game.shipLevel)
+        return Tile("title:0", "명성 " + Game.renown, if (ok) "새 항해!" else "부품 Lv" + cap, if (ok) St.READY else if (Game.renown > 0) St.ON else St.NORMAL,
+            "부품 넷을 다 최고로 올리면 새 항해를 시작할 수 있어요.\n\n내려놓는 것  부품 레벨, 금화\n남는 것  배, 선원, 이야기, 장식\n\n명성 1마다 영원히\n해적 이길 확률 +2%p (함대 힘 +200)\n판매 금화 +10%\n\n지금 명성 " + Game.renown +
+                (if (ok) "" else "\n필요: 배 5단계, 부품 모두 Lv" + cap),
+            null, if (ok) "새 항해 시작" else null, { Game.doRenown() }, "명성 " + (Game.renown + 1) + "!")
+    }
+
+    private fun dailyTiles(l: ArrayList<Tile>) {
+        val ar = Game.attReward()
+        l.add(Tile("chest:1", "출석 상자", if (Game.attReady()) (Game.attIdx + 1).toString() + "일째 받기!" else "내일 또", if (Game.attReady()) St.READY else St.DONE,
+            "하루 한 번 받아요. 7일째가 가장 커요.\n\n" + (0 until 7).joinToString("\n") { i -> (if (i < Game.attIdx) "● " else if (i == Game.attIdx && Game.attReady()) "▶ " else "○ ") + (i + 1) + "일  " + Game.resText(Game.attReward(i)) },
+            null, if (Game.attReady()) "받기" else null, { Game.claimAtt() }, "출석 " + Game.resText(ar)))
+        Game.dailyBoss()?.let { p ->
+            val nm = Fleet.boss(p.id)?.name ?: p.name
+            val o = Game.winChance(p, Game.aboard.filter { it in Game.promoted }.take(Game.slots()))
+            l.add(Tile("boss:" + (Fleet.boss(p.id)?.face ?: 0), "오늘 우두머리", if (Game.dbReady()) "도전!" else "내일 또", if (Game.dbReady()) St.READY else St.DONE,
+                nm + "\n함대 힘 " + "%,d".format(Game.myPower()) + " vs " + "%,d".format(Game.enemyPower(p)) + "\n이길 확률 " + Fleet.pct(o) +
+                    "\n\n하루 한 번 도전해요.\n이기면 금화와 쪽지 2장, 져도 쪽지 1장.",
+                null, if (Game.dbReady()) "도전" else null, { Game.challengeBoss()?.let { host.toast(it) }; true }))
+        }
+        val (pts, got) = Game.seasonInfo()
+        val se = Game.season()
+        val next = Game.SEASON_AT.getOrNull(got)
+        l.add(Tile("season:" + (se?.deco?.firstOrNull() ?: 0), (se?.name ?: "") + " 시즌", if (Game.seasonReady()) "받기!" else if (next != null) "$pts/$next" else "다 받음",
+            if (Game.seasonReady()) St.READY else if (next == null) St.DONE else St.ON,
+            "항해, 해적, 주문, 도감, 출석으로 점수를 모아요.\n계절이 바뀌면 처음부터.\n\n점수 " + pts + "\n" + Game.SEASON_AT.withIndex().joinToString("\n") { (i, at) -> (if (i < got) "● " else "○ ") + at + "점  " + Game.resText(Game.seasonReward(i)) },
+            null, if (Game.seasonReady()) "받기" else null, { Game.claimSeason() }, "시즌 보상을 받았어요", keep = true))
     }
 
     private fun tiles(): List<Tile> {
@@ -113,6 +149,7 @@ class AppUi(val scene: Scene, val host: Host) {
             }
             1 -> {
                 l.add(fightTile())
+                renownTile()?.let { l.add(it) }
                 for (p in Fleet.parts) {
                     val lv = Game.partLevel(p.id); val n = Game.partNext(p.id)
                     val now = if (lv > 0) Fleet.partText(p, Game.partValue(p.id)) else "아직 없음"
@@ -295,6 +332,7 @@ class AppUi(val scene: Scene, val host: Host) {
                     "먼 항구의 알바는 고용비가 더 들지만 솜씨가 좋아요.", null, if (Game.hireAny) "끄기" else "켜기", { Game.hireAny = !Game.hireAny; Game.save(); true }))
             }
             4 -> {
+                dailyTiles(l)
                 // 손님 배 (있을 때만)
                 Game.visitor()?.let { v ->
                     val o = Game.visOfferNow()
@@ -428,6 +466,7 @@ class AppUi(val scene: Scene, val host: Host) {
         dst.set(0, top.toInt(), W, (top + sceneH).toInt())
         c.drawBitmap(scene.bitmap, src, dst, bp)
         label(c, 6f, top + 14)
+        drawPower(top + 28)
         drawGoal(top + sceneH - 21)
         // 탭
         val ty = top + sceneH + 4
@@ -476,12 +515,27 @@ class AppUi(val scene: Scene, val host: Host) {
         popup?.let { drawPopup(it) }
     }
 
+    /** 함대 힘 표시 (오른쪽 위). 올리면 +숫자가 잠깐 떠오른다 */
+    private var powFxAt = 0L; private var powFx = 0
+    private fun drawPower(y: Float) {
+        val k = Pix
+        val s = "함대 힘 " + "%,d".format(Game.myPower())
+        val w = k.width(s, 10) + 10
+        k.rect(c, W - 6 - w, y - 10, w, 14f, android.graphics.Color.argb(160, 20, 12, 6))
+        k.text(c, s, W - 11f, y + 1, 10, k.GOLD, Paint.Align.RIGHT, true)
+        val e = System.currentTimeMillis() - powFxAt
+        if (powFx > 0 && e in 0 until 1800) {
+            val a = (255 * (1 - e / 1800f)).toInt().coerceIn(0, 255)
+            k.text(c, "+" + "%,d".format(powFx), W - 11f, y + 14 - e / 1800f * 10, 12, android.graphics.Color.argb(a, 143, 208, 106), Paint.Align.RIGHT, true)
+        }
+    }
+
     /** 장면 아래 '다음 목표' 띠: 누르면 그 칸을 바로 연다 */
     private fun drawGoal(y: Float) {
         val k = Pix
         goalRect = null
         if (popup != null) return
-        val g = Game.goal() ?: return
+        val g = appGoal() ?: return
         val ok = g.ready && Game.canPay(g.cost)
         k.rect(c, 4f, y, W - 8f, 18f, k.INK)
         k.rect(c, 5f, y + 1, W - 10f, 16f, if (ok) k.col("#7a4f1c") else k.col("#4a3420"))
@@ -495,9 +549,29 @@ class AppUi(val scene: Scene, val host: Host) {
     }
 
     /** 목표 띠를 눌렀을 때: 그 탭으로 가서 그 칸의 창을 연다 */
+    /** 앱 목표: 하루 보상이 있으면 그것부터, 아니면 섬의 다음 목표 */
+    private fun appGoal(): Game.Goal? = when {
+        Game.attReady() -> Game.Goal("d:chest:1", "출석 상자 받기", null, true, false)
+        Game.dbReady() -> Game.Goal("d:boss", "오늘의 우두머리", null, true, false)
+        Game.seasonReady() -> Game.Goal("d:season", "시즌 보상 받기", null, true, false)
+        Game.renownReady() -> Game.Goal("d:renown", "명성 새 항해", null, true, false)
+        else -> Game.goal()
+    }
+
     private fun openGoal() {
-        val g = Game.goal() ?: return
+        val g = appGoal() ?: return
         val key = g.key
+        if (key.startsWith("d:")) {
+            tab = if (key == "d:renown") 1 else 4; page = 0
+            val list = tiles()
+            popup = when (key) {
+                "d:chest:1" -> list.firstOrNull { it.name == "출석 상자" }
+                "d:boss" -> list.firstOrNull { it.name == "오늘 우두머리" }
+                "d:season" -> list.firstOrNull { it.name.endsWith(" 시즌") }
+                else -> list.firstOrNull { it.name.startsWith("명성") }
+            }
+            return
+        }
         tab = when {
             key.startsWith("part:") || key.startsWith("ship_") -> 1
             key.startsWith("crew:") -> 3
@@ -598,9 +672,12 @@ class AppUi(val scene: Scene, val host: Host) {
             }
             val b = btnRect
             if (b != null && b.contains(ix, iy)) {
+                val p0 = Game.myPower()
                 val ok = pop.act?.invoke() ?: false
+                val dp = Game.myPower() - p0
+                if (ok && dp > 0) { powFx = dp; powFxAt = System.currentTimeMillis(); host.toast((pop.done ?: "") + "  함대 힘 +" + "%,d".format(dp)) }
                 if (ok && pop.keep) { fxAt = System.currentTimeMillis(); popup = tiles().firstOrNull { it.icon == pop.icon && it.keep } ?: tiles().firstOrNull { it.icon == pop.icon }; after = null; return }
-                if (ok && pop.done != null) host.toast(pop.done)
+                if (ok && pop.done != null && dp <= 0) host.toast(pop.done)
                 popup = if (ok) after else null; after = null
             } else popup = null
             return
