@@ -1,0 +1,634 @@
+{
+  "chance_per_voyage": 0.25,
+  "events": [
+    {
+      "id": "crew_ev_yeoul_4",
+      "crew": "yeoul",
+      "min_crew_level": 12,
+      "card_title": "건네는 구령",
+      "card_line": "여울이 다음 사람에게 구령을 맡겼어요",
+      "emote": "note",
+      "effect": {
+        "kind": "crew_xp",
+        "value": 10
+      }
+    },
+    {
+      "id": "crew_ev_yeoul_5",
+      "crew": "yeoul",
+      "min_crew_level": 15,
+      "card_title": "빈 모자 속",
+      "card_line": "여울이 모자 속 시간표를 접어 둬요",
+      "emote": "heart",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      }
+    },
+    {
+      "id": "crew_ev_mungi_4",
+      "crew": "mungi",
+      "min_crew_level": 12,
+      "card_title": "고른 받침",
+      "card_line": "문기가 쓸 만한 받침돌을 골랐어요",
+      "emote": "star",
+      "effect": {
+        "kind": "stone",
+        "value": 10
+      }
+    },
+    {
+      "id": "crew_ev_mungi_5",
+      "crew": "mungi",
+      "min_crew_level": 15,
+      "card_title": "덮어 둔 포구",
+      "card_line": "문기가 포구를 덮고 차를 나눠요",
+      "emote": "note",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      }
+    },
+    {
+      "id": "crew_ev_sori_4",
+      "crew": "sori",
+      "min_crew_level": 12,
+      "card_title": "돌아온 찻잔",
+      "card_line": "소리가 돌아온 찻잔에 차를 따라요",
+      "emote": "heart",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      }
+    },
+    {
+      "id": "crew_ev_sori_5",
+      "crew": "sori",
+      "min_crew_level": 15,
+      "card_title": "오래 쓰는 포대",
+      "card_line": "소리가 낡은 포대를 손질했어요",
+      "emote": "star",
+      "effect": {
+        "kind": "gold",
+        "value": 40
+      }
+    },
+    {
+      "id": "crew_ev_nuri_4",
+      "crew": "nuri",
+      "min_crew_level": 12,
+      "card_title": "남겨 둔 칸막이",
+      "card_line": "누리가 다시 쓸 칸막이를 챙겼어요",
+      "emote": "star",
+      "effect": {
+        "kind": "wood",
+        "value": 10
+      }
+    },
+    {
+      "id": "crew_ev_nuri_5",
+      "crew": "nuri",
+      "min_crew_level": 15,
+      "card_title": "짐표의 답장",
+      "card_line": "누리가 짐표 뒤의 답장을 읽어요",
+      "emote": "heart",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      }
+    },
+    {
+      "id": "crew_ev_bada_4",
+      "crew": "bada",
+      "min_crew_level": 12,
+      "card_title": "함께 접는 돛",
+      "card_line": "바다가 돛 접는 순서를 나눴어요",
+      "emote": "note",
+      "effect": {
+        "kind": "crew_xp",
+        "value": 10
+      }
+    },
+    {
+      "id": "crew_ev_bada_5",
+      "crew": "bada",
+      "min_crew_level": 15,
+      "card_title": "살려 둔 실땀",
+      "card_line": "바다가 오래된 돛천을 덧댔어요",
+      "emote": "star",
+      "effect": {
+        "kind": "gold",
+        "value": 50
+      }
+    },
+    {
+      "id": "crew_ev_geonu_4",
+      "crew": "geonu",
+      "min_crew_level": 12,
+      "card_title": "딱 맞는 조각",
+      "card_line": "건우가 남은 판재의 쓰임을 찾았어요",
+      "emote": "star",
+      "effect": {
+        "kind": "wood",
+        "value": 15
+      }
+    },
+    {
+      "id": "crew_ev_geonu_5",
+      "crew": "geonu",
+      "min_crew_level": 15,
+      "card_title": "맡겨 둔 연장",
+      "card_line": "건우가 연장을 맡기고 눈을 붙여요",
+      "emote": "zzz",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      }
+    },
+    {
+      "id": "crew_ev_dori_4",
+      "crew": "dori",
+      "min_crew_level": 12,
+      "card_title": "편안한 손",
+      "card_line": "도리가 키에서 손의 힘을 풀어요",
+      "emote": "heart",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      }
+    },
+    {
+      "id": "crew_ev_dori_5",
+      "crew": "dori",
+      "min_crew_level": 15,
+      "card_title": "이어지는 항로",
+      "card_line": "도리가 다음 항로를 쪽지에 남겼어요",
+      "emote": "note",
+      "effect": {
+        "kind": "tickets",
+        "value": 1
+      }
+    },
+    {
+      "id": "crew_ev_haneul_4",
+      "crew": "haneul",
+      "min_crew_level": 12,
+      "card_title": "기다린 답",
+      "card_line": "하늘이 신호를 확인하는 법을 나눴어요",
+      "emote": "star",
+      "effect": {
+        "kind": "crew_xp",
+        "value": 10
+      }
+    },
+    {
+      "id": "crew_ev_haneul_5",
+      "crew": "haneul",
+      "min_crew_level": 15,
+      "card_title": "내 앞으로 온 말",
+      "card_line": "하늘이 자기 앞으로 온 안부를 읽어요",
+      "emote": "heart",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      }
+    },
+    {
+      "id": "crew_ev_bityeo_4",
+      "crew": "bityeo",
+      "min_crew_level": 12,
+      "card_title": "비워 둔 기록",
+      "card_line": "빛여가 보지 못한 곳도 구분했어요",
+      "emote": "question",
+      "effect": {
+        "kind": "crew_xp",
+        "value": 15
+      }
+    },
+    {
+      "id": "crew_ev_bityeo_5",
+      "crew": "bityeo",
+      "min_crew_level": 15,
+      "card_title": "맨눈으로 인사",
+      "card_line": "빛여가 망원경 없이 섬에 인사해요",
+      "emote": "heart",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      }
+    },
+    {
+      "id": "crew_ev_deul_4",
+      "crew": "deul",
+      "min_crew_level": 12,
+      "card_title": "남김없는 간식",
+      "card_line": "들이 남은 재료로 간식을 챙겼어요",
+      "emote": "surprise",
+      "effect": {
+        "kind": "gold",
+        "value": 40
+      }
+    },
+    {
+      "id": "crew_ev_deul_5",
+      "crew": "deul",
+      "min_crew_level": 15,
+      "card_title": "닫아 둔 냄비",
+      "card_line": "들이 딱 먹을 만큼 국을 나눴어요",
+      "emote": "note",
+      "effect": {
+        "kind": "gold",
+        "value": 50
+      }
+    },
+    {
+      "id": "crew_ev_saei_4",
+      "crew": "saei",
+      "min_crew_level": 12,
+      "card_title": "함께 고른 돌",
+      "card_line": "새이가 쓸 만한 받침돌을 골랐어요",
+      "emote": "star",
+      "effect": {
+        "kind": "stone",
+        "value": 10
+      }
+    },
+    {
+      "id": "crew_ev_saei_5",
+      "crew": "saei",
+      "min_crew_level": 15,
+      "card_title": "서로 읽은 표",
+      "card_line": "새이가 서로 읽은 거래표를 맞췄어요",
+      "emote": "heart",
+      "effect": {
+        "kind": "gold",
+        "value": 60
+      }
+    },
+    {
+      "id": "crew_ev_onyu_4",
+      "crew": "onyu",
+      "min_crew_level": 12,
+      "card_title": "믿고 맡긴 확인",
+      "card_line": "온유가 점검을 나누는 순서를 익혔어요",
+      "emote": "sweat",
+      "effect": {
+        "kind": "crew_xp",
+        "value": 10
+      }
+    },
+    {
+      "id": "crew_ev_onyu_5",
+      "crew": "onyu",
+      "min_crew_level": 15,
+      "card_title": "모두의 확인표",
+      "card_line": "온유가 다음 사람의 쪽지를 챙겼어요",
+      "emote": "note",
+      "effect": {
+        "kind": "tickets",
+        "value": 1
+      }
+    },
+    {
+      "id": "crew_ev_pair_yeoul_dori",
+      "crew": "yeoul",
+      "min_crew_level": 12,
+      "card_title": "비워 둔 물길",
+      "card_line": "여울과 도리가 비울 물길을 짚어요",
+      "emote": "question",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      },
+      "with": "dori"
+    },
+    {
+      "id": "crew_ev_pair_mungi_onyu",
+      "crew": "mungi",
+      "min_crew_level": 12,
+      "card_title": "함께 고른 받침",
+      "card_line": "문기와 온유가 받침돌을 나눠요",
+      "emote": "star",
+      "effect": {
+        "kind": "stone",
+        "value": 10
+      },
+      "with": "onyu"
+    },
+    {
+      "id": "crew_ev_pair_sori_deul",
+      "crew": "sori",
+      "min_crew_level": 12,
+      "card_title": "찻잔의 자리",
+      "card_line": "소리와 들이 찻잔 자리를 비워요",
+      "emote": "heart",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      },
+      "with": "deul"
+    },
+    {
+      "id": "crew_ev_pair_nuri_saei",
+      "crew": "nuri",
+      "min_crew_level": 12,
+      "card_title": "같이 읽은 짐표",
+      "card_line": "누리와 새이가 포장값을 맞췄어요",
+      "emote": "note",
+      "effect": {
+        "kind": "gold",
+        "value": 40
+      },
+      "with": "saei"
+    },
+    {
+      "id": "crew_ev_pair_bada_haneul",
+      "crew": "bada",
+      "min_crew_level": 12,
+      "card_title": "돛끝의 답",
+      "card_line": "바다와 하늘이 돛 신호를 맞춰요",
+      "emote": "note",
+      "effect": {
+        "kind": "crew_xp",
+        "value": 10
+      },
+      "with": "haneul"
+    },
+    {
+      "id": "crew_ev_pair_geonu_bityeo",
+      "crew": "geonu",
+      "min_crew_level": 12,
+      "card_title": "먼저 본 나뭇결",
+      "card_line": "건우와 빛여가 쓸 판자를 골랐어요",
+      "emote": "star",
+      "effect": {
+        "kind": "wood",
+        "value": 10
+      },
+      "with": "bityeo"
+    },
+    {
+      "id": "crew_ev_pair_dori_bada",
+      "crew": "dori",
+      "min_crew_level": 12,
+      "card_title": "바람의 장난",
+      "card_line": "도리와 바다가 장난친 바람을 흘겨요",
+      "emote": "angry",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      },
+      "with": "bada"
+    },
+    {
+      "id": "crew_ev_pair_haneul_sori",
+      "crew": "haneul",
+      "min_crew_level": 12,
+      "card_title": "마른 답장",
+      "card_line": "하늘과 소리가 답장 접는 법을 나눠요",
+      "emote": "sweat",
+      "effect": {
+        "kind": "crew_xp",
+        "value": 10
+      },
+      "with": "sori"
+    },
+    {
+      "id": "crew_ev_pair_bityeo_dori",
+      "crew": "bityeo",
+      "min_crew_level": 12,
+      "card_title": "나란한 물빛",
+      "card_line": "빛여와 도리가 먼 물빛을 기록해요",
+      "emote": "surprise",
+      "effect": {
+        "kind": "crew_xp",
+        "value": 10
+      },
+      "with": "dori"
+    },
+    {
+      "id": "crew_ev_pair_deul_geonu",
+      "crew": "deul",
+      "min_crew_level": 12,
+      "card_title": "흔들리지 않는 국",
+      "card_line": "들과 건우가 냄비 받침을 맞췄어요",
+      "emote": "star",
+      "effect": {
+        "kind": "stone",
+        "value": 5
+      },
+      "with": "geonu"
+    },
+    {
+      "id": "crew_ev_pair_saei_haneul",
+      "crew": "saei",
+      "min_crew_level": 12,
+      "card_title": "거래 소식",
+      "card_line": "새이와 하늘이 거래 소식을 맞춰요",
+      "emote": "note",
+      "effect": {
+        "kind": "gold",
+        "value": 30
+      },
+      "with": "haneul"
+    },
+    {
+      "id": "crew_ev_pair_onyu_yeoul",
+      "crew": "onyu",
+      "min_crew_level": 12,
+      "card_title": "함께 쉬는 자리",
+      "card_line": "온유와 여울이 쉬는 자리를 나눠요",
+      "emote": "zzz",
+      "effect": {
+        "kind": "none",
+        "value": 0
+      },
+      "with": "yeoul"
+    }
+  ],
+  "schema_version": 1,
+  "design_status": "order11_additional_crew_sea_events_v1",
+  "selection_rules": {
+    "roll_scope": "33의 기존36개와35의 신규36개를 ID로 병합한72개에서 항해 전체에 한 번만 검사한다. 파일마다 또는 선원마다 추가 추첨하지 않는다.",
+    "max_events_per_voyage": 1,
+    "when": "출항 명단·레벨·항해 ID를 저장하는 같은 트랜잭션에서 선택 결과도 저장한다.",
+    "eligible_crew": "출항 스냅샷에 실제 승선한 승진 선원 중 min_crew_level을 충족하는 사건이 하나 이상 있는 고유 crew ID. 대기 선원·섬 알바·서린·주민은 제외한다.",
+    "eligible_events": "선택된 crew가 일치하고 출항 당시 그 선원의 레벨이 min_crew_level 이상인 사건. with가 있으면 그 다른 선원도 같은 출항 스냅샷에 승선해야 한다. with 없는33 사건도 그대로 후보로 남는다.",
+    "selection_order": [
+      "33·35 사건을 ID로 합치고 각 사건의 crew 레벨과 선택적 with 승선 조건을 출항 스냅샷에서 검사한다.",
+      "적격 사건이 있는 고유 crew ID가 없으면 사건 없음으로 저장하고 종료한다.",
+      "33과 같은 전용 난수 스트림에서 chance_per_voyage=0.25로 한 번 검사한다. 실패도 사건 없음으로 저장한다.",
+      "적격 crew ID를 정렬한 목록에서 균등하게 한 명 고른다.",
+      "그 선원의 적격 event ID를 정렬한 목록에서 균등하게 하나 고른다. 단독·짝 사건은 같은 후보 목록을 사용한다."
+    ],
+    "seed_namespace": "save_id + voyage_sequence + crew_sea_event_v1",
+    "save_snapshot": [
+      "event_id_or_null",
+      "crew_id",
+      "departure_crew_level",
+      "effect_kind",
+      "effect_value",
+      "cue_at_voyage_elapsed_seconds",
+      "cue_consumed",
+      "reward_settled",
+      "with_crew_id_or_null",
+      "with_aboard_at_departure"
+    ],
+    "changes_after_departure": "진행 중 항해의 출항 명단·주인공 레벨·짝 승선 여부·사건·효과는 다시 계산하지 않는다. 이후 교체·승급은 다음 출항부터 적용한다.",
+    "level_15_or_full_inventory": "후보에서 빼거나 다른 보상으로 다시 뽑지 않는다. 레벨 상한·창고 초과는 지급 규칙으로 처리한다.",
+    "none_is_a_real_event": true,
+    "no_repeat_reroll": "같은 사건이 연속으로 나와도 다시 뽑지 않는다. 화면 열기·일시 정지·앱 재실행은 선택에 영향을 주지 않는다.",
+    "existing_random_streams_unchanged": true,
+    "chance_bonuses": "20·28·30의 event_good_bonus·treasure_find_bonus·키 부품 보너스는 기존07 사건에만 적용한다. 이 파일의 고정25%나 효과량에는 더하거나 곱하지 않는다.",
+    "partner_contract": {
+      "with_optional": true,
+      "primary_level_gate": "min_crew_level은 crew 한 명에게만 적용한다.",
+      "partner_level_gate": "with는 승진한 선원의 같은 출항 승선 여부만 검사한다. 별도의 파트너 레벨 조건이나 새 필드를 만들지 않는다.",
+      "pair_unique_candidate": "짝 사건 ID는 crew의 후보에만 한 번 넣는다. with 쪽 후보에 복제하거나 역방향 ID를 자동 생성하지 않는다.",
+      "shared_chance": 0.25,
+      "shared_max_events_per_voyage": 1,
+      "none_fraction_note": "추가 자료의 none은12/36이다. 편성과 레벨별 실제 후보 분포에 따라 효과 없는 사건의 당첨 비율은 달라질 수 있다."
+    }
+  },
+  "timing_and_emote_rules": {
+    "cue_fraction_of_final_voyage_duration": 0.65,
+    "cue_time": "출항 시 고정한 실제 최종 항해 시간의 65% 지점(초 단위 내림). 특별 항해도 실제 최종 시간을 사용하며 이동 속도나 이벤트 시각 자체는 바꾸지 않는다.",
+    "cue_is_visual_only": true,
+    "emote_duration_ms": 1800,
+    "attachment": "선택된 사건의 crew 한 명 머리 위에 기존 감정을 한 번 표시한다. with가 있어도 말풍선·효과를 둘로 복제하지 않는다.",
+    "play_once": "실시간으로 cue 시각을 지날 때 cue_consumed를 먼저 저장하고 화면에 해당 선원이 보이는 경우만 잠깐 표시한다. 재접속·화면 복원·뒤늦은 읽기로 재생하지 않는다.",
+    "busy_or_hidden_screen": "전투·이야기·다른 카드가 화면을 가리거나 홈이 보이지 않으면 이번 연출만 건너뛴다. 나중에 몰아 재생하거나 이미 내려간 선원의 머리 위에 표시하지 않는다.",
+    "offline": "오프라인 시뮬레이션이 cue를 지나면 소비 표시만 한다. 복귀 때 과거 말풍선을 줄줄이 재생하지 않는다.",
+    "reward_timing": "말풍선이 뜨는 시점에는 재화·경험치를 지급하지 않는다. 귀항 정산에서 카드와 효과를 함께 확정한다.",
+    "partial_voyage": "미완료 항해에는 카드·보상을 지급하지 않고 스냅샷·남은 시간·cue_consumed 상태를 유지한다."
+  },
+  "settlement_rules": {
+    "settle_at": "인정되는 정상 귀항 정산. 일반 항해와 특별 항해에 동일 적용하며 일반 해적 전투의 승패는 조건이 아니다.",
+    "once_key": "save_id + voyage_sequence + crew_sea_event_reward",
+    "atomic_commit": [
+      "정상 귀항 정산 장부",
+      "선택된 사건 또는 사건 없음 결과",
+      "사건 효과 지급 내역",
+      "자원 초과 미지급 잔량",
+      "사건 카드 표시용 결과",
+      "reward_settled"
+    ],
+    "retry": "확정 전 중단은 저장된 사건·효과로 트랜잭션을 재개한다. 확정 뒤 재실행은 기존 결과를 읽고 재지급하지 않는다.",
+    "none": "kind=none은 value=0이며 말풍선과 귀항 카드만 표시한다. 별도 대체 보상은 없다.",
+    "gold": "value는 정수 금화이며 지갑의 최소 단위에는 value*100을 더한다. 화물 판매액을 수정하거나 거래표 전체를 다시 정산하지 않는다.",
+    "wood_stone": "고정 추가 보상으로 창고에 직접 지급한다. 실은 화물을 가져오거나 기존 재고에서 빼는 연산이 아니며 화물 적재량·판매량·해적 손실량에 넣지 않는다. 카드의 발견·절약 묘사는 보상 연출이다.",
+    "resource_overflow": "실제 창고에 들어간 수량과 초과분을 해당 사건 보상 장부에 나누어 저장한다. 초과분은 기한 없는 미지급 잔량으로 두고 여유가 생길 때 잔량을 차감하는 동일 트랜잭션으로 지급한다. 창고 상한을 늘리거나 초과분을 다른 재화로 환전하지 않는다.",
+    "tickets": "value는 기존 voyage_note 쪽지 수량이다. 훈련·주문 성공이나 부적 뽑기 횟수로 계산하지 않는다.",
+    "crew_xp": "짝 사건도 event.crew 한 명에게만 value를 추가한다. with에게 같은 XP를 더하지 않는다. 정규 귀항XP와 특별 항해XP, 이 사건XP는 각각 구분한 장부로 한 번만 처리한다.",
+    "xp_order": "정규 귀항XP, 특별 항해XP가 있으면 그 보너스, 마지막으로 이 사건XP를 30의 같은 승급 함수로 정산한다. 지급 시점의 실제 저장 레벨을 사용하며 선택 조건만 출항 레벨이다.",
+    "xp_cap": "30_crew_levels_2.json의 최대Lv15·구간별 차감 규칙을 사용한다. Lv1~9 비용은20, Lv10~14 비용은30.xp_to_next_11_15[level-10]. Lv15 도달 후 잔량은0이며 이미Lv15이면 이 보너스도 저장·환전하지 않는다.",
+    "new_skills": "사건XP로 연 스킬은 다음 출항부터 적용한다. 끝난 항해를 다시 계산하지 않는다.",
+    "no_multipliers": "이 파일의 고정 효과에 판매·시장·선원·부적·좋은 사건·특산물 배율을 적용하지 않는다.",
+    "cards_are_read_only": "귀항 카드 열기·배지 누르기·다시 보기·연출 완료로 효과를 지급하지 않는다.",
+    "no_journal_entry": true,
+    "no_retroactive_events": "이미 진행 중인 구형 항해에 이 스냅샷이 없으면 사건 없음으로 마치고 다음 새 출항부터 적용한다. 완료한 과거 항해에서 새 사건을 만들지 않는다."
+  },
+  "existing_systems": {
+    "ordinary_events": "기존07의 사건 슬롯·확률·결과·보상은 유지한다. 33은 별도의 선원 일상 슬롯이며 기존 사건을 대체하거나 한 번 더 추첨하지 않는다.",
+    "combat": "일반 해적·우두머리·전투 최대 횟수·승패·화물 손실·첫 승리 보상을 바꾸지 않는다.",
+    "story_fixed": "본편 고정 항해·폭풍·체포·보물 결과를 바꾸지 않는다. 고정 이야기 연출 중에는 선원 말풍선만 생략할 수 있다.",
+    "daily_orders": "33·35의 선원 사건 자체는31·36의 어떤 counter도 증가시키지 않는다. 원래 정상 귀항은 voyage_return을 한 번 증가시킨다. 자원·쪽지 효과를 줍기·훈련·뽑기·특별 항해 성공으로 세지 않는다.",
+    "no_hidden_penalty": "sweat·question·angry·zzz는 일상 표정이며 실패·부상·사망·생산 감소·출항 지연을 뜻하지 않는다.",
+    "offline_maximum_credited_seconds": 28800,
+    "offline_process": "기존 인정 구간의 출항·cue·귀항을 시간순 처리한다. 실제 완료한 항해만 효과를 정산하며 최대8시간을 넘는 구간의 사건·보상은 만들지 않는다.",
+    "offline_cards": "귀항 결과를 요약하는 기존 부재 화면에서 사건 보상 총액을 합산할 수 있다. 개별 카드 표시는 기존 큐 정책을 따르되 일지에 쌓지 않고 과거 감정 연출을 재생하지 않는다.",
+    "journal_vs_ledger": "일지·수집 도감에는 저장하지 않는다. 중복 지급 방지용 정산 장부와 활성 항해 상태는 기술 저장이며 이야기 수집으로 노출하지 않는다.",
+    "synergy": "20의 기존 시너지 여섯 쌍을 우선 소재로 썼다. 짝 사건이 뜨더라도 원래 시너지 효과를 추가로 더하거나 새 시너지 능력치를 만들지 않는다."
+  },
+  "display_rules": {
+    "card_title_max_characters": 12,
+    "card_line_max_characters": 24,
+    "length_count": "공백·문장부호를 포함한 유니코드 문자 수",
+    "no_digits_in_card_copy": true,
+    "reward_display": "보상 수량은 앱이 별도로 붙인다. none이면 보상 줄을 생략한다. Lv15 XP는 더해지지 않았다는 기존 최대레벨 표시를 사용하고 획득한 것처럼 꾸미지 않는다.",
+    "card_layout": "왼쪽에는 crew의 얼굴 배지 하나, 제목과 한 줄, 필요할 때만 실제 보상을 표시한다. 짝 사건 문구에는 두 선원 이름이 모두 나온다.",
+    "developer_metadata_hidden": "앱에는 card_title·card_line과 앱이 계산한 보상만 짧게 표시한다. 이 파일의 확률·정산·저장 규칙 문단은 개발 설명이며 앱 설명창에 그대로 출력하지 않는다."
+  },
+  "art": {
+    "emotes": {
+      "file": "art/crew_emotes.png",
+      "sheet_size": [
+        512,
+        256
+      ],
+      "grid": [
+        4,
+        2
+      ],
+      "cell_size": [
+        128,
+        128
+      ],
+      "index_by_name": {
+        "heart": 0,
+        "note": 1,
+        "sweat": 2,
+        "star": 3,
+        "zzz": 4,
+        "surprise": 5,
+        "question": 6,
+        "angry": 7
+      },
+      "background_key": "#FF00FF",
+      "index_order": "row_major"
+    },
+    "badges": {
+      "file": "art/crew_event_badge_15.png",
+      "sheet_size": [
+        1024,
+        768
+      ],
+      "grid": [
+        4,
+        3
+      ],
+      "cell_size": [
+        256,
+        256
+      ],
+      "index_by_crew": {
+        "yeoul": 0,
+        "mungi": 1,
+        "sori": 2,
+        "nuri": 3,
+        "bada": 4,
+        "geonu": 5,
+        "dori": 6,
+        "haneul": 7,
+        "bityeo": 8,
+        "deul": 9,
+        "saei": 10,
+        "onyu": 11
+      },
+      "background_key": "#FF00FF",
+      "index_order": "row_major"
+    },
+    "badge_selection": {
+      "minimum_level": 11,
+      "below_minimum_file": "art/crew_event_badge.png",
+      "at_or_above_minimum_file": "art/crew_event_badge_15.png",
+      "rule": "카드 표시 시 crew의 저장된 현재 레벨에 맞는 배지를 고른다. 사건이33 또는35 중 어느 파일에서 왔는지는 배지 선택 조건이 아니다. 그림 교체는 사건 선택·효과·정산을 바꾸지 않는다."
+    }
+  },
+  "integration_notes": {
+    "references": [
+      "20_crew.json",
+      "21_crew_stories.json",
+      "30_crew_levels_2.json",
+      "33_crew_sea_events.json"
+    ],
+    "merge": "33.events 기존36개에 이 파일 events36개를 ID로 합쳐72개로 사용한다. 기존 사건의 조건·문구·효과·출항 스냅샷·정산 장부는 보존한다.",
+    "shape": "단독 사건은33과 같은7개 키이며 짝 사건만 선택적 with 키를 하나 더 쓴다.",
+    "rules_inherited": "33의 단일25% 추첨·65% 감정 연출·귀항1회 정산·일지 미저장·고정 효과·Lv15XP·최대8시간 오프라인 규약을 함께 사용한다. 별도 사건 큐·보상 장부·확률 상한을 만들지 않는다.",
+    "active_voyage_migration": "업데이트 전 선택된33 사건 또는 사건 없음 결과는 그대로 마친다. 신규 후보는 업데이트 뒤 새 출항에서만 사용한다. 진행 중 항해를 다시 뽑지 않는다.",
+    "source_code_changed": false,
+    "existing_balance_changed": false,
+    "actual_build37_tested": false,
+    "scope": "추가 데이터와 적용 규약이다. 앱 소스·18 경제표·소리·영어판·출시 문서는 변경하지 않는다."
+  }
+}

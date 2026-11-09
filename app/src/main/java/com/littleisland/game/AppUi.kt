@@ -186,7 +186,7 @@ class AppUi(val scene: Scene, val host: Host) {
                 }
                 if (Fleet.bosses.isNotEmpty()) {
                     val won = Game.bossWins.size
-                    val list = Fleet.bosses.joinToString("\n") { b -> (if (b.id in Game.bossWins) "● " else "○ ") + b.name + " (배 " + b.minShip + "단계)" }
+                    val list = Fleet.bosses.groupBy { it.minShip }.toSortedMap().entries.joinToString("\n") { (lv, bs) -> "배 " + lv + "단계  " + bs.joinToString(" ") { b -> (if (b.id in Game.bossWins) "●" else "○") + b.name } }
                     val last = Fleet.bosses.lastOrNull { it.id in Game.bossWins }
                     l.add(Tile(last?.let { "boss:" + it.face } ?: "boss:0", "해적 우두머리", "$won/" + Fleet.bosses.size, if (won > 0) St.ON else St.NORMAL,
                         "가끔 해적 대신 센 우두머리가 나와요.\n처음 이기면 장식과 이야기를 받아요.\n\n" + list))

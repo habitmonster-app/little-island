@@ -1,0 +1,727 @@
+{
+  "daily_count": 3,
+  "weekly_goal": 15,
+  "weekly_reward": {
+    "tickets": 10,
+    "gold": 500
+  },
+  "orders": [
+    {
+      "id": "order_voyage_port_greeting",
+      "counter": "voyage_return",
+      "target": 1,
+      "difficulty": "easy",
+      "title": "부두 인사",
+      "short": "항해 뒤 부두로 돌아와요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 2
+    },
+    {
+      "id": "order_voyage_familiar_route",
+      "counter": "voyage_return",
+      "target": 2,
+      "difficulty": "easy",
+      "title": "단골 항로",
+      "short": "선원들과 항해를 마쳐요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 2
+    },
+    {
+      "id": "order_voyage_welcome_home",
+      "counter": "voyage_return",
+      "target": 3,
+      "difficulty": "easy",
+      "title": "귀항 맞이",
+      "short": "배를 몰고 섬에 돌아와요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 2
+    },
+    {
+      "id": "order_voyage_waterway",
+      "counter": "voyage_return",
+      "target": 4,
+      "difficulty": "easy",
+      "title": "오가는 물길",
+      "short": "바닷길을 다녀와 귀항해요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 2
+    },
+    {
+      "id": "order_pirate_waterway_rival",
+      "counter": "pirate_win",
+      "target": 1,
+      "difficulty": "easy",
+      "title": "물길의 맞수",
+      "short": "해적과 겨뤄 승리해요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 3
+    },
+    {
+      "id": "order_part_next_touch",
+      "counter": "part_upgrade",
+      "target": 1,
+      "difficulty": "easy",
+      "title": "다음 손질",
+      "short": "배 부품을 더 튼튼히 해요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 5
+    },
+    {
+      "id": "order_souvenir_port_memory",
+      "counter": "souvenir_get",
+      "target": 1,
+      "difficulty": "easy",
+      "title": "항구 기억",
+      "short": "항구의 새 기념품을 얻어요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 6
+    },
+    {
+      "id": "order_gacha_lucky_hand",
+      "counter": "gacha_draw",
+      "target": 1,
+      "difficulty": "easy",
+      "title": "손안의 행운",
+      "short": "부적 뽑기를 해 봐요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 7
+    },
+    {
+      "id": "order_training_practiced_hand",
+      "counter": "training_clear",
+      "target": 1,
+      "difficulty": "easy",
+      "title": "연습하는 손",
+      "short": "훈련의 짐칸을 맞춰 봐요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 8
+    },
+    {
+      "id": "order_mission_kept_promise",
+      "counter": "mission_clear",
+      "target": 1,
+      "difficulty": "easy",
+      "title": "남겨 둔 약속",
+      "short": "특별 항해의 성공을 챙겨요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 9
+    },
+    {
+      "id": "order_floater_wave_letter",
+      "counter": "floater_pick",
+      "target": 1,
+      "difficulty": "easy",
+      "title": "파도 편지",
+      "short": "떠다니는 병과 상자를 건져요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 10
+    },
+    {
+      "id": "order_floater_drifting_bundle",
+      "counter": "floater_pick",
+      "target": 2,
+      "difficulty": "easy",
+      "title": "떠온 보따리",
+      "short": "물에 뜬 병과 상자를 모아요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 10
+    },
+    {
+      "id": "order_floater_ripple_pickup",
+      "counter": "floater_pick",
+      "target": 3,
+      "difficulty": "easy",
+      "title": "물결 줍기",
+      "short": "흘러온 병과 상자를 챙겨요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 10
+    },
+    {
+      "id": "order_pack_departure_ready",
+      "counter": "cargo_pack",
+      "target": 1,
+      "difficulty": "easy",
+      "title": "출항 채비",
+      "short": "짐 정리 판을 끝까지 풀어요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 11
+    },
+    {
+      "id": "order_pack_neat_loading",
+      "counter": "cargo_pack",
+      "target": 2,
+      "difficulty": "easy",
+      "title": "가지런한 선적",
+      "short": "짐 정리 퍼즐을 완성해요",
+      "reward": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "min_ship_level": 1,
+      "icon_index": 11
+    },
+    {
+      "id": "order_voyage_familiar_return",
+      "counter": "voyage_return",
+      "target": 6,
+      "difficulty": "normal",
+      "title": "익숙한 귀로",
+      "short": "항해를 끝내고 섬에 닿아요",
+      "reward": {
+        "tickets": 2,
+        "gold": 20
+      },
+      "min_ship_level": 1,
+      "icon_index": 2
+    },
+    {
+      "id": "order_voyage_island_link",
+      "counter": "voyage_return",
+      "target": 8,
+      "difficulty": "normal",
+      "title": "섬과 항구 사이",
+      "short": "오가던 바닷길을 마쳐요",
+      "reward": {
+        "tickets": 2,
+        "gold": 20
+      },
+      "min_ship_level": 1,
+      "icon_index": 2
+    },
+    {
+      "id": "order_pirate_friendly_match",
+      "counter": "pirate_win",
+      "target": 2,
+      "difficulty": "normal",
+      "title": "나란한 승부",
+      "short": "해적 승부에서 이겨 봐요",
+      "reward": {
+        "tickets": 2,
+        "gold": 20
+      },
+      "min_ship_level": 1,
+      "icon_index": 3
+    },
+    {
+      "id": "order_part_careful_upgrade",
+      "counter": "part_upgrade",
+      "target": 2,
+      "difficulty": "normal",
+      "title": "손끝의 보강",
+      "short": "부품을 골라 레벨을 올려요",
+      "reward": {
+        "tickets": 2,
+        "gold": 20
+      },
+      "min_ship_level": 1,
+      "icon_index": 5
+    },
+    {
+      "id": "order_souvenir_memory_shelf",
+      "counter": "souvenir_get",
+      "target": 2,
+      "difficulty": "normal",
+      "title": "추억 갈무리",
+      "short": "없던 기념품을 찾아봐요",
+      "reward": {
+        "tickets": 2,
+        "gold": 20
+      },
+      "min_ship_level": 1,
+      "icon_index": 6
+    },
+    {
+      "id": "order_gacha_next_meeting",
+      "counter": "gacha_draw",
+      "target": 2,
+      "difficulty": "normal",
+      "title": "기대하는 마음",
+      "short": "부적 뽑기를 이어 가요",
+      "reward": {
+        "tickets": 2,
+        "gold": 20
+      },
+      "min_ship_level": 1,
+      "icon_index": 7
+    },
+    {
+      "id": "order_training_calm_practice",
+      "counter": "training_clear",
+      "target": 2,
+      "difficulty": "normal",
+      "title": "차분한 연습",
+      "short": "선원 훈련의 정답을 맞춰요",
+      "reward": {
+        "tickets": 2,
+        "gold": 20
+      },
+      "min_ship_level": 1,
+      "icon_index": 8
+    },
+    {
+      "id": "order_mission_promised_route",
+      "counter": "mission_clear",
+      "target": 2,
+      "difficulty": "normal",
+      "title": "약속한 물길",
+      "short": "특별 항해를 성공으로 마쳐요",
+      "reward": {
+        "tickets": 2,
+        "gold": 20
+      },
+      "min_ship_level": 1,
+      "icon_index": 9
+    },
+    {
+      "id": "order_floater_sea_delivery",
+      "counter": "floater_pick",
+      "target": 4,
+      "difficulty": "normal",
+      "title": "바다가 보낸 짐",
+      "short": "떠오는 병과 상자를 주워요",
+      "reward": {
+        "tickets": 2,
+        "gold": 20
+      },
+      "min_ship_level": 1,
+      "icon_index": 10
+    },
+    {
+      "id": "order_pack_finishing_touch",
+      "counter": "cargo_pack",
+      "target": 3,
+      "difficulty": "normal",
+      "title": "마무리 손길",
+      "short": "짐 정리 문제를 풀어 봐요",
+      "reward": {
+        "tickets": 2,
+        "gold": 20
+      },
+      "min_ship_level": 1,
+      "icon_index": 11
+    },
+    {
+      "id": "order_voyage_travel_marks",
+      "counter": "voyage_return",
+      "target": 12,
+      "difficulty": "hard",
+      "title": "늘어난 발자취",
+      "short": "바다를 다녀와 귀항을 쌓아요",
+      "reward": {
+        "tickets": 3,
+        "gold": 40
+      },
+      "min_ship_level": 1,
+      "icon_index": 2
+    },
+    {
+      "id": "order_pirate_reliable_escort",
+      "counter": "pirate_win",
+      "target": 3,
+      "difficulty": "hard",
+      "title": "든든한 귀항",
+      "short": "해적과의 대결을 이겨요",
+      "reward": {
+        "tickets": 3,
+        "gold": 40
+      },
+      "min_ship_level": 1,
+      "icon_index": 3
+    },
+    {
+      "id": "order_boss_grand_sail_rival",
+      "counter": "boss_win",
+      "target": 1,
+      "difficulty": "hard",
+      "title": "큰 돛의 맞수",
+      "short": "우두머리와 겨뤄 이겨요",
+      "reward": {
+        "tickets": 3,
+        "gold": 40
+      },
+      "min_ship_level": 2,
+      "icon_index": 4
+    },
+    {
+      "id": "order_floater_ripple_bundle",
+      "counter": "floater_pick",
+      "target": 6,
+      "difficulty": "hard",
+      "title": "물결 속 보따리",
+      "short": "병과 상자를 건져 모아요",
+      "reward": {
+        "tickets": 3,
+        "gold": 40
+      },
+      "min_ship_level": 1,
+      "icon_index": 10
+    },
+    {
+      "id": "order_pack_familiar_stowage",
+      "counter": "cargo_pack",
+      "target": 5,
+      "difficulty": "hard",
+      "title": "익숙한 짐 정리",
+      "short": "짐 정리를 끝까지 맞춰요",
+      "reward": {
+        "tickets": 3,
+        "gold": 40
+      },
+      "min_ship_level": 1,
+      "icon_index": 11
+    }
+  ],
+  "schema_version": 1,
+  "design_status": "order11_additional_daily_orders_v1",
+  "selection_rules": {
+    "feature_unlock": "첫 정상 귀항 정산을 마친 뒤 오늘의 주문을 연다. 새로운 구매 비용이나 이야기 읽기는 없다.",
+    "issue_at": "고정 시간대의 새 날짜에 앱을 처음 확인할 때, 기존 오프라인 정산을 끝낸 뒤 발급",
+    "slot_difficulties": [
+      "easy",
+      "normal",
+      "hard"
+    ],
+    "slot_ticket_caps": [
+      1,
+      2,
+      3
+    ],
+    "difficulty_rewards": {
+      "easy": {
+        "tickets": 1,
+        "gold": 0
+      },
+      "normal": {
+        "tickets": 2,
+        "gold": 20
+      },
+      "hard": {
+        "tickets": 3,
+        "gold": 40
+      }
+    },
+    "candidate_filter": "min_ship_level 충족 + 아래 counter_availability 충족 + 오늘 선택 이력에 없는 order.id",
+    "fallback_priority": {
+      "easy": [
+        "easy"
+      ],
+      "normal": [
+        "normal",
+        "easy"
+      ],
+      "hard": [
+        "hard",
+        "normal",
+        "easy"
+      ]
+    },
+    "selection_order": "슬롯 0,1,2 순서. 우선순위상 처음으로 후보가 있는 난이도에서 뽑는다.",
+    "counter_variety": "이미 뽑은 counter와 다른 후보가 그 난이도에 있으면 그 후보들만 사용. 없으면 같은 counter 허용.",
+    "within_candidate_pool": "eligible order.id를 정렬한 뒤 저장된 날짜 시드로 균등하게 하나 선택",
+    "rng": "save_id + board_day + order9_daily_v1에서 생성한 시드를 저장. 선택된 3개 ID·슬롯·보상·발급 시각·각 진행 기준점을 같은 트랜잭션에 기록한다. 이미 발급한 날짜는 시드와 선택 결과를 유지한다. 아직 발급하지 않은 새 날짜에만 병합된 60개 후보를 사용한다.",
+    "no_duplicate_ids": true,
+    "manual_reroll": false,
+    "reroll_on_restart_or_open": false,
+    "no_higher_difficulty_fallback": true,
+    "safe_easy_ids": [
+      "order_voyage_1",
+      "order_voyage_2",
+      "order_voyage_3",
+      "order_voyage_4",
+      "order_voyage_port_greeting",
+      "order_voyage_familiar_route",
+      "order_voyage_welcome_home",
+      "order_voyage_waterway"
+    ],
+    "same_counter_progress": "같은 counter 주문이 여러 슬롯에 있으면 하나의 유효 이벤트가 각 미완료 슬롯을 한 번씩 진행시킨다. 별도의 항해 횟수를 합산해 요구하지 않는다.",
+    "boss_order_max_appearances_per_week": 1,
+    "boss_appearance_consumed_at": "31·36를 합친 주문에서 counter=boss_win인 어떤 ID를 발급하든 기존 daily_order_boss_shown_weeks에 해당 주간 묶음을 한 번 기록한다. 미완료여도 같은 주에는 다른 boss_win ID를 발급하지 않는다.",
+    "daily_selection_not_tied_to_route": "출항 목적지는 강제로 바꾸지 않는다. 선택 가능한 항구와 선원 편성으로 가능한 주문만 고른다.",
+    "late_login": "자정까지 남은 시간이 짧으면 완료를 보장하지 않는다. 날짜와 남은 시간을 표시하고 다음 날로 주문을 넘기지 않는다.",
+    "merged_order_sources": [
+      "31_daily_orders.json",
+      "36_daily_orders_2.json"
+    ],
+    "merged_bank_size": 60,
+    "boss_order_quota_scope": "all boss_win orders in the merged bank; shared one appearance per weekly block"
+  },
+  "counter_availability": {
+    "semantics": "새로운 게임 플래그가 아니라 발급 시 기존 저장과 실제 기능 상태로 계산하는 어댑터 조건이다.",
+    "voyage_return": "정상 항해가 이미 해금되어 진행 중이거나 유효한 항구로 출항할 수 있음. 자원 대기는 기존 자동 보급을 유지.",
+    "pirate_win": "해금 항구 중 한 곳에서 현재 조건의 보통 해적 또는 우두머리 일반 전투가 발생할 수 있음. story_fixed만 남은 항로는 제외.",
+    "boss_win": "배 단계가 2 이상이고 해금 항구 중 25·39의 실제 배 단계·해금·항구 조건을 충족한 우두머리가 존재함. 이번 7일 묶음에 31·36 어느 boss_win 주문도 발급한 적 없음.",
+    "part_upgrade": "현재 배 단계의 19·24 부품 상한 안에서 구매 가능한 강화 단계를 target만큼 실제로 이어 올릴 수 있음. 현재 재화로 순차 비용을 감당할 수 있는 경우만 발급. 모든 부품이 현재 상한이면 제외.",
+    "souvenir_get": "접근 가능한 해금 항구들의 미소장 26 기념품 수 합계가 target 이상. 전부 소장했으면 제외. 확률 획득이므로 당일 성공 보장은 없음.",
+    "gacha_draw": "28 규칙으로 28·37 부적을 합친 뽑기가 열려 있고 승진 선원이 있음. floor(보유쪽지/10)+floor(보유금화/500) >= target. 예상 중복 환급이나 앞으로 벌 재화는 계산하지 않음. 각 뽑기 통화는 사용자가 선택.",
+    "training_clear": "28·34의 같은 훈련 기능이 열려 있고 승진 선원이 있음. 실제 남은 오늘 도전 횟수와 아직 끝나지 않은 유효한 진행 도전 수의 합계가 target 이상. 완료·실패 도전은 제외.",
+    "mission_clear": "23·32를 병합한 미완료 임무 중 지금 시작 조건을 충족하거나 유효하게 진행 중인 임무 수가 target 이상. 가능한 승선 편성·레벨·배·항구·선행 임무를 모두 검사. 완료 임무 재실행을 후보로 세지 않음.",
+    "floater_pick": "기존 바다 병·상자 줍기 기능이 열려 있고 정상적으로 새 오브젝트가 나타날 수 있음. 기존 당일/재생성 제한이 있으면 남은 가능 수가 target 이상.",
+    "cargo_pack": "기존 짐 정리 퍼즐이 열려 있고 새 도전을 시작할 수 있음. 기존 당일 제한이 있으면 남은 가능 수가 target 이상. 28 선원 훈련과 별개의 퍼즐."
+  },
+  "progress_rules": {
+    "source": "새로 확정된 원본 기능 성공 이벤트만 사용. 화면 열기·연출 완료·과거 누적 통계 비교로 증가시키지 않음.",
+    "eligible_time": "slot.assigned_at 이후부터 board_day의 다음 자정 직전까지 발생한 이벤트. 발급/교체 이전 이벤트를 소급하지 않음.",
+    "event_order": [
+      "원본 정산과 고유 이벤트를 확정",
+      "기존 미완료 슬롯의 진행을 먼저 반영",
+      "목표에 닿은 슬롯의 보상과 주간 완료를 확정",
+      "남아 있는 미완료 슬롯의 영구적 달성 불가 여부를 재검사"
+    ],
+    "value": "진행 = min(target, 진행 + event.delta). 아래 규약 외 임의의 배수를 사용하지 않음.",
+    "counter_events": {
+      "voyage_return": {
+        "event": "정상 귀항 정산 확정",
+        "delta": 1,
+        "key": "voyage_sequence + return",
+        "note": "일반·특별 항해·우두머리 항해 모두 해당. 부분 항해와 단순 항구 도착은 제외."
+      },
+      "pirate_win": {
+        "event": "귀항 정산에서 확정한 일반 전투 승리",
+        "delta": 1,
+        "key": "voyage_sequence + combat_slot + pirate_win",
+        "note": "25·39 우두머리 승리도 포함. 한 항해 한 전투. story_fixed 구록 체포 등 고정 서사 승리는 제외."
+      },
+      "boss_win": {
+        "event": "귀항 정산에서 확정한 25·39 우두머리 승리",
+        "delta": 1,
+        "key": "voyage_sequence + combat_slot + boss_win",
+        "note": "첫 승리와 재승리 모두 포함. 같은 승리는 pirate_win에도 한 번 반영하되 한 counter 안에서 중복 계산하지 않음."
+      },
+      "part_upgrade": {
+        "event": "비용 차감과 새 부품 레벨 저장 확정",
+        "delta": "new_level - old_level",
+        "key": "part_upgrade_action_id",
+        "note": "실제 구매로 오른 단계만. 일괄 구매는 오른 단계 수, 배 승급·자료 이전·장식 교체는 제외."
+      },
+      "souvenir_get": {
+        "event": "목적지 도착 장부에 새 기념품 ID 소장 확정",
+        "delta": 1,
+        "key": "voyage_sequence + port_arrival + souvenir_id",
+        "note": "26 미소장 획득만. 도감 화면·이정표·중복 아이템은 제외. 귀항에 다시 세지 않음."
+      },
+      "gacha_draw": {
+        "event": "28의 같은 비용·정산 규칙으로 28·37 중 선택한 부적 결과 저장 확정",
+        "delta": 1,
+        "key": "gacha_draw_sequence",
+        "note": "새 획득·중복 성장·Lv5 쪽지 환급을 모두 뽑기 한 번으로 셈. 환급 자체·연출 재생·주간 상자는 뽑기가 아님."
+      },
+      "training_clear": {
+        "event": "28·34가 공유하는 유효한 훈련 attempt의 성공 결과 확정",
+        "delta": 1,
+        "key": "training_attempt_id + success",
+        "note": "훈련 보상 수량과 무관하게 성공 한 번. 실패·포기·결과 재열기는 제외."
+      },
+      "mission_clear": {
+        "event": "23 또는32 임무의 첫 성공 귀항 정산 확정",
+        "delta": 1,
+        "key": "mission_id + first_success",
+        "note": "기존 성공 조건을 충족한 미완료 임무만. 실패·이야기 읽기·보상 잔량 수령은 제외."
+      },
+      "floater_pick": {
+        "event": "실제 바다 병 또는 상자 오브젝트 회수 정산 확정",
+        "delta": 1,
+        "key": "floater_spawn_id + pickup",
+        "note": "유효한 새 오브젝트 하나당 한 번. 같은 병/상자를 다시 누르거나 화면 복원해도 추가하지 않음."
+      },
+      "cargo_pack": {
+        "event": "기존 짐 정리 퍼즐의 새 유효 attempt 성공 확정",
+        "delta": 1,
+        "key": "cargo_pack_attempt_id + success",
+        "note": "상자 개수와 무관하게 완성 한 번. 실패·같은 완성 화면 재열기·28 훈련 성공은 제외."
+      }
+    },
+    "same_voyage_example": "우두머리를 이긴 특별 항해의 귀항은 voyage_return +1, pirate_win +1, boss_win +1, 첫 임무 성공이면 mission_clear +1. 각 counter의 선택된 주문에만 반영.",
+    "completion_key": "save_id + board_day + slot_index + completed",
+    "progress_event_key": "save_id + board_day + slot_index + assignment_revision + counter + source_event_key",
+    "once_per_slot": true,
+    "replayed_event": "이미 기록된 progress_event_key면 진행·보상·주간 완료 모두 유지",
+    "no_progress_from_daily_rewards": true
+  },
+  "unreachable_order_rules": {
+    "when": "원본 이벤트와 기존 주문 완료 판정을 먼저 반영한 뒤, 미완료 슬롯만 검사",
+    "finite_capacity": "실제로 남은 훈련 도전/미완료 임무/미소장 기념품/현재 상한 내 강화 단계/기존 퍼즐·줍기 일일 한도가 남은 목표보다 적으면 달성 불가",
+    "not_unreachable": [
+      "잠시 금화·쪽지가 부족함",
+      "선원을 잠시 내렸음",
+      "다른 항로를 선택함",
+      "해적·보스·기념품이 아직 안 나옴",
+      "자정까지 시간이 짧음"
+    ],
+    "replacement": "달성 불가 미완료 슬롯만 오늘 선택 이력에 없는 safe_easy_ids 중 하나로 자동 교체. 현재 주문의 성공·보상·주간 완료를 만들지 않음.",
+    "selection": "safe_easy_ids 중 ID 오름차순 후보를 교체용 저장 시드로 균등 선택하고 영구 저장",
+    "new_baseline": "교체를 일으킨 원본 이벤트를 모두 처리한 직후 assigned_at과 원본 이벤트 경계를 새로 저장. 새 진행은 0이며 해당 이벤트를 재사용하지 않음.",
+    "reward": "대체 주문 자체의 보상인 쪽지1장·금화0만. 이전 보상과 합산하지 않음.",
+    "keep_slot_identity": true,
+    "completed_slot_replacement": false,
+    "manual_replace": false,
+    "ui": "할 수 있는 주문으로 바꿨어요",
+    "no_extra_daily_slots": true
+  },
+  "calendar_rules": {
+    "timezone": "최초 발급 때 기존 training_timezone이 있으면 재사용하고, 없으면 기기의 IANA 시간대를 저장. 이후 기기 시간대 변경으로 갱신하지 않음.",
+    "day_key": "저장된 시간대의 LocalDate(YYYY-MM-DD)",
+    "day_boundary": "해당 날짜 자정 이상, 다음 날짜 자정 미만",
+    "max_seen_day": "새 날짜가 저장된 최대 관측 날짜보다 클 때만 새 게시판 발급. 과거 날짜로 돌아가도 횟수·게시판을 복원하지 않음.",
+    "before_new_board": "먼저 last_simulated_at 직후부터 min(max(경과 시간,0),28800초)의 기존 인정 구간을 시간순으로 정산하고 이미 발급된 게시판에 이벤트를 연결. 재접속 직전 8시간으로 구간을 옮기지 않는다. 그 뒤 현재 날짜로 이동하여 오늘 게시판 발급.",
+    "offline_max_credited_seconds": 28800,
+    "offline_source_time": "오프라인 이벤트의 실제 인정 시뮬레이션 시각으로 날짜를 정함. 앱을 다시 연 시각으로 모든 이벤트를 몰아넣지 않음.",
+    "unissued_days": "앱을 열지 않아 게시판이 발급되지 않은 날짜의 주문·보상은 만들지 않음. 발급 전 발생한 오늘 이벤트도 새 주문에 소급하지 않음.",
+    "at_midnight": "이전 게시판 미완료 주문은 종료. 그 전의 유효 이벤트로 이미 끝낸 주문은 저장된 보상을 유지. 진행 중 항해는 귀항 시각의 발급된 게시판에만 해당.",
+    "late_old_settlement": "예전 발급일 안에서 발생한 미정산 이벤트는 그 날짜의 저장된 게시판과 주간 묶음에만 적용. 이미 확정한 이벤트는 다시 주지 않음.",
+    "clock_limit": "로컬 저장 규칙이다. 서버 검증 없이 임의의 미래 시각 변경을 완전히 막는다고 보장하지 않음."
+  },
+  "weekly_rules": {
+    "period_days": 7,
+    "anchor": "첫 게시판 발급 LocalDate를 저장",
+    "week_index": "floor(calendar_days_between(anchor_day, board_day) / 7)",
+    "day_index": "calendar_days_between(anchor_day, board_day) % 7",
+    "calendar_days_not_elapsed_seconds": true,
+    "progress": "각 주간 묶음에 속한 완료 슬롯 키의 고유 개수. 최대7일 × 3개 = 21개.",
+    "goal": 15,
+    "reward_on": "고유 완료 슬롯 수가 처음 15 이상이 되는 트랜잭션",
+    "reward_once_key": "save_id + weekly_block_index + weekly_chest",
+    "reward_fixed": true,
+    "reward_not_gacha": true,
+    "overflow": "목표를 넘겨도 두 번째 상자를 주거나 다음 주로 완료 수를 넘기지 않음.",
+    "reset": "새 주간 묶음은 완료0부터. 이전 묶음의 보상 장부를 지우지 않음.",
+    "late_credit": "늦게 처리된 이전 발급일 이벤트는 이전 묶음의 진행·상자에만 연결. 새 주간에 더하지 않음.",
+    "display": "진행은 min(고유 완료 수,15)/15, 상자를 받았으면 받은 상태로 표시",
+    "streak_required": false
+  },
+  "reward_rules": {
+    "claim_mode": "완료 즉시 자동 지급. 결과 카드와 상자 열기 연출은 저장된 결과 표시만 담당.",
+    "tickets_resource_id": "voyage_note",
+    "gold_unit": "정수 금화. wallet cents에서는 gold × 100",
+    "daily_order_max_tickets": 6,
+    "daily_order_max_gold": 60,
+    "all_three_extra_reward": null,
+    "weekly_reward_is_separate": "주간 상자 쪽지10장·금화500은 하루 주문 보상6장 상한과 별개. 같은 날 합계가16장이 될 수 있음.",
+    "maximum_per_week_from_this_system": {
+      "daily_tickets": 42,
+      "weekly_tickets": 10,
+      "total_tickets": 52,
+      "daily_gold": 420,
+      "weekly_gold": 500,
+      "total_gold": 920
+    },
+    "other_rewards_unchanged": "원래 항해·훈련·뽑기 환급·임무 보상은 기존대로 별도 정산. 주문 보상은 판매·선원·부적 배율을 곱하지 않음.",
+    "atomic_fields": [
+      "원본 이벤트 처리 장부",
+      "슬롯 진행·완료",
+      "쪽지·금화",
+      "완료 슬롯의 주간 묶음",
+      "주간 상자 지급 여부"
+    ],
+    "on_crash": "확정 전 중단은 같은 저장 이벤트로 트랜잭션 재개. 확정 뒤 중단은 결과만 복원.",
+    "reopen_or_animation_reward": 0
+  },
+  "display_rules": {
+    "title": "오늘의 항구 주문",
+    "weekly_title": "주간 상자",
+    "title_max_characters": 10,
+    "short_max_characters": 16,
+    "counter_text": "앱이 별도로 progress/target을 표시. title·short에 수치를 붙여 저장하지 않음.",
+    "home_layout": "주문 세 줄과 주간 진행 한 줄. 세부 화면은 title·short·진행·보상만 짧게 표시.",
+    "developer_contract_hidden": "이 파일의 selection/progress/calendar 규칙 문단을 앱 설명창에 그대로 출력하지 않음."
+  },
+  "art": {
+    "file": "art/daily_icons.png",
+    "sheet_size": [
+      1024,
+      768
+    ],
+    "grid": [
+      4,
+      3
+    ],
+    "cell_size": [
+      256,
+      256
+    ],
+    "board_icon_index": 0,
+    "weekly_chest_icon_index": 1,
+    "counter_icon_indices": {
+      "voyage_return": 2,
+      "pirate_win": 3,
+      "boss_win": 4,
+      "part_upgrade": 5,
+      "souvenir_get": 6,
+      "gacha_draw": 7,
+      "training_clear": 8,
+      "mission_clear": 9,
+      "floater_pick": 10,
+      "cargo_pack": 11
+    },
+    "background_key": "#FF00FF"
+  },
+  "integration_notes": {
+    "original_code_changed": false,
+    "new_source_events": "기존31 이벤트 어댑터와 장부 키를 그대로 사용한다. 신규 주문마다 별도 성공 이벤트나 정산기를 만들지 않는다.",
+    "migration": "31.orders의 기존30개와36.orders의 신규30개를 ID로 합쳐 총60개로 사용한다. 이미 발급한 오늘의 주문·진행·완료·대체 이력·보상·주간 시작일·주간 진행·보스 발급 이력·시간대·최대 관측일은 그대로 보존한다. 새 주문은 아직 발급하지 않은 날짜부터 선택하며, 같은 날짜를 다시 발급하거나 완료 이력을 소급하지 않는다.",
+    "new_save_fields": [],
+    "balance_scope": "주문 후보만 늘린다. 일일 슬롯3개·보상 최대6쪽지/60금화·주간15개 목표와 상자10쪽지/500금화·기존 비용·18 경제표를 바꾸지 않는다.",
+    "pacing": "항해 목표는 대략10분 왕복 기준 최대12회(약2시간). 승리·획득·주간 완료는 확정 플레이 시간으로 보장하지 않음.",
+    "actual_build37_tested": false,
+    "boss_quota_migration": "기존31에서 이번 주 order_boss_1을 이미 발급했다면 새 boss_win 주문도 이번 주에는 후보에서 제외한다. 기존 주간 보스 표식을 초기화하거나 ID별로 나누지 않는다.",
+    "one_board_only": "31과36마다 별도3개를 뽑지 않는다. 병합된 하나의 게시판·주간 상자·보상 장부만 사용한다.",
+    "ui_copy_scope": "신규 title·short는 동일한 기존 counter를 다른 말로 안내한다. 제목의 상황 표현은 시간대·특정 항로·선원·항구 같은 추가 성공 조건을 만들지 않는다.",
+    "shared_rules": "31의 선택·실행 가능성·달성 불가 대체·날짜·오프라인·중복 지급 규약을 유지한다. 이 파일의 공통 규칙은 새 게시판이 아니라 병합된 같은 게시판의 설명이다.",
+    "old_assets_reused": "31의 art/daily_icons.png를 그대로 참조한다. 이 주문 확장에 새 아이콘 시트나 새 counter는 없다."
+  }
+}

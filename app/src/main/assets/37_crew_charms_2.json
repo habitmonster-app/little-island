@@ -1,0 +1,520 @@
+{
+  "schema_version": 1,
+  "design_status": "order11_additional_charms_v1",
+  "app_name": "리틀 아일랜드",
+  "charms": [
+    {
+      "id": "charm_grain_ledger",
+      "name": "결무늬장부",
+      "rarity": "common",
+      "effect": "wood_price_bonus",
+      "value_by_level": [
+        0.003,
+        0.0045,
+        0.006,
+        0.0075,
+        0.009
+      ],
+      "value_ppm_by_level": [
+        3000,
+        4500,
+        6000,
+        7500,
+        9000
+      ],
+      "best_for_role": "교역사",
+      "best_for_worker_ids": [
+        "saei"
+      ],
+      "icon_index": 0,
+      "desc": "나무 판매 수입이 늘어요"
+    },
+    {
+      "id": "charm_current_bottle",
+      "name": "물살유리병",
+      "rarity": "common",
+      "effect": "treasure_find_bonus",
+      "value_by_level": [
+        0.002,
+        0.003,
+        0.004,
+        0.005,
+        0.006
+      ],
+      "value_ppm_by_level": [
+        2000,
+        3000,
+        4000,
+        5000,
+        6000
+      ],
+      "best_for_role": "조타수",
+      "best_for_worker_ids": [
+        "dori"
+      ],
+      "icon_index": 1,
+      "desc": "보물 주머니를 더 잘 찾아요"
+    },
+    {
+      "id": "charm_warm_teacup",
+      "name": "온기찻잔",
+      "rarity": "common",
+      "effect": "event_good_bonus",
+      "value_by_level": [
+        0.002,
+        0.003,
+        0.004,
+        0.005,
+        0.006
+      ],
+      "value_ppm_by_level": [
+        2000,
+        3000,
+        4000,
+        5000,
+        6000
+      ],
+      "best_for_role": "갑판 요리사",
+      "best_for_worker_ids": [
+        "deul"
+      ],
+      "icon_index": 2,
+      "desc": "좋은 사건을 더 자주 만나요"
+    },
+    {
+      "id": "charm_quilted_cushion",
+      "name": "폭신방석",
+      "rarity": "common",
+      "effect": "repair_after_loss",
+      "value_by_level": [
+        0.006,
+        0.009,
+        0.012,
+        0.015,
+        0.018
+      ],
+      "value_ppm_by_level": [
+        6000,
+        9000,
+        12000,
+        15000,
+        18000
+      ],
+      "best_for_role": "화물 관리인",
+      "best_for_worker_ids": [
+        "nuri"
+      ],
+      "icon_index": 3,
+      "desc": "패배 때 짐을 덜 잃어요"
+    },
+    {
+      "id": "charm_timber_bundle",
+      "name": "판재묶음",
+      "rarity": "rare",
+      "effect": "wood_price_bonus",
+      "value_by_level": [
+        0.006,
+        0.009,
+        0.012,
+        0.015,
+        0.018
+      ],
+      "value_ppm_by_level": [
+        6000,
+        9000,
+        12000,
+        15000,
+        18000
+      ],
+      "best_for_role": "갑판장",
+      "best_for_worker_ids": [
+        "yeoul"
+      ],
+      "icon_index": 4,
+      "desc": "나무 판매 수입이 늘어요"
+    },
+    {
+      "id": "charm_star_envelope",
+      "name": "별봉투",
+      "rarity": "rare",
+      "effect": "treasure_find_bonus",
+      "value_by_level": [
+        0.004,
+        0.006,
+        0.008,
+        0.01,
+        0.012
+      ],
+      "value_ppm_by_level": [
+        4000,
+        6000,
+        8000,
+        10000,
+        12000
+      ],
+      "best_for_role": "항해 통신원",
+      "best_for_worker_ids": [
+        "haneul"
+      ],
+      "icon_index": 5,
+      "desc": "보물 주머니를 더 잘 찾아요"
+    },
+    {
+      "id": "charm_return_lighthouse",
+      "name": "귀항등대",
+      "rarity": "rare",
+      "effect": "event_good_bonus",
+      "value_by_level": [
+        0.004,
+        0.006,
+        0.008,
+        0.01,
+        0.012
+      ],
+      "value_ppm_by_level": [
+        4000,
+        6000,
+        8000,
+        10000,
+        12000
+      ],
+      "best_for_role": "안전 관리인",
+      "best_for_worker_ids": [
+        "onyu"
+      ],
+      "icon_index": 6,
+      "desc": "좋은 사건을 더 자주 만나요"
+    },
+    {
+      "id": "charm_sail_thread",
+      "name": "돛실타래",
+      "rarity": "rare",
+      "effect": "repair_after_loss",
+      "value_by_level": [
+        0.012,
+        0.018,
+        0.024,
+        0.03,
+        0.036
+      ],
+      "value_ppm_by_level": [
+        12000,
+        18000,
+        24000,
+        30000,
+        36000
+      ],
+      "best_for_role": "돛지기",
+      "best_for_worker_ids": [
+        "bada"
+      ],
+      "icon_index": 7,
+      "desc": "패배 때 짐을 덜 잃어요"
+    },
+    {
+      "id": "charm_joiners_square",
+      "name": "결맞춤각자",
+      "rarity": "epic",
+      "effect": "wood_price_bonus",
+      "value_by_level": [
+        0.009,
+        0.012,
+        0.015,
+        0.018,
+        0.021
+      ],
+      "value_ppm_by_level": [
+        9000,
+        12000,
+        15000,
+        18000,
+        21000
+      ],
+      "best_for_role": "선박 목수",
+      "best_for_worker_ids": [
+        "geonu"
+      ],
+      "icon_index": 8,
+      "desc": "나무 판매 수입이 늘어요"
+    },
+    {
+      "id": "charm_light_lens",
+      "name": "빛모음렌즈",
+      "rarity": "epic",
+      "effect": "treasure_find_bonus",
+      "value_by_level": [
+        0.006,
+        0.008,
+        0.01,
+        0.012,
+        0.014
+      ],
+      "value_ppm_by_level": [
+        6000,
+        8000,
+        10000,
+        12000,
+        14000
+      ],
+      "best_for_role": "망루지기",
+      "best_for_worker_ids": [
+        "bityeo"
+      ],
+      "icon_index": 9,
+      "desc": "보물 주머니를 더 잘 찾아요"
+    },
+    {
+      "id": "charm_spare_canteen",
+      "name": "여분물통",
+      "rarity": "epic",
+      "effect": "event_good_bonus",
+      "value_by_level": [
+        0.006,
+        0.008,
+        0.01,
+        0.012,
+        0.014
+      ],
+      "value_ppm_by_level": [
+        6000,
+        8000,
+        10000,
+        12000,
+        14000
+      ],
+      "best_for_role": "보급 담당",
+      "best_for_worker_ids": [
+        "sori"
+      ],
+      "icon_index": 10,
+      "desc": "좋은 사건을 더 자주 만나요"
+    },
+    {
+      "id": "charm_bracing_wedges",
+      "name": "받침쐐기",
+      "rarity": "epic",
+      "effect": "repair_after_loss",
+      "value_by_level": [
+        0.018,
+        0.024,
+        0.03,
+        0.036,
+        0.042
+      ],
+      "value_ppm_by_level": [
+        18000,
+        24000,
+        30000,
+        36000,
+        42000
+      ],
+      "best_for_role": "포술장",
+      "best_for_worker_ids": [
+        "mungi"
+      ],
+      "icon_index": 11,
+      "desc": "패배 때 짐을 덜 잃어요"
+    }
+  ],
+  "art": {
+    "file": "art/charm_icons_2.png",
+    "sheet_size": [
+      1024,
+      768
+    ],
+    "grid": [
+      4,
+      3
+    ],
+    "cell_size": [
+      256,
+      256
+    ],
+    "index_order": "row_major",
+    "background_key": "#FF00FF",
+    "rarity_by_row": [
+      "common",
+      "rare",
+      "epic"
+    ],
+    "frame_by_row": [
+      "wood",
+      "teal",
+      "gold"
+    ]
+  },
+  "integration_notes": {
+    "merge_target": "28_crew_charms.json.charms",
+    "merge": "기존 24개에 신규 12개를 id로 추가해 총 36개로 사용한다. 이전 부적의 수치·소장·레벨·착용 기록을 바꾸지 않는다.",
+    "merged_counts_by_rarity": {
+      "common": 16,
+      "rare": 12,
+      "epic": 8
+    },
+    "existing_policy_source": "확률·천장·중복 처리는28의 기존 규칙을 그대로 사용한다. 이 파일에는 대체 규칙을 두지 않는다.",
+    "pool_integration": "28의 부적 목록을 참조하는 추첨 후보에 병합된 36개를 사용한다. 별도의 신규 전용 뽑기나 보상 저장소는 만들지 않는다.",
+    "effect_policy_source": "장착·역할 일치·효과 합산·공통 상한·효과 적용 범위는28의 기존 규칙을 그대로 사용한다.",
+    "new_sea_events": "event_good_bonus와 treasure_find_bonus가 33·35의 선원 일상 사건 확률을 올리도록 연결하지 않는다. 기존 28의 효과 적용 범위를 유지한다.",
+    "icon_mapping": "이 파일의 신규 id는 charm_icons_2.png의 로컬 icon_index를 사용한다. 기존 28의 id는 기존 charm_icons.png와 원래 index를 유지한다. 합쳐진 목록의 순번으로 아이콘을 고르지 않는다.",
+    "migration": "기존 소장 부적과 장착 상태를 보존한다. 신규 부적은 실제 획득할 때만 소장 목록에 추가하고 무료 일괄 지급하지 않는다.",
+    "source_code_changed": false,
+    "actual_build37_tested": false,
+    "developer_metadata_hidden": "앱의 설명에는 name·desc와 앱이 계산한 효과 수치만 표시한다. 이 파일의 병합·검증 설명은 화면에 출력하지 않는다."
+  },
+  "validation_reference": {
+    "source_file": "28_crew_charms.json",
+    "existing_source_sha256": "e7d95fe93ebfa7f8c11b3d8dfe05991f34e47a70305d02b91865922dbd987fdb",
+    "level_values_are_total_not_cumulative": true,
+    "calibration": [
+      {
+        "id": "charm_grain_ledger",
+        "kind": "copied_existing_same_rarity_effect",
+        "source_id": "charm_wood_plane",
+        "values": [
+          0.003,
+          0.0045,
+          0.006,
+          0.0075,
+          0.009
+        ]
+      },
+      {
+        "id": "charm_current_bottle",
+        "kind": "copied_existing_same_rarity_effect",
+        "source_id": "charm_spyglass",
+        "values": [
+          0.002,
+          0.003,
+          0.004,
+          0.005,
+          0.006
+        ]
+      },
+      {
+        "id": "charm_warm_teacup",
+        "kind": "copied_existing_same_rarity_effect",
+        "source_id": "charm_paper_bird",
+        "values": [
+          0.002,
+          0.003,
+          0.004,
+          0.005,
+          0.006
+        ]
+      },
+      {
+        "id": "charm_quilted_cushion",
+        "kind": "copied_existing_same_rarity_effect",
+        "source_id": "charm_anchor_pin",
+        "values": [
+          0.006,
+          0.009,
+          0.012,
+          0.015,
+          0.018
+        ]
+      },
+      {
+        "id": "charm_timber_bundle",
+        "kind": "copied_existing_same_rarity_effect",
+        "source_id": "charm_cedar_badge",
+        "values": [
+          0.006,
+          0.009,
+          0.012,
+          0.015,
+          0.018
+        ]
+      },
+      {
+        "id": "charm_star_envelope",
+        "kind": "copied_existing_same_rarity_effect",
+        "source_id": "charm_lucky_fish",
+        "values": [
+          0.004,
+          0.006,
+          0.008,
+          0.01,
+          0.012
+        ]
+      },
+      {
+        "id": "charm_return_lighthouse",
+        "kind": "copied_existing_same_rarity_effect",
+        "source_id": "charm_signal_bell",
+        "values": [
+          0.004,
+          0.006,
+          0.008,
+          0.01,
+          0.012
+        ]
+      },
+      {
+        "id": "charm_sail_thread",
+        "kind": "copied_existing_same_rarity_effect",
+        "source_id": "charm_rescue_whistle",
+        "values": [
+          0.012,
+          0.018,
+          0.024,
+          0.03,
+          0.036
+        ]
+      },
+      {
+        "id": "charm_joiners_square",
+        "kind": "conservative_new_proposal",
+        "same_effect_epic_exists_in_28": false,
+        "values": [
+          0.009,
+          0.012,
+          0.015,
+          0.018,
+          0.021
+        ],
+        "basis": "28의 동일 효과 희귀 배열과 기존 영웅의 효과별 범위를 참고한 신규 제안. 기존 영웅 동일 효과 배열을 복사한 값이 아님."
+      },
+      {
+        "id": "charm_light_lens",
+        "kind": "copied_existing_same_rarity_probability_family",
+        "source_id": "charm_harbor_lantern",
+        "source_effect": "event_good_bonus",
+        "values": [
+          0.006,
+          0.008,
+          0.01,
+          0.012,
+          0.014
+        ]
+      },
+      {
+        "id": "charm_spare_canteen",
+        "kind": "copied_existing_same_rarity_effect",
+        "source_id": "charm_harbor_lantern",
+        "values": [
+          0.006,
+          0.008,
+          0.01,
+          0.012,
+          0.014
+        ]
+      },
+      {
+        "id": "charm_bracing_wedges",
+        "kind": "conservative_new_proposal",
+        "same_effect_epic_exists_in_28": false,
+        "values": [
+          0.018,
+          0.024,
+          0.03,
+          0.036,
+          0.042
+        ],
+        "basis": "28의 동일 효과 희귀 배열과 기존 영웅의 효과별 범위를 참고한 신규 제안. 기존 영웅 동일 효과 배열을 복사한 값이 아님."
+      }
+    ],
+    "new_proposal_note": "영웅 목재값·손실감소는28에 같은 효과의 영웅 부적이 없어 보수적으로 새로 정한 배열이다. 나머지는 기존 같은 등급·효과 또는 확률 효과 계열의 배열을 복사했다.",
+    "not_a_playtest": true
+  }
+}

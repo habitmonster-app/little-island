@@ -296,10 +296,12 @@ object Game {
     private fun rollCrewEvent(crew: List<String>) {
         cevId = null
         if (Fleet.crewEvents.isEmpty() || Random.nextFloat() >= Fleet.crewEvChance) return
-        val ok = crew.filter { id -> Fleet.crewEvents.any { it.crew == id && crewLevel(id) >= it.minLv } }
+        // 짝 사건(with)은 두 선원이 같이 탔을 때만
+        fun fits(e: Fleet.CrewEvent) = e.crew in crew && crewLevel(e.crew) >= e.minLv && (e.with == null || e.with in crew)
+        val ok = crew.filter { id -> Fleet.crewEvents.any { it.crew == id && fits(it) } }
         if (ok.isEmpty()) return
         val who = ok.random()
-        cevId = Fleet.crewEvents.filter { it.crew == who && crewLevel(who) >= it.minLv }.random().id
+        cevId = Fleet.crewEvents.filter { it.crew == who && fits(it) }.random().id
     }
     private fun settleCrewEvent() {
         val e = Fleet.crewEvent(cevId) ?: return
@@ -312,7 +314,7 @@ object Game {
             "tickets" -> { tickets += e.value; "쪽지 +" + e.value }
             else -> ""
         }
-        val pi = Data.workers.indexOfFirst { it.id == e.crew }
+        val pi = Data.workers.indexOfFirst { it.id == e.crew }.let { if (it >= 0 && crewLevel(e.crew) >= 11) it + 100 else it }   // 100+: 코트 배지
         // 제목 앞의 \u0001번호\u0001은 카드에 선원 배지를 붙이라는 표시
         card((if (pi >= 0) "\u0001" + pi + "\u0001" else "") + e.title, e.line + (if (got.isNotEmpty()) "\n" + got else ""))
     }

@@ -1,0 +1,510 @@
+{
+  "schema_version": 1,
+  "design_status": "order11_additional_boss_data",
+  "app_name": "리틀 아일랜드",
+  "bosses": [
+    {
+      "id": "boss_coral_seahorse",
+      "name": "산호갈기호",
+      "captain": "채린",
+      "min_ship_level": 5,
+      "unlock": "ship_5",
+      "ports": [
+        "port_reedbay",
+        "port_paperwater"
+      ],
+      "chance": 0.04,
+      "power": 2.4,
+      "win_gold": [
+        200,
+        250
+      ],
+      "lose": 0.28,
+      "first_win_reward": {
+        "gold": 720,
+        "map_pieces": 2,
+        "cosmetic_id": "trophy_seahorse_flag"
+      },
+      "lines": {
+        "appear": "산호빛 물길을 따라와 봐!",
+        "lose": "네 대답이 먼저 닿았네.",
+        "win": "다음엔 구령을 맞춰 보자!"
+      },
+      "crew_lines": {
+        "yeoul": "대답을 듣고 줄을 당겨요.",
+        "nuri": "넘겨받을 자리가 비었어요.",
+        "bada": "같은 바람을 받아 볼게요."
+      },
+      "story": {
+        "id": "story_boss_coral_seahorse_first_win",
+        "title": "대답을 기다리는 깃발",
+        "body": "산호갈기호의 해마 깃발은 꼬리 끝까지 둥글게 말려 있었다. 채린은 물길을 내준 뒤에도 그 꼬리가 어느 쪽으로 펄럭이는지 살폈다. 빠르게 구령을 보내면 배도 곧바로 따라올 줄 알았는데, 귀항호에서는 대답을 기다리는 짧은 틈마다 돛이 먼저 움직였다. 채린은 자기 선원들의 얼굴을 차례로 돌아보았다.\n\n여울이 마지막 밧줄을 정리하자 채린은 오늘 가장 빨랐던 손이 누구냐고 물었다. 여울은 줄을 넘겨받은 누리를 가리켰고, 누리는 다시 뒤쪽 사람을 가리켰다. 채린은 이름을 다 외우려다가 웃음을 터뜨렸다. 깃발을 접는 손도 옆 사람에게 반을 맡겼다.\n\n승부의 기념으로 건넨 산호빛 천에는 작은 해마가 남아 있었다. 채린은 다음에는 먼저 답을 듣겠다고 말했다. 귀항호가 멀어지자 그녀는 짧게 손을 들고 기다렸다. 맞은편 배에서도 손이 올라왔다. 인사를 받은 뒤에야 산호갈기호가 천천히 방향을 틀었다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 0,
+      "captain_icon_index": 0,
+      "ship_art": {
+        "file": "art/pirate_bosses_2.png",
+        "source_rect": [
+          0,
+          0,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains_2.png",
+        "source_rect": [
+          0,
+          0,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "coral pink and warm ivory with brass trim",
+        "emblem": "a curled coral seahorse silhouette on ivory sail",
+        "captain_look": "young woman with long chestnut hair braided over one shoulder, ivory tricorn edged coral pink and a small coral seahorse badge, coral captain coat with ivory lapels, lively raised eyebrow and friendly mischievous smile"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    },
+    {
+      "id": "boss_cobalt_flyingfish",
+      "name": "푸른날개호",
+      "captain": "솔찬",
+      "min_ship_level": 5,
+      "unlock": "ship_5",
+      "ports": [
+        "port_reedbay",
+        "port_whitesail"
+      ],
+      "chance": 0.04,
+      "power": 2.5,
+      "win_gold": [
+        215,
+        265
+      ],
+      "lose": 0.29,
+      "first_win_reward": {
+        "gold": 780,
+        "map_pieces": 2,
+        "cosmetic_id": "trophy_flyingfish_bow"
+      },
+      "lines": {
+        "appear": "푸른 날개를 펼칠 시간이야!",
+        "lose": "굽은 길도 멋진 길이네.",
+        "win": "다음 바람도 함께 보자!"
+      },
+      "crew_lines": {
+        "dori": "곧은 길 옆도 살펴봐요.",
+        "bityeo": "날개 너머 물빛이 보여요.",
+        "haneul": "지금 방향을 알려 줄게요."
+      },
+      "story": {
+        "id": "story_boss_cobalt_flyingfish_first_win",
+        "title": "곧은 선 옆의 물길",
+        "body": "푸른날개호의 돛에는 넓은 지느러미를 편 날치가 그려져 있었다. 솔찬은 승부가 끝나자 접어 둔 항로표를 펼쳤다. 곧은 선만 따라가면 가장 먼저 도착할 줄 알았다고 했다. 도리는 돌아오는 바람을 손등으로 느끼며, 오늘 귀항호가 지나온 완만한 길을 손가락으로 짚어 주었다.\n\n솔찬은 표 위에 새 선을 그리려다 잠깐 멈췄다. 도리가 건네준 것은 늘 같은 답이 아니라 지금 살펴볼 물빛이었다. 그는 돛 아래 선원에게 바람이 어떻게 느껴졌는지 물었다. 대답을 들으며 한쪽 지느러미처럼 접힌 종이를 천천히 폈다. 짧은 선 하나가 더 생겼다.\n\n뱃머리 장식은 배에 달아 둔 것과 같은 작은 날치였다. 솔찬은 여분으로 깎아 둔 물건이라며 귀항호에 건넸다. 주황 지느러미에는 손으로 다듬은 결이 남아 있었다. 다음에 만나면 다른 길도 보여 달라는 인사가 따라왔다. 도리는 바다를 보고 함께 고르자며 손을 흔들었다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 1,
+      "captain_icon_index": 1,
+      "ship_art": {
+        "file": "art/pirate_bosses_2.png",
+        "source_rect": [
+          384,
+          0,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains_2.png",
+        "source_rect": [
+          256,
+          0,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "cobalt blue and tangerine orange with cream trim",
+        "emblem": "a simple tangerine flying fish with wide fins on cobalt sail",
+        "captain_look": "young tan-skinned man with short tousled amber hair, cobalt captain cap with an orange flying fish badge, cobalt coat with orange collar and cream scarf, smiling confident face"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    },
+    {
+      "id": "boss_burgundy_lantern",
+      "name": "저녁등불호",
+      "captain": "연담",
+      "min_ship_level": 5,
+      "unlock": "ship_5",
+      "ports": [
+        "port_paperwater"
+      ],
+      "chance": 0.04,
+      "power": 2.65,
+      "win_gold": [
+        230,
+        285
+      ],
+      "lose": 0.3,
+      "first_win_reward": {
+        "gold": 840,
+        "map_pieces": 2,
+        "cosmetic_id": "trophy_evening_lantern_sail"
+      },
+      "lines": {
+        "appear": "저녁 인사는 승부 뒤에!",
+        "lose": "네 돛에 등불을 달아 줘.",
+        "win": "돌아가는 길도 밝게 가!"
+      },
+      "crew_lines": {
+        "haneul": "등불 신호에 답할게요.",
+        "sori": "꺼낼 물건부터 맞춰요.",
+        "saei": "서로 확인한 표가 있어요."
+      },
+      "story": {
+        "id": "story_boss_burgundy_lantern_first_win",
+        "title": "먼저 켜 둔 인사",
+        "body": "저녁등불호가 돛을 느슨하게 풀자 연담은 낮부터 걸어 둔 등불을 들고 내려왔다. 그는 이긴 배가 먼저 인사할 줄은 몰랐다며 턱수염을 쓸었다. 하늘은 바람 속에서도 답을 잘 보았다고 말했다. 연담의 짧은 신호에 귀항호의 돛이 제때 움직였고, 그 뒤의 승부는 금세 갈렸다.\n\n연담은 오래전 처음 먼 항구를 나설 때 이야기를 꺼냈다. 돌아오는 배를 기다리는 사람이 등불을 일찍 켜 두어서, 아직 밝을 때에도 집 쪽을 알아볼 수 있었다고 했다. 자기 배의 등불도 그때부터 달았다. 하늘은 그런 표시는 받는 사람이 기억한다고 답했다.\n\n연담이 내민 천 조각에는 둥근 금빛 등불이 그려져 있었다. 귀항호의 돛에도 잘 어울리겠다며 가장자리를 반듯하게 폈다. 두 배가 떨어질 무렵, 연담은 다시 등불을 높이 걸었다. 하늘이 잘 보인다는 신호를 보냈고 연담은 모자를 들어 답했다. 노을보다 먼저 시작된 인사가 잔물결 위에 오래 남았다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 2,
+      "captain_icon_index": 2,
+      "ship_art": {
+        "file": "art/pirate_bosses_2.png",
+        "source_rect": [
+          768,
+          0,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains_2.png",
+        "source_rect": [
+          512,
+          0,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "burgundy red and warm cream with soft gold trim",
+        "emblem": "a warm golden hanging lantern silhouette on burgundy sail",
+        "captain_look": "middle-aged man with wavy dark brown hair and a neat short brown beard, burgundy tricorn with a small gold lantern badge, burgundy coat and cream neckcloth, amused kind eyes and small smile"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    },
+    {
+      "id": "boss_mint_turtle",
+      "name": "느린물결호",
+      "captain": "미로",
+      "min_ship_level": 5,
+      "unlock": "ship_5",
+      "ports": [
+        "port_whitesail"
+      ],
+      "chance": 0.04,
+      "power": 2.8,
+      "win_gold": [
+        245,
+        300
+      ],
+      "lose": 0.3,
+      "first_win_reward": {
+        "gold": 900,
+        "map_pieces": 2,
+        "cosmetic_id": "trophy_mint_turtle_deck"
+      },
+      "lines": {
+        "appear": "느긋해도 길은 잘 알아!",
+        "lose": "오늘은 네 물결을 배웠어.",
+        "win": "차 한 잔 뒤에 또 만나!"
+      },
+      "crew_lines": {
+        "onyu": "마지막 확인을 나눌게요.",
+        "deul": "돌아오면 따뜻하게 쉬어요.",
+        "geonu": "손을 놓을 자리도 있어요."
+      },
+      "story": {
+        "id": "story_boss_mint_turtle_first_win",
+        "title": "차를 따라 주는 손",
+        "body": "느린물결호의 선장 미로는 승부가 끝난 뒤에도 차를 급히 마시지 않았다. 민트빛 거북이 그려진 돛을 바라보다가, 귀항호에서는 서로 쉬는 자리를 잘 남겨 둔다고 말했다. 온유는 마지막 확인을 맡은 사람의 이름을 가리켰다. 미로는 자기 배의 점검표도 옆 선원에게 건네주었다.\n\n늘 천천히 준비한다고 생각했지만, 준비를 혼자 끝내려던 버릇은 남아 있었다. 다른 손이 표를 채우는 동안 미로는 찻잔을 내려놓고 앞 물길을 살폈다. 기다리는 시간이 비어 있지 않았다. 건너편에서 들이 식사할 자리를 정리하는 모습도 보였다.\n\n작은 거북 장식은 미로가 오래 두고 보던 물건이었다. 황동빛 등껍질을 천으로 닦아 건네며, 쉬는 곳이 잘 보이는 자리에 두어 달라고 했다. 온유는 갑판의 빈자리를 먼저 살폈다. 다음 인사를 나눈 뒤 미로는 다시 잔을 들었다. 이번에는 옆 선원이 따라 준 차였다. 느린물결호의 돛이 부드럽게 바람을 받았다."
+      },
+      "repeat": true,
+      "normal_combat_for_missions": true,
+      "sprite_index": 3,
+      "captain_icon_index": 3,
+      "ship_art": {
+        "file": "art/pirate_bosses_2.png",
+        "source_rect": [
+          1152,
+          0,
+          384,
+          512
+        ],
+        "waterline_y_in_cell": 491,
+        "facing": "left"
+      },
+      "captain_art": {
+        "file": "art/boss_captains_2.png",
+        "source_rect": [
+          768,
+          0,
+          256,
+          256
+        ]
+      },
+      "visual_theme": {
+        "colors": "pale mint green and warm brass with ivory trim",
+        "emblem": "a friendly mint sea turtle with a brass hexagonal shell pattern on ivory sail",
+        "captain_look": "older woman with short soft silver hair, mint captain cap with a brass turtle badge, mint coat with brass buttons and ivory scarf, smiling crescent eyes and rosy cheeks"
+      },
+      "faction": "independent_rival",
+      "disabled_by": []
+    }
+  ],
+  "selection_rules": {
+    "maximum_normal_combat_slots_per_voyage": 1,
+    "selection_scope": "ordinary_random_encounter_replacement",
+    "order": [
+      "기존 첫 강제 hook_minor 조우 또는 story_fixed 사건이면 그 기존 처리를 유지하며 우두머리 선택을 하지 않는다.",
+      "기존 항해의 조우 판정을 한 번 수행한다. 일반 항해는 항구 pirate_risk, 특별 항해는 이미 확정한 조우 확률을 사용한다.",
+      "일반 조우가 발생한 경우에만25의 기존8척과39의 신규4척을 ID로 병합한 목록에서 배 단계·unlock·목적지 ports가 모두 맞는 우두머리를 고른다. 병합한 적격 boss.id를 오름차순 정렬한다.",
+      "균등 난수 u∈[0,1) 하나에 각 적격 우두머리 chance의 누적 구간을 배정한다. 해당 구간에 들면 그 우두머리가 보통 해적을 대체한다.",
+      "우두머리 구간 밖이면 기존 적격 보통 해적을 기존 selection_weight 비율로 고른다. 보통 해적도 없으면 조우를 생략한다."
+    ],
+    "chance_semantics": "chance=0.04는 이미 일반 조우가 발생한 경우 그 우두머리가 선택될 확률 4%다. 항해 자체의 무조건 출현 확률이나 가중치가 아니다.",
+    "not_normalized_among_bosses": true,
+    "no_independent_roll_per_boss": true,
+    "maximum_eligible_bosses_in_this_data": 2,
+    "maximum_boss_probability_given_encounter": 0.16,
+    "example": {
+      "ordinary_encounter_chance": 0.5,
+      "eligible_boss_count": 4,
+      "each_boss_chance": 0.04,
+      "any_boss_per_voyage": 0.08,
+      "each_boss_per_voyage": 0.02,
+      "port": "port_whitesail",
+      "ship_level": 5
+    },
+    "on_no_eligible_boss": "기존 보통 해적 선택만 수행한다.",
+    "eligibility_snapshot": "기존 규칙과 같이 미확정 전투를 확정하는 시점의 진행 플래그로 검사하되, 배 단계와 목적지는 출항 스냅샷을 사용한다.",
+    "unlocked_port_required": true,
+    "first_win_does_not_remove_boss": true,
+    "no_extra_encounter_after_replacement": true,
+    "preserve_first_encounter": true,
+    "preserve_story_fixed": true,
+    "maximum_eligible_bosses_in_merged_data": 4,
+    "index_scope": "sprite_index와 captain_icon_index는각시트 안의 그림번호이다. 서로 다른 시트의 같은 인덱스를 같은 보스나 정렬 키로 쓰지 않는다.",
+    "no_second_bank_roll": true,
+    "merged_port_probability": {
+      "port_reedbay": {
+        "old_bosses": [
+          "boss_moon",
+          "boss_serpent"
+        ],
+        "new_bosses": [
+          "boss_coral_seahorse",
+          "boss_cobalt_flyingfish"
+        ],
+        "total_eligible_bosses": 4,
+        "boss_probability_given_encounter": 0.16
+      },
+      "port_paperwater": {
+        "old_bosses": [
+          "boss_moon",
+          "boss_serpent"
+        ],
+        "new_bosses": [
+          "boss_coral_seahorse",
+          "boss_burgundy_lantern"
+        ],
+        "total_eligible_bosses": 4,
+        "boss_probability_given_encounter": 0.16
+      },
+      "port_whitesail": {
+        "old_bosses": [
+          "boss_moon",
+          "boss_serpent"
+        ],
+        "new_bosses": [
+          "boss_cobalt_flyingfish",
+          "boss_mint_turtle"
+        ],
+        "total_eligible_bosses": 4,
+        "boss_probability_given_encounter": 0.16
+      }
+    },
+    "old_saves_rng": "이전 버전에서 적 종류·ID나 승패가 이미 확정된 진행 항해는 그대로 복원한다. 아직 결과가 없는 전투만 저장된 기존 난수 진행 상태에서 병합 후보를 판정하며 재시드·재추첨 기회를 주지 않는다."
+  },
+  "combat_rules": {
+    "mode": "automatic",
+    "power_reference": 1.0,
+    "power_penalty_coefficient": 0.1,
+    "win_probability_formula": "clamp(ship.pirate_win - 0.1 * (boss.power - 1) + lighthouse_bonus + capped_active_island_worker_bonus + cannon.value + capped_crew.pirate_win_bonus, 0.35, 0.97)",
+    "minimum_win_probability": 0.35,
+    "maximum_win_probability": 0.97,
+    "effect_source": "19·20·24·28·30·37의 기존 부품·선원·스킬·짝·부적 합산 규칙과 공통 상한을 쓴다. 새 보스 때문에 승률식이나 상한을 바꾸지 않는다.",
+    "same_formula_as_normal_pirate": true,
+    "boss_lose_field_means": "우두머리에게 졌을 때 전투 시점에 배에 남아 있는 화물에서 잃는 기본 비율. 골드 손실이나 패배 확률이 아니다.",
+    "cargo_adapter": "일반 전투 처리에 넘길 때 boss.lose를 pirate.lose_cargo에 대응시킨다.",
+    "effective_loss_fraction_formula": "boss.lose * (1 - min(0.5, helm.secondary_effects.bad_event_loss_reduction + capped_crew.repair_after_loss))",
+    "remaining_formula": "floor(current_onboard_quantity * (1 - effective_loss_fraction))",
+    "cargo_targets": "기존 계약별 처리 그대로: 특산물 계약 없으면 왕로의 목재·돌, 선결제된 특산물 계약이 있으면 귀로의 특산물만.",
+    "already_sold_cargo_loss": 0,
+    "gold_balance_loss": 0,
+    "resident_or_crew_loss": 0,
+    "ship_destruction": false,
+    "building_damage": false,
+    "extra_repair_fee": 0,
+    "injury_or_death": false,
+    "mission_adapter": "23·32의 win_if_encountered에서 이 전투를 일반 전투 한 건으로 검사한다. return_safely는 정상 귀항 규칙을 유지한다.",
+    "fixed_story_events_count_as_boss_fights": false
+  },
+  "reward_rules": {
+    "repeat_win_gold_distribution": "uniform_integer_inclusive",
+    "repeat_gold_is_normal_combat_reward": "win_gold는 대체된 보통 해적 전투 보상을 대신한다. 보통 해적 보상을 동시에 더하지 않는다.",
+    "first_win_additional": true,
+    "first_win_includes_repeat_win_gold": true,
+    "first_win_definition": "해당 boss.id에 대해 처음 확정한 승리 귀항 정산",
+    "gold_unit": "integer_gold; wallet cents에는 gold * 100을 더한다.",
+    "gold_multiplier": "고정 첫승 보상과 우두머리 전투 보상에 판매가·특산물·좋은 사건 배율을 추가 적용하지 않는다.",
+    "lose_reward_gold": 0,
+    "first_win_cosmetic_reference": "38_ship_cosmetics_3.json의 같은 trophy ID. 첫승 장부와 소장 장부는25·27의 기존 저장소를 함께 사용한다.",
+    "cosmetic_grant": "해당 소장 ID를 한 번 추가한다. 이미 소장했으면 다른 보상으로 교환하지 않는다.38의 조건 재평가는 소장 누락만 복구하며 첫승 금화·지도 조각을 다시 주지 않는다.",
+    "map_pieces": "기존 퍼즐 지도 조각 저장 규칙으로 정수 개수를 한 번 더한다. 최대 수량·완성 후 처리 규칙을 유지하고 보물 성공 횟수는 증가시키지 않는다.",
+    "map_piece_overflow": "기존 상한으로 못 받는 분량을 금화·추가 뽑기·재획득 기회로 바꾸지 않는다.",
+    "first_story_unlock": "첫승 정산에서 story.id를 해금한다. 읽기·다시보기·카드 재열기는 보상을 지급하지 않는다.",
+    "crew_xp": "정규 항해 경험치만30의 Lv15 공통 규칙으로 지급한다. 우두머리·첫승 명목의 추가 경험치는 없다.",
+    "voyage_ticket": "28의 정상 귀항 1회에 해당하는 항해 쪽지만 지급한다. 우두머리 조우·첫승을 별도 항해로 세지 않는다.",
+    "daily_orders": "31·36의 기존 귀항·해적 승리·우두머리 승리 이벤트를 같은 원본 전투/귀항 키로 한 번씩 전달한다. 새 보스 명단 때문에 counter를 이중 발행하지 않는다."
+  },
+  "settlement_rules": {
+    "reward_credit_on": "voyage_return_settlement",
+    "departure_snapshot": "배 단계·기본 승률·목적지·계약·부품·승선 선원과 스킬/짝/부적 합산 후 효과·등대/섬 일꾼 보너스를 출항 시 고정한다. 도중 장비 교체로 진행 중 항해를 다시 계산하지 않는다.",
+    "combat_key": "save_id + voyage_sequence + combat_slot",
+    "first_win_key": "save_id + boss_id + first_win",
+    "first_win_flags": "boss_first_win_ids에 boss.id를 저장한다. 별도의 옛 스토리 플래그를 덮어쓰지 않는다.",
+    "atomic_commit": [
+      "확정 전투 결과와 손실",
+      "정규 항해 정산",
+      "우두머리 일반 승리 보상",
+      "첫승 완료 ID",
+      "첫승 금화·지도 조각·장식 소장",
+      "첫승 이야기 해금"
+    ],
+    "rng_persisted": [
+      "선택된 적 종류와 ID",
+      "전투 승패",
+      "win_gold의 확정 금액"
+    ],
+    "unresolved_rng": "항해별 저장된 난수 상태와 판정 순번으로 이어서 처리한다. 아직 결과가 없는 전투도 앱 재실행이나 중단으로 새 시드를 받지 않는다.",
+    "reopen_reroll": false,
+    "duplicate_reward": false,
+    "retry": "패배해도 후보 목록에 남는다. 다음 항해에서 기존 확률로 다시 만날 수 있으며 강제 재조우나 유료 재도전은 없다.",
+    "migration": "기존25의 첫승·이야기·진행 전투·정산 장부를 그대로 보존하고 신규4개 ID를 추가한다. 저장에 없는 신규첫승은 미완료이며 과거 보통 해적 승리를 소급하지 않는다.",
+    "offline_max_credited_seconds": 28800,
+    "offline_uses_same_selection_and_settlement": true,
+    "offline_first_win_once": "인정되는 오프라인 구간에서 같은 우두머리를 여러 번 이겨도 첫승은 한 번만 지급하며, 이후 승리는 win_gold만 지급한다.",
+    "incomplete_voyage": "출항 스냅샷과 미정산 전투 결과를 보존하고, 귀항 전에는 보상·첫승 해금이 완료된 것으로 표시하지 않는다."
+  },
+  "display_rules": {
+    "name_max_characters": 10,
+    "line_max_characters": 18,
+    "story_body_characters": [
+      300,
+      500
+    ],
+    "lines_semantics": {
+      "appear": "우두머리 등장",
+      "lose": "우두머리 패배 = 우리 승리",
+      "win": "우두머리 승리 = 우리 패배"
+    },
+    "crew_lines": "현재 출항 명단에 있는 선원의 대사만 고른다. 해당 선원이 없으면 생략하고 임의로 선원을 추가하지 않는다.",
+    "crew_line_selection": "가능한 대사 중 출항 때의 승선 슬롯 순서상 첫 한 줄만 표시한다. 이름과 초상화는 실제 화자 ID를 사용한다.",
+    "probability_label": "해적 조우 뒤 만날 맞수",
+    "first_win_state": "미획득·첫승 완료를 구분하고, 소장 장식 ID와 이야기 해금 여부를 별도로 확인한다.",
+    "numeric_ui": "출현 확률·power·보상 수치는 앱이 데이터에서 별도로 표시한다. name·대사·story 제목과 본문에는 숫자나 퍼센트 기호를 넣지 않는다."
+  },
+  "continuity_rules": {
+    "bosses_are_separate_rivals": true,
+    "gurok_is_not_resurrected_or_freed": true,
+    "friendly_redsail_fleet_unchanged": true,
+    "hook_ship": "갈고리별호의 은빛 둥근 갈고리는 규찬의 하역 도구 문양이다. 기존 구록·갈고리단과 관계없는 별개 배다.",
+    "red_crab_ship": "붉은집게호는 크림색 돛의 붉은 게 문양이며 가람의 붉은돛 선단이나 위장선이 아니다.",
+    "never_enemy_characters": [
+      "가람",
+      "서린",
+      "여울"
+    ],
+    "main_53": "기존 구록 체포와 기존 적 disabled_by 처리에 관여하지 않는다.",
+    "new_rivals": "채린·솔찬·연담·미로는 별도의 항해 맞수다. 기존 구록·갈고리단·가람 선단의 인물이나 세력을 바꾸지 않는다."
+  },
+  "source_files": [
+    "ASTRA_ORDER_11.md",
+    "02_ships.json",
+    "03_ports.json",
+    "19_ship_parts.json",
+    "20_crew.json",
+    "24_ship_stage5.json",
+    "25_pirate_bosses.json",
+    "27_ship_cosmetics_2.json",
+    "30_crew_levels_2.json",
+    "32_crew_missions_3.json",
+    "38_ship_cosmetics_3.json"
+  ],
+  "integration_notes": {
+    "program_code_changed": false,
+    "existing_values_changed": false,
+    "build37_integration_tested": false,
+    "balances_are_static_proposals": true,
+    "merge": "기존25.bosses8개와신규39.bosses4개를ID로합쳐총12개. 기존항목수치는덮어쓰지않으며추가전투슬롯은없다.",
+    "shared_rules": "선택은병합목록에대한단한번의누적구간판정이다.25와39를각각독립추첨하지않는다.",
+    "reward_reference": "기존상위boss_serpent의반복190~240금화·첫승680금화·지도2조각과비교하여신규반복200~300·첫승720~900·지도2조각으로소폭확장했다. 실제플레이테스트나순이익보장을뜻하지않는다.",
+    "win_probability_reference": {
+      "ship5_base": 0.9,
+      "minimum_cannon20_bonus": 0.08,
+      "optional_lighthouse_and_island_and_crew_excluded": true,
+      "raw_chance_without_optional_bonuses_by_power": {
+        "2.4": 0.84,
+        "2.5": 0.83,
+        "2.65": 0.815,
+        "2.8": 0.8
+      },
+      "shared_final_clamp": [
+        0.35,
+        0.97
+      ]
+    },
+    "unconditional_chance_reference": {
+      "port_reedbay": {
+        "pirate_risk": 0.43,
+        "any_boss_at_ship5": 0.0688
+      },
+      "port_paperwater": {
+        "pirate_risk": 0.44,
+        "any_boss_at_ship5": 0.0704
+      },
+      "port_whitesail": {
+        "pirate_risk": 0.5,
+        "any_boss_at_ship5": 0.08
+      }
+    },
+    "main_story_required": false
+  }
+}

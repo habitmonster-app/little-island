@@ -264,7 +264,7 @@ class IslandWallpaperService : WallpaperService() {
                 val idx = title.substring(1, maxOf(1, k)).toIntOrNull() ?: -1
                 title = title.substring(k + 1)
                 val bs = h * .78f
-                Art.cell("crew_event_badge", 4, 3, idx, bs.toInt())?.let { bm ->
+                Art.cell(if (idx >= 100) "crew_event_badge_15" else "crew_event_badge", 4, 3, idx % 100, bs.toInt())?.let { bm ->
                     badgeSrc.set(0, 0, bm.width, bm.height); badgeDst.set(x + 10 * d, y + (h - bs) / 2, x + 10 * d + bs, y + (h + bs) / 2)
                     badgePaint.alpha = (255 * a).toInt(); cv.drawBitmap(bm, badgeSrc, badgeDst, badgePaint)
                     tx = x + 10 * d + bs + (w - 10 * d - bs) / 2; tw = w - 10 * d - bs

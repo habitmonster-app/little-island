@@ -1,0 +1,697 @@
+{
+  "schema_version": 1,
+  "app_name": "리틀 아일랜드",
+  "design_status": "order11_additive_cosmetics_data",
+  "items": [
+    {
+      "id": "trophy_seahorse_flag",
+      "slot": "flag",
+      "name": "산호해마 깃발",
+      "icon_index": 0,
+      "how_to_get": "산호갈기호 첫 승리",
+      "desc": "산호빛 천에 춤추는 해마",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "boss_first_win",
+            "boss_id": "boss_coral_seahorse"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 0,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 0
+      },
+      "how_to_get_text": "산호갈기호 첫 승리"
+    },
+    {
+      "id": "record_return_flag",
+      "slot": "flag",
+      "name": "귀항 인사 깃발",
+      "icon_index": 1,
+      "how_to_get": "귀항 기록 달성",
+      "desc": "돌아온 물길을 닮은 깃발",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "counter_at_least",
+            "counter": "voyages",
+            "value": 100
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 1,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 1
+      },
+      "how_to_get_text": "귀항 기록 달성"
+    },
+    {
+      "id": "luxury_dawn_flag",
+      "slot": "flag",
+      "name": "비단 여명 깃발",
+      "icon_index": 2,
+      "how_to_get": "금화로 구매",
+      "desc": "비단 위로 번진 아침빛",
+      "effect": null,
+      "acquisition": {
+        "mode": "manual_purchase",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "ship_5"
+          }
+        ],
+        "cost": {
+          "gold": 10000
+        },
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 2,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 2
+      },
+      "how_to_get_text": "금화로 구매"
+    },
+    {
+      "id": "memory_reed_flag",
+      "slot": "flag",
+      "name": "갈대 기억 깃발",
+      "icon_index": 3,
+      "how_to_get": "도감 모으기 보상",
+      "desc": "작은 갈대가 나란한 깃발",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "souvenir_milestone_complete",
+            "milestone_id": "souvenir_count_20"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 3,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 3
+      },
+      "how_to_get_text": "도감 모으기 보상"
+    },
+    {
+      "id": "trophy_flyingfish_bow",
+      "slot": "figurehead",
+      "name": "날치 뱃머리",
+      "icon_index": 4,
+      "how_to_get": "푸른날개호 첫 승리",
+      "desc": "넓은 지느러미를 편 날치",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "boss_first_win",
+            "boss_id": "boss_cobalt_flyingfish"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 4,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 4
+      },
+      "how_to_get_text": "푸른날개호 첫 승리"
+    },
+    {
+      "id": "record_gull_bow",
+      "slot": "figurehead",
+      "name": "먼길 갈매기",
+      "icon_index": 5,
+      "how_to_get": "먼 항해 기록 달성",
+      "desc": "먼길을 함께 보는 갈매기",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "counter_at_least",
+            "counter": "voyages",
+            "value": 300
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 5,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 5
+      },
+      "how_to_get_text": "먼 항해 기록 달성"
+    },
+    {
+      "id": "luxury_pearl_dolphin",
+      "slot": "figurehead",
+      "name": "진주빛 돌고래",
+      "icon_index": 6,
+      "how_to_get": "금화로 구매",
+      "desc": "진주빛 등에 얹은 금빛",
+      "effect": null,
+      "acquisition": {
+        "mode": "manual_purchase",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "ship_5"
+          }
+        ],
+        "cost": {
+          "gold": 16000
+        },
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 6,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 6
+      },
+      "how_to_get_text": "금화로 구매"
+    },
+    {
+      "id": "memory_conch_bow",
+      "slot": "figurehead",
+      "name": "분홍 소라",
+      "icon_index": 7,
+      "how_to_get": "도감 채우기 보상",
+      "desc": "분홍 속살을 품은 소라",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "souvenir_milestone_complete",
+            "milestone_id": "souvenir_count_30"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 7,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 7
+      },
+      "how_to_get_text": "도감 채우기 보상"
+    },
+    {
+      "id": "trophy_evening_lantern_sail",
+      "slot": "sail",
+      "name": "저녁등불 무늬",
+      "icon_index": 8,
+      "how_to_get": "저녁등불호 첫 승리",
+      "desc": "저녁을 기다리는 등불",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "boss_first_win",
+            "boss_id": "boss_burgundy_lantern"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 8,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 8
+      },
+      "how_to_get_text": "저녁등불호 첫 승리"
+    },
+    {
+      "id": "record_treasure_sail",
+      "slot": "sail",
+      "name": "보물길 무늬",
+      "icon_index": 9,
+      "how_to_get": "보물 발견 기록 달성",
+      "desc": "별을 따라 놓인 작은 열쇠",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "counter_at_least",
+            "counter": "treasures",
+            "value": 20
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 9,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 9
+      },
+      "how_to_get_text": "보물 발견 기록 달성"
+    },
+    {
+      "id": "luxury_sunwave_sail",
+      "slot": "sail",
+      "name": "금빛 물결 무늬",
+      "icon_index": 10,
+      "how_to_get": "금화로 구매",
+      "desc": "잔물결 위에 뜬 금빛 해",
+      "effect": null,
+      "acquisition": {
+        "mode": "manual_purchase",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "ship_5"
+          }
+        ],
+        "cost": {
+          "gold": 22000
+        },
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 10,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 10
+      },
+      "how_to_get_text": "금화로 구매"
+    },
+    {
+      "id": "memory_paperbird_sail",
+      "slot": "sail",
+      "name": "종이새 무늬",
+      "icon_index": 11,
+      "how_to_get": "모든 항구 기억 수집",
+      "desc": "접힌 날개로 전하는 인사",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "souvenir_milestone_complete",
+            "milestone_id": "souvenir_all_ports"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 11,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 11
+      },
+      "how_to_get_text": "모든 항구 기억 수집"
+    },
+    {
+      "id": "trophy_mint_turtle_deck",
+      "slot": "deck",
+      "name": "민트 거북 장식",
+      "icon_index": 12,
+      "how_to_get": "느린물결호 첫 승리",
+      "desc": "천천히 웃는 민트빛 거북",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "boss_first_win",
+            "boss_id": "boss_mint_turtle"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 12,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 12
+      },
+      "how_to_get_text": "느린물결호 첫 승리"
+    },
+    {
+      "id": "record_crew_teapot",
+      "slot": "deck",
+      "name": "함께 쉬는 찻주전자",
+      "icon_index": 13,
+      "how_to_get": "선원 성장 마무리",
+      "desc": "쉬는 차례를 위한 주전자",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "any_promoted_crew_level_at_least",
+            "value": 15
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 13,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 13
+      },
+      "how_to_get_text": "선원 성장 마무리"
+    },
+    {
+      "id": "luxury_brass_astrolabe",
+      "slot": "deck",
+      "name": "황동 천문환",
+      "icon_index": 14,
+      "how_to_get": "금화로 구매",
+      "desc": "둥근 고리로 품은 하늘",
+      "effect": null,
+      "acquisition": {
+        "mode": "manual_purchase",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "ship_5"
+          }
+        ],
+        "cost": {
+          "gold": 30000
+        },
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 14,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 14
+      },
+      "how_to_get_text": "금화로 구매"
+    },
+    {
+      "id": "memory_chart_box",
+      "slot": "deck",
+      "name": "접힌 항로 상자",
+      "icon_index": 15,
+      "how_to_get": "큰 배로 승급",
+      "desc": "내일 펼칠 지도를 담아요",
+      "effect": null,
+      "acquisition": {
+        "mode": "automatic_grant",
+        "all_of": [
+          {
+            "type": "game_flag",
+            "key": "ship_5"
+          }
+        ],
+        "cost": null,
+        "grant_once": true
+      },
+      "visual": {
+        "source_sheet": "art/ship_deco_3.png",
+        "source_index": 15,
+        "tint": null,
+        "equipped_source_sheet": "art/ship_deco_on_3.png",
+        "equipped_source_index": 15
+      },
+      "how_to_get_text": "큰 배로 승급"
+    }
+  ],
+  "slots": [
+    "flag",
+    "figurehead",
+    "sail",
+    "deck"
+  ],
+  "equipment_rules": {
+    "max_per_slot": 1,
+    "initial_equipment": {
+      "flag": null,
+      "figurehead": null,
+      "sail": null,
+      "deck": null
+    },
+    "only_owned_items": true,
+    "allow_unequip": true,
+    "equip_cost": null,
+    "unequip_cost": null,
+    "replace_same_slot_without_destroying_old_item": true,
+    "same_item_in_multiple_slots": false,
+    "stat_effect": null,
+    "bonuses_from_set_or_rarity": false,
+    "affects_ship_parts": false,
+    "affects_crew_slots_or_skills": false,
+    "affects_pirate_probability": false,
+    "affects_voyage_duration_or_rewards": false,
+    "no_durability_or_consumption": true,
+    "ownership": "permanent_per_save",
+    "settings_location": "app",
+    "changes_during_voyage": "외형 선택만 갱신하며 출항 스냅샷의 수치나 이미 정산한 결과는 바꾸지 않는다.",
+    "same_slot_across_cosmetic_sets": true,
+    "initial_equipment_note": "initial_equipment은 신규 게임에만 적용한다. 이 파일을 추가할 때 기존 장착을 초기화하지 않는다."
+  },
+  "condition_contract": {
+    "evaluation": "all_of의 모든 구조화 조건을 판정한다. how_to_get과 how_to_get_text는 짧은 안내일 뿐이며, 수치·진행·가격은 앱이 별도로 표시한다.",
+    "allowed_types": [
+      "boss_first_win",
+      "souvenir_milestone_complete",
+      "game_flag",
+      "counter_at_least",
+      "any_promoted_crew_level_at_least"
+    ],
+    "boss_first_win": {
+      "source": "25·39가 함께 쓰는 boss_first_win_ids와 첫승 정산 장부",
+      "comparison": "해당 boss_id의 첫 승리 귀항 정산이 확정됨",
+      "required_boss_ids": [
+        "boss_coral_seahorse",
+        "boss_cobalt_flyingfish",
+        "boss_burgundy_lantern",
+        "boss_mint_turtle"
+      ],
+      "story_read_required": false
+    },
+    "souvenir_milestone_complete": {
+      "source": "26의 기존 milestones.id별 완료·보상 정산 장부",
+      "comparison": "해당 milestone_id의 완료 정산이 확정됨",
+      "required_milestone_ids": [
+        "souvenir_count_20",
+        "souvenir_count_30",
+        "souvenir_all_ports"
+      ],
+      "no_new_milestones": true,
+      "story_read_required": false
+    },
+    "game_flag": {
+      "source": "기존 배 승급 완료 플래그",
+      "comparison": "ship_5 완료 및 현재 배 단계가5 이상",
+      "known_keys_used": [
+        "ship_5"
+      ],
+      "story_read_required": false
+    },
+    "counter_at_least": {
+      "source": "기존 영구 누적 통계",
+      "known_counters": [
+        "voyages",
+        "treasures"
+      ],
+      "voyages": "실제 정상 귀항 정산 횟수. 일반·특별 항해가 포함되며 같은 귀항은한번만 센다.",
+      "treasures": "기존 보물 찾기의 성공 정산 횟수. 지도 조각 획득·상자 연출·우두머리 첫승·카드 열기는 보물 성공이 아니다.",
+      "comparison": "저장된 누적값 >= value",
+      "no_daily_reset": true
+    },
+    "any_promoted_crew_level_at_least": {
+      "source": "20·30의 승진한 영구 고용 선원 목록과 현재 레벨",
+      "comparison": "승진 선원 중 한 명이라도 level >= value. 승선 중일 필요는 없다.",
+      "not_island_worker_level": true
+    },
+    "same_transaction": "첫승·기념품 이정표·귀항 통계·보물 성공·승급이 확정되는 같은 트랜잭션의 새 상태로 조건을 확인하고 미소장 장식을 한 번 추가한다. 아직 저장 전인 플래그를 따로 재조회해 지급을 놓치지 않는다."
+  },
+  "acquisition_rules": {
+    "automatic_grant": "첫승·이정표·누적 기록·선원 성장·배 승급 조건을 만족한 미소장 항목을 한 번 소장한다. 자동 장착하거나 원래 이벤트의 금화·지도 조각 보상을 재실행하지 않는다.",
+    "manual_purchase": "배5 조건·미소장·잔액을 확인하고 사용자가 구매를 눌렀을 때만 cost.gold를 차감한다. 네 항목은 각각10000·16000·22000·30000금화이며 확률 구매가 아니다.",
+    "gold_unit": "cost.gold는 정수 게임 금화이며 wallet cents에서는 cost.gold * 100을 차감한다.",
+    "real_money_purchase": false,
+    "insufficient_gold": "잔액과 소장 목록을 그대로 유지한다.",
+    "no_auto_spending": true,
+    "repeat_purchase_of_owned_item": "이미 소장한 ID는 다시 차감하지 않는다.",
+    "duplicate_grant": "이미 소장했으면 추가 금화·쪽지·자원·장식으로 교환하지 않는다.",
+    "idempotency_key": "save_id + cosmetic_item_id",
+    "ownership_write_is_atomic": true,
+    "no_random_loot": true,
+    "no_time_limited_loss": true,
+    "free_items_purchase_price": null,
+    "reevaluate_after": [
+      "boss_first_win_settlement",
+      "souvenir_milestone_settlement",
+      "voyage_return_settlement",
+      "treasure_success_settlement",
+      "promoted_crew_level_up",
+      "ship_stage_upgrade",
+      "save_migration"
+    ],
+    "source_rewards_own_the_payout": "39.first_win_reward.cosmetic_id와38의 trophy 조건은 같은 소장 ID를 공유한다. 26의 기존 reward.cosmetic_id·금화는 그대로 유지하고,38의 추가 조건 장식만 더한다. 같은 이정표에 기존 장식과 새 장식이 함께 해당할 수 있으며 원래 보상은 재지급하지 않는다.",
+    "recovery": "기존 기록으로 조건을 이미 달성했으면 새 무료 장식의 소장만 복구한다. 첫승 금화·지도 조각·이정표 금화는 재지급하지 않고 유료 장식은 자동 구매하지 않는다."
+  },
+  "offline_and_migration": {
+    "progress_source": "기존 최대8시간 인정 구간에서 확정된 귀항·보물 성공·첫승·기념품 이정표·선원 성장만 사용한다. 누적 통계는 이미 저장된 기존 기록을 그대로 읽는다.",
+    "not_based_on": "앱을 닫아 둔 전체 실시간, 카드 재열기, 이야기 다시 보기, 재시작 횟수",
+    "existing_save": "22·27의 소장·장착을 보존하고38의 신규16개 ID를 같은 목록에 합친다. 저장에 없는 과거 통계를 추정해 채우지 않고 실제 저장된 조건만 평가한다.",
+    "existing_ownership": "같은 ID의 소장은 유지한다. 배 5단계가 됐다고 유료 장식을 자동 구매하지 않는다.",
+    "unsupported_item_id": "알 수 없는 저장 ID는 보존하되 그리기를 생략한다. 다른 장식으로 바꾸거나 비용을 청구하지 않는다.",
+    "save_fields": [
+      "owned_cosmetic_ids",
+      "equipped_cosmetics_by_slot",
+      "cosmetic_grant_ledger"
+    ],
+    "merge_key": "item.id",
+    "combined_item_count": 48,
+    "same_slot_across_both_sets": true,
+    "reset_equipment_on_import": false,
+    "same_slot_across_all_sets": true
+  },
+  "rendering": {
+    "source_sheet": "art/ship_deco_3.png",
+    "equipped_source_sheet": "art/ship_deco_on_3.png",
+    "sheet_already_provided": false,
+    "sheet_in_this_order_zip": true,
+    "sheet_size": [
+      1024,
+      1024
+    ],
+    "grid": {
+      "columns": 4,
+      "rows": 4,
+      "cell_width": 256,
+      "cell_height": 256
+    },
+    "index_base": 0,
+    "index_order": "row_major",
+    "index_scope": "each_source_sheet",
+    "background_key": "#FF00FF",
+    "sampling": "nearest_neighbor",
+    "orientation": "배가 오른쪽을 향할 때의 장식 기준",
+    "slot_rows": {
+      "flag": 0,
+      "figurehead": 1,
+      "sail": 2,
+      "deck": 3
+    },
+    "slot_meanings": {
+      "flag": "기존 깃발 천을 선택한 무늬로 교체",
+      "figurehead": "뱃머리 장식 자리 한 곳에 표시",
+      "sail": "흰 돛 위에 무늬만 표시하며 돛대·면적·속도는 유지",
+      "deck": "갑판 장식 자리 한 곳에 표시"
+    },
+    "equipped_anchors_local": {
+      "flag": [
+        0,
+        128
+      ],
+      "figurehead": [
+        128,
+        248
+      ],
+      "sail": [
+        128,
+        128
+      ],
+      "deck": [
+        128,
+        248
+      ]
+    },
+    "equipped_art_rules": {
+      "flag": "천만 사용. 깃대와 전시용 받침 없음. 왼쪽 가운데가 부착점.",
+      "figurehead": "장식만 사용. 전시용 받침 없음. 아래 가운데가 부착점.",
+      "sail": "무늬만 사용. 돛 천·틀·봉 없음. 칸 가운데가 중심점.",
+      "deck": "작은 물건만 사용. 별도 전시대 없음. 아래 가운데가 부착점."
+    },
+    "base_art_compatibility": "기존 ship_stages.png의 1~4단계와 ship_stage5.png의 5단계, 각 네 외형에서 소장·장착 선택을 유지한다.",
+    "always_preserve": [
+      "선수의 파란 끈",
+      "배 이름과 기존 이름표",
+      "현재 배 큰 단계",
+      "부품 강화 레벨과 강화 실루엣"
+    ],
+    "blue_cord_visibility": "뱃머리 장식의 위치·축척을 조절하여 선수의 파란 끈을 가리지 않는다.",
+    "source_sheet_usage": "ship_deco_3는 선택 화면용, ship_deco_on_3는 실제 부착용이다. 선택 아이콘의 깃대·틀·받침을 배에 겹치지 않는다.",
+    "legacy_index_rule": "22·27·38은 각자의 시트에서 icon_index0~15를 쓴다. item.id와 visual.source_sheet를 함께 조회하며 합친 목록 순번으로 그림을 고르지 않는다.",
+    "layout_status": "배 단계별 축척과 장착 위치는 실제 앱 화면에서 확인해야 함",
+    "light_and_sound": "등불·천문환·주전자·지도 상자 등은 장식이다. 탐색·화물·시간·생산·전투·소리 효과를 추가하지 않는다."
+  },
+  "source_files": [
+    "ASTRA_ORDER_11.md",
+    "22_ship_cosmetics.json",
+    "24_ship_stage5.json",
+    "25_pirate_bosses.json",
+    "26_souvenirs.json",
+    "27_ship_cosmetics_2.json",
+    "30_crew_levels_2.json",
+    "39_pirate_bosses_2.json"
+  ],
+  "validation": {
+    "item_count": 16,
+    "slot_counts": {
+      "flag": 4,
+      "figurehead": 4,
+      "sail": 4,
+      "deck": 4
+    },
+    "boss_trophies": 4,
+    "long_play_record_rewards": 4,
+    "gold_purchases": 4,
+    "other_free_rewards": 4,
+    "all_effects_null": true,
+    "all_ids_unique": true,
+    "all_icon_indices_unique": true,
+    "existing_program_changed": false,
+    "build37_rendering_tested": false
+  }
+}

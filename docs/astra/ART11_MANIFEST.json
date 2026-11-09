@@ -1,0 +1,1541 @@
+{
+  "schema_version": 1,
+  "order": 11,
+  "index_order": "zero-based row-major",
+  "source_rect_semantics": "x,y,width,height",
+  "bbox_semantics": "left,top,right-exclusive,bottom-exclusive",
+  "anchor_semantics": "local cell position; top-left=attachment point - anchor * drawing scale",
+  "sampling": "nearest neighbor after magenta key removal",
+  "sheets": [
+    {
+      "file": "art/charm_icons_2.png",
+      "size": [
+        1024,
+        768
+      ],
+      "grid": [
+        4,
+        3
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "source_row_boundaries": [
+        0,
+        363,
+        725,
+        1086
+      ],
+      "cells": [
+        {
+          "index": 0,
+          "id": "charm_grain_ledger",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "best_for_worker_ids": [
+            "saei"
+          ]
+        },
+        {
+          "index": 1,
+          "id": "charm_current_bottle",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "best_for_worker_ids": [
+            "dori"
+          ]
+        },
+        {
+          "index": 2,
+          "id": "charm_warm_teacup",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "best_for_worker_ids": [
+            "deul"
+          ]
+        },
+        {
+          "index": 3,
+          "id": "charm_quilted_cushion",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "common",
+          "best_for_worker_ids": [
+            "nuri"
+          ]
+        },
+        {
+          "index": 4,
+          "id": "charm_timber_bundle",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "best_for_worker_ids": [
+            "yeoul"
+          ]
+        },
+        {
+          "index": 5,
+          "id": "charm_star_envelope",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "best_for_worker_ids": [
+            "haneul"
+          ]
+        },
+        {
+          "index": 6,
+          "id": "charm_return_lighthouse",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "best_for_worker_ids": [
+            "onyu"
+          ]
+        },
+        {
+          "index": 7,
+          "id": "charm_sail_thread",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "rare",
+          "best_for_worker_ids": [
+            "bada"
+          ]
+        },
+        {
+          "index": 8,
+          "id": "charm_joiners_square",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "epic",
+          "best_for_worker_ids": [
+            "geonu"
+          ]
+        },
+        {
+          "index": 9,
+          "id": "charm_light_lens",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "epic",
+          "best_for_worker_ids": [
+            "bityeo"
+          ]
+        },
+        {
+          "index": 10,
+          "id": "charm_spare_canteen",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "epic",
+          "best_for_worker_ids": [
+            "sori"
+          ]
+        },
+        {
+          "index": 11,
+          "id": "charm_bracing_wedges",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "rarity": "epic",
+          "best_for_worker_ids": [
+            "mungi"
+          ]
+        }
+      ],
+      "sha256": "5f5080642cdc78aedf2fe05e6ab6f19addc2d6085a11d77cf6310e2fa8758e73",
+      "bytes": 821502
+    },
+    {
+      "file": "art/ship_deco_3.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "source_row_boundaries": [
+        0,
+        311,
+        628,
+        934,
+        1254
+      ],
+      "cells": [
+        {
+          "index": 0,
+          "id": "trophy_seahorse_flag",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            26,
+            16,
+            229,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "flag"
+        },
+        {
+          "index": 1,
+          "id": "record_return_flag",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            28,
+            16,
+            228,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "flag"
+        },
+        {
+          "index": 2,
+          "id": "luxury_dawn_flag",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            26,
+            16,
+            229,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "flag"
+        },
+        {
+          "index": 3,
+          "id": "memory_reed_flag",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            26,
+            16,
+            230,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "flag"
+        },
+        {
+          "index": 4,
+          "id": "trophy_flyingfish_bow",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            18,
+            16,
+            238,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "figurehead"
+        },
+        {
+          "index": 5,
+          "id": "record_gull_bow",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            19,
+            240,
+            236
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "figurehead"
+        },
+        {
+          "index": 6,
+          "id": "luxury_pearl_dolphin",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            19,
+            240,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "figurehead"
+        },
+        {
+          "index": 7,
+          "id": "memory_conch_bow",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            26,
+            16,
+            229,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "figurehead"
+        },
+        {
+          "index": 8,
+          "id": "trophy_evening_lantern_sail",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            18,
+            240,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "sail"
+        },
+        {
+          "index": 9,
+          "id": "record_treasure_sail",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            18,
+            240,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "sail"
+        },
+        {
+          "index": 10,
+          "id": "luxury_sunwave_sail",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            18,
+            240,
+            238
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "sail"
+        },
+        {
+          "index": 11,
+          "id": "memory_paperbird_sail",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            18,
+            240,
+            237
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "sail"
+        },
+        {
+          "index": 12,
+          "id": "trophy_mint_turtle_deck",
+          "source_rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            35,
+            240,
+            221
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "deck"
+        },
+        {
+          "index": 13,
+          "id": "record_crew_teapot",
+          "source_rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            21,
+            16,
+            234,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "deck"
+        },
+        {
+          "index": 14,
+          "id": "luxury_brass_astrolabe",
+          "source_rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            25,
+            16,
+            231,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "deck"
+        },
+        {
+          "index": 15,
+          "id": "memory_chart_box",
+          "source_rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            35,
+            240,
+            220
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "deck"
+        }
+      ],
+      "sha256": "fde0a022d6c9c78b40a48d3f5e1a95fbd95ff9c77026e2a20daa7f9ce5ac8de3",
+      "bytes": 894197
+    },
+    {
+      "file": "art/pirate_bosses_2.png",
+      "size": [
+        1536,
+        512
+      ],
+      "grid": [
+        4,
+        1
+      ],
+      "cell": [
+        384,
+        512
+      ],
+      "background_key": "#FF00FF",
+      "source_row_boundaries": [
+        0,
+        724
+      ],
+      "cells": [
+        {
+          "index": 0,
+          "id": "boss_coral_seahorse",
+          "source_rect": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "foreground_bbox": [
+            8,
+            80,
+            375,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ],
+          "facing": "left",
+          "waterline_y": 491
+        },
+        {
+          "index": 1,
+          "id": "boss_cobalt_flyingfish",
+          "source_rect": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "foreground_bbox": [
+            8,
+            80,
+            376,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ],
+          "facing": "left",
+          "waterline_y": 491
+        },
+        {
+          "index": 2,
+          "id": "boss_burgundy_lantern",
+          "source_rect": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "foreground_bbox": [
+            8,
+            80,
+            376,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ],
+          "facing": "left",
+          "waterline_y": 491
+        },
+        {
+          "index": 3,
+          "id": "boss_mint_turtle",
+          "source_rect": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "foreground_bbox": [
+            8,
+            80,
+            376,
+            492
+          ],
+          "anchor": [
+            192,
+            491
+          ],
+          "facing": "left",
+          "waterline_y": 491
+        }
+      ],
+      "sha256": "474e1fac131107350c4160d2a7393fa40de7f295734c63b547da19e13de9c7e8",
+      "bytes": 775589
+    },
+    {
+      "file": "art/boss_captains_2.png",
+      "size": [
+        1024,
+        256
+      ],
+      "grid": [
+        4,
+        1
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "source_row_boundaries": [
+        0,
+        724
+      ],
+      "cells": [
+        {
+          "index": 0,
+          "id": "boss_coral_seahorse",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            42,
+            15,
+            214,
+            239
+          ],
+          "anchor": [
+            128,
+            238
+          ]
+        },
+        {
+          "index": 1,
+          "id": "boss_cobalt_flyingfish",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            41,
+            19,
+            214,
+            239
+          ],
+          "anchor": [
+            128,
+            238
+          ]
+        },
+        {
+          "index": 2,
+          "id": "boss_burgundy_lantern",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            37,
+            15,
+            218,
+            239
+          ],
+          "anchor": [
+            128,
+            238
+          ]
+        },
+        {
+          "index": 3,
+          "id": "boss_mint_turtle",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            42,
+            21,
+            213,
+            239
+          ],
+          "anchor": [
+            128,
+            238
+          ]
+        }
+      ],
+      "sha256": "b6cc13c04c78ac53593907bd949d86b63c960c5866eb38a14bf97015a3906fb1",
+      "bytes": 253125
+    },
+    {
+      "file": "art/crew_event_badge_15.png",
+      "size": [
+        1024,
+        768
+      ],
+      "grid": [
+        4,
+        3
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "source_row_boundaries": [
+        0,
+        361,
+        723,
+        1086
+      ],
+      "cells": [
+        {
+          "index": 0,
+          "id": "yeoul",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            236,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 1,
+          "id": "mungi",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 2,
+          "id": "sori",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 3,
+          "id": "nuri",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 4,
+          "id": "bada",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            236,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 5,
+          "id": "geonu",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 6,
+          "id": "dori",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 7,
+          "id": "haneul",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 8,
+          "id": "bityeo",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            236,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 9,
+          "id": "deul",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 10,
+          "id": "saei",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        },
+        {
+          "index": 11,
+          "id": "onyu",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            237,
+            240
+          ],
+          "anchor": [
+            128,
+            239
+          ]
+        }
+      ],
+      "sha256": "26b10d925987408d26b0002821ea8d0a99557cf55afc5ebfb5bf0c6b621669b6",
+      "bytes": 854799
+    },
+    {
+      "file": "art/ship_deco_on_3.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "cell": [
+        256,
+        256
+      ],
+      "background_key": "#FF00FF",
+      "source_row_boundaries": [
+        0,
+        309,
+        620,
+        910,
+        1254
+      ],
+      "cells": [
+        {
+          "index": 0,
+          "id": "trophy_seahorse_flag",
+          "source_rect": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            0,
+            38,
+            224,
+            219
+          ],
+          "anchor": [
+            0,
+            128
+          ],
+          "slot": "flag"
+        },
+        {
+          "index": 1,
+          "id": "record_return_flag",
+          "source_rect": [
+            256,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            0,
+            36,
+            224,
+            220
+          ],
+          "anchor": [
+            0,
+            128
+          ],
+          "slot": "flag"
+        },
+        {
+          "index": 2,
+          "id": "luxury_dawn_flag",
+          "source_rect": [
+            512,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            0,
+            38,
+            224,
+            219
+          ],
+          "anchor": [
+            0,
+            128
+          ],
+          "slot": "flag"
+        },
+        {
+          "index": 3,
+          "id": "memory_reed_flag",
+          "source_rect": [
+            768,
+            0,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            0,
+            36,
+            224,
+            220
+          ],
+          "anchor": [
+            0,
+            128
+          ],
+          "slot": "flag"
+        },
+        {
+          "index": 4,
+          "id": "trophy_flyingfish_bow",
+          "source_rect": [
+            0,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            65,
+            240,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ],
+          "slot": "figurehead"
+        },
+        {
+          "index": 5,
+          "id": "record_gull_bow",
+          "source_rect": [
+            256,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            96,
+            240,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ],
+          "slot": "figurehead"
+        },
+        {
+          "index": 6,
+          "id": "luxury_pearl_dolphin",
+          "source_rect": [
+            512,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            75,
+            240,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ],
+          "slot": "figurehead"
+        },
+        {
+          "index": 7,
+          "id": "memory_conch_bow",
+          "source_rect": [
+            768,
+            256,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            55,
+            240,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ],
+          "slot": "figurehead"
+        },
+        {
+          "index": 8,
+          "id": "trophy_evening_lantern_sail",
+          "source_rect": [
+            0,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            52,
+            16,
+            204,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "sail"
+        },
+        {
+          "index": 9,
+          "id": "record_treasure_sail",
+          "source_rect": [
+            256,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            23,
+            240,
+            233
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "sail"
+        },
+        {
+          "index": 10,
+          "id": "luxury_sunwave_sail",
+          "source_rect": [
+            512,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            19,
+            16,
+            236,
+            240
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "sail"
+        },
+        {
+          "index": 11,
+          "id": "memory_paperbird_sail",
+          "source_rect": [
+            768,
+            512,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            37,
+            240,
+            218
+          ],
+          "anchor": [
+            128,
+            128
+          ],
+          "slot": "sail"
+        },
+        {
+          "index": 12,
+          "id": "trophy_mint_turtle_deck",
+          "source_rect": [
+            0,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            102,
+            240,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ],
+          "slot": "deck"
+        },
+        {
+          "index": 13,
+          "id": "record_crew_teapot",
+          "source_rect": [
+            256,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            20,
+            24,
+            236,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ],
+          "slot": "deck"
+        },
+        {
+          "index": 14,
+          "id": "luxury_brass_astrolabe",
+          "source_rect": [
+            512,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            23,
+            24,
+            233,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ],
+          "slot": "deck"
+        },
+        {
+          "index": 15,
+          "id": "memory_chart_box",
+          "source_rect": [
+            768,
+            768,
+            256,
+            256
+          ],
+          "foreground_bbox": [
+            16,
+            62,
+            240,
+            248
+          ],
+          "anchor": [
+            128,
+            248
+          ],
+          "slot": "deck"
+        }
+      ],
+      "sha256": "49322cd4bc096ceefeffe6e41e44f9ae901efd909fce57dda5df03e1602b4e18",
+      "bytes": 736516
+    }
+  ],
+  "notes": [
+    "Each new sheet has local indices. Do not use merged array positions for art.",
+    "Overlay flags are cloth only, figureheads have no display bases, sail patterns have no sailcloth. Integral instrument feet and box bottoms remain.",
+    "Ships face left; figureheads for the player ship face right.",
+    "Crew badges apply at Lv11 and above. Older badges remain for lower levels.",
+    "Charm index10 is a closed wooden water canteen, matching the final art.",
+    "Generated illustrated likeness, not pixel-identical face replacement. App build-37 execution and compositing were not tested."
+  ]
+}

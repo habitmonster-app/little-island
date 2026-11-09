@@ -37,9 +37,9 @@ object Fleet {
     class Deco(val id: String, val slot: String, val name: String, val icon: Int, val desc: String, val howText: String,
                val auto: Boolean, val gold: Int, val conds: List<Cond>, val sheet: Int = 1) {
         /** 고르는 화면 아이콘 이름 ("deco:3" 또는 2탄 "deco2:3") */
-        val iconKey get() = (if (sheet == 2) "deco2:" else "deco:") + icon
-        val onSheet get() = if (sheet == 2) "ship_deco_on_2" else "ship_deco_on"
-        val iconSheet get() = if (sheet == 2) "ship_deco_2" else "ship_deco"
+        val iconKey get() = (when (sheet) { 2 -> "deco2:"; 3 -> "deco3:"; else -> "deco:" }) + icon
+        val onSheet get() = when (sheet) { 2 -> "ship_deco_on_2"; 3 -> "ship_deco_on_3"; else -> "ship_deco_on" }
+        val iconSheet get() = when (sheet) { 2 -> "ship_deco_2"; 3 -> "ship_deco_3"; else -> "ship_deco" }
     }
     val decos = ArrayList<Deco>()
     /** 23_crew_missions.json: 선원 특별 항해 (선원마다 2개) */
@@ -177,21 +177,42 @@ object Fleet {
     var weeklyGold = 500; private set
     fun order(id: String) = orders.firstOrNull { it.id == id }
     /** 33_crew_sea_events.json: 그 선원이 탔을 때 가끔 생기는 작은 일 (귀항 카드 한 줄 + 머리 위 감정) */
-    class CrewEvent(val id: String, val crew: String, val minLv: Int, val title: String, val line: String, val emote: String, val kind: String, val value: Int)
+    class CrewEvent(val id: String, val crew: String, val minLv: Int, val title: String, val line: String, val emote: String, val kind: String, val value: Int, val with: String? = null)
+    /** 40_crew_voices_2.json: Lv11 이상 선원이 섞어 하는 말 */
+    val voices2 = HashMap<String, Voice>()
+    private val charms2 = ArrayList<Charm>()
     val crewEvents = ArrayList<CrewEvent>()
     var crewEvChance = .25f; private set
     val EMOTES = listOf("heart", "note", "sweat", "star", "zzz", "surprise", "question", "angry")
     fun crewEvent(id: String?) = crewEvents.firstOrNull { it.id == id }
     private fun loadOrder10(c: Context) {
-        try {
-            val d = json(c, "33_crew_sea_events.json")
-            crewEvChance = d.optDouble("chance_per_voyage", .25).toFloat()
+        for (file in listOf("33_crew_sea_events.json", "35_crew_sea_events_2.json")) try {
+            val d = json(c, file)
+            if (file.startsWith("33")) crewEvChance = d.optDouble("chance_per_voyage", .25).toFloat()
             val a = d.getJSONArray("events")
             for (i in 0 until a.length()) {
                 val x = a.getJSONObject(i); val e = x.optJSONObject("effect") ?: JSONObject()
+                if (crewEvents.any { it.id == x.getString("id") }) continue
                 crewEvents.add(CrewEvent(x.getString("id"), x.optString("crew"), x.optInt("min_crew_level", 1), x.optString("card_title"), x.optString("card_line"),
-                    x.optString("emote", "heart"), e.optString("kind", "none"), e.optInt("value")))
+                    x.optString("emote", "heart"), e.optString("kind", "none"), e.optInt("value"), x.optString("with").takeIf { it.isNotEmpty() }))
             }
+        } catch (e: Exception) { }
+        // 36: 주문 2탄 / 37: 부적 2탄 (28번 뒤에 붙임) / 40: Lv11 이상 대사
+        try {
+            val a = json(c, "36_daily_orders_2.json").getJSONArray("orders")
+            for (i in 0 until a.length()) {
+                val x = a.getJSONObject(i); val r = x.optJSONObject("reward") ?: JSONObject()
+                if (orders.any { it.id == x.getString("id") }) continue
+                orders.add(Order(x.getString("id"), x.optString("counter"), x.optInt("target", 1), x.optString("difficulty", "easy"), x.optString("title"),
+                    x.optString("short"), r.optInt("tickets"), r.optInt("gold"), x.optInt("min_ship_level", 1), x.optInt("icon_index", 2)))
+            }
+        } catch (e: Exception) { }
+        for (ch in charms2) if (charms.none { it.id == ch.id }) charms.add(ch)
+        try {
+            val a = json(c, "40_crew_voices_2.json").getJSONArray("crew")
+            fun strs(a: org.json.JSONArray?) = if (a == null) emptyList() else (0 until a.length()).map { a.getString(it) }
+            for (i in 0 until a.length()) { val x = a.getJSONObject(i)
+                voices2[x.getString("worker_id")] = Voice(strs(x.optJSONArray("deck_lines")), strs(x.optJSONArray("fight_lines")), "") }
         } catch (e: Exception) { }
         // 34_training_puzzles_2.json: 훈련 퍼즐 30개 더 (3×3 판 포함)
         try {
@@ -247,14 +268,15 @@ object Fleet {
     }
 
     private fun loadOrder7(c: Context) {
-        try {
-            val a = json(c, "25_pirate_bosses.json").getJSONArray("bosses")
+        for ((file, off) in listOf("25_pirate_bosses.json" to 0, "39_pirate_bosses_2.json" to 100)) try {
+            val a = json(c, file).getJSONArray("bosses")
             for (i in 0 until a.length()) {
                 val b = a.getJSONObject(i); val r = b.optJSONObject("first_win_reward") ?: JSONObject()
                 val l = b.optJSONObject("lines") ?: JSONObject(); val st = b.optJSONObject("story") ?: JSONObject()
                 val cl = HashMap<String, String>(); b.optJSONObject("crew_lines")?.let { o -> o.keys().forEach { k -> cl[k] = o.getString(k) } }
+                if (bosses.any { it.id == b.getString("id") }) continue
                 bosses.add(Boss(b.getString("id"), b.optString("name"), b.optString("captain"), b.optInt("min_ship_level", 2), b.optString("unlock", "start"),
-                    strs(b.optJSONArray("ports")), b.optDouble("chance", .04).toFloat(), b.optInt("sprite_index", i), b.optInt("captain_icon_index", i),
+                    strs(b.optJSONArray("ports")), b.optDouble("chance", .04).toFloat(), off + b.optInt("sprite_index", i), off + b.optInt("captain_icon_index", i),
                     r.optInt("gold"), r.optInt("map_pieces"), if (r.isNull("cosmetic_id")) null else r.optString("cosmetic_id"),
                     l.optString("appear"), l.optString("lose"), l.optString("win"), cl,
                     st.optString("id", "story_" + b.getString("id")), st.optString("title"), st.optString("body")))
@@ -280,8 +302,8 @@ object Fleet {
                 milestones.add(Milestone(x.getString("id"), x.optInt("count", cond.optInt("value")), cond.optString("kind").contains("port") || x.getString("id").contains("all_ports"),
                     r.optInt("gold"), if (r.isNull("cosmetic_id")) null else r.optString("cosmetic_id"), x.optString("card"))) }
         } catch (e: Exception) { }
-        try {
-            val d = json(c, "27_ship_cosmetics_2.json")
+        for ((file, sheet) in listOf("27_ship_cosmetics_2.json" to 2, "38_ship_cosmetics_3.json" to 3)) try {
+            val d = json(c, file)
             val it0 = d.getJSONArray("items")
             for (i in 0 until it0.length()) {
                 val x = it0.getJSONObject(i); val a = x.optJSONObject("acquisition") ?: JSONObject()
@@ -289,8 +311,14 @@ object Fleet {
                 val conds = if (all == null) emptyList() else (0 until all.length()).map { k -> val o = all.getJSONObject(k)
                     Cond(o.optString("type"), o.optString("key", o.optString("boss_id", o.optString("milestone_id", o.optString("counter")))), o.optInt("value", o.optInt("level"))) }
                 decos.add(Deco(x.getString("id"), x.optString("slot"), x.optString("name"), x.optInt("icon_index", i), x.optString("desc"),
-                    x.optString("how_to_get_text"), a.optString("mode") != "manual_purchase", a.optJSONObject("cost")?.optInt("gold") ?: 0, conds, 2))
+                    x.optString("how_to_get_text"), a.optString("mode") != "manual_purchase", a.optJSONObject("cost")?.optInt("gold") ?: 0, conds, sheet))
             }
+        } catch (e: Exception) { }
+        try {
+            val a2 = json(c, "37_crew_charms_2.json").getJSONArray("charms")
+            for (i in 0 until a2.length()) { val x = a2.getJSONObject(i); val v = x.getJSONArray("value_by_level")
+                charms2.add(Charm(x.getString("id"), x.optString("name"), x.optString("rarity"), x.optString("effect"),
+                    (0 until v.length()).map { v.getDouble(it).toFloat() }, x.optString("best_for_role"), 100 + x.optInt("icon_index", i), x.optString("desc"))) }
         } catch (e: Exception) { }
         try {
             val d = json(c, "28_crew_charms.json")

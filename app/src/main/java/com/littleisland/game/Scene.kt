@@ -166,6 +166,12 @@ class Scene {
             if (critterWait <= 0f) { critterWait = 60f + Random.nextFloat() * 90f; critter = Critter(Random.nextInt(4), W + 24f, 0f) }
         }
     }
+    /** Lv11 이상이면 다 자란 선원 대사(40번)도 섞는다 */
+    private fun voiceOf(id: String, fight: Boolean): String? {
+        val base = Fleet.voices[id]?.let { if (fight) it.fight else it.deck } ?: emptyList()
+        val more = if (Game.crewLevel(id) >= 11) Fleet.voices2[id]?.let { if (fight) it.fight else it.deck } ?: emptyList() else emptyList()
+        return (base + more).randomOrNull()
+    }
     fun spawnCritter(kind: Int, x: Float, t: Float) { critter = Critter(kind, x, t) }
     private fun drawCritter() {
         val cr = critter ?: return
@@ -299,7 +305,7 @@ class Scene {
         val fight = u >= 0f && u < pA / (pA + .035f)
         if (fight) {
             Fleet.boss(v.pirate)?.let { b -> v.crew.firstOrNull { it in b.crewLines }?.let { id -> if (Random.nextBoolean()) { say(id, b.crewLines[id]!!); return true } } }
-            val id = v.crew.random(); val l = Fleet.voices[id]?.fight?.randomOrNull() ?: return false
+            val id = v.crew.random(); val l = voiceOf(id, true) ?: return false
             say(id, l); return true
         }
         val pr = Fleet.pairs.filter { p -> p.ids.all { it in v.crew } }
@@ -311,7 +317,7 @@ class Scene {
         }
         // 특별 항해 중이면 주인공 선원이 임무 대사를 자주 한다
         Fleet.mission(v.mission)?.let { m -> if (m.crew in v.crew && m.homeLine.isNotEmpty() && Random.nextBoolean()) { say(m.crew, m.homeLine); return true } }
-        val id = v.crew.random(); val l = Fleet.voices[id]?.deck?.randomOrNull() ?: return false
+        val id = v.crew.random(); val l = voiceOf(id, false) ?: return false
         say(id, l); return true
     }
 
@@ -945,7 +951,7 @@ class Scene {
         val y = y0 + (sin(time * 2.1f) * 1.2f).roundToInt()
         val pv = Game.voy?.pirate ?: ""
         val pi = when { pv.contains("gurok") || pv.contains("blockader") || pv.contains("farwater") -> 2; pv.contains("red") || pv.contains("raider") -> 1; else -> 0 }
-        Fleet.boss(pv)?.let { b -> acell("pirate_bosses", 4, 2, b.sprite, 72)?.let { bm ->
+        Fleet.boss(pv)?.let { b -> (if (b.sprite >= 100) acell("pirate_bosses_2", 4, 1, b.sprite - 100, 72) else acell("pirate_bosses", 4, 2, b.sprite, 72))?.let { bm ->
             c.save(); if (sinking) { c.rotate(18f * min(1f, (y0 - WL) / 20f), x, y); c.clipRect(0f, 0f, W.toFloat(), WL + 4) }
             Art.draw(c, bm, x, y + 5); c.restore(); return } }
         val pa = Data.pirates.indexOfFirst { it.id == pv }

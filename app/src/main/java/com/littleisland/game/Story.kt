@@ -70,8 +70,8 @@ object Story {
                 }
             }
             // 해적 우두머리 첫 승리 이야기 (25_pirate_bosses.json)
-            try {
-                val bs = JSONObject(c.assets.open("25_pirate_bosses.json").bufferedReader(Charsets.UTF_8).use { it.readText() }).getJSONArray("bosses")
+            for (file in listOf("25_pirate_bosses.json", "39_pirate_bosses_2.json")) try {
+                val bs = JSONObject(c.assets.open(file).bufferedReader(Charsets.UTF_8).use { it.readText() }).getJSONArray("bosses")
                 for (i in 0 until bs.length()) {
                     val b = bs.getJSONObject(i); val st = b.optJSONObject("story") ?: continue
                     val id = st.optString("id", "story_" + b.getString("id"))
