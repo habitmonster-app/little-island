@@ -280,6 +280,20 @@ class AppUi(val scene: Scene, val host: Host) {
                             c.skills.joinToString("\n") { "Lv" + it.level + " " + it.name + " (" + eff(it.effect, it.value) + ")" },
                         Data.Cost(Fleet.promoteGold, 0, 0), "선원으로", { Game.promote(w.id) }, w.name + "이(가) 선원이 됐어요"))
                 }
+                if (Game.promoted.isEmpty()) l.add(Tile("part:4", "선원 되는 법", "자리 " + Game.slots() + "칸", St.NORMAL,
+                    "알바가 섬에서 일을 " + Fleet.promoteContracts + "번 마치면 금화 " + Fleet.promoteGold + "으로 선원이 될 수 있어요. 선원은 배에 타고 항해할 때마다 경험치를 얻어 Lv" + Fleet.maxCrewLevel + "까지 자라고, 레벨마다 새 스킬이 열려요. 짝이 맞는 둘을 같이 태우면 보너스가 더 붙어요."))
+                for (i in 0 until 3) {
+                    val wk = Game.workers.getOrNull(i)
+                    l.add(when {
+                        wk != null -> { val d = Data.worker(wk.id); val left = Fleet.promoteContracts - Game.completedOf(wk.id)
+                            val cr = Fleet.crewOf(wk.id) != null && wk.id !in Game.promoted
+                            Tile("person", d?.name ?: "알바", if (cr && left > 0) "선원까지 " + left + "번" else mmss(wk.expire - now), St.DONE,
+                            (d?.name ?: "") + " · " + (d?.role ?: "") + "\n" + (d?.trait ?: "") + "\n" + (d?.look ?: "") + "\n\n남은 시간 " + mmss(wk.expire - now) +
+                                (if (cr) "\n일을 " + Fleet.promoteContracts + "번 마치면 선원이 될 수 있어요. 지금 " + Game.completedOf(wk.id) + "번" else "")) }
+                        i < Game.houses -> Tile("house", "빈 숙소", "구하는 중", St.NORMAL, "배가 항구에 가면 빈 숙소만큼 알바를 데려와요.")
+                        else -> Tile("lock", "숙소 없음", "짓기 탭", St.LOCKED, "숙소를 지으면 알바가 묵을 수 있어요.")
+                    })
+                }
                 // 부적 뽑기 (게임 안 쪽지·금화로만), 훈련 퍼즐, 가진 부적
                 if (Fleet.charms.isNotEmpty()) {
                     val rates = "일반 70 · 희귀 25 · 영웅 5%\n영웅 확정까지 " + (Fleet.pityAt - Game.pity) + "번\n같은 부적이 나오면 레벨 업"
@@ -313,17 +327,6 @@ class AppUi(val scene: Scene, val host: Host) {
                             null, if (crewList.isEmpty()) null else if (nextWho != null) "바꿔 달기" else "떼기", { Game.equipCharm(ch.id, nextWho) },
                             nextWho?.let { ch.name + " → " + (Fleet.crewOf(it)?.name ?: "") } ?: ch.name + "을(를) 뗐어요"))
                     }
-                }
-                if (Game.promoted.isEmpty()) l.add(Tile("part:4", "선원 되는 법", "자리 " + Game.slots() + "칸", St.NORMAL,
-                    "알바가 섬에서 일을 " + Fleet.promoteContracts + "번 마치면 금화 " + Fleet.promoteGold + "으로 선원이 될 수 있어요. 선원은 배에 타고 항해할 때마다 경험치를 얻어 Lv" + Fleet.maxCrewLevel + "까지 자라고, 레벨마다 새 스킬이 열려요. 짝이 맞는 둘을 같이 태우면 보너스가 더 붙어요."))
-                for (i in 0 until 3) {
-                    val wk = Game.workers.getOrNull(i)
-                    l.add(when {
-                        wk != null -> { val d = Data.worker(wk.id); Tile("person", d?.name ?: "알바", mmss(wk.expire - now), St.DONE,
-                            (d?.name ?: "") + " · " + (d?.role ?: "") + "\n" + (d?.trait ?: "") + "\n" + (d?.look ?: "")) }
-                        i < Game.houses -> Tile("house", "빈 숙소", "구하는 중", St.NORMAL, "배가 항구에 가면 빈 숙소만큼 알바를 데려와요.")
-                        else -> Tile("lock", "숙소 없음", "짓기 탭", St.LOCKED, "숙소를 지으면 알바가 묵을 수 있어요.")
-                    })
                 }
                 l.add(Tile("auto", "자동 고용", if (Game.autoHire) "켜짐" else "꺼짐", if (Game.autoHire) St.ON else St.OFF,
                     "고용비 " + Data.singleLimit + "금화까지, 하루 " + Data.dailyLimit + "금화, 금화 " + Data.reserveGold + "은 남겨 둬요.", null,
@@ -492,18 +495,19 @@ class AppUi(val scene: Scene, val host: Host) {
         val perPage = (((ph - 30) + gx) / (th + gx)).toInt().coerceAtLeast(1) * 3
         perPageNow = perPage
         val pages = (list.size + perPage - 1) / perPage
-        if (page >= pages) page = 0
+        if (page >= pages) page = (pages - 1).coerceAtLeast(0)
         for ((n, t) in list.drop(page * perPage).take(perPage).withIndex()) {
             val x = x0 + (n % 3) * (tw + gx); val y = y0 + (n / 3) * (th + gx)
             drawTile(t, x, y, tw, th)
             tileRects.add(Rect(x.toInt(), y.toInt(), (x + tw).toInt(), (y + th).toInt()) to t)
         }
         pageRects.clear()
-        if (pages > 1) for (pg in 0 until pages) {
-            val x = W / 2f - pages * 6 + pg * 12; val y = py + ph - 9
-            k.rect(c, x, y, 7f, 5f, if (pg == page) k.GOLD else k.col("#4a3420"))
-            pageRects.add(Rect(x.toInt() - 4, y.toInt() - 6, x.toInt() + 11, y.toInt() + 9) to pg)
+        // 쪽 넘기기: 제목 양옆의 큰 화살표 (점만으로는 다음 쪽이 있는 줄 몰랐다)
+        if (pages > 1) {
+            if (page > 0) { k.button(c, 8f, py + 4, 36f, 16f, "◀ 앞", true); pageRects.add(Rect(2, (py - 2).toInt(), 50, (py + 24).toInt()) to page - 1) }
+            if (page < pages - 1) { k.button(c, W - 52f, py + 4, 44f, 16f, "다음 ▶", true); pageRects.add(Rect(W - 58, (py - 2).toInt(), W - 2, (py + 24).toInt()) to page + 1) }
         }
+        if (pages > 1) k.text(c, (page + 1).toString() + " / " + pages + " 쪽" + (if (page < pages - 1) "  · 옆으로 밀어도 돼요" else ""), W / 2f, py + ph - 4, 9, k.GOLD, Paint.Align.CENTER, true)
         // 자원 막대
         val by = H - 22f
         k.rect(c, 20f, by, W - 40f, 18f, k.INK); k.rect(c, 21f, by + 1, W - 42f, 16f, k.col("#5d3a1f")); k.rect(c, 21f, by + 1, W - 42f, 1f, k.col("#a87444"))
@@ -555,6 +559,7 @@ class AppUi(val scene: Scene, val host: Host) {
         Game.dbReady() -> Game.Goal("d:boss", "오늘의 우두머리", null, true, false)
         Game.seasonReady() -> Game.Goal("d:season", "시즌 보상 받기", null, true, false)
         Game.renownReady() -> Game.Goal("d:renown", "명성 새 항해", null, true, false)
+        Data.workers.any { Game.canPromote(it.id) } -> Data.workers.first { Game.canPromote(it.id) }.let { w -> Game.Goal("d:promote", w.name + " 선원 승진", Data.Cost(Fleet.promoteGold, 0, 0), true, false) }
         else -> Game.goal()
     }
 
@@ -562,12 +567,13 @@ class AppUi(val scene: Scene, val host: Host) {
         val g = appGoal() ?: return
         val key = g.key
         if (key.startsWith("d:")) {
-            tab = if (key == "d:renown") 1 else 4; page = 0
+            tab = when (key) { "d:renown" -> 1; "d:promote" -> 3; else -> 4 }; page = 0
             val list = tiles()
             popup = when (key) {
                 "d:chest:1" -> list.firstOrNull { it.name == "출석 상자" }
                 "d:boss" -> list.firstOrNull { it.name == "오늘 우두머리" }
                 "d:season" -> list.firstOrNull { it.name.endsWith(" 시즌") }
+                "d:promote" -> list.firstOrNull { it.sub == "선원 승진!" }
                 else -> list.firstOrNull { it.name.startsWith("명성") }
             }
             return
@@ -689,6 +695,9 @@ class AppUi(val scene: Scene, val host: Host) {
         for ((r, pg) in pageRects) if (r.contains(ix, iy)) { page = pg; return }
         for ((r, t) in tileRects) if (r.contains(ix, iy)) { popup = t; return }
     }
+
+    /** 옆으로 밀어서 쪽 넘기기 (dir: +1 다음, -1 앞) */
+    fun swipe(dir: Int) { if (popup != null) return; page = (page + dir).coerceAtLeast(0) }
 
     /** 칸 내용(남은 시간 등)은 매번 다시 만들지만, 떠 있는 설명 창은 같은 칸의 새 내용으로 바꾼다 */
     fun refreshPopup() {

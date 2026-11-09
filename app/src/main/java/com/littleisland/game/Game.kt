@@ -1259,12 +1259,14 @@ object Game {
     }
 
     // ---------- 선원 ----------
-    fun canPromote(id: String) = id !in promoted && completedOf(id) >= Fleet.promoteContracts && workers.none { it.id == id } &&
+    // 일하는 중이어도 승진할 수 있다 (자동 고용이 같은 알바를 계속 데려오면 영영 못 올리던 문제)
+    fun canPromote(id: String) = id !in promoted && completedOf(id) >= Fleet.promoteContracts &&
         (Fleet.crewOf(id)?.let { has(it.unlock) } ?: false)
     @Synchronized fun promote(id: String): Boolean {
         if (!canPromote(id) || goldC < Fleet.promoteGold * 100L) return false
         goldC -= Fleet.promoteGold * 100L
         promoted.add(id); crewLv[id] = 1; crewXp[id] = 0
+        workers.removeAll { it.id == id }
         if (aboard.size < slots()) aboard.add(id)
         card("새 선원!", (Fleet.crewOf(id)?.name ?: "") + "이(가) 선원이 됐어요")
         storyDirty = true

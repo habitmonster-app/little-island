@@ -236,8 +236,16 @@ class MainActivity : Activity(), AppUi.Host {
             if (running) postInvalidateDelayed(66L)
         }
 
+        private var downX = 0f; private var downY = 0f
         override fun onTouchEvent(e: MotionEvent): Boolean {
-            if (e.action == MotionEvent.ACTION_UP) { app.tap(e.x / scale, e.y / scale); invalidate() }
+            if (e.action == MotionEvent.ACTION_DOWN) { downX = e.x; downY = e.y }
+            if (e.action == MotionEvent.ACTION_UP) {
+                val dx = e.x - downX; val dy = e.y - downY
+                // 판넬에서 옆으로 크게 밀면 쪽 넘기기, 아니면 톡
+                if (Math.abs(dx) > 30 * scale && Math.abs(dx) > Math.abs(dy) * 1.5f && downY / scale > 230) app.swipe(if (dx < 0) 1 else -1)
+                else app.tap(e.x / scale, e.y / scale)
+                invalidate()
+            }
             return true
         }
     }
