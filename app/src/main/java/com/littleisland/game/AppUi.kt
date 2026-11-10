@@ -647,6 +647,12 @@ class AppUi(val scene: Scene, val host: Host) {
             l.add(URow("boss:0", Game.stageTitle(), if (w > 0) "쉬는 중 " + (w / 60000 + 1) + "분 남았어요" else "승률 " + pct1(Game.stageOdds()) + (if (Game.stageBoss()) " · 우두머리! 쪽지 3" else " · 금화 " + gold(Game.stageGold())),
                 null, true, "", { if (w > 0) host.showAd { Game.skipStageCool(); fight() } else fight(); true }, btnText = if (w > 0) "광고 도전" else "도전!"))
         }
+        // 현상금 우두머리 (배 단계마다 한 명)
+        Game.bounty()?.takeIf { Game.dock }?.let { bt ->
+            val w = Game.bountyWait()
+            l.add(URow("boss:" + bt.sprite, "현상금 " + bt.name, if (w > 0) "쉬는 중 " + (w / 60000 + 1) + "분 남았어요" else "승률 " + pct1(Game.bountyOdds()) + " · 금화 " + gold(Game.bountyGold()),
+                null, true, "", { if (w > 0) host.showAd { Game.skipBountyCool(); fightBounty() } else fightBounty(); true }, btnText = if (w > 0) "광고 도전" else "현상금!", big = true))
+        }
         // 명성: 다 키우면 새 항해 (영구 보너스)
         if (Game.renownReady()) l.add(URow("title:0", "다시 출항! 명성 " + (Game.renown + 1), "판매 +10% · 승률 +2%p", null, true, "", { popup = renownTile(); true }, btnText = "출항", big = false))
         else if (Game.shipLevel >= Game.renownShip() - 1 || Game.renown > 0) {
@@ -844,7 +850,7 @@ class AppUi(val scene: Scene, val host: Host) {
     private var seenBattle = Game.lastBattleAt
     // ---------- 해적 토벌: 보스 도전처럼 대포와 피해 숫자가 터지는 싸움 장면 ----------
     private class Battle(val t0: Long, val win: Boolean, val my: Int, val en: Int, val title: String, val boss: Boolean, val gold: Long, val sprite: Int,
-                         val hits: List<Triple<Boolean, Int, Boolean>>)   // (내가 쐈나, 피해, 치명타)
+                         val hits: List<Triple<Boolean, Int, Boolean>>, val winSub: String? = null, val loseSub: String? = null)   // (내가 쐈나, 피해, 치명타)
     private var battle: Battle? = null
     private var battleShot = -1
     private val SHOT_MS = 520L
@@ -858,12 +864,23 @@ class AppUi(val scene: Scene, val host: Host) {
         val res = Game.challengeStage()
         if (res == 0) return
         val win = res == 1
+        startBattle(win, my, en, title, boss, gold, if (boss) Game.gang(n).sprite else n % 8)
+    }
+    private fun startBattle(win: Boolean, my: Int, en: Int, title: String, boss: Boolean, gold: Long, sprite: Int, winSub: String? = null, loseSub: String? = null) {
         fun split(total: Int): List<Int> { val w = List(4) { .6 + Math.random() }; val s = w.sum(); val l = w.map { (total * it / s).toInt().coerceAtLeast(1) }.toMutableList(); l[3] += total - l.sum(); return l }
         val mine = split(if (win) en else (en * (.55 + Math.random() * .3)).toInt())
         val theirs = split(if (win) (my * (.25 + Math.random() * .45)).toInt() else my)
         val hits = ArrayList<Triple<Boolean, Int, Boolean>>()
         for (i in 0 until 4) { hits.add(Triple(true, mine[i], mine[i] > en * .3f)); if (win && i == 3) break; hits.add(Triple(false, theirs[i], theirs[i] > my * .3f)) }
-        battle = Battle(System.currentTimeMillis(), win, my, en, title, boss, gold, if (boss) Game.gang(n).sprite else n % 8, hits); battleShot = -1
+        battle = Battle(System.currentTimeMillis(), win, my, en, title, boss, gold, sprite, hits, winSub, loseSub); battleShot = -1
+    }
+    private fun fightBounty() {
+        if (battle != null) return
+        val bt = Game.bounty() ?: return
+        val my = Game.myPower(); val gold = Game.bountyGold().toLong()
+        val res = Game.challengeBounty()
+        if (res == 0) return
+        startBattle(res == 1, my, bt.power, bt.name + " 현상금", true, gold, bt.sprite, "금화 +" + gold(gold) + " · 트로피 깃발 (판매 +5%)", "2시간 쉬거나 광고 보고 다시")
     }
     /** 굵은 테두리 글자 (피해 숫자가 배경에 묻히지 않게) */
     private fun boldText(s: String, x: Float, y: Float, size: Int, col: Int, align: Paint.Align = Paint.Align.CENTER) = Pix.bigText(c, s, x, y, size, col, align)
@@ -996,7 +1013,7 @@ class AppUi(val scene: Scene, val host: Host) {
             if (sl >= 1f) {
                 val pop = if (e < 330) ((330 - e) / 330f * 8).toInt() else 0
                 boldText(if (b.win) "승리!" else "패배…", W / 2f, by + 22, 22 + pop, if (b.win) k.col("#ffd23f") else k.col("#ff6b5b"))
-                k.text(c, if (b.win) "금화 +" + gold(b.gold) + (if (b.boss) " · 쪽지 +3" else "") else "30분 쉬거나 광고 보고 다시", W / 2f, by + 34, 9, k.CREAM, Paint.Align.CENTER, true)
+                k.text(c, if (b.win) b.winSub ?: ("금화 +" + gold(b.gold) + (if (b.boss) " · 쪽지 +3" else "")) else b.loseSub ?: "30분 쉬거나 광고 보고 다시", W / 2f, by + 34, 9, k.CREAM, Paint.Align.CENTER, true)
             }
         }
         c.restore()

@@ -1,0 +1,35 @@
+PW start ship2 5200
+EV d0.2 ship2 bounty ship2 won odds 0.29
+EV d0.7 ship2 refit ship2 1
+EV d0.8 ship2 refit ship2 2
+PW start ship3 7030
+EV d1.3 ship3 bounty ship3 won odds 0.41
+EV d1.5 ship3 refit ship3 1
+EV d1.7 ship3 refit ship3 2
+PW start ship4 9610
+EV d1.9 ship4 bounty ship4 won odds 0.26
+EV d3.6 ship4 refit ship4 1
+EV d4.2 ship4 refit ship4 2
+PW start ship5 11800
+EV d5.2 ship5 bounty ship5 won odds 0.28
+EV d8.3 ship5 refit ship5 1
+EV d9.6 ship5 refit ship5 2
+PW start ship6 14100
+EV d12.1 ship6 bounty ship6 won odds 0.38
+EV d15.4 ship6 refit ship6 1
+EV d17.1 ship6 refit ship6 2
+PW start ship7 15860
+EV d20.0 ship7 bounty ship7 won odds 0.19
+EV d26.8 ship7 refit ship7 1
+EV d29.6 ship7 refit ship7 2
+PW start ship8 18685
+EV d34.3 ship8 bounty ship8 won odds 0.12
+EV d41.0 ship8 refit ship8 1
+EV d43.2 ship8 refit ship8 2
+PW start ship9 21980
+EV d47.1 ship9 bounty ship9 won odds 0.19
+EV d61.5 ship9 refit ship9 1
+EV d64.7 ship9 refit ship9 2
+PW start ship10 25775
+EV d70.1 ship10 bounty ship10 won odds 0.08
+2:1.3시간 3:20.8시간 4:1.9일 5:5.1일 6:11.7일 7:19.9일 8:34.2일 9:46.8일 10:69.9일

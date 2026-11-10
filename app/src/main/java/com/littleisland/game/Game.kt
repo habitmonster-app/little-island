@@ -346,7 +346,7 @@ object Game {
         pearlUntil = sp.getLong("pearlUntil", 0L); pearlNext = sp.getLong("pearlNext", 0L)
         crewPts.clear(); sp.getString("crewPts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewPts[k] = v.split(".").map { x -> x.toIntOrNull() ?: 0 }.plus(listOf(0, 0, 0, 0)).take(4).toIntArray() }
         treeOwned.clear(); sp.getString("tree", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { treeOwned.add(it) }
-        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); festUntil = sp.getLong("festUntil", 0L); stayHome = sp.getBoolean("stayHome", false); tut = if (sp.contains("tut")) sp.getInt("tut", 0) else if (voyages > 3) 99 else 0; tips.clear(); sp.getString("tips", "")!!.split(",").filter { it.isNotEmpty() }.forEach { tips.add(it) }; stageCool = sp.getLong("stageCool", 0L); refits.clear(); sp.getString("refits", "")!!.split(",").filter { ":" in it }.forEach { refits[it.substringBefore(":").toInt()] = it.substringAfter(":").toInt() }; storyAt = sp.getLong("storyAt", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
+        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); festUntil = sp.getLong("festUntil", 0L); stayHome = sp.getBoolean("stayHome", false); tut = if (sp.contains("tut")) sp.getInt("tut", 0) else if (voyages > 3) 99 else 0; tips.clear(); sp.getString("tips", "")!!.split(",").filter { it.isNotEmpty() }.forEach { tips.add(it) }; stageCool = sp.getLong("stageCool", 0L); refits.clear(); sp.getString("refits", "")!!.split(",").filter { ":" in it }.forEach { refits[it.substringBefore(":").toInt()] = it.substringAfter(":").toInt() }; storyAt = sp.getLong("storyAt", 0L); bountyWon.clear(); sp.getString("bountyWon", "")!!.split(",").filter { it.isNotEmpty() }.forEach { bountyWon.add(it.toInt()) }; bountyCool = sp.getLong("bountyCool", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
         dbDay = sp.getLong("dbDay", -1L); seasonKey = sp.getString("seasonKey", "") ?: ""; seasonPts = sp.getInt("seasonPts", 0); seasonGot = sp.getInt("seasonGot", 0)
         visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
         set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
@@ -412,7 +412,7 @@ object Game {
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
             putLong("pearlUntil", pearlUntil); putLong("pearlNext", pearlNext)
-            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putInt("tut", tut); putLong("festUntil", festUntil); putBoolean("stayHome", stayHome); putString("tips", tips.joinToString(",")); putLong("stageCool", stageCool); putString("refits", refits.entries.joinToString(",") { it.key.toString() + ":" + it.value }); putLong("storyAt", storyAt); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
+            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putInt("tut", tut); putLong("festUntil", festUntil); putBoolean("stayHome", stayHome); putString("tips", tips.joinToString(",")); putLong("stageCool", stageCool); putString("refits", refits.entries.joinToString(",") { it.key.toString() + ":" + it.value }); putLong("storyAt", storyAt); putString("bountyWon", bountyWon.joinToString(",")); putLong("bountyCool", bountyCool); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
             putString("seasonKey", seasonKey); putInt("seasonPts", seasonPts); putInt("seasonGot", seasonGot)
             putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
@@ -730,6 +730,39 @@ object Game {
         d?.let { decoOwned.add(it.id); decoOn[it.slot] = it.id }
         card("배 개조!", (d?.name?.let { "$it 을(를) 달았어요 · " } ?: "") + "판매 +" + Math.round(REFIT_SALE * 100) + "%")
         save(); return d ?: Fleet.decos.firstOrNull()
+    }
+
+    // ---------- 현상금 우두머리: 배 단계마다 한 명. 이기면 큰 금화 상자 + 트로피 깃발 (판매 +5%) ----------
+    class Bounty(val name: String, val power: Int, val sprite: Int)
+    /** 힘은 "다음 배로 올라갈 때쯤의 함대 힘"에 맞췄다 (시뮬레이션). 처음엔 어렵고, 단계 끝 무렵 반반 */
+    val BOUNTIES = mapOf(
+        2 to Bounty("모래톱 두목 굴비", 7500, 0), 3 to Bounty("소금수염 두목", 10000, 1), 4 to Bounty("번개꼬리 두목", 12300, 3),
+        5 to Bounty("검은돛 여왕", 14600, 6), 6 to Bounty("쇠갈고리 대장", 16400, 4), 7 to Bounty("안개바다 유령선장", 19200, 7),
+        8 to Bounty("대왕문어 선장", 22500, 2), 9 to Bounty("폭풍눈 제독", 26300, 101), 10 to Bounty("바다왕 흑진주", 30000, 102))
+    const val TROPHY_SALE = .05f
+    const val BOUNTY_COOL_MS = 2 * 3600 * 1000L
+    val bountyWon = HashSet<Int>()
+    var bountyCool = 0L
+    fun trophySale() = bountyWon.size * TROPHY_SALE
+    fun bounty(): Bounty? = if (shipLevel >= 2 && shipLevel !in bountyWon) BOUNTIES[shipLevel] else null
+    fun bountyOdds(ids: List<String> = aboard.filter { it in promoted }.take(slots())): Float {
+        val b = bounty() ?: return 0f
+        return ((myPower(ids) - b.power) / 10000f + .5f).coerceIn(.05f, .90f)
+    }
+    fun bountyWait() = (bountyCool - System.currentTimeMillis()).coerceAtLeast(0L)
+    /** 금화 상자: 다음 배 값의 20% (10단계는 10단계 배 값의 30%) */
+    fun bountyGold(): Int {
+        val base = (Data.unlock("ship_" + (shipLevel + 1))?.cost?.gold ?: ((Data.unlock("ship_10")?.cost?.gold ?: 1_000_000) * 3 / 2)).toLong()
+        return (base / 5).coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
+    }
+    fun skipBountyCool() { bountyCool = 0L; save() }
+    /** 1 이김, -1 짐, 0 못 함 */
+    @Synchronized fun challengeBounty(): Int {
+        if (!dock || bounty() == null || bountyWait() > 0) return 0
+        val win = Random.nextFloat() < bountyOdds()
+        if (win) { goldC += bountyGold() * 100L; tickets += 3; bountyWon.add(shipLevel); bump("boss_win") }
+        else bountyCool = System.currentTimeMillis() + BOUNTY_COOL_MS
+        save(); return if (win) 1 else -1
     }
 
     fun renownReady() = shipLevel >= renownShip() && Fleet.core.all { partNext(it.id) == null && partLevel(it.id) > 1 }
@@ -1129,7 +1162,7 @@ object Game {
         if (v.step == 1 && f >= Data.fArrive) {
             v.step = 2
             val delivered = deliverReqs(v)
-            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f) + cb(v.crew, "sale_bonus") + renownSale() + refitSale() + tree("sale") + cs(v.crew, 3)
+            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f) + cb(v.crew, "sale_bonus") + renownSale() + refitSale() + trophySale() + tree("sale") + cs(v.crew, 3)
             packed = false
             val sale = floor((v.cw * p.buyW * (1 + cb(v.crew, "wood_price_bonus")) + v.cs * p.buyS * (1 + cb(v.crew, "stone_price_bonus"))) * mul * milestoneSale() * 100).toLong()
             goldC += sale; v.saleC = sale
