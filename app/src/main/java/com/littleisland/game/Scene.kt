@@ -632,6 +632,7 @@ class Scene {
     /** 그림 파일 bg_sea가 있으면 하늘·바다를 그 그림으로 (가로로 이어 붙여 흘러가게) */
     private fun artBackground(): Boolean {
         if (!Art.has("bg_sea")) return false
+        surfInit = false
         val h = hourNow()
         bgLayer("bg_sea", 255)
         // 저녁놀(17:30~19:00, 새벽 5:00~6:30)과 밤
@@ -664,11 +665,39 @@ class Scene {
         val bw = bg.width / SS.toFloat(); val bh = bg.height / SS.toFloat()
         val top = WL - bh * .5f
         val bottom = top + bh
-        p.color = bg.getPixel(bg.width / 2, 1) or (0xff shl 24); p.alpha = a; c.drawRect(0f, 0f, W.toFloat(), top + 1, p)
-        p.color = bg.getPixel(bg.width / 2, bg.height - 2) or (0xff shl 24); p.alpha = a; c.drawRect(0f, bottom - 1, W.toFloat(), H.toFloat(), p)
+        // 채우는 칸과 그림이 겹치면 반투명(저녁·비) 층에서 겹친 곳만 두 번 칠해져 하늘에 가로줄이 생긴다.
+        // 그래서 겹치지 않게 그림의 위·아래 끝에서 정확히 멈춘다.
+        p.color = bg.getPixel(bg.width / 2, 1) or (0xff shl 24); p.alpha = a; c.drawRect(0f, 0f, W.toFloat(), top, p)
+        p.color = bg.getPixel(bg.width / 2, bg.height - 2) or (0xff shl 24); p.alpha = a; c.drawRect(0f, bottom, W.toFloat(), H.toFloat(), p)
         p.alpha = 255
         var x = -((scroll * .5f) % bw)
         while (x < W) { Art.draw(c, bg, x + bw / 2f, bottom, false, a); x += bw }
+        // 물결용: 그림의 수면 띠(청록) 색을 층마다 섞어 둔다
+        // 하얀 거품을 피해서, 여러 곳 중 가장 덜 하얀 수면 색
+        val sy = (bg.height / 2 + SS * 1.2f).toInt().coerceAtMost(bg.height - 1)
+        val sc = (1..9).map { bg.getPixel(bg.width * it / 10, sy) }.minByOrNull { Color.red(it) + Color.green(it) + Color.blue(it) }!! or (0xff shl 24)
+        val dc = bg.getPixel(bg.width / 3, (bg.height / 2 + SS * 6).coerceAtMost(bg.height - 1)) or (0xff shl 24)
+        deepC = if (!surfInit) dc else mix(deepC, dc, a / 255f)
+        surfC = if (!surfInit) sc else mix(surfC, sc, a / 255f); surfInit = true
+    }
+    private var surfC = 0
+    private var deepC = 0
+    private var surfInit = false
+
+    /** 수면을 일자 대신 출렁이는 물결로: 그림의 곧은 수면 띠를 물결 모양으로 덮고, 물마루에 하얀 거품 */
+    private fun waveSurface(time: Float) {
+        if (!surfInit) return
+        val sc = scroll; val band = 2.6f
+        var x = 0f
+        while (x < W) {
+            val w = sin(x * .09f + time * 1.8f + sc * .05f) * 1.3f + sin(x * .21f - time * 2.6f + sc * .08f) * .7f
+            val crest = ((WL - 2f + w) * SS).roundToInt() / SS.toFloat()
+            r(x, crest, 1f, WL + band - crest, surfC)
+            if (w < -1.2f) { ga = .9f; r(x, crest, 1f, 1f / SS * 2, Color.WHITE); ga = 1f }
+            x += 1f
+        }
+        // 배 밑바닥이 물에 잠겨 보이게 수면 아래를 살짝 덮는다
+        ga = .5f; r(0f, WL + band, W.toFloat(), 3f, deepC); ga = 1f
     }
 
     private fun sky(time: Float, h: Float) {
@@ -767,6 +796,7 @@ class Scene {
 
     /** 배 앞쪽 물: 배가 물에 잠겨 보이게 띠를 덮는다 */
     private fun foreWater(time: Float) {
+        if (surfInit) { waveSurface(time); return }   // 그림 배경이면 물결이 수면을 맡는다
         ga = .55f
         r(0f, WL + 3, W.toFloat(), 3f, sea)
         ga = .3f
