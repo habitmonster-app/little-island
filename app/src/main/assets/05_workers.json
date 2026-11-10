@@ -900,12 +900,12 @@
     "global_effects": {
       "sale_bonus_cap": 0.06,
       "pirate_win_bonus_cap": 0.02,
-      "stacking": "활성 계약마다 더한 뒤 각각 상한을 적용한다. 같은 알바의 영구 숙련 배수는 없음.",
+      "stacking": "활성 계약마다 더한 뒤 각각 상한을 적용한다. 같은 견습선원의 영구 숙련 배수는 없음.",
       "sale_bonus_scope": "화물 판매 수입만. 해적 보상·사건 보상·부재 보상의 보상 수치에는 중복 적용하지 않음.",
       "snapshot_at": "voyage_departure",
       "snapshot_valid_until": "same_voyage_settlement",
       "contract_expiry_during_voyage": "이미 출항한 항해의 효과는 유지하고 다음 출항부터 제외한다.",
-      "market_stack": "판매 수입에 시장 보너스와 알바 보너스를 더한 배수를 한 번 적용한다."
+      "market_stack": "판매 수입에 시장 보너스와 견습선원 보너스를 더한 배수를 한 번 적용한다."
     },
     "auto_hire": {
       "enabled_by_default": true,
@@ -934,10 +934,10 @@
         "within_user_budget",
         "at_most_one_hire_this_voyage"
       ],
-      "budget_failure": "알바 없이 교역과 주민 생산을 계속한다. 금화가 음수가 되지 않으며 경고 팝업을 반복하지 않는다.",
+      "budget_failure": "견습선원 없이 교역과 주민 생산을 계속한다. 금화가 음수가 되지 않으며 경고 팝업을 반복하지 않는다.",
       "manual_hire_budget_interaction": "직접 고용은 확인 화면에 보이는 고용비로 처리하고 자동 고용 예산을 차감하지 않는다.",
       "offline": "직접 선택한 자동 고용 설정으로 부재 보상 계산 구간 안에서만 계약을 새로 체결한다. 초과 부재 구간 정리는 경제 파일의 공통 시계 규칙을 따른다.",
-      "higher_wage_worker_policy": "기본 단건 상한을 넘는 알바는 자동 고용하지 않는다. 플레이어가 앱에서 명단·단건 상한·총예산을 직접 바꾼 뒤에만 해당 설정을 적용한다."
+      "higher_wage_worker_policy": "기본 단건 상한을 넘는 견습선원은 자동 고용하지 않는다. 플레이어가 앱에서 명단·단건 상한·총예산을 직접 바꾼 뒤에만 해당 설정을 적용한다."
     },
     "revisit_progression": "완료한 계약만 단골 횟수에 더한다. 이야기 읽음이나 실시간 접속 횟수를 세지 않으며 능력치 대신 편지·작업 도구 외형만 열린다.",
     "display_templates": {

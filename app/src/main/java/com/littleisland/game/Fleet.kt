@@ -498,10 +498,10 @@ object Fleet {
     fun partText(p: Part, value: Float): String = when (p.id) {
         "hull" -> "짐 +" + pct(value)
         "sail" -> "항해 시간 -" + pct(value)
-        "cannon" -> "해적 승률 +" + pts(value)
+        "cannon" -> "승률 +" + pts(value)
         "lookout" -> "해적 만남 -" + pct(value)
         "cabin" -> "선원 능력 +" + pct(value)
-        else -> "좋은 사건 +" + pts(value)
+        else -> "행운 +" + pts(value)
     }
     fun pct(v: Float) = (v * 100 + .5f).toInt().toString() + "%"
     fun pts(v: Float): String { val x = v * 100; return (if (x % 1f == 0f) x.toInt().toString() else "%.1f".format(x)) + "%p" }

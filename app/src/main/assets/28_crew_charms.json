@@ -696,7 +696,7 @@
       "같은 명단의 활성 짝 보너스를 effect별로 한 번 합산한다.",
       "같은 명단의 착용 부적 총 효과에 착용자의 역할 배율을 곱해 effect별로 더한다.",
       "스킬·짝·부적 합계에 기존 effect_caps를 한 번 적용한다.",
-      "19_ship_parts.json의 계산 규칙으로 부품·배·건물·현재 섬 알바 효과와 결합하고 기존 최종 상한을 유지한다."
+      "19_ship_parts.json의 계산 규칙으로 부품·배·건물·현재 섬 견습선원 효과와 결합하고 기존 최종 상한을 유지한다."
     ],
     "formula": "capped_crew[effect] = min(effect_caps[effect], unlocked_skill_sum[effect] + active_synergy_sum[effect] + aboard_charm_sum[effect])",
     "charms_have_no_separate_cap_pool": true,

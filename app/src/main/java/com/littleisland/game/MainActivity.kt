@@ -268,7 +268,7 @@ class MainActivity : Activity(), AppUi.Host {
                     if (!moved && Math.abs(e.y - downY) > 8 * scale) { moved = true; removeCallbacks(repeat) }
                     if (moved) { app.scrollBy((e.y - lastY) / scale); lastY = e.y; invalidate() }
                 }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> { removeCallbacks(repeat); if (!moved && !held && e.action == MotionEvent.ACTION_UP) app.tap(e.x / scale, e.y / scale); invalidate() }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> { removeCallbacks(repeat); if (!moved && !held && e.action == MotionEvent.ACTION_UP) app.tap(e.x / scale, e.y / scale); if (moved) app.scrollEnd(); invalidate() }
             }
             return true
         }

@@ -76,8 +76,11 @@ object Pix {
     }
 
     /** 글자가 폭을 넘으면 끝을 줄인다 */
+    /** 글자가 잘릴 때 알려 준다 (검사용) */
+    var onCut: ((String) -> Unit)? = null
     @Synchronized fun fit(s: String, size: Int, maxW: Float): String {
         if (wsafe(s, size) <= maxW) return s
+        onCut?.invoke(s)
         var t = s
         while (t.length > 1 && wsafe("$t…", size) > maxW) t = t.dropLast(1)
         return "$t…"
@@ -337,7 +340,7 @@ object Pix {
     }
 
     @Synchronized fun icon(c: Canvas, name: String, x: Float, y: Float, s: Float, alpha: Int = 255) {
-        // 그림 시트의 한 칸: "part:0" 부품, "skill:3" 스킬, "face:2" 알바 얼굴
+        // 그림 시트의 한 칸: "part:0" 부품, "skill:3" 스킬, "face:2" 견습선원 얼굴
         val ci = name.indexOf(':')
         if (ci > 0) {
             val idx = name.substring(ci + 1).toIntOrNull() ?: 0

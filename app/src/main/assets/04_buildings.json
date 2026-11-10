@@ -7,7 +7,7 @@
   "buildings": [
     {
       "id": "house_1",
-      "name": "알바 숙소 1",
+      "name": "견습선원 숙소 1",
       "unlock": "start",
       "requires": [],
       "requires_buildings": [],
@@ -16,7 +16,7 @@
         "wood": 20,
         "stone": 0
       },
-      "effect": "계약 중인 알바가 쉬는 방이에요.",
+      "effect": "계약 중인 견습선원이 쉬는 방이에요.",
       "effects": {
         "temporary_worker_slots": 1
       },
@@ -35,7 +35,7 @@
     },
     {
       "id": "house_2",
-      "name": "알바 숙소 2",
+      "name": "견습선원 숙소 2",
       "unlock": "house_1",
       "requires": [
         "house_1"
@@ -48,7 +48,7 @@
         "wood": 40,
         "stone": 10
       },
-      "effect": "계약 중인 알바가 쉬는 방이에요.",
+      "effect": "계약 중인 견습선원이 쉬는 방이에요.",
       "effects": {
         "temporary_worker_slots": 1
       },
@@ -67,7 +67,7 @@
     },
     {
       "id": "house_3",
-      "name": "알바 숙소 3",
+      "name": "견습선원 숙소 3",
       "unlock": "house_1",
       "requires": [
         "house_1"
@@ -80,7 +80,7 @@
         "wood": 80,
         "stone": 30
       },
-      "effect": "계약 중인 알바가 쉬는 방이에요.",
+      "effect": "계약 중인 견습선원이 쉬는 방이에요.",
       "effects": {
         "temporary_worker_slots": 1
       },
@@ -264,7 +264,7 @@
         "wood": 100,
         "stone": 40
       },
-      "effect": "일하는 알바의 채집을 조금 도와요.",
+      "effect": "일하는 견습선원의 채집을 조금 도와요.",
       "effects": {
         "worker_own_gather_rate_bonus": 0.05
       },

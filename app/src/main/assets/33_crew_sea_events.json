@@ -440,7 +440,7 @@
     "roll_scope": "항해 전체에 한 번. 선원마다 25%씩 검사하지 않는다.",
     "max_events_per_voyage": 1,
     "when": "출항 명단·레벨·항해 ID를 저장하는 같은 트랜잭션에서 선택 결과도 저장한다.",
-    "eligible_crew": "출항 스냅샷에 실제 승선한 승진 선원 중 min_crew_level을 충족하는 사건이 하나 이상 있는 고유 crew ID. 대기 선원·섬 알바·서린·주민은 제외한다.",
+    "eligible_crew": "출항 스냅샷에 실제 승선한 승진 선원 중 min_crew_level을 충족하는 사건이 하나 이상 있는 고유 crew ID. 대기 선원·섬 견습선원·서린·주민은 제외한다.",
     "eligible_events": "선택된 crew가 일치하고 출항 당시 레벨 >= min_crew_level인 사건. Lv10이면 그 선원의 Lv1·Lv5·Lv10 사건이 모두 후보이다.",
     "selection_order": [
       "적격 선원이 없으면 사건 없음으로 저장하고 종료한다.",

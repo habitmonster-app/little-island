@@ -651,13 +651,13 @@
    "stat_bonus": 0,
    "reason": "처음부터 항해를 이끄는 기존 서사를 유지한다. 배치 가능한 선원 12명과 별도로 등장한다."
   },
-  "promoted_worker_housing": "선원은 섬 인구와 알바 숙소 칸에 포함하지 않는다.",
-  "promoted_worker_future_hire": "승진한 인물은 일반 알바 고용 후보에서 제외한다.",
+  "promoted_worker_housing": "선원은 섬 인구와 견습선원 숙소 칸에 포함하지 않는다.",
+  "promoted_worker_future_hire": "승진한 인물은 일반 견습선원 고용 후보에서 제외한다.",
   "promoted_worker_island_production": 0,
   "bench_production": 0,
   "bench_xp": 0,
-  "contract_bonus_after_promotion": "승진한 본인의 기존 알바 채집·판매·해적 효과를 중복 적용하지 않는다.",
-  "other_active_island_workers": "승진하지 않은 현재 계약 알바의 기존 효과는 기존 상한 안에서 별도로 유지한다.",
+  "contract_bonus_after_promotion": "승진한 본인의 기존 견습선원 채집·판매·해적 효과를 중복 적용하지 않는다.",
+  "other_active_island_workers": "승진하지 않은 현재 계약 견습선원의 기존 효과는 기존 상한 안에서 별도로 유지한다.",
   "preserve_old_cosmetics_and_completed_contract_count": true,
   "unfinished_contract": "근무 중인 계약을 강제로 끊거나 승진 명목으로 완료 처리하지 않는다.",
   "promotion_optional": "5회·10회 계약 기념품을 먼저 얻고 싶다면 승진 전에 계약을 더 이어 갈 수 있다.",
@@ -704,7 +704,7 @@
    "출항 선원들의 해금 스킬을 effect별 합산",
    "활성 짝 보너스를 같은 effect에 합산",
    "effect_caps를 한 번 적용",
-   "19_ship_parts.json의 부품 현재값 및 기존 배·섬 알바·건물 효과와 결합"
+   "19_ship_parts.json의 부품 현재값 및 기존 배·섬 견습선원·건물 효과와 결합"
   ],
   "probability_unit": "0.01 = 1%p; cargo/speed/sale/repair bonuses use relative fractions",
   "repair_after_loss": "이름은 기존 요청 키를 유지한다. 치료·체력 회복이 아니라 패배 시 화물 손실률을 낮추는 자동 안전 조치다.",
@@ -819,7 +819,7 @@
  "balance_notes": {
   "promotion_min_completed_work_hours": 12,
   "first_promotion_gold": 200,
-  "promotion_timing": "같은 알바의 6시간 계약 두 번이 정상 종료되어야 하므로 순수 근무만 12시간이다. 두 번째 고용 및 왕복·확인 시간에 따라 실제 첫 승진은 더 늦어질 수 있다.",
+  "promotion_timing": "같은 견습선원의 6시간 계약 두 번이 정상 종료되어야 하므로 순수 근무만 12시간이다. 두 번째 고용 및 왕복·확인 시간에 따라 실제 첫 승진은 더 늦어질 수 있다.",
   "separation_of_early_and_long_progression": "초반 몇 분 간격 성장은 부품이 담당하고, 선원은 계약을 거쳐 장기적으로 성장한다.",
   "voyages_from_level_1_to_5": 34,
   "voyages_from_level_1_to_10": 244,
@@ -827,7 +827,7 @@
   "hours_from_level_1_to_10_at_12_minute_route": 48.8,
   "xp_estimate_assumptions": "승진 이후 모든 항해에 같은 선원이 탑승하고, 항해 대기·부재 한도 손실 없이 12분 왕복을 완료한다고 가정한다. 속도 강화와 항로에 따라 달라진다.",
   "max_active_synergies_with_5_slots": 2,
-  "all_12_promoted": "알바 12명을 전부 승진시키면 일반 알바 채집은 없어지고 주민 3명과 기존 보급 생산이 남는다. 승진은 선택 사항이며 대기 선원이 자원을 자동 생산하지 않는다.",
+  "all_12_promoted": "견습선원 12명을 전부 승진시키면 일반 견습선원 채집은 없어지고 주민 3명과 기존 보급 생산이 남는다. 승진은 선택 사항이며 대기 선원이 자원을 자동 생산하지 않는다.",
   "validation": "ID·레벨·확률 상한·모든 2~5인 편성 조합을 정적으로 검증한 수치. 실제 앱 통합과 플레이 검증은 아직 수행하지 않음."
  }
 }

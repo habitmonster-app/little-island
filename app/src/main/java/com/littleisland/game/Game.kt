@@ -85,7 +85,7 @@ object Game {
     var autoSail = true
     var autoHire = true
     var autoBuild = true                       // 금화가 안 드는 기본 시설은 알아서 짓기
-    var hireAny = false                        // 비싼 알바도 자동 고용
+    var hireAny = false                        // 비싼 견습선원도 자동 고용
     var supplyT = 0f; private set              // 부두 짐배 주기
     var supplies = 0                           // 짐배 도착 수 (화면 연출용, Scene이 0으로 돌림)
     private var hireSpent = 0; private var hireDay = -1L
@@ -97,7 +97,7 @@ object Game {
     fun prodMul(lv: Int) = (1 + .1f * lv) * Math.pow(2.0, (lv / 10).toDouble()).toFloat()
     fun prodCost(lv: Int) = Data.Cost(Math.round(20 * Math.pow(1.2, lv.toDouble())).coerceAtMost(2_000_000_000L).toInt(), 0, 0)
     fun storeCost(lv: Int) = Data.Cost(Math.round(60 * Math.pow(1.3, lv.toDouble())).coerceAtMost(2_000_000_000L).toInt(), 0, 0)
-    /** 초당 나무·돌 (주민+알바+짐배) */
+    /** 초당 나무·돌 (주민+견습선원+짐배) */
     fun woodRate(): Float { var r = RESIDENTS * Data.gatherRate * Data.woodFrac; for (w in workers) Data.worker(w.id)?.let { d -> r += Data.gatherRate * Data.woodFrac * (1 + d.woodBonus) }
         if (dock) r += (Data.supplyW[0] + Data.supplyW[1]) / 2f / Data.supplyEvery; return r * prodMul(woodLv) }
     fun stoneRate(): Float { var r = RESIDENTS * Data.gatherRate * Data.stoneFrac; for (w in workers) Data.worker(w.id)?.let { d -> r += Data.gatherRate * Data.stoneFrac * (1 + d.stoneBonus) }
@@ -117,7 +117,7 @@ object Game {
     fun ship() = Data.ship(shipLevel)
     fun port() = Data.port(route)
 
-    // ---------- 알바 ----------
+    // ---------- 견습선원 ----------
     class Contract(val id: String, val expire: Long)
     val workers = ArrayList<Contract>()
     private val completed = HashMap<String, Int>()
@@ -128,7 +128,7 @@ object Game {
 
     // ---------- 배 부품·선원 ----------
     val parts = HashMap<String, Int>()                 // 부품 id → 레벨 (0~20)
-    val promoted = LinkedHashSet<String>()             // 선원이 된 알바
+    val promoted = LinkedHashSet<String>()             // 선원이 된 견습선원
     val aboard = ArrayList<String>()                   // 다음 출항에 탈 선원
     private val crewLv = HashMap<String, Int>()
     private val crewXp = HashMap<String, Int>()
@@ -284,7 +284,7 @@ object Game {
 
         // 금화: 예전엔 정수, 이제 1/100 단위
         goldC = if (sp.contains("goldC")) sp.getLong("goldC", 0L) else sp.getInt("gold", 0) * 100L
-        // 알바: 예전엔 만료 시각만, 이제 "id:만료"
+        // 견습선원: 예전엔 만료 시각만, 이제 "id:만료"
         workers.clear()
         val raw = sp.getString("workers", "")!!.split(",").filter { it.isNotEmpty() }
         val haesol = listOf("yeoul", "mungi")
@@ -864,7 +864,7 @@ object Game {
     }
 
     private fun step(t: Long, dt: Float) {
-        // 알바 계약 종료
+        // 견습선원 계약 종료
         val it = workers.iterator()
         while (it.hasNext()) {
             val w = it.next()
@@ -872,10 +872,10 @@ object Game {
                 it.remove()
                 completed[w.id] = completedOf(w.id) + 1
                 flag("worker_leave_1")
-                Data.worker(w.id)?.let { d -> card("알바가 떠났어요", d.name + "의 계약이 끝났어요") }
+                Data.worker(w.id)?.let { d -> card("견습선원이 떠났어요", d.name + "의 계약이 끝났어요") }
             }
         }
-        // 채집: 주민은 기본 속도, 알바는 각자 보너스 (밭이 있으면 알바만 조금 더)
+        // 채집: 주민은 기본 속도, 견습선원은 각자 보너스 (밭이 있으면 견습선원만 조금 더)
         var rw = RESIDENTS * Data.gatherRate * Data.woodFrac
         var rs = RESIDENTS * Data.gatherRate * Data.stoneFrac
         val fm = if (field) 1f + Data.fieldBonus else 1f
@@ -959,7 +959,7 @@ object Game {
         "대포 Lv" + partLevel("cannon") to partValue("cannon"),
         "선원 스킬·부적" to cb(ids, "pirate_win_bonus"),
         "등대" to (if (lighthouse) Data.lighthouseBonus else 0f),
-        "알바" to workerPirateBonus(),
+        "견습선원" to workerPirateBonus(),
         "명성 " + renown to renownWin(),
         "항해술" to tree("win"),
         "선원 대포술" to cs(ids, 0))
@@ -1084,7 +1084,7 @@ object Game {
         val gold = goldC / 100
         val busy = workers.map { it.id }.toSet()
         val list = Data.workers.filter { it.port == p.id && has(it.unlock) && it.id !in busy && it.id !in promoted }
-        // 첫 알바는 해솔항의 여울로 정해져 있다 (예비금 규칙 예외)
+        // 첫 견습선원은 해솔항의 여울로 정해져 있다 (예비금 규칙 예외)
         if (!has("worker_arrive_1")) {
             val y = list.firstOrNull { it.id == "yeoul" } ?: return null
             return if (gold >= y.wage) y.id else null
@@ -1104,10 +1104,10 @@ object Game {
         var line = "판매 금화 +" + v.saleC / 100 + (if (v.rewardC > 0) ", 보물 +" + v.rewardC / 100 else "")
         v.hire?.let { id ->
             val d = Data.worker(id)
-            workers.add(Contract(id, t + if (!has("worker_leave_1")) HOUR / 2 else (d?.hours ?: 6) * HOUR)) // 첫 알바는 30분만
+            workers.add(Contract(id, t + if (!has("worker_leave_1")) HOUR / 2 else (d?.hours ?: 6) * HOUR)) // 첫 견습선원은 30분만
             arrived++
             flag("worker_arrive_1")
-            line += ", " + (d?.name ?: "알바") + " 도착"
+            line += ", " + (d?.name ?: "견습선원") + " 도착"
         }
         if (treasurePending) {
             treasurePending = false; treasures++
@@ -1429,7 +1429,7 @@ object Game {
     }
 
     // ---------- 선원 ----------
-    // 일하는 중이어도 승진할 수 있다 (자동 고용이 같은 알바를 계속 데려오면 영영 못 올리던 문제)
+    // 일하는 중이어도 승진할 수 있다 (자동 고용이 같은 견습선원을 계속 데려오면 영영 못 올리던 문제)
     fun canPromote(id: String) = id !in promoted && completedOf(id) >= Fleet.promoteContracts &&
         (Fleet.crewOf(id)?.let { has(it.unlock) } ?: false)
     @Synchronized fun promote(id: String): Boolean {
@@ -1466,10 +1466,10 @@ object Game {
     /** 섬이 다음에 할 일. 기본 시설(숙소·창고·부두·밭)을 먼저, 그다음 배와 항구. */
     fun goal(): Goal? {
         val h = nextHouse(); val w = nextWarehouse()
-        if (houses == 0 && h != null) return Goal("house", "첫 알바 숙소", h.cost, houseReady(), true)
+        if (houses == 0 && h != null) return Goal("house", "첫 견습선원 숙소", h.cost, houseReady(), true)
         if (warehouse == 0 && w != null) return Goal("ware", "창고 1단계", w.second.cost, warehouseReady(), true)
         if (!dock) return Goal("dock", "부두", Data.dock?.cost ?: Data.Cost(0, 60, 20), dockReady(), true)
-        if (h != null && houseReady()) return Goal("house", "알바 숙소 " + (houses + 1) + "채", h.cost, true, true)
+        if (h != null && houseReady()) return Goal("house", "견습선원 숙소 " + (houses + 1) + "채", h.cost, true, true)
         if (warehouse < 2 && w != null && warehouseReady()) return Goal("ware", "창고 " + (warehouse + 1) + "단계", w.second.cost, true, true)
         if (fieldReady()) return Goal("field", "작은 밭", Data.field?.cost, true, true)
         // 그다음은 해적과 싸울 힘: 배 단계 → 부품 → 선원 레벨. 지금 살 수 있는 게 있으면 그것부터.

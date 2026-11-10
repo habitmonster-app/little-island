@@ -123,7 +123,7 @@ class Scene {
         var carry = 0       // 1 나무, 2 돌
         var dir = 1f
         var step = 0f
-        var wid = ""        // 알바면 알바 id
+        var wid = ""        // 견습선원이면 견습선원 id
     }
 
     private val trees = listOf(12f, 28f, 160f).map { Tree(it) }
@@ -134,7 +134,7 @@ class Scene {
     private val dockX = 170f
     private val people = ArrayList<Person>()
 
-    /** 주민 3명 + 지금 일하는 알바 */
+    /** 주민 3명 + 지금 일하는 견습선원 */
     private fun syncPeople() {
         val want = Game.RESIDENTS + Game.workers.size
         while (people.size < want) {
@@ -451,7 +451,7 @@ class Scene {
         updateSeabed(dt)
         if (sailing()) scroll += dt * 16f
         if (Game.levelUps > 0) { pops.add(Pop(dockX - 10, GROUND - 30, "선원 레벨 업!", 3.5f, true)); Game.levelUps = 0 }
-        if (Game.arrived > 0) { pops.add(Pop(dockX, GROUND - 24, "알바 도착", 3f)); Game.arrived = 0 }
+        if (Game.arrived > 0) { pops.add(Pop(dockX, GROUND - 24, "견습선원 도착", 3f)); Game.arrived = 0 }
         if (Game.supplies > 0) { if (islandOffset() == 0f) pops.add(Pop(dockX + 10, WL - 22, "짐배 +짐", 2.5f)); Game.supplies = 0 }
         // 해적 결과, 항구 판매 순간에 숫자를 띄운다
         val f = Game.voyFrac()
@@ -867,7 +867,7 @@ class Scene {
         intArrayOf(col("#714A36"), col("#D9B58A"), col("#B85B42"), col("#6D6250")),
         intArrayOf(col("#573B34"), col("#F0C49A"), col("#D5A751"), col("#3f8f8a")),
         intArrayOf(col("#334F5C"), col("#E0B895"), col("#668F9A"), col("#6D6250")),
-        intArrayOf(col("#d9b86a"), col("#E8C49A"), col("#5a9a4a"), col("#5a4a3a")),   // 알바 (밀짚모자)
+        intArrayOf(col("#d9b86a"), col("#E8C49A"), col("#5a9a4a"), col("#5a4a3a")),   // 견습선원 (밀짚모자)
         intArrayOf(col("#3a2a20"), col("#D9B58A"), col("#7a6ab0"), col("#4a4a5a")),
         intArrayOf(col("#8a4a2a"), col("#F0C49A"), col("#c07a3a"), col("#4a4a5a")),
     )
