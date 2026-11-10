@@ -513,7 +513,7 @@ class AppUi(val scene: Scene, val host: Host) {
         // 큰 금화 숫자와 초당 금화
         k.icon(c, "gold", 6f, top + 22, 1.6f)
         k.text(c, big(Game.gold), 25f, top + 36, 16, k.GOLD, Paint.Align.LEFT, true)
-        k.text(c, (if (Game.gpsAll() > 0.05f) "초당 +" + (if (Game.gpsAll() < 10) "%.1f".format(Game.gpsAll()) else big(Game.gpsAll().toLong())) + " · " else "") + "바다를 톡톡 눌러요!", 7f, top + 49, 8, k.CREAM, Paint.Align.LEFT, true)
+        k.text(c, (if (Game.gpsAll() > 0.05f) "초당 +" + (if (Game.gpsAll() < 10) "%.1f".format(Game.gpsAll()) else big(Game.gpsAll().toLong())) + " · " else "") + (if (Game.festLeft() > 0) "잔치! 톡톡 2배" else "바다를 톡톡 눌러요!"), 7f, top + 49, 8, k.CREAM, Paint.Align.LEFT, true)
         drawGoal(top + sceneH - 21)
         // 탭
         val ty = top + sceneH + 4
@@ -628,6 +628,15 @@ class AppUi(val scene: Scene, val host: Host) {
         if (Game.chestReady()) l.add(URow("chest:1", "보물 상자 도착!", "금화 " + big(Game.chestGold()) + " + 쪽지 1장", null, true, "", {
             val g = Game.openChest(); if (g > 0) { host.sound("chest"); coins(W / 2f, 300f, 24); floats.add(Float3(W / 2f, 300f, "+" + big(g), System.currentTimeMillis())) }; g > 0 }, btnText = "열기"))
         else l.add(URow("chest:1", "다음 보물 상자", mmss(Game.chestLeft()) + " 뒤에 도착해요", null, false, "", { false }, btnText = "대기"))
+        // 섬에 머물기 / 출항
+        if (Game.dock) {
+            val fl = Game.festLeft()
+            l.add(URow("anchor", if (fl > 0) "귀항 잔치 중!" else if (Game.atHome()) "섬에 들러 있어요" else "섬으로 돌아가기",
+                if (fl > 0) "톡톡 2배 · " + mmss(fl) + " 남음" else if (Game.stayHome) (if (Game.atHome()) "출항을 누르면 떠나요" else "돌아오면 섬에 머물러요")
+                else "귀항 잔치까지 항해 " + (Game.FEST_EVERY - Game.voyages % Game.FEST_EVERY) + "번",
+                null, true, "", { if (Game.festLeft() > 0 && !Game.stayHome) { Game.festUntil = 0L; Game.save(); true } else Game.toggleStay() },
+                btnText = if (Game.stayHome || fl > 0) "출항" else "섬으로"))
+        }
         // 해적 토벌 단계
         if (Game.dock) {
             val w = Game.stageWait()

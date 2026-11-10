@@ -26,7 +26,15 @@ object Game {
     /** 초당 금화 (최근 항해 판매로 어림) */
     var gps = 0f
     /** 바다를 톡 치면 받는 금화: 배가 클수록, 짐칸이 넓을수록 많다 */
-    fun tapGold(): Int = max(1, Math.round(gps * .4f) + shipLevel * shipLevel + (loadW() + loadS() * 2) / 20)
+    fun tapGold(): Int = max(1, Math.round(gps * .4f) + shipLevel * shipLevel + (loadW() + loadS() * 2) / 20) * (if (festLeft() > 0) 2 else 1)
+    // ---------- 귀항 잔치: 5번 항해마다 섬에 3분 머물며 톡톡 금화 2배 ----------
+    const val FEST_EVERY = 5
+    const val FEST_MS = 3 * 60_000L
+    var festUntil = 0L
+    var stayHome = false                 // '섬으로'를 누르면 돌아와서 '출항'을 누를 때까지 머문다
+    fun festLeft(now: Long = System.currentTimeMillis()) = (festUntil - now).coerceAtLeast(0L)
+    fun atHome() = voy == null && dock
+    fun toggleStay(): Boolean { stayHome = !stayHome; save(); return true }
     @Synchronized fun addTapGold(n: Int) { goldC += n * 100L; tapsDone++ }
     var tapsDone = 0
     var soundOn = true
@@ -322,7 +330,7 @@ object Game {
         pearlUntil = sp.getLong("pearlUntil", 0L); pearlNext = sp.getLong("pearlNext", 0L)
         crewPts.clear(); sp.getString("crewPts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewPts[k] = v.split(".").map { x -> x.toIntOrNull() ?: 0 }.plus(listOf(0, 0, 0, 0)).take(4).toIntArray() }
         treeOwned.clear(); sp.getString("tree", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { treeOwned.add(it) }
-        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); tut = if (sp.contains("tut")) sp.getInt("tut", 0) else if (voyages > 3) 99 else 0; tips.clear(); sp.getString("tips", "")!!.split(",").filter { it.isNotEmpty() }.forEach { tips.add(it) }; stageCool = sp.getLong("stageCool", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
+        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); festUntil = sp.getLong("festUntil", 0L); stayHome = sp.getBoolean("stayHome", false); tut = if (sp.contains("tut")) sp.getInt("tut", 0) else if (voyages > 3) 99 else 0; tips.clear(); sp.getString("tips", "")!!.split(",").filter { it.isNotEmpty() }.forEach { tips.add(it) }; stageCool = sp.getLong("stageCool", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
         dbDay = sp.getLong("dbDay", -1L); seasonKey = sp.getString("seasonKey", "") ?: ""; seasonPts = sp.getInt("seasonPts", 0); seasonGot = sp.getInt("seasonGot", 0)
         visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
         set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
@@ -388,7 +396,7 @@ object Game {
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
             putLong("pearlUntil", pearlUntil); putLong("pearlNext", pearlNext)
-            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putInt("tut", tut); putString("tips", tips.joinToString(",")); putLong("stageCool", stageCool); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
+            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putInt("tut", tut); putLong("festUntil", festUntil); putBoolean("stayHome", stayHome); putString("tips", tips.joinToString(",")); putLong("stageCool", stageCool); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
             putString("seasonKey", seasonKey); putInt("seasonPts", seasonPts); putInt("seasonGot", seasonGot)
             putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
@@ -908,7 +916,7 @@ object Game {
 
         // 항해
         val v = voy
-        if (v == null) { if (dock && autoSail && wood >= 1 && t - lastReturnAt >= HOME_STAY_MS) depart(t) }
+        if (v == null) { if (dock && autoSail && !stayHome && wood >= 1 && t - lastReturnAt >= HOME_STAY_MS && t >= festUntil) depart(t) }
         else voyageStep(v, t)
     }
 
@@ -1124,6 +1132,7 @@ object Game {
         Fleet.gardenAt(voyages)?.takeIf { it !== g0 && it.news.isNotEmpty() }?.let { line += "\n바닷속 정원 · " + it.news }
         voy = null
         lastReturnAt = t
+        if (voyages % FEST_EVERY == 0) { festUntil = t + FEST_MS; card("귀항 잔치!", "섬에 3분 머물러요. 바다를 톡톡 치면 금화 2배!") }
         Fleet.weather(weatherId)?.let { w -> line += "\n" + w.name + " · " + w.cardLine }
         weatherId = null
         card("배가 돌아왔어요", line)

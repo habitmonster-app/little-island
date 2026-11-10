@@ -454,6 +454,7 @@ class Scene {
         updateSeabed(dt)
         if (sailing()) scroll += dt * 16f
         if (Game.levelUps > 0) { pops.add(Pop(dockX - 10, GROUND - 30, "선원 레벨 업!", 3.5f, true)); Game.levelUps = 0 }
+        if (Game.festLeft() > 0 && islandOffset() == 0f && pops.none { it.text == "귀항 잔치!" }) pops.add(Pop(dockX - 40, GROUND - 34, "귀항 잔치!", 3f, true))
         if (Game.arrived > 0) { pops.add(Pop(dockX, GROUND - 24, "견습선원 도착", 3f)); Game.arrived = 0 }
         if (Game.supplies > 0) { if (islandOffset() == 0f) pops.add(Pop(dockX + 10, WL - 22, "짐배 +짐", 2.5f)); Game.supplies = 0 }
         // 해적 결과, 항구 판매 순간에 숫자를 띄운다
