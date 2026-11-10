@@ -908,7 +908,7 @@ object Game {
 
         // 항해
         val v = voy
-        if (v == null) { if (dock && autoSail && wood >= 1) depart(t) }
+        if (v == null) { if (dock && autoSail && wood >= 1 && t - lastReturnAt >= HOME_STAY_MS) depart(t) }
         else voyageStep(v, t)
     }
 
@@ -985,6 +985,8 @@ object Game {
     fun voyageSeconds(p: Data.Port = port(), ids: List<String> = aboard): Float =
         ceil(Data.baseSeconds * p.distance / ship().speed * (1 - speedCut(ids))).coerceIn(Data.minSeconds, Data.maxSeconds)
 
+    /** 돌아오면 섬 부두에 잠깐 머문다 (마을 구경할 시간) */
+    const val HOME_STAY_MS = 45_000L
     private fun depart(t: Long) {
         var p = port()
         if (!routeOk(p)) { route = "port_haesol"; p = port() }

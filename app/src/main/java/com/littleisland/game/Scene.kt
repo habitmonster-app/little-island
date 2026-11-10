@@ -416,10 +416,13 @@ class Scene {
     private fun shipX(): Float? {
         if (!Game.dock) return null
         val f = Game.voyFrac()
-        if (f < 0f) return dockX + 16
+        // 큰 배도 화면 밖으로 잘리지 않게 부두 자리를 왼쪽으로 당긴다
+        val lv = Game.shipLevel; val sw = if (lv <= 6) 54 + (lv - 1) * 8 else 94 + (lv - 6) * 4
+        val hx = min(dockX + 16, W - sw / 2f + 2)
+        if (f < 0f) return hx
         return when {
-            f < .05f -> lerp(dockX + 16, SAIL_X, ease(f / .05f))
-            f > .95f -> lerp(SAIL_X, dockX + 16, ease((f - .95f) / .05f))
+            f < .05f -> lerp(hx, SAIL_X, ease(f / .05f))
+            f > .95f -> lerp(SAIL_X, hx, ease((f - .95f) / .05f))
             else -> SAIL_X
         }
     }
