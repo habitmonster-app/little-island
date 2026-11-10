@@ -1,0 +1,47 @@
+PW start ship2 5200
+EV d0.3 ship2 bounty ship2 won odds 0.40
+EV d0.6 ship2 refit ship2 1
+EV d0.8 ship2 refit ship2 2
+PW start ship3 7310
+EV d1.0 ship3 bounty ship3 won odds 0.34
+EV d1.5 ship3 refit ship3 1
+EV d1.5 ship3 bigAccept ship3 need 1532100
+EV d1.6 ship3 refit ship3 2
+PW start ship4 9710
+EV d2.2 ship4 bounty ship4 won odds 0.35
+EV d3.5 ship4 refit ship4 1
+EV d3.5 ship4 bigDone ship4
+EV d3.9 ship4 refit ship4 2
+PW start ship5 11800
+EV d5.0 ship5 bounty ship5 won odds 0.31
+EV d8.0 ship5 refit ship5 1
+EV d8.0 ship5 bigAccept ship5 need 12523100
+EV d9.3 ship5 refit ship5 2
+EV d11.2 ship5 bigDone ship5
+PW start ship6 14916
+EV d11.4 ship6 bounty ship6 won odds 0.40
+EV d14.5 ship6 refit ship6 1
+EV d14.5 ship6 bigAccept ship6 need 42111200
+EV d16.1 ship6 refit ship6 2
+EV d17.8 ship6 bigDone ship6
+PW start ship7 15860
+EV d18.2 ship7 bounty ship7 won odds 0.17
+EV d24.8 ship7 refit ship7 1
+EV d24.8 ship7 bigAccept ship7 need 69620500
+EV d27.5 ship7 refit ship7 2
+EV d28.2 ship7 bigDone ship7
+PW start ship8 18685
+EV d31.0 ship8 bounty ship8 won odds 0.12
+EV d37.4 ship8 refit ship8 1
+EV d37.4 ship8 bigAccept ship8 need 237492200
+EV d39.5 ship8 refit ship8 2
+EV d40.8 ship8 bigDone ship8
+PW start ship9 21980
+EV d42.6 ship9 bounty ship9 won odds 0.20
+EV d56.2 ship9 refit ship9 1
+EV d56.2 ship9 bigAccept ship9 need 372488800
+EV d59.2 ship9 refit ship9 2
+EV d59.6 ship9 bigDone ship9
+PW start ship10 25775
+EV d63.4 ship10 bounty ship10 won odds 0.22
+2:1.5시간 3:21.8시간 4:1.9일 5:4.8일 6:11.2일 7:18.2일 8:30.8일 9:42.1일 10:63.0일

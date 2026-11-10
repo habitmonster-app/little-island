@@ -653,6 +653,18 @@ class AppUi(val scene: Scene, val host: Host) {
             l.add(URow("boss:" + bt.sprite, "현상금 " + bt.name, if (w > 0) "쉬는 중 " + (w / 60000 + 1) + "분 남았어요" else "승률 " + pct1(Game.bountyOdds()) + " · 금화 " + gold(Game.bountyGold()),
                 null, true, "", { if (w > 0) host.showAd { Game.skipBountyCool(); fightBounty() } else fightBounty(); true }, btnText = if (w > 0) "광고 도전" else "현상금!", big = true))
         }
+        // 항구 큰 주문 (배 3단계부터 단계마다 하나)
+        if (Game.bigAvail()) {
+            val nm = if (Game.bigActive()) Game.bigPort else Game.port().name
+            when {
+                Game.bigFull() -> l.add(URow("chest:1", nm + " 큰 주문", "금화 " + gold(Game.bigGold()) + " + 쪽지 5", null, true, "",
+                    { val g = Game.bigGold(); val ok = Game.bigClaim(); if (ok) { host.sound("chest"); coins(W / 2f, 300f, 30); floats.add(Float3(W / 2f, 300f, "+" + gold(g), System.currentTimeMillis())) }; ok }, btnText = "보상!", big = true))
+                Game.bigExpired() -> l.add(URow("chest:1", nm + " 큰 주문", "기한이 지났어요. 다시 받을 수 있어요", null, true, "", { Game.bigAccept() }, btnText = "다시 받기"))
+                Game.bigActive() -> { val left = Game.bigLeft(); val d = left / (24 * 3600_000L); val h = left / 3600_000L % 24
+                    l.add(URow("chest:1", nm + " 큰 주문 " + (Game.bigProg * 100 / Game.bigTarget) + "%", big(Game.bigProg) + "/" + big(Game.bigTarget) + " · " + (if (d > 0) "${d}일" else "${h}시간"), null, false, "", { false }, btnText = "모으는 중")) }
+                else -> l.add(URow("chest:1", nm + " 큰 주문", "7일 안에 판매 금화 " + big(Game.bigNeed()), null, true, "", { Game.bigAccept() }, btnText = "받기"))
+            }
+        }
         // 명성: 다 키우면 새 항해 (영구 보너스)
         if (Game.renownReady()) l.add(URow("title:0", "다시 출항! 명성 " + (Game.renown + 1), "판매 +10% · 승률 +2%p", null, true, "", { popup = renownTile(); true }, btnText = "출항", big = false))
         else if (Game.shipLevel >= Game.renownShip() - 1 || Game.renown > 0) {
