@@ -222,7 +222,7 @@
    "speed": 1.5,
    "pirate_win": 0.68,
    "upgrade_cost": {
-    "gold": 10000000,
+    "gold": 12000000,
     "wood": 1440,
     "stone": 900
    },
@@ -278,7 +278,7 @@
    "speed": 1.6,
    "pirate_win": 0.72,
    "upgrade_cost": {
-    "gold": 28000000,
+    "gold": 40000000,
     "wood": 1960,
     "stone": 1225
    },
@@ -334,7 +334,7 @@
    "speed": 1.7,
    "pirate_win": 0.76,
    "upgrade_cost": {
-    "gold": 65000000,
+    "gold": 110000000,
     "wood": 2560,
     "stone": 1600
    },
@@ -390,7 +390,7 @@
    "speed": 1.8,
    "pirate_win": 0.8,
    "upgrade_cost": {
-    "gold": 130000000,
+    "gold": 260000000,
     "wood": 3240,
     "stone": 2025
    },
@@ -446,7 +446,7 @@
    "speed": 1.95,
    "pirate_win": 0.84,
    "upgrade_cost": {
-    "gold": 250000000,
+    "gold": 600000000,
     "wood": 4000,
     "stone": 2500
    },

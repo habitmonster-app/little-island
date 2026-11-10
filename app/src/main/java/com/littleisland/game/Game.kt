@@ -111,7 +111,7 @@ object Game {
     /** 부품 10레벨마다 판매 금화 +10% (곱해서 쌓임) */
     fun partMilestones() = Fleet.parts.sumOf { partLevel(it.id) / 10 }
     fun crewMilestones() = promoted.sumOf { crewLevel(it) / 10 }
-    fun milestoneSale() = (Math.pow(1.1, partMilestones().toDouble()) * Math.pow(1.05, crewMilestones().toDouble())).toFloat()
+    fun milestoneSale() = Math.pow(1.1, partMilestones().toDouble()).toFloat()
     /** 선원도 부품처럼 배 단계만큼 열린다 (배 1·2단계 Lv10, 그 뒤 단계마다 +5, 10단계 Lv50) */
     fun crewCap() = min(Fleet.maxCrewLevel, max(10, shipLevel * 5))
     fun ship() = Data.ship(shipLevel)
@@ -605,9 +605,14 @@ object Game {
     val crewPts = HashMap<String, IntArray>()
     fun pts(id: String): IntArray = crewPts.getOrPut(id) { IntArray(4) }
     fun ptsTotal(id: String) = (crewLevel(id) - 1) * 2
-    fun ptsFree(id: String) = ptsTotal(id) - pts(id).sum()
+    fun ptsFree(id: String) = 0   // 능력치는 이제 레벨에 따라 저절로 오른다 (손으로 찍지 않음)
     /** 배에 탄 선원들이 찍은 능력치 합 */
-    fun cs(ids: List<String>, k: Int): Float = ids.filter { it in promoted }.sumOf { (crewPts[it]?.get(k) ?: 0).toDouble() }.toFloat() * STAT_PER[k] * (1 + partValue("cabin"))
+    fun cs(ids: List<String>, k: Int): Float = ids.filter { it in promoted }.sumOf { crewStat(it, k).toDouble() }.toFloat()
+    /** 선원 한 명이 레벨만큼 보태는 힘: 0 승률, 1 항해 시간, 2 짐칸, 3 판매. 10레벨마다 판매 ×1.4 */
+    fun crewStat(id: String, k: Int, lv: Int = crewLevel(id)): Float = (1 + partValue("cabin")) * when (k) {
+        0 -> lv * .002f; 1 -> lv * .003f; 2 -> lv * .004f
+        else -> (.015 * lv * Math.pow(1.35, (lv / 10).toDouble())).toFloat() }
+    fun crewSaleAll() = cs(aboard.take(slots()), 3)
     fun statText(k: Int, n: Int): String = when (k) { 0 -> "이길 확률 +" + "%.1f".format(n * STAT_PER[0] * 100).removeSuffix(".0") + "%p"
         1 -> "항해 시간 -" + n + "%"; 2 -> "짐칸 +" + n + "%"; else -> "판매 +" + n + "%" }
     @Synchronized fun statAdd(id: String, k: Int, d: Int): Boolean {

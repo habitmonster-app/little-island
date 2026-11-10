@@ -669,9 +669,11 @@ class AppUi(val scene: Scene, val host: Host) {
     /** 선원 얼굴: Lv11·30·50에서 그림이 바뀐다 (30·50 그림이 없으면 15 그림) */
     private fun faceOf(lv: Int) = if (lv >= 50) "face50:" else if (lv >= 30) "face30:" else if (lv >= 11) "face15:" else "face:"
     private val STAT_ICON = listOf("skill:6", "skill:1", "skill:0", "skill:3")
+    private fun pct(f: Float) = Math.round(f * 100).toString() + "%"
     fun crewRows(): List<URow> {
         val l = ArrayList<URow>()
         l.add(URow("", "선원 자리 " + Game.aboard.size + "/" + Game.slots() + " · 배에 탄 선원만 힘을 보태요", "", null, false, "", { false }, head = true))
+        if (Game.promoted.isNotEmpty()) l.add(URow("", "선원 덕분에 판매 +" + pct(Game.crewSaleAll()) + " · 승률 +" + "%.1f".format(Game.cs(Game.aboard.take(Game.slots()), 0) * 100).removeSuffix(".0") + "%p", "", null, false, "", { false }, head = true))
         for (w in Data.workers) if (Game.canPromote(w.id)) {
             val pi = Data.workers.indexOf(w); val cst = Data.Cost(Fleet.promoteGold, 0, 0)
             l.add(URow("face:$pi", w.name + " 선원으로", "알바 일을 마쳤어요. 선원이 될 수 있어요", cst, Game.canPay(cst), "승진", { Game.promote(w.id) }))
@@ -682,16 +684,10 @@ class AppUi(val scene: Scene, val host: Host) {
             val tc = Game.teachCost(id); val free = Game.ptsFree(id); val on = id in Game.aboard
             val nm = Fleet.crewOf(id)?.name ?: id
             l.add(URow(faceOf(lv) + pi, nm + " Lv" + lv + (if (on) " · 승선" else " · 쉬는 중"),
-                if (free > 0) "남은 점수 $free" else if (lv >= Fleet.maxCrewLevel) "최고 레벨이에요" else if (lv >= Game.crewCap()) "배 " + (lv / 5 + 1) + "단계에서 더 올라가요"
-                else Fleet.crewOf(id)?.skills?.firstOrNull { it.level > lv }?.let { sk -> "Lv" + sk.level + " 「" + sk.name + "」" } ?: "레벨이 오르면 점수 +2",
+                if (lv >= Fleet.maxCrewLevel) "판매 +" + pct(Game.crewStat(id, 3)) + " · 최고 레벨" else if (lv >= Game.crewCap()) "판매 +" + pct(Game.crewStat(id, 3)) + " · 배 " + (lv / 5 + 1) + "단계에서 더"
+                else Fleet.crewOf(id)?.skills?.firstOrNull { it.level == lv + 1 }?.let { _ -> "판매 +" + pct(Game.crewStat(id, 3)) + " · 다음에 새 스킬!" }
+                    ?: ("판매 +" + pct(Game.crewStat(id, 3)) + " → +" + pct(Game.crewStat(id, 3, lv + 1)) + (if ((lv + 1) % 10 == 0) " ×1.35!" else "")),
                 tc?.let { Data.Cost(it, 0, 0) }, tc != null && Game.gold >= tc, "+1", { Game.teach(id) }, costAt = { i -> Game.teachCostAt(id, i) }))
-            val a = Game.pts(id)
-            for (k in 0 until 4) {
-                val can = free > 0 && a[k] < Game.STAT_MAX
-                l.add(URow(STAT_ICON[k], Game.STAT_NAME[k] + " " + a[k] + "/" + Game.STAT_MAX, listOf("승률", "항해 시간", "짐칸", "판매")[k] + " " + Game.statText(k, a[k]).substringAfterLast(" ") +
-                    (if (a[k] < Game.STAT_MAX) " → " + Game.statText(k, a[k] + 1).substringAfterLast(" ") else ""),
-                    null, can, "", { Game.statAdd(id, k, 1) }, btnText = if (a[k] >= Game.STAT_MAX) "최고" else "점수 +1", small = true))
-            }
             if (!on && Game.aboard.size < Game.slots()) l.add(URow("ship", nm + " 배에 태우기", "자리가 비었어요", null, true, "", { Game.toggleAboard(id) }, btnText = "태우기", small = true))
         }
         return l
@@ -715,7 +711,7 @@ class AppUi(val scene: Scene, val host: Host) {
         // 10레벨을 넘기면 크게 축하
         val lvBefore = u.title.substringAfter(" Lv", "").takeWhile { it.isDigit() }.toIntOrNull()
         if (lvBefore != null && (lvBefore + n) / 10 > lvBefore / 10) { host.sound("win"); coins(W / 2f, 200f, 30)
-            floats.add(Float3(W / 2f, 230f, "Lv" + ((lvBefore + n) / 10 * 10) + " 달성! " + (if (u.icon == "wood" || u.icon == "stone" || u.icon == "store") "2배!" else if (u.icon.startsWith("face")) "판매 +5%" else "판매 +10%"), fxAt)) }
+            floats.add(Float3(W / 2f, 230f, "Lv" + ((lvBefore + n) / 10 * 10) + " 달성! " + (if (u.icon == "wood" || u.icon == "stone" || u.icon == "store") "2배!" else if (u.icon.startsWith("face")) "판매 ×1.35" else "판매 +10%"), fxAt)) }
         // 선원 새 스킬: 뽑기처럼 크게
         if (lvBefore != null && u.icon.startsWith("face")) Fleet.crew.firstOrNull { it.name == nm }?.skills?.lastOrNull { it.level in (lvBefore + 1)..(lvBefore + n) }?.let { sk ->
             host.sound("chest"); coins(W / 2f, 180f, 20); floats.add(Float3(W / 2f, 205f, "새 스킬! 「" + sk.name + "」", fxAt)) }
@@ -808,8 +804,10 @@ class AppUi(val scene: Scene, val host: Host) {
                          val hits: List<Triple<Boolean, Int, Boolean>>)   // (내가 쐈나, 피해, 치명타)
     private var battle: Battle? = null
     private var battleShot = -1
-    private val SHOT_MS = 430L
-    private fun battleEnd(b: Battle) = b.hits.size * SHOT_MS + 400L
+    private val SHOT_MS = 520L
+    private val INTRO_MS = 800L
+    private val FLY_MS = 300L
+    private fun battleEnd(b: Battle) = INTRO_MS + (b.hits.size - 1) * SHOT_MS + FLY_MS + 250L
     private fun fight() {
         if (battle != null) return
         val n = Game.pStage; val title = Game.stageName(n); val boss = (n + 1) % 10 == 0
@@ -824,60 +822,142 @@ class AppUi(val scene: Scene, val host: Host) {
         for (i in 0 until 4) { hits.add(Triple(true, mine[i], mine[i] > en * .3f)); if (win && i == 3) break; hits.add(Triple(false, theirs[i], theirs[i] > my * .3f)) }
         battle = Battle(System.currentTimeMillis(), win, my, en, title, boss, gold, n % 8, hits); battleShot = -1
     }
+    /** 굵은 테두리 글자 (피해 숫자가 배경에 묻히지 않게) */
+    private fun boldText(s: String, x: Float, y: Float, size: Int, col: Int, align: Paint.Align = Paint.Align.CENTER) {
+        val k = Pix; val o = size / 9f
+        for (dx in -1..1) for (dy in -1..1) if (dx != 0 || dy != 0) k.text(c, s, x + dx * o, y + dy * o, size, k.INK, align)
+        k.text(c, s, x, y + o * .8f, size, k.INK, align)
+        k.text(c, s, x, y, size, col, align)
+    }
     private fun drawBattle() {
         val b = battle ?: return
         val k = Pix; val now = System.currentTimeMillis(); val t = now - b.t0
-        if (t > battleEnd(b) + 2600) { battle = null; return }
-        val wl = top + sceneH * .6f
-        // 바탕: 하늘과 바다를 덮는다
-        k.rect(c, 0f, top, W.toFloat(), wl - top, k.col(if (b.boss) "#5a3a5e" else "#5d9fc4"))
-        k.rect(c, 0f, wl, W.toFloat(), top + sceneH - wl, k.col(if (b.boss) "#2b2550" else "#2d5f94"))
-        for (i in 0 until 9) k.rect(c, ((i * 29 + t / 40) % (W + 20)).toFloat() - 10, wl + 8 + (i % 3) * 14, 10f, 1f, k.col("#9cc8e8"))
-        // 지금까지 맞은 피해
-        var myHp = b.my.toFloat(); var enHp = b.en.toFloat()
-        for ((i, h) in b.hits.withIndex()) if (t >= i * SHOT_MS + 260) { if (h.first) enHp -= h.second else myHp -= h.second }
-        myHp = myHp.coerceAtLeast(0f); enHp = enHp.coerceAtLeast(0f)
-        val cur = ((t - 0) / SHOT_MS).toInt()
-        if (cur != battleShot && cur < b.hits.size) { battleShot = cur; host.sound("boom") }
-        // 배 두 척 (맞으면 살짝 흔들린다)
-        fun shake(mine: Boolean): Float { for ((i, h) in b.hits.withIndex()) { val d = t - (i * SHOT_MS + 260); if (h.first != mine && d in 0..180) return ((d / 30) % 2 * 2 - 1).toFloat() * 2f }; return 0f }
-        val sink = t > battleEnd(b)
-        scene.shipArt(64)?.let { bm -> src.set(0, 0, bm.width, bm.height)
-            val dy = if (sink && !b.win) ((t - battleEnd(b)) / 60f).coerceAtMost(30f) else 0f
-            dst.set((22 + shake(true)).toInt(), (wl - 46 + dy).toInt(), (86 + shake(true)).toInt(), (wl + 18 + dy).toInt()); c.drawBitmap(bm, src, dst, bp) }
-        (if (b.boss) Art.cell("pirate_bosses", 4, 2, b.sprite, 72) else Art.cell("pirates_all", 4, 2, b.sprite, 64))?.let { bm -> src.set(0, 0, bm.width, bm.height)
-            val dy = if (sink && b.win) ((t - battleEnd(b)) / 60f).coerceAtMost(30f) else 0f
-            dst.set((146 + shake(false)).toInt(), (wl - 44 + dy).toInt(), (210 + shake(false)).toInt(), (wl + 20 + dy).toInt()); c.drawBitmap(bm, src, dst, bp) }
-        // 대포알과 터짐, 피해 숫자
+        val end = battleEnd(b)
+        if (t > end + 3400) { battle = null; return }
+        val hr = maxOf(1, c.width / 200)
+        val wl = top + 120f
+        fun shotT(i: Int) = INTRO_MS + i * SHOT_MS
+        fun hitT(i: Int) = shotT(i) + FLY_MS
+        // 화면 흔들림: 맞을 때마다, 치명타는 더 세게
+        var sx = 0f; var sy = 0f
+        for ((i, h) in b.hits.withIndex()) { val d = t - hitT(i); if (d in 0..220) { val p = (if (h.third) 3.5f else 1.8f) * (1 - d / 220f)
+            sx = (if ((d / 35) % 2 == 0L) 1 else -1) * p; sy = (if ((d / 50) % 2 == 0L) -1 else 1) * p * .6f } }
+        c.save(); c.clipRect(0f, top, W.toFloat(), top + sceneH); c.translate(sx, sy)
+        // 바탕: 진짜 바다 그림 (우두머리는 노을 바다)
+        val bgName = if (b.boss) "bg_sea_dusk" else "bg_sea"
+        val bg = Art.get(bgName, 384)
+        if (bg != null) { val drift = ((t / 90) % 60).toInt()
+            src.set(40 + drift, 128 - 118, 40 + drift + 250, 128 - 118 + 198); dst.set(-4, top.toInt() - 4, W + 4, (top + sceneH + 4).toInt()); c.drawBitmap(bg, src, dst, bp)
+        } else { k.rect(c, -4f, top - 4, W + 8f, wl - top + 4, k.col("#5d9fc4")); k.rect(c, -4f, wl, W + 8f, top + sceneH - wl + 4, k.col("#2d5f94")) }
+        // 물결 줄
+        for (i in 0 until 14) { val yy = wl + 10 + (i % 4) * 13 + (i / 4) * 3; val xx = ((i * 41 + t / (28 + i % 3 * 9)) % (W + 30)).toFloat() - 15
+            k.rect(c, xx, yy, 12f - (i % 3) * 2, 1f, android.graphics.Color.argb(150, 210, 240, 255)) }
+        // 지금 HP
+        fun hpAt(tt: Long): Pair<Float, Float> { var m = b.my.toFloat(); var e = b.en.toFloat()
+            for ((i, h) in b.hits.withIndex()) if (tt >= hitT(i)) { if (h.first) e -= h.second else m -= h.second }
+            return m.coerceAtLeast(0f) to e.coerceAtLeast(0f) }
+        val (myHp, enHp) = hpAt(t); val (myLag, enLag) = hpAt(t - 380)
+        // 소리
+        val cur = b.hits.indices.lastOrNull { t >= shotT(it) } ?: -1
+        if (cur != battleShot && cur >= 0 && battleShot != 99) { battleShot = cur; host.sound("boom") }
+        // 배 자리: 처음엔 양쪽에서 들어온다
+        val ie = (t / INTRO_MS.toFloat()).coerceIn(0f, 1f); val ease = 1 - (1 - ie) * (1 - ie) * (1 - ie)
+        fun recoil(mine: Boolean): Float { for ((i, h) in b.hits.withIndex()) { val d = t - shotT(i); if (h.first == mine && d in 0..140) return (if (mine) -3f else 3f) * (1 - d / 140f) }; return 0f }
+        fun jolt(mine: Boolean): Float { for ((i, h) in b.hits.withIndex()) { val d = t - hitT(i); if (h.first != mine && d in 0..200) return ((d / 40) % 2 * 2 - 1).toFloat() * (if (h.third) 3f else 2f) }; return 0f }
+        val myX = -60 + 112 * ease + recoil(true) + jolt(true); val enX = 292 - 112 * ease + recoil(false) + jolt(false)
+        val sinkE = ((t - end) / 1300f).coerceIn(0f, 1f)
+        fun drawShip(bm: android.graphics.Bitmap, cx: Float, w: Float, mine: Boolean) {
+            val h = w * bm.height / bm.width
+            val sinking = t > end && (mine != b.win)
+            val bob = (Math.sin(now / 380.0 + if (mine) 0.0 else 2.0) * 1.3).toFloat()
+            val bottom = wl + 9 + bob + (if (sinking) sinkE * 70 else 0f)
+            c.save()
+            if (sinking) c.rotate((if (mine) 1 else -1) * sinkE * 22f, cx, bottom)
+            else c.rotate((Math.sin(now / 520.0 + if (mine) 1.0 else 0.0) * 1.6).toFloat(), cx, bottom)
+            src.set(0, 0, bm.width, bm.height); dst.set((cx - w / 2).toInt(), (bottom - h).toInt(), (cx + w / 2).toInt(), bottom.toInt()); c.drawBitmap(bm, src, dst, bp)
+            c.restore()
+        }
+        scene.shipArt(86)?.let { drawShip(it, myX, 86f, true) }
+        (if (b.boss) Art.cell("pirate_bosses", 4, 2, b.sprite, 84 * hr) else Art.cell("pirates_all", 4, 2, b.sprite, 80 * hr))?.let { drawShip(it, enX, if (b.boss) 84f else 80f, false) }
+        // 배 아랫부분을 물이 덮는다 + 뱃머리 물거품
+        k.rect(c, -4f, wl + 4, W + 8f, top + sceneH - wl, if (b.boss) android.graphics.Color.argb(140, 60, 110, 140) else android.graphics.Color.argb(140, 20, 100, 180))
+        for (x0 in listOf(myX, enX)) for (j in 0 until 5) { val fx = x0 - 34 + j * 17 + ((now / 160 + j) % 3).toFloat(); k.rect(c, fx, wl + 4, 7f, 1.5f, android.graphics.Color.argb(200, 235, 250, 255)) }
+        // 포격: 불꽃, 연기, 포탄, 터짐, 파편, 물보라
         for ((i, h) in b.hits.withIndex()) {
-            val d = t - i * SHOT_MS
-            val x0 = if (h.first) 78f else 154f; val x1 = if (h.first) 172f else 56f; val y0 = wl - 16
-            if (d in 0..259) { val e = d / 260f; val x = x0 + (x1 - x0) * e; val y = y0 - 26 * 4 * e * (1 - e)
-                k.rect(c, x - 3, y - 3, 6f, 6f, k.INK); k.rect(c, x - 2, y - 2, 3f, 3f, k.col("#6a6a6a"))
-                if (d < 90) k.rect(c, x0 - 3, y0 - 3, 6f, 6f, k.col("#fff2c0")) }
-            val e2 = d - 260
-            if (e2 in 0..220) { val r = 3 + e2 / 25f
-                k.rect(c, x1 - r, y0 - r, r * 2, r * 2, k.col("#ff9a3c")); k.rect(c, x1 - r / 2, y0 - r / 2, r, r, k.col("#fff2a0")) }
-            if (e2 in 0..900) { val a = (255 * (1 - e2 / 900f)).toInt().coerceIn(0, 255)
-                val sz = if (h.third) 15 else 11
-                if (h.third) k.text(c, "치명타!", x1, y0 - 30 - e2 / 40f, 8, android.graphics.Color.argb(a, 255, 120, 80), Paint.Align.CENTER, true)
-                k.text(c, "-" + big(h.second), x1, y0 - 18 - e2 / 40f, sz, if (h.first) android.graphics.Color.argb(a, 255, 230, 120) else android.graphics.Color.argb(a, 255, 110, 100), Paint.Align.CENTER, true) }
+            val d = t - shotT(i); if (d < 0) continue
+            val mx = if (h.first) myX + 38 else enX - 36; val my = wl - 14
+            val tx = if (h.first) enX else myX; val ty = wl - 22
+            if (d < 110) Art.cell("fx", 6, 2, 0, (if (h.first) 18 else 16) * hr)?.let { Art.draw(c, it, mx, my + 9, !h.first) }
+            if (d < 700) { val sm = when { d < 200 -> 1; d < 420 -> 2; else -> 3 }
+                Art.cell("fx", 6, 2, sm, (10 + sm * 3) * hr)?.let { Art.draw(c, it, mx + (if (h.first) -1 else 1) * d / 60f, my + 4 - d / 45f, false, (210 * (1 - d / 700f)).toInt()) } }
+            if (d in 0 until FLY_MS) { val e = d / FLY_MS.toFloat()
+                for (tr in 3 downTo 0) { val ee = (e - tr * .06f).coerceAtLeast(0f); val bx = mx + (tx - mx) * ee; val by = my + (ty - my) * ee - 34 * 4 * ee * (1 - ee)
+                    if (tr == 0) { k.rect(c, bx - 2.5f, by - 3.5f, 5f, 7f, k.INK); k.rect(c, bx - 3.5f, by - 2.5f, 7f, 5f, k.INK); k.rect(c, bx - 2.5f, by - 2.5f, 5f, 5f, k.col("#3a3a44")); k.rect(c, bx - 1.5f, by - 1.5f, 2f, 2f, k.col("#b8b8c8")) }
+                    else k.rect(c, bx - 1, by - 1, 2f, 2f, android.graphics.Color.argb(160 - tr * 40, 230, 230, 230)) } }
+            val e2 = d - FLY_MS
+            if (e2 in 0..160) Art.cell("fx", 6, 2, 0, (if (h.third) 40 else 28) * hr)?.let { Art.draw(c, it, tx, ty + 14 + e2 / 30f, false) }
+            if (e2 in 120..900) Art.cell("fx", 6, 2, 3, 22 * hr)?.let { Art.draw(c, it, tx, ty + 10 - e2 / 40f, false, (170 * (1 - (e2 - 120) / 780f)).toInt()) }
+            if (e2 in 0..600) { val r = java.util.Random(i * 97L + 5)
+                for (p in 0 until (if (h.third) 10 else 6)) { val vx = (r.nextFloat() - .5f) * 90; val vy = -40 - r.nextFloat() * 60; val ss = e2 / 1000f
+                    k.rect(c, tx + vx * ss, ty + vy * ss + 160 * ss * ss, 2f, 2f, if (p % 2 == 0) k.col("#8a5a2b") else k.col("#d9a35c")) } }
+            if (e2 in 60..460) Art.cell("fx", 6, 2, 5, 26 * hr)?.let { Art.draw(c, it, tx + (if (h.first) 14 else -14), wl + 8, false, (255 * (1 - (e2 - 60) / 400f)).toInt()) }
         }
-        // 위: 이름과 힘 막대
-        k.text(c, (if (b.boss) "우두머리 " else "해적 토벌 ") + b.title, W / 2f, top + 13, 11, if (b.boss) k.col("#ff8a7a") else k.CREAM, Paint.Align.CENTER, true)
-        fun hp(x: Float, f: Float, col: Int, label: String, right: Boolean) {
-            k.rect(c, x, top + 19, 96f, 8f, k.INK); k.rect(c, x + 1 + if (right) 94 * (1 - f) else 0f, top + 20, 94 * f, 6f, col)
-            k.text(c, label, if (right) x + 96 else x, top + 37, 8, k.CREAM, if (right) Paint.Align.RIGHT else Paint.Align.LEFT, true) }
-        hp(8f, myHp / b.my, k.GREEN, "내 함대 " + big(myHp.toLong()), false)
-        hp(W - 104f, enHp / b.en, k.RED, "해적 " + big(enHp.toLong()), true)
+        // 가라앉는 배 물보라와 거품
+        if (t > end) { val e = t - end
+            if (e < 700) Art.cell("fx", 6, 2, 5, 44 * hr)?.let { Art.draw(c, it, if (b.win) enX else myX, wl + 10, false, (255 * (1 - e / 700f)).toInt()) }
+            val bx = if (b.win) enX else myX
+            for (j in 0 until 6) { val by = wl + 30 - ((e / 12 + j * 23) % 60); k.rect(c, bx - 18 + j * 7f, by.toFloat(), 2f, 2f, android.graphics.Color.argb(170, 220, 245, 255)) } }
+        // 피해 숫자: 튀어나왔다가 위로 뜬다
+        for ((i, h) in b.hits.withIndex()) {
+            val e2 = t - hitT(i); if (e2 !in 0..760) continue
+            val tx = if (h.first) enX else myX
+            val base = if (h.third) 19 else 15
+            val sz = if (e2 < 110) base + 7 - (e2 / 110f * 7).toInt() else base
+            val yy = wl - 44 - (e2 / 60f).coerceAtMost(10f)
+            if (h.third) boldText("치명타!", tx, yy - sz - 2, 10, k.col("#ffd23f"))
+            boldText("-" + big(h.second), tx, yy, sz, if (!h.first) k.col("#ff7a6a") else if (h.third) k.col("#ffe14d") else k.col("#ffffff"))
+        }
+        // 이번에 쏜 선원 얼굴
+        val crewIds = Game.aboard.filter { it in Game.promoted }
+        if (crewIds.isNotEmpty() && cur >= 0 && t < end) { val h = b.hits[cur]; val d = t - shotT(cur)
+            if (h.first && d < SHOT_MS) { val n = b.hits.take(cur).count { it.first }; val id = crewIds[n % crewIds.size]
+                val pi = Data.workers.indexOfFirst { it.id == id }; val lv = Game.crewLevel(id)
+                val pop = if (d < 90) (90 - d) / 18f else 0f
+                k.rect(c, 5f, wl + 22 - pop, 26f, 26f, k.INK); k.rect(c, 6f, wl + 23 - pop, 24f, 24f, k.col("#f3e2b8"))
+                k.icon(c, faceOf(lv) + pi, 7f, wl + 24 - pop, 2.2f)
+                boldText((Fleet.crewOf(id)?.name ?: "") + " 발사!", 34f, wl + 39 - pop, 10, k.col("#fff2c0"), Paint.Align.LEFT) } }
+        c.restore()
+        // 위: 이름표와 HP 막대
+        c.save(); c.clipRect(0f, top, W.toFloat(), top + sceneH)
+        k.rect(c, W / 2f - 52, top + 2, 104f, 15f, k.INK); k.rect(c, W / 2f - 51, top + 3, 102f, 13f, if (b.boss) k.col("#7a2a3a") else k.col("#3a2a1e"))
+        k.text(c, (if (b.boss) "우두머리 " else "토벌 ") + b.title, W / 2f, top + 13.5f, 10, if (b.boss) k.col("#ffb0a0") else k.GOLD, Paint.Align.CENTER, true)
+        fun bar(x: Float, f: Float, lag: Float, col: Int, label: String, right: Boolean) {
+            val bw = 98f; val y = top + 20
+            k.rect(c, x, y, bw, 10f, k.INK); k.rect(c, x + 1, y + 1, bw - 2, 8f, k.col("#3b2a22"))
+            fun fill(ff: Float, cc: Int) { val w = (bw - 2) * ff.coerceIn(0f, 1f); k.rect(c, if (right) x + bw - 1 - w else x + 1, y + 1, w, 8f, cc) }
+            fill(lag, k.col("#fff4d0")); fill(f, col)
+            fill(f, col); k.rect(c, x + 1, y + 1, bw - 2, 2f, android.graphics.Color.argb(70, 255, 255, 255))
+            boldText(label, if (right) x + bw else x, y + 19, 8, k.CREAM, if (right) Paint.Align.RIGHT else Paint.Align.LEFT) }
+        bar(6f, myHp / b.my, myLag / b.my, k.col("#58c35a"), "내 함대 " + big(myHp.toLong()), false)
+        bar(W - 104f, enHp / b.en, enLag / b.en, k.col("#e2483c"), (if (b.boss) "우두머리 " else "해적 ") + big(enHp.toLong()), true)
+        // 시작: 전투 시작!
+        if (t < INTRO_MS - 60) { val e = t / INTRO_MS.toFloat(); val sz = (30 - 8 * e).toInt()
+            boldText(if (b.boss) "우두머리 등장!" else "전투 시작!", W / 2f, top + 84, sz, if (b.boss) k.col("#ff8a7a") else k.col("#fff2c0")) }
         // 끝: 승리 / 패배
-        if (sink) {
-            val e = t - battleEnd(b)
-            if (battleShot != 99) { battleShot = 99; if (b.win) { host.sound("win"); coins(W / 2f, wl + 20, 36) } else host.sound("lose") }
-            k.rect(c, W / 2f - 70, wl - 50, 140f, 44f, android.graphics.Color.argb(200, 30, 20, 12))
-            k.text(c, if (b.win) "승리!" else "패배…", W / 2f, wl - 28, 20, if (b.win) k.GOLD else k.RED, Paint.Align.CENTER, true)
-            k.text(c, if (b.win) "금화 +" + big(b.gold) + (if (b.boss) " · 쪽지 +3" else "") else "30분 쉬거나 광고 보고 다시", W / 2f, wl - 13, 9, k.CREAM, Paint.Align.CENTER, true)
+        if (t > end + 500) {
+            val e = t - end - 500
+            if (battleShot != 99) { battleShot = 99; if (b.win) { host.sound("win"); coins(enX, wl, 40) } else host.sound("lose") }
+            if (!b.win) k.rect(c, 0f, top, W.toFloat(), sceneH, android.graphics.Color.argb((e / 4).coerceAtMost(90L).toInt(), 20, 10, 30))
+            val sl = ((e / 220f).coerceAtMost(1f)); val by = wl - 66
+            k.rect(c, 0f, by, W * sl, 40f, android.graphics.Color.argb(215, 25, 16, 10))
+            k.rect(c, 0f, by, W * sl, 2f, if (b.win) k.GOLD else k.RED); k.rect(c, 0f, by + 38, W * sl, 2f, if (b.win) k.GOLD else k.RED)
+            if (sl >= 1f) {
+                val pop = if (e < 330) ((330 - e) / 330f * 8).toInt() else 0
+                boldText(if (b.win) "승리!" else "패배…", W / 2f, by + 22, 22 + pop, if (b.win) k.col("#ffd23f") else k.col("#ff6b5b"))
+                k.text(c, if (b.win) "금화 +" + big(b.gold) + (if (b.boss) " · 쪽지 +3" else "") else "30분 쉬거나 광고 보고 다시", W / 2f, by + 34, 9, k.CREAM, Paint.Align.CENTER, true)
+            }
         }
+        c.restore()
     }
     private fun drawFloats() {
         drawBattle()
@@ -1188,7 +1268,7 @@ class AppUi(val scene: Scene, val host: Host) {
 
     // ---------- 누르기 ----------
     fun tap(x: Float, y: Float) {
-        battle?.let { b -> if (System.currentTimeMillis() - b.t0 > battleEnd(b)) battle = null; return }
+        battle?.let { b -> if (System.currentTimeMillis() - b.t0 > battleEnd(b) + 700) battle = null; return }
         val ix = x.toInt(); val iy = y.toInt()
         val pop = popup
         if (pop != null) {
