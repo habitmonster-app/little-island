@@ -420,6 +420,7 @@ class Scene {
             ff > .95f -> lerp(full.toFloat(), dw.toFloat(), ease((ff - .95f) / .05f)).roundToInt(); else -> full }
     }
     private val DOCK_W = 66
+    private data class Quad(val a: Int, val b: Int, val c: Float, val d: Int)
     private fun dockedBehind() = Game.dock && Game.voyFrac() < 0f && islandOffset() == 0f
 
     /** 우리 배의 화면 x. 부두가 없으면 null */
@@ -848,6 +849,12 @@ class Scene {
     /** 배 단계마다 섬에 하나씩 늘어나는 큰 건물 (건물 뒤에 그려서 지붕 위로 솟아 보인다) */
     private fun landmarks(time: Float) {
         val sl = Game.shipLevel; val g = GROUND + 1
+        // 아스트라 그림이 있으면 그것으로 (번호, 배 단계, x, 폭). 높은 것부터 그려서 앞뒤가 자연스럽게
+        if (acell("landmarks", 6, 1, 0, 20) != null) {
+            for ((i, need, x, w) in listOf(Quad(3, 7, 110f, 26), Quad(1, 4, 28f, 28), Quad(0, 2, 92f, 20), Quad(4, 8, 52f, 24), Quad(5, 10, 74f, 24), Quad(2, 5, 128f, 28)))
+                if (sl >= need) acell("landmarks", 6, 1, i, w)?.let { Art.draw(c, it, x, g) }
+            return
+        }
         val wood = col("#7a4a24"); val woodD = col("#5a3418"); val stone = col("#b8b2a6"); val stoneD = col("#8a8478"); val gold = col("#ffd36a"); val goldD = col("#c8962a")
         // 4단계: 풍차 (날개가 돈다)
         if (sl >= 4) { val x = 30f

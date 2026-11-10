@@ -1124,10 +1124,21 @@ class AppUi(val scene: Scene, val host: Host) {
         for (f in floats.toList()) {
             val e = (now - f.t0) / (if (f.sz > 11) 1300f else 900f)
             val a = (255 * (1 - e)).toInt().coerceIn(0, 255)
-            if (f.sz > 11) { val pop = if (e < .15f) .7f + e * 2 else 1f   // 톡 튀어나오며 커진다
+            if (f.sz > 11) { val ms = now - f.t0
+                if (ms < 360) { val fr = (ms / 90).toInt().coerceIn(0, 3); val bw2 = 64f; art("upgrade_burst", 4, 1, fr, f.x - bw2 / 2, f.y - 8 - bw2 / 2, bw2) }
+                val pop = if (e < .15f) .7f + e * 2 else 1f   // 톡 튀어나오며 커진다
                 Pix.bigText(c, f.s, f.x, f.y - 2 - e * 26, Math.round(f.sz * pop), android.graphics.Color.argb(a, 255, 225, 77)) }
             else Pix.text(c, f.s, f.x, f.y - 6 - e * 22, 11, android.graphics.Color.argb(a, 255, 211, 106), Paint.Align.CENTER, true)
         }
+    }
+
+    /** 그림 시트의 한 칸을 (x, y)부터 폭 w로 그린다. 그림이 없으면 false */
+    private fun art(name: String, cols: Int, rows: Int, idx: Int, x: Float, y: Float, w: Float, alpha: Int = 255): Boolean {
+        val bm = Art.cell(name, cols, rows, idx, Math.round(w * SC).coerceAtLeast(1)) ?: return false
+        val h = w * bm.height / bm.width
+        bp.alpha = alpha; src.set(0, 0, bm.width, bm.height)
+        c.drawBitmap(bm, src, android.graphics.RectF(x, y, x + w, y + h), bp); bp.alpha = 255
+        return true
     }
 
     /** 새 선원! 뽑기 연출: 빛줄기 → 카드가 튀어나오며 얼굴·이름·한마디 */
@@ -1151,8 +1162,22 @@ class AppUi(val scene: Scene, val host: Host) {
         if (p > 0f) {
             val sc = if (p < 1f) p * 1.15f else 1f
             val cw = 150f * sc; val ch = 170f * sc
-            k.panel(c, cx - cw / 2, cy - ch / 2, cw, ch)
-            if (p >= 1f) {
+            // 아스트라 카드 틀 (512×640): 위 창에 얼굴, 아래 판에 이름과 한마디
+            val cardW = 160f * sc; val u = cardW / 512f; val cx0 = cx - cardW / 2; val cy0 = cy - 640f * u / 2 - 6f
+            if (art("new_crew_card", 1, 1, 0, cx0, cy0, cardW)) {
+                if (p >= 1f) {
+                    val fw = (434 - 78) * u; val fh = (350 - 147) * u; val fs = minOf(fw, fh) * .95f
+                    art(faceOf(1).removeSuffix(":").let { if (it == "face") "worker_portraits" else it }, 4, 3, pi, cx - fs / 2, cy0 + 147 * u + (fh - fs) / 2, fs)
+                    val tx = cx; val ty = cy0 + 398 * u; val tw = (431 - 82) * u
+                    val th = (528 - 398) * u   // 글 칸 높이: 이 안에서만 쓴다
+                    k.text(c, k.fit(cr?.name ?: id, 13, tw), tx, ty + 12f, 13, k.CREAM, Paint.Align.CENTER, true)
+                    k.text(c, k.fit(cr?.role ?: "선원", 8, tw), tx, ty + 22f, 8, k.GOLD, Paint.Align.CENTER, true)
+                    val ql = k.wrap(cr?.line?.let { "“" + it + "”" } ?: "", 7, tw).let { if (it.size > 2) listOf(it[0], it[1] + "…") else it }
+                    for ((i, q) in ql.withIndex()) if (ty + 30f + i * 8 <= ty + th - 1) k.text(c, k.fit(q, 7, tw), tx, ty + 30f + i * 8, 7, k.col("#c8b896"), Paint.Align.CENTER)
+                }
+            } else k.panel(c, cx - cw / 2, cy - ch / 2, cw, ch)
+            if (p >= 1f && Art.cell("new_crew_card", 1, 1, 0, 8) != null) k.text(c, "판매 +" + pct(Game.crewStat(id, 3)) + " · 배에 탔어요", cx, cy0 + 640f * u + 12f, 9, k.CREAM, Paint.Align.CENTER, true)
+            else if (p >= 1f) {
                 k.icon(c, "face:$pi", cx - 30f, cy - 70f, 6f)
                 k.text(c, (cr?.name ?: id), cx, cy + 12f, 14, k.CREAM, Paint.Align.CENTER, true)
                 k.text(c, k.fit(cr?.role ?: "선원", 9, 136f), cx, cy + 27f, 9, k.GOLD, Paint.Align.CENTER, true)
@@ -1163,8 +1188,8 @@ class AppUi(val scene: Scene, val host: Host) {
             }
         }
         val tp = ((t - .1f) / .25f).coerceIn(0f, 1f)
-        if (tp > 0f) k.bigText(c, "새 선원!", cx, cy - 98f, Math.round(22 * (.6f + .4f * tp)), k.col("#ffe14d"))
-        if (t > 1f) k.text(c, "눌러서 닫기", cx, cy + 102f, 10, k.CREAM, Paint.Align.CENTER, true)
+        if (tp > 0f) k.bigText(c, "새 선원!", cx, cy - 112f, Math.round(22 * (.6f + .4f * tp)), k.col("#ffe14d"))
+        if (t > 1f) k.text(c, "눌러서 닫기", cx, cy - 640f * (160f / 512f) / 2 - 6f + 640f * (160f / 512f) + 28f, 10, k.DIM, Paint.Align.CENTER, true)
     }
 
     /** 돌아왔을 때 보상 창 */

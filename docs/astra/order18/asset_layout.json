@@ -1,0 +1,290 @@
+{
+  "coordinate_format": "xyxy_exclusive; image pixel origin top-left",
+  "color_key": {
+    "rgb": [
+      255,
+      0,
+      255
+    ],
+    "hex": "#FF00FF",
+    "opaque_source": true
+  },
+  "note": "앱 코드를 변경하지 않은 아트 묶음. 아래 좌표와 재생 시간은 연결 안내이며 실제 앱에서 적용·실행한 값이 아닙니다.",
+  "landmarks": {
+    "file": "art/landmarks.png",
+    "size": [
+      1536,
+      512
+    ],
+    "grid": [
+      6,
+      1
+    ],
+    "cell_size": [
+      256,
+      512
+    ],
+    "anchor_local": [
+      128,
+      512
+    ],
+    "cells": [
+      {
+        "index": 0,
+        "name": "섬 깃발",
+        "ship_stage": 2,
+        "cell": [
+          0,
+          0,
+          256,
+          512
+        ],
+        "content_bbox_local": [
+          27,
+          101,
+          229,
+          512
+        ],
+        "height_pixels": 411,
+        "height_fraction": 0.802734375,
+        "baseline_y": 511
+      },
+      {
+        "index": 1,
+        "name": "풍차",
+        "ship_stage": 4,
+        "cell": [
+          256,
+          0,
+          512,
+          512
+        ],
+        "content_bbox_local": [
+          15,
+          111,
+          241,
+          512
+        ],
+        "height_pixels": 401,
+        "height_fraction": 0.783203125,
+        "baseline_y": 511
+      },
+      {
+        "index": 2,
+        "name": "등불 기둥",
+        "ship_stage": 5,
+        "cell": [
+          512,
+          0,
+          768,
+          512
+        ],
+        "content_bbox_local": [
+          12,
+          148,
+          244,
+          512
+        ],
+        "height_pixels": 364,
+        "height_fraction": 0.7109375,
+        "baseline_y": 511
+      },
+      {
+        "index": 3,
+        "name": "종탑",
+        "ship_stage": 7,
+        "cell": [
+          768,
+          0,
+          1024,
+          512
+        ],
+        "content_bbox_local": [
+          27,
+          83,
+          229,
+          512
+        ],
+        "height_pixels": 429,
+        "height_fraction": 0.837890625,
+        "baseline_y": 511
+      },
+      {
+        "index": 4,
+        "name": "해적 깃발 트로피",
+        "ship_stage": 8,
+        "cell": [
+          1024,
+          0,
+          1280,
+          512
+        ],
+        "content_bbox_local": [
+          12,
+          151,
+          244,
+          512
+        ],
+        "height_pixels": 361,
+        "height_fraction": 0.705078125,
+        "baseline_y": 511
+      },
+      {
+        "index": 5,
+        "name": "황금 동상",
+        "ship_stage": 10,
+        "cell": [
+          1280,
+          0,
+          1536,
+          512
+        ],
+        "content_bbox_local": [
+          25,
+          133,
+          231,
+          512
+        ],
+        "height_pixels": 379,
+        "height_fraction": 0.740234375,
+        "baseline_y": 511
+      }
+    ]
+  },
+  "new_crew_card": {
+    "file": "art/new_crew_card.png",
+    "size": [
+      512,
+      640
+    ],
+    "portrait_window": [
+      66,
+      135,
+      446,
+      362
+    ],
+    "portrait_window_rgb": [
+      156,
+      223,
+      242
+    ],
+    "portrait_safe_rect": [
+      78,
+      147,
+      434,
+      350
+    ],
+    "text_panel": [
+      66,
+      382,
+      447,
+      544
+    ],
+    "text_panel_rgb": [
+      67,
+      41,
+      30
+    ],
+    "text_safe_rect": [
+      82,
+      398,
+      431,
+      528
+    ],
+    "ribbon_blank": true,
+    "corner_anchor_count": 4
+  },
+  "upgrade_burst": {
+    "file": "art/upgrade_burst.png",
+    "size": [
+      1024,
+      256
+    ],
+    "grid": [
+      4,
+      1
+    ],
+    "cell_size": [
+      256,
+      256
+    ],
+    "center_local": [
+      128,
+      128
+    ],
+    "clear_center_rect_local": [
+      98,
+      110,
+      158,
+      146
+    ],
+    "playback": "한 번 재생 후 숨김. 프레임 시간은 제안값이며 앱에서 조정.",
+    "frames": [
+      {
+        "index": 0,
+        "cell": [
+          0,
+          0,
+          256,
+          256
+        ],
+        "content_bbox_local": [
+          56,
+          59,
+          198,
+          199
+        ],
+        "duration_ms_suggested": 70
+      },
+      {
+        "index": 1,
+        "cell": [
+          256,
+          0,
+          512,
+          256
+        ],
+        "content_bbox_local": [
+          19,
+          19,
+          238,
+          236
+        ],
+        "duration_ms_suggested": 90
+      },
+      {
+        "index": 2,
+        "cell": [
+          512,
+          0,
+          768,
+          256
+        ],
+        "content_bbox_local": [
+          14,
+          14,
+          243,
+          235
+        ],
+        "duration_ms_suggested": 100
+      },
+      {
+        "index": 3,
+        "cell": [
+          768,
+          0,
+          1024,
+          256
+        ],
+        "content_bbox_local": [
+          59,
+          57,
+          194,
+          194
+        ],
+        "duration_ms_suggested": 140
+      }
+    ],
+    "suggested_total_duration_ms": 400
+  }
+}
