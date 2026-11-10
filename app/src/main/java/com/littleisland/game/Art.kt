@@ -82,6 +82,20 @@ object Art {
         mutable(Bitmap.createScaledBitmap(part, w, h, true)).also { clean(it) }
     }
 
+    /** 배 그림과 같은 굵기의 픽셀로: 작게(low) 줄였다가 또렷하게(가장 가까운 점) 다시 키운다 */
+    @Synchronized fun chunky(name: String, cols: Int, rows: Int, idx: Int, low: Int, w: Int): Bitmap? = cache.getOrPut("$name#$cols.$rows.$idx@$low>$w") {
+        val small = cell(name, cols, rows, idx, low.coerceAtLeast(4))?.copy(Bitmap.Config.ARGB_8888, true) ?: return@getOrPut null
+        // 배처럼 진한 테두리 한 점 (줄이면서 얇아진 윤곽을 되살린다)
+        val sw = small.width; val sh = small.height; val px = IntArray(sw * sh); small.getPixels(px, 0, sw, 0, 0, sw, sh)
+        val out = px.copyOf()
+        for (y in 0 until sh) for (x in 0 until sw) { if (Color.alpha(px[y * sw + x]) != 0) continue
+            if ((x > 0 && Color.alpha(px[y * sw + x - 1]) != 0) || (x < sw - 1 && Color.alpha(px[y * sw + x + 1]) != 0) ||
+                (y > 0 && Color.alpha(px[(y - 1) * sw + x]) != 0) || (y < sh - 1 && Color.alpha(px[(y + 1) * sw + x]) != 0)) out[y * sw + x] = Color.rgb(42, 26, 16) }
+        small.setPixels(out, 0, sw, 0, 0, sw, sh)
+        val h = (small.height * w / small.width.toFloat()).toInt().coerceAtLeast(1)
+        mutable(Bitmap.createScaledBitmap(small, w, h, false))
+    }
+
     private fun mutable(b: Bitmap): Bitmap = (if (b.isMutable) b else b.copy(Bitmap.Config.ARGB_8888, true)).also { it.setHasAlpha(true) }
 
     /** 줄이면서 생긴 반투명 가장자리를 또렷하게 */

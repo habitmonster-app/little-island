@@ -1092,12 +1092,12 @@ class Scene {
                     // 깃발: 천 왼쪽 가운데 = 깃대 꼭대기 옆
                     "flag" -> { val n = cs(20f); val wave = if ((floor(time * 3) % 2).toInt() == 0) 0f else 1f
                         val m = if (Game.lookStage() == 3) intArrayOf(MAST3[i][0] + 3, MAST3[i][1] + 1) else MAST[i]
-                        acell(d.bigSheet, 4, 3, d.bigIdx, n)?.let { Art.draw(c, it, px(m[0]) + 1f + n / 2f, py(m[1]) + 3f + n / 2f + wave) } }
+                        bigDeco(d, n)?.let { Art.draw(c, it, px(m[0]) + 1f + n / 2f, py(m[1]) + 3f + n / 2f + wave) } }
                     // 뱃머리: 왼쪽 아래 = 뱃머리 끝
-                    "figurehead" -> { val n = cs(19f); acell(d.bigSheet, 4, 3, d.bigIdx, n)?.let { Art.draw(c, it, px(BOW[i][0]) - n * .2f + n / 2f, py(BOW[i][1]) + 3f) } }
+                    "figurehead" -> { val n = cs(19f); bigDeco(d, n)?.let { Art.draw(c, it, px(BOW[i][0]) - n * .2f + n / 2f, py(BOW[i][1]) + 3f) } }
                     // 돛 무늬: 가운데 = 큰 돛 가운데
-                    "sail" -> { val n = cs(22f); acell(d.bigSheet, 4, 3, d.bigIdx, n)?.let { Art.draw(c, it, px(SAIL[i][0]), py(SAIL[i][1]) + 3f + n / 2f) } }
-                    "deck" -> { val n = cs(17f); acell(d.bigSheet, 4, 3, d.bigIdx, n)?.let { Art.draw(c, it, px(DECKP[i][0]), py(DECKP[i][1]) + .5f) } }
+                    "sail" -> { val n = cs(22f); bigDeco(d, n)?.let { Art.draw(c, it, px(SAIL[i][0]), py(SAIL[i][1]) + 3f + n / 2f) } }
+                    "deck" -> { val n = cs(17f); bigDeco(d, n)?.let { Art.draw(c, it, px(DECKP[i][0]), py(DECKP[i][1]) + .5f) } }
                 }
                 continue
             }
@@ -1121,6 +1121,9 @@ class Scene {
             }
         }
     }
+
+    /** 큰 장식 한 칸을 배 그림과 같은 픽셀 굵기(1도트에 약 1.4점)로 */
+    private fun bigDeco(d: Fleet.Deco, n: Int) = Art.chunky(d.bigSheet, 4, 3, d.bigIdx, Math.round(n * 1.4f), n * SS)
 
     private fun deckCrew(x: Float, y: Float, w: Float, time: Float) {
         val v = Game.voy ?: return
