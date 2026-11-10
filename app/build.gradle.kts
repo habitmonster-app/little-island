@@ -36,3 +36,8 @@ android {
     }
     kotlinOptions { jvmTarget = "17" }
 }
+
+dependencies {
+    // 광고 (AdMob). 지금은 구글 테스트 광고 ID라 진짜 돈은 안 들어온다
+    implementation("com.google.android.gms:play-services-ads:23.0.0")
+}

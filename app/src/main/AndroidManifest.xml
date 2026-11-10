@@ -3,6 +3,7 @@
 
     <uses-feature android:name="android.software.live_wallpaper" android:required="true" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:label="@string/app_name"
@@ -32,5 +33,7 @@
                 android:resource="@xml/wallpaper" />
         </service>
         <receiver android:name=".ChestReceiver" android:exported="false" />
+        <!-- AdMob 앱 ID: 지금은 구글 테스트 ID. 출시 전에 진짜 ID로 바꾼다 -->
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713" />
     </application>
 </manifest>

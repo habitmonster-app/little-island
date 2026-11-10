@@ -53,7 +53,9 @@ object Game {
     // ---------- 해적 토벌: 1-1, 1-2 … 단계마다 해적이 세진다 ----------
     var pStage = 0                       // 깬 단계 수
     var stageCool = 0L                   // 지면 잠깐 쉬어야 다시 도전
-    const val STAGE_COOL_MS = 5 * 60 * 1000L
+    const val STAGE_COOL_MS = 30 * 60 * 1000L
+    /** 광고를 보면 쉬는 시간 없이 바로 다시 도전 */
+    fun skipStageCool() { stageCool = 0L; save() }
     fun stageName(n: Int = pStage) = (n / 10 + 1).toString() + "-" + (n % 10 + 1)
     fun stageGold(n: Int = pStage) = Math.round(40 * Math.pow(1.16, n.toDouble())).toInt() + 20 * shipLevel
     fun stagePirate(n: Int = pStage): Data.Pirate {

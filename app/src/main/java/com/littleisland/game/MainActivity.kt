@@ -41,7 +41,12 @@ class MainActivity : Activity(), AppUi.Host {
         Game.init(this); Pix.load(this)
         dp = resources.displayMetrics.density
         view = GameView(this, this)
-        setContentView(view)
+        // 게임 화면 + 맨 아래 배너 광고 (앱 화면에만)
+        val root = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setBackgroundColor(Color.BLACK) }
+        root.addView(view, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f))
+        Ads.init(this)
+        Ads.banner(this)?.let { root.addView(it) }
+        setContentView(root)
         // 효과음
         @Suppress("DEPRECATION")
         sp = android.media.SoundPool(6, android.media.AudioManager.STREAM_MUSIC, 0)
@@ -56,6 +61,7 @@ class MainActivity : Activity(), AppUi.Host {
     override fun sound(name: String) { if (Game.soundOn) sfx[name]?.let { sp?.play(it, if (name == "tap") .5f else .8f, if (name == "tap") .5f else .8f, 1, 0, 1f) } }
 
     override fun toast(s: String) = Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
+    override fun showAd(onReward: () -> Unit) { if (!Ads.showReward(this) { ui.post { onReward(); view.invalidate() } }) toast("광고를 불러오는 중이에요. 잠시 뒤에 다시 눌러 주세요") }
     override fun openJournal() = openJournalList()
     override fun openMap() = openMapPuzzle()
     override fun openCargo() = openCargoPuzzle()

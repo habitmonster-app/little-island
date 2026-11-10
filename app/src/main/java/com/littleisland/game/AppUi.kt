@@ -16,6 +16,8 @@ class AppUi(val scene: Scene, val host: Host) {
         fun openJournal(); fun openMap(); fun openCargo(); fun openTutorial(); fun pickTime(); fun setWallpaper()
         fun openTraining() {}
         fun sound(name: String) {}
+        /** 보상 광고: 끝까지 보면 onReward (앱이 아닌 곳에서는 바로 준다) */
+        fun showAd(onReward: () -> Unit) { onReward() }
     }
 
     /** 좌표는 가로 200도트 그대로 쓰고, 실제 그림은 SC배 크기로 그려서 글자·아이콘이 또렷하게 */
@@ -624,8 +626,8 @@ class AppUi(val scene: Scene, val host: Host) {
         // 해적 토벌 단계
         if (Game.dock) {
             val w = Game.stageWait()
-            l.add(URow("boss:0", "해적 토벌 " + Game.stageName(), "이길 확률 " + pct1(Game.stageOdds()) + " · 금화 " + big(Game.stageGold()) + (if ((Game.pStage + 1) % 10 == 0) " · 쪽지 3" else ""),
-                null, w == 0L, "", { fight(); true }, btnText = if (w > 0) "쉬는 중 " + (w / 60000 + 1) + "분" else "도전!"))
+            l.add(URow("boss:0", "해적 토벌 " + Game.stageName(), if (w > 0) "쉬는 중 " + (w / 60000 + 1) + "분 남았어요" else "이길 확률 " + pct1(Game.stageOdds()) + " · 금화 " + big(Game.stageGold()) + (if ((Game.pStage + 1) % 10 == 0) " · 쪽지 3" else ""),
+                null, true, "", { if (w > 0) host.showAd { Game.skipStageCool(); fight() } else fight(); true }, btnText = if (w > 0) "광고 도전" else "도전!"))
         }
         // 명성: 다 키우면 새 항해 (영구 보너스)
         if (Game.renownReady()) l.add(URow("title:0", "다시 출항! 명성 " + (Game.renown + 1), "판매 +10% · 승률 +2%p", null, true, "", { popup = renownTile(); true }, btnText = "출항", big = false))
@@ -874,7 +876,7 @@ class AppUi(val scene: Scene, val host: Host) {
             if (battleShot != 99) { battleShot = 99; if (b.win) { host.sound("win"); coins(W / 2f, wl + 20, 36) } else host.sound("lose") }
             k.rect(c, W / 2f - 70, wl - 50, 140f, 44f, android.graphics.Color.argb(200, 30, 20, 12))
             k.text(c, if (b.win) "승리!" else "패배…", W / 2f, wl - 28, 20, if (b.win) k.GOLD else k.RED, Paint.Align.CENTER, true)
-            k.text(c, if (b.win) "금화 +" + big(b.gold) + (if (b.boss) " · 쪽지 +3" else "") else "5분 쉬고 다시 도전해요", W / 2f, wl - 13, 9, k.CREAM, Paint.Align.CENTER, true)
+            k.text(c, if (b.win) "금화 +" + big(b.gold) + (if (b.boss) " · 쪽지 +3" else "") else "30분 쉬거나 광고 보고 다시", W / 2f, wl - 13, 9, k.CREAM, Paint.Align.CENTER, true)
         }
     }
     private fun drawFloats() {
