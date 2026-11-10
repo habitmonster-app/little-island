@@ -424,7 +424,10 @@ object Pix {
         rect(c, x + 1, y + 1, w - 2, h - 2, if (on) col("#c8903a") else col("#5a4a3a"))
         rect(c, x + 1, y + 1, w - 2, 1f, if (on) col("#f0c060") else col("#6a5a4a"))
         rect(c, x + 1, y + h - 2, w - 2, 1f, if (on) col("#8a5a20") else col("#3a2a1a"))
-        text(c, label, x + w / 2, y + h / 2 + 4, 10, if (on) INK else DIM, Paint.Align.CENTER)
+        // 글자가 버튼 테두리에 닿지 않게: 양옆 4칸씩 비우고, 안 들어가면 글자를 줄인다
+        val room = w - 8f
+        var sz = 10; while (sz > 7 && !fits(label, sz, room)) sz--
+        text(c, fit(label, sz, room), x + w / 2, y + h / 2 + sz * .4f, sz, if (on) INK else DIM, Paint.Align.CENTER)
     }
 
     @Synchronized fun bar(c: Canvas, x: Float, y: Float, w: Float, h: Float, f: Float, fill: Int = col("#e0b45a")) {

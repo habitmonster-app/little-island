@@ -660,7 +660,7 @@ class AppUi(val scene: Scene, val host: Host) {
             val need = Fleet.needForShip(nx); val minP = Game.minPart()
             val ready = Game.unlockReady(u)
             val capLow = u.cost != null && (u.cost.wood > Game.cap() || u.cost.stone > Game.cap())
-            l.add(URow("ship", "배 " + nx + "단계로 키우기", if (minP < need) "부품 모두 Lv$need (지금 $minP)" else if (capLow) "창고를 넓혀야 재료를 담아요" else Data.ship(nx).name.substringAfter("· "),
+            l.add(URow("ship", "배 " + nx + "단계로 키우기", if (minP < need) "모든 부품 Lv$minP → $need" else if (capLow) "창고를 넓혀야 재료를 담아요" else Data.ship(nx).name.substringAfter("· "),
                 u.cost, ready && Game.canPay(u.cost), "키우기", { Game.buyUnlock(u.key) }, big = true))
         }
         // 섬 생산: 배가 커지는 만큼 섬도 같이
@@ -775,7 +775,7 @@ class AppUi(val scene: Scene, val host: Host) {
                 k.icon(c, u.icon, ix + 4 + (h - 6) / 2 - 10 * (h - 6) / 32f, y + 3 + (h - 6) / 2 - 10 * (h - 6) / 32f, 2f * (h - 6) / 32f)
                 if (u.icon == sparkIcon) { val fe = System.currentTimeMillis() - fxAt; if (fe in 0 until 400) k.icon(c, "fx:" + (fe / 100), ix - 4, y - 8, 2.6f) }
                 val tx = ix + 8 + h - 6
-                val bw = 60f; val bxx = W - 12f - bw
+                val bw = 64f; val bxx = W - 12f - bw
                 val ts0 = if (u.small) 9 else 10
                 val ts = listOf(ts0, ts0 - 1, ts0 - 2).firstOrNull { k.fits(u.title, it, bxx - tx - 4) } ?: (ts0 - 2)
                 k.text(c, k.fit(u.title, ts, bxx - tx - 4), tx, y + h / 2 - (if (u.small) 0 else 1), ts, k.CREAM, Paint.Align.LEFT, true)
@@ -789,16 +789,19 @@ class AppUi(val scene: Scene, val host: Host) {
                     val main = if (cg.gold > 0) gold(cg.gold) else if (cg.wood > 0) big(cg.wood) else big(cg.stone)
                     val ic = if (cg.gold > 0) "gold" else if (cg.wood > 0) "wood" else "stone"
                     k.icon(c, ic, bxx + 5, y + h / 2 - 9, .9f)
-                    k.text(c, k.fit(main, 9, bw - 20), bxx + 16, y + h / 2 - 1, 9, if (ok) k.INK else k.col("#c8b896"), Paint.Align.LEFT)
+                    var ms = 9; while (ms > 7 && !k.fits(main, ms, bw - 22)) ms--
+                    k.text(c, k.fit(main, ms, bw - 22), bxx + 16, y + h / 2 - 1, ms, if (ok) k.INK else k.col("#c8b896"), Paint.Align.LEFT)
                     fun mats(f: (Long) -> String) = listOfNotNull(if (cg.gold > 0 && cg.wood > 0) "나무" + f(cg.wood.toLong()) else null, if ((cg.gold > 0 || cg.wood > 0) && cg.stone > 0) "돌" + f(cg.stone.toLong()) else null).joinToString(" ")
                     fun kk(n: Long) = if (n < 1000) n.toString() else if (n < 10_000) "%.0f천".format(n / 1000.0) else big(n).replace(Regex("\\.\\d"), "")
                     val plus = if (mc != null) "+" + mc.first + " " else ""
                     val m1 = mats { big(it) }; val m2 = mats { kk(it) }
-                    val extra = if (m1.isBlank()) "" else listOf(plus + m1, m1, plus + m2, m2).firstOrNull { k.fits(it, 7, bw - 4) } ?: m2
-                    k.text(c, k.fit(if (extra.isNotBlank()) extra else (if (mc != null) "+" + mc.first else u.label), 7, bw - 4), bxx + bw / 2, y + h / 2 + 10, 7, if (ok) k.INK else k.col("#a89878"), Paint.Align.CENTER)
+                    val extra = if (m1.isBlank()) "" else listOf(plus + m1, m1, plus + m2, m2).firstOrNull { k.fits(it, 7, bw - 8) } ?: m2
+                    val line2 = if (extra.isNotBlank()) extra else (if (mc != null) "+" + mc.first else u.label)
+                    val s2 = if (k.fits(line2, 7, bw - 8)) 7 else 6
+                    k.text(c, k.fit(line2, s2, bw - 8), bxx + bw / 2, y + h / 2 + 10, s2, if (ok) k.INK else k.col("#a89878"), Paint.Align.CENTER)
                     upRects.add(Rect(bxx.toInt() - 2, maxOf(y, areaTop).toInt(), (bxx + bw).toInt() + 4, minOf(y + h, areaBot).toInt()) to u)
                 } else if (u.btnText != null) {
-                    k.button(c, bxx, y + 3, bw, h - 6, k.fit(u.btnText, 9, bw - 4), u.can)
+                    k.button(c, bxx, y + 3, bw, h - 6, u.btnText, u.can)
                     if (u.can) upRects.add(Rect(bxx.toInt() - 2, maxOf(y, areaTop).toInt(), (bxx + bw).toInt() + 4, minOf(y + h, areaBot).toInt()) to u)
                 } else k.text(c, u.label, bxx + bw / 2, y + h / 2 + 4, 10, k.DIM, Paint.Align.CENTER, true)
             }
