@@ -209,7 +209,7 @@ class MainActivity : Activity(), AppUi.Host {
             try {
                 startActivity(Intent(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER))
             } catch (e: Exception) {
-                Toast.makeText(this, "설정 > 배경화면에서 '리틀 아일랜드'를 골라 주세요", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "설정 > 배경화면에서 '리틀아일랜드'를 골라 주세요", Toast.LENGTH_LONG).show()
             }
         }
     }
