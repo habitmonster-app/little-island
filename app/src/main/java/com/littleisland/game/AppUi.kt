@@ -777,6 +777,10 @@ class AppUi(val scene: Scene, val host: Host) {
             y += h + 4
         }
         c.restore()
+        // 목록 위·아래 끝: 잘린 줄이 머리줄과 겹쳐 보이지 않게 그림자로 덮는다
+        if (scrollY > 0.5f) for (i in 0 until 10) k.rect(c, 2f, areaTop + i, W - 4f, 1f, android.graphics.Color.argb(240 - i * 24, 42, 26, 16))
+        if (scrollY < maxScroll - .5f) for (i in 0 until 10) k.rect(c, 2f, areaBot - 1 - i, W - 4f, 1f, android.graphics.Color.argb(240 - i * 24, 42, 26, 16))
+        k.rect(c, 4f, areaTop - 1, W - 8f, 1f, k.col("#6b4a2a"))
         if (maxScroll > 0) {
             val vh = areaBot - areaTop; val bh = (vh * vh / (contentH + 4)).coerceAtLeast(14f)
             val by = areaTop + (vh - bh) * (scrollY / maxScroll)
