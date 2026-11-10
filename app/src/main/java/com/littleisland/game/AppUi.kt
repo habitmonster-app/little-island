@@ -843,12 +843,7 @@ class AppUi(val scene: Scene, val host: Host) {
         battle = Battle(System.currentTimeMillis(), win, my, en, title, boss, gold, if (boss) Game.gang(n).sprite else n % 8, hits); battleShot = -1
     }
     /** 굵은 테두리 글자 (피해 숫자가 배경에 묻히지 않게) */
-    private fun boldText(s: String, x: Float, y: Float, size: Int, col: Int, align: Paint.Align = Paint.Align.CENTER) {
-        val k = Pix; val o = size / 9f
-        for (dx in -1..1) for (dy in -1..1) if (dx != 0 || dy != 0) k.text(c, s, x + dx * o, y + dy * o, size, k.INK, align)
-        k.text(c, s, x, y + o * .8f, size, k.INK, align)
-        k.text(c, s, x, y, size, col, align)
-    }
+    private fun boldText(s: String, x: Float, y: Float, size: Int, col: Int, align: Paint.Align = Paint.Align.CENTER) = Pix.bigText(c, s, x, y, size, col, align)
     private fun drawBattle() {
         val b = battle ?: return
         val k = Pix; val now = System.currentTimeMillis(); val t = now - b.t0
@@ -966,7 +961,7 @@ class AppUi(val scene: Scene, val host: Host) {
         if (t < INTRO_MS - 60) { val e = t / INTRO_MS.toFloat(); val sz = (30 - 8 * e).toInt()
             val itx = if (b.boss) b.title.substringBeforeLast(" ") + " 등장!" else "전투 시작!"
             val isz = generateSequence(sz) { it - 1 }.take(16).firstOrNull { k.fits(itx, it, W - 16f) } ?: 14
-            boldText(itx, W / 2f, top + 84, isz, if (b.boss) k.col("#ff8a7a") else k.col("#fff2c0")) }
+            boldText(itx, W / 2f, top + 84, isz, if (b.boss) k.col("#ffd23f") else k.col("#fff2c0")) }
         // 끝: 승리 / 패배
         if (t > end + 500) {
             val e = t - end - 500

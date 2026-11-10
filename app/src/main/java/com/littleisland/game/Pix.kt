@@ -41,10 +41,22 @@ object Pix {
     @Synchronized fun text(c: Canvas, s: String, x: Float, y: Float, size: Int, color: Int, align: Paint.Align = Paint.Align.LEFT, outline: Boolean = false) {
         font(size); tp.textAlign = align
         if (outline) {
-            tp.color = INK
-            val o = if (cleanTL.get()) .6f else 1f
-            for ((dx, dy) in listOf(-1 to 0, 1 to 0, 0 to -1, 0 to 1, 1 to 1)) c.drawText(s, x + dx * o, y + dy * o, tp)
+            if (cleanTL.get()) strokeUnder(c, s, x, y, maxOf(1.5f, size * .15f))
+            else { tp.color = INK; for ((dx, dy) in listOf(-1 to 0, 1 to 0, 0 to -1, 0 to 1, 1 to 1)) c.drawText(s, x + dx.toFloat(), y + dy.toFloat(), tp) }
         }
+        tp.color = color; c.drawText(s, x, y, tp)
+    }
+    /** 글자 테두리: 겹쳐 찍지 않고 선으로 한 번에 그린다 (큰 글자에서 테두리가 깨져 보이지 않게) */
+    private fun strokeUnder(c: Canvas, s: String, x: Float, y: Float, w: Float) {
+        tp.color = INK; tp.style = Paint.Style.STROKE; tp.strokeWidth = w; tp.strokeJoin = Paint.Join.ROUND
+        c.drawText(s, x + w * .25f, y + w * .35f, tp)   // 살짝 아래 그림자
+        c.drawText(s, x, y, tp)
+        tp.style = Paint.Style.FILL
+    }
+    /** 굵은 테두리 큰 글씨 (전투 숫자, 승리 등) */
+    @Synchronized fun bigText(c: Canvas, s: String, x: Float, y: Float, size: Int, color: Int, align: Paint.Align = Paint.Align.CENTER) {
+        font(size); tp.textAlign = align
+        strokeUnder(c, s, x, y, maxOf(2f, size * .2f))
         tp.color = color; c.drawText(s, x, y, tp)
     }
     @Synchronized fun width(s: String, size: Int): Float { font(size); return tp.measureText(s) }
