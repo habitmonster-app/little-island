@@ -237,6 +237,11 @@ object Game {
     // ---------- 이야기 ----------
     private val flags = HashSet<String>()
     private val opened = HashSet<String>()
+    /** 49화부터 이야기 속도: 배가 이 단계는 되어야 열린다 (중반 내내 새 이야기가 나오게). 48화까지는 배 4단계 조건이라 그대로 */
+    fun storyShip(no: Int) = when { no < 49 -> 0; no <= 51 -> 5; no <= 54 -> 6; no <= 56 -> 7; no <= 58 -> 8; no == 59 -> 9; else -> 10 }
+    const val STORY_GAP = 8 * 3600_000L
+    var storyAt = 0L          // 49화 이후 마지막으로 열린 시각
+    var storyNow = 0L
     private val read = HashSet<String>()
     private val eventLast = HashMap<String, Int>()
     private var lastEvent = ""
@@ -341,7 +346,7 @@ object Game {
         pearlUntil = sp.getLong("pearlUntil", 0L); pearlNext = sp.getLong("pearlNext", 0L)
         crewPts.clear(); sp.getString("crewPts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewPts[k] = v.split(".").map { x -> x.toIntOrNull() ?: 0 }.plus(listOf(0, 0, 0, 0)).take(4).toIntArray() }
         treeOwned.clear(); sp.getString("tree", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { treeOwned.add(it) }
-        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); festUntil = sp.getLong("festUntil", 0L); stayHome = sp.getBoolean("stayHome", false); tut = if (sp.contains("tut")) sp.getInt("tut", 0) else if (voyages > 3) 99 else 0; tips.clear(); sp.getString("tips", "")!!.split(",").filter { it.isNotEmpty() }.forEach { tips.add(it) }; stageCool = sp.getLong("stageCool", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
+        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); festUntil = sp.getLong("festUntil", 0L); stayHome = sp.getBoolean("stayHome", false); tut = if (sp.contains("tut")) sp.getInt("tut", 0) else if (voyages > 3) 99 else 0; tips.clear(); sp.getString("tips", "")!!.split(",").filter { it.isNotEmpty() }.forEach { tips.add(it) }; stageCool = sp.getLong("stageCool", 0L); storyAt = sp.getLong("storyAt", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
         dbDay = sp.getLong("dbDay", -1L); seasonKey = sp.getString("seasonKey", "") ?: ""; seasonPts = sp.getInt("seasonPts", 0); seasonGot = sp.getInt("seasonGot", 0)
         visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
         set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
@@ -407,7 +412,7 @@ object Game {
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
             putLong("pearlUntil", pearlUntil); putLong("pearlNext", pearlNext)
-            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putInt("tut", tut); putLong("festUntil", festUntil); putBoolean("stayHome", stayHome); putString("tips", tips.joinToString(",")); putLong("stageCool", stageCool); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
+            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putInt("tut", tut); putLong("festUntil", festUntil); putBoolean("stayHome", stayHome); putString("tips", tips.joinToString(",")); putLong("stageCool", stageCool); putLong("storyAt", storyAt); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
             putString("seasonKey", seasonKey); putInt("seasonPts", seasonPts); putInt("seasonGot", seasonGot)
             putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
@@ -628,7 +633,12 @@ object Game {
     fun ptsTotal(id: String) = (crewLevel(id) - 1) * 2
     fun ptsFree(id: String) = 0   // 능력치는 이제 레벨에 따라 저절로 오른다 (손으로 찍지 않음)
     /** 배에 탄 선원들이 찍은 능력치 합 */
-    fun cs(ids: List<String>, k: Int): Float = ids.filter { it in promoted }.sumOf { crewStat(it, k).toDouble() }.toFloat()
+    /** 배에 탄 선원들의 힘 합계. 판매는 센 순서대로 1, 1/2, 1/3 … 만큼만 더한다 (선원이 많아져도 경제가 폭주하지 않게) */
+    fun cs(ids: List<String>, k: Int): Float {
+        val v = ids.filter { it in promoted }.map { crewStat(it, k) }
+        if (k != 3) return v.sum()
+        return v.sortedDescending().withIndex().sumOf { (i, x) -> (x / (1 + i)).toDouble() }.toFloat()
+    }
     /** 선원 한 명이 레벨만큼 보태는 힘: 0 승률, 1 항해 시간, 2 짐칸, 3 판매. 10레벨마다 판매 ×1.4 */
     fun crewStat(id: String, k: Int, lv: Int = crewLevel(id)): Float = (1 + partValue("cabin")) * when (k) {
         0 -> lv * .002f; 1 -> lv * .003f; 2 -> lv * .004f
@@ -1104,11 +1114,16 @@ object Game {
         if (v.step >= 2 && f >= 1f) returnHome(v, v.start + (v.dur * 1000).toLong())
     }
 
+    /** 배 단계마다 선원이 한 명씩 더 올 수 있다 (배 1단계 3명 … 10단계 12명). 중반에도 "새 선원!"이 계속 나오게 */
+    fun crewAllow() = shipLevel + 2
     private fun tryHire(p: Data.Port, t: Long): String? {
         if (workers.size >= houses) return null
+        if (has("worker_arrive_1") && promoted.size + workers.size >= crewAllow()) return null
         val gold = goldC / 100
         val busy = workers.map { it.id }.toSet()
-        val list = Data.workers.filter { it.port == p.id && has(it.unlock) && it.id !in busy && it.id !in promoted }
+        // 지금 항구 사람이 먼저, 없으면 소문을 듣고 다른 열린 항구 사람도 찾아온다 (선원 자리가 비지 않게)
+        val list = Data.workers.filter { has(it.unlock) && it.id !in busy && it.id !in promoted && (it.port == p.id || has(it.port)) }
+            .sortedBy { if (it.port == p.id) 0 else 1 }
         // 첫 견습선원은 해솔항의 여울로 정해져 있다 (예비금 규칙 예외)
         if (!has("worker_arrive_1")) {
             val y = list.firstOrNull { it.id == "yeoul" } ?: return null
@@ -1117,8 +1132,9 @@ object Game {
         if (!autoHire) return null
         val day = t / (24 * HOUR)
         if (day != hireDay) { hireDay = day; hireSpent = 0 }
-        val limit = if (hireAny) Int.MAX_VALUE else Data.singleLimit
-        val daily = if (hireAny) Int.MAX_VALUE else Data.dailyLimit
+        // 고용 한도는 가진 금화에 맞춰 커진다 (예전엔 10금화로 고정이라 첫 두 명 말고는 아무도 안 왔다)
+        val limit = if (hireAny) Int.MAX_VALUE else maxOf(Data.singleLimit.toLong(), gold / 20).coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
+        val daily = if (hireAny) Int.MAX_VALUE else maxOf(Data.dailyLimit.toLong(), gold / 5).coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
         val w = list.firstOrNull { it.wage <= limit && gold - it.wage >= Data.reserveGold && hireSpent + it.wage <= daily } ?: return null
         hireSpent += w.wage
         return w.id
@@ -1160,7 +1176,8 @@ object Game {
         } }
         Fleet.mission(v.mission)?.let { settleMission(it, v) }
         rollEvent(v)
-        // 11화부터는 귀항할 때마다 최대 한 화씩
+        // 11화부터는 귀항할 때마다 최대 한 화씩 (49화부터는 배 단계와 8시간 간격도 본다)
+        storyNow = t
         Story.refresh(true).forEach { announce(it) }
         checkDeco()
         checkTitles()

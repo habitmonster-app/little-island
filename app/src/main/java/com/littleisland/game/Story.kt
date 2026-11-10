@@ -128,7 +128,10 @@ object Story {
                 if (e.after != null && !Game.isOpen(e.after)) continue
                 // 11화부터는 귀항 때만, 한 번에 한 화씩
                 val no = if (e.kind == MAIN) e.id.removePrefix("main_").toIntOrNull() ?: 0 else 0
-                if (no > 10) { if (!later || laterUsed) continue; laterUsed = true }
+                if (no > 10) { if (!later || laterUsed) continue
+                    if (no >= 49 && (Game.shipLevel < Game.storyShip(no) || Game.storyNow - Game.storyAt < Game.STORY_GAP)) continue
+                    laterUsed = true
+                    if (no >= 49) Game.storyAt = Game.storyNow }
                 Game.open(e.id)
                 if (e.kind == MAIN) Game.flag(e.id)
                 opened.add(e); changed = true

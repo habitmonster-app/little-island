@@ -1,0 +1,86 @@
+d0.0 ship1 ship1
+d0.0 ship1 story 10
+d0.1 ship2 ship2
+d0.1 ship2 unlock ship_2
+d0.1 ship2 story 11
+d0.1 ship2 story 12
+d0.2 ship2 story 13
+d0.3 ship2 crew yeoul
+d0.3 ship2 crew mungi
+d0.4 ship2 story 14
+d0.4 ship2 story 15
+d0.4 ship2 story 16
+d0.4 ship2 story 17
+d0.4 ship2 story 18
+d0.5 ship2 story 19
+d0.5 ship2 story 20
+d0.5 ship2 story 21
+d0.5 ship2 story 22
+d0.5 ship2 story 23
+d0.5 ship2 story 24
+d0.6 ship2 story 25
+d0.6 ship2 story 26
+d0.6 ship2 story 27
+d0.6 ship2 story 28
+d0.6 ship2 story 29
+d0.7 ship2 story 30
+d0.7 ship2 story 31
+d0.7 ship2 story 32
+d0.7 ship2 story 33
+d0.7 ship2 story 34
+d0.8 ship2 story 35
+d0.9 ship3 ship3
+d0.9 ship3 unlock ship_3
+d0.9 ship3 story 36
+d0.9 ship3 renownReady 0
+d1.1 ship3 unlock lighthouse
+d1.1 ship3 story 37
+d1.2 ship3 story 38
+d1.2 ship3 crew sori
+d1.3 ship3 crew nuri
+d1.3 ship3 story 39
+d1.3 ship3 story 40
+d1.3 ship3 story 41
+d1.4 ship3 crew bityeo
+d1.4 ship3 unlock market
+d1.4 ship3 story 42
+d1.4 ship3 story 43
+d1.4 ship3 story 44
+d1.6 ship3 story 45
+d1.6 ship3 story 46
+d1.6 ship3 story 47
+d1.9 ship4 ship4
+d1.9 ship4 unlock ship_4
+d1.9 ship4 story 48
+d2.4 ship4 crew onyu
+d5.0 ship5 ship5
+d5.0 ship5 unlock ship_5
+d5.1 ship5 story 49
+d5.3 ship5 crew bada
+d5.4 ship5 story 50
+d5.7 ship5 story 51
+d11.5 ship6 ship6
+d11.5 ship6 unlock ship_6
+d11.5 ship6 story 52
+d11.8 ship6 story 53
+d12.0 ship6 crew geonu
+d12.1 ship6 story 54
+d19.1 ship7 ship7
+d19.1 ship7 unlock ship_7
+d19.1 ship7 story 55
+d19.4 ship7 crew dori
+d19.5 ship7 story 56
+d32.9 ship8 ship8
+d32.9 ship8 unlock ship_8
+d33.0 ship8 story 57
+d33.2 ship8 crew haneul
+d33.3 ship8 story 58
+d45.7 ship9 ship9
+d45.7 ship9 unlock ship_9
+d45.7 ship9 story 59
+d45.9 ship9 crew deul
+d69.2 ship10 ship10
+d69.2 ship10 unlock ship_10
+d69.2 ship10 story 60
+d69.2 ship10 unlock ending
+d69.7 ship10 crew saei
