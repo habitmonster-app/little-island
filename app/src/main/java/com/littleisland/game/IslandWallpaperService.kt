@@ -55,7 +55,7 @@ class IslandWallpaperService : WallpaperService() {
                 Game.catchUp()
                 Game.report?.let { r ->
                     val t = if (r.minutes >= 60) (r.minutes / 60).toString() + "시간" + (if (r.minutes % 60 > 0) " " + (r.minutes % 60) + "분" else "") else (r.minutes.coerceAtLeast(1)).toString() + "분"
-                    card = Triple(t + " 동안 섬에서", "나무 +" + r.wood + "  돌 +" + r.stone + "  금화 +" + r.gold,
+                    card = Triple(t + " 동안 섬에서", "나무 +" + r.wood + "  돌 +" + r.stone + "  금화 +" + gold(r.gold),
                         (if (r.voyages > 0) "항해 " + r.voyages + "번 다녀왔어요" else "") + (if (r.full) (if (r.voyages > 0) " · " else "") + "창고가 가득 찼어요" else ""))
                     cardT = 7f; Game.report = null
                 }
@@ -193,7 +193,7 @@ class IslandWallpaperService : WallpaperService() {
                     if (parts.isEmpty()) 1f else parts.average().toFloat()
                 } ?: 0f
             } else { title = "섬 · 배가 곧 떠나요"; sub = ""; frac = 0f }
-            val res = "나무 " + Game.wood + " · 돌 " + Game.stone + " · 금화 " + big(Game.gold)
+            val res = "나무 " + Game.wood + " · 돌 " + Game.stone + " · 금화 " + gold(Game.gold)
             val y0 = syOf(Scene.HOR - 74f)
             val x0 = 22 * d; val w = cv.width - 44 * d
             fun outlined(t: String, x: Float, y: Float, size: Float, cl: Int, align: Paint.Align, maxW: Float) {

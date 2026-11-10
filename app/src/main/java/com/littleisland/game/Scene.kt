@@ -412,12 +412,22 @@ class Scene {
         }
     }
 
+    /** 배 그림 폭. 섬 부두에 묶여 있을 때는 마을을 가리지 않게 작게 (멀리 정박한 느낌), 떠나면서 원래 크기로 */
+    private fun shipW(ff: Float = Game.voyFrac()): Int {
+        val lv = Game.shipLevel; val full = if (lv <= 6) 54 + (lv - 1) * 8 else 94 + (lv - 6) * 4
+        val dw = min(full, DOCK_W)
+        return when { ff < 0f -> dw; ff < .05f -> lerp(dw.toFloat(), full.toFloat(), ease(ff / .05f)).roundToInt()
+            ff > .95f -> lerp(full.toFloat(), dw.toFloat(), ease((ff - .95f) / .05f)).roundToInt(); else -> full }
+    }
+    private val DOCK_W = 66
+    private fun dockedBehind() = Game.dock && Game.voyFrac() < 0f && islandOffset() == 0f
+
     /** 우리 배의 화면 x. 부두가 없으면 null */
     private fun shipX(): Float? {
         if (!Game.dock) return null
         val f = Game.voyFrac()
         // 큰 배도 화면 밖으로 잘리지 않게 부두 자리를 왼쪽으로 당긴다
-        val lv = Game.shipLevel; val sw = if (lv <= 6) 54 + (lv - 1) * 8 else 94 + (lv - 6) * 4
+        val sw = shipW(-1f)
         val hx = min(dockX + 16, W - sw / 2f + 2)
         if (f < 0f) return hx
         return when {
@@ -465,7 +475,7 @@ class Scene {
                 pops.add(Pop(100f, WL - 50, "힘 " + "%,d".format(Game.myPower(v.crew)) + " vs " + "%,d".format(Game.enemyPower(pr)), 3.5f, true)) }
             if (v.encounter && lastF < Data.fPirate && f >= Data.fPirate)
                 pops.add(if (v.win) Pop(150f, WL - 34, "승리! 보물", 3f, true) else Pop(SAIL_X, WL - 34, "짐을 빼앗겼어요", 3f))
-            if (lastF < Data.fArrive && f >= Data.fArrive) pops.add(Pop(SAIL_X + 30, WL - 40, "판매 +" + (v.saleC / 100) + "금화", 3.5f, true))
+            if (lastF < Data.fArrive && f >= Data.fArrive) pops.add(Pop(SAIL_X + 30, WL - 40, "판매 +" + gold(v.saleC / 100) + "금화", 3.5f, true))
         }
         lastF = f
         for (pp in pops) { pp.t -= dt; pp.y -= dt * 5 }
@@ -494,7 +504,7 @@ class Scene {
         drawCritter()
         pirates(time)
         drawVisitor(time, io, po)
-        shipX()?.let { ourShip(it, time) }
+        if (!dockedBehind()) shipX()?.let { ourShip(it, time) }
         drawFloaters(time)
         foreWater(time)
         weatherFx(time)
@@ -768,7 +778,9 @@ class Scene {
     // ---------- 섬 ----------
     private fun island(time: Float, o: Float) {
         c.save(); c.translate(o, 0f)
-        val stage = when { Game.has("main_60") -> "island_4"; Game.has("main_30") -> "island_3"; Game.has("main_10") -> "island_2"; else -> "island" }
+        // 섬 모습: 이야기 진도와 배 단계 중 앞선 쪽 (배 3·6·9단계마다 섬이 한 번씩 커진다)
+        val sl = Game.shipLevel
+        val stage = when { Game.has("main_60") || sl >= 9 -> "island_4"; Game.has("main_30") || sl >= 6 -> "island_3"; Game.has("main_10") || sl >= 3 -> "island_2"; else -> "island" }
         val isl = aget(stage, 196) ?: aget("island", 196)
         if (isl != null) {
             // 그림마다 풀밭 높이(위에서부터 비율)가 조금씩 달라서, 풀밭이 GROUND에 오도록 맞춘다
@@ -820,6 +832,9 @@ class Scene {
     /** 그림 파일이 있는 섬: 건물과 사람만 그 위에 */
     private fun artIsland(time: Float) {
         fun b(name: String, x: Float, w: Int, fallback: () -> Unit) { val bm = acell("buildings", 7, 1, name.toInt(), w); if (bm != null) Art.draw(c, bm, x, GROUND + 1) else fallback() }
+        landmarks(time)
+        // 섬에 정박한 배는 마을 뒤에: 집과 장터가 배에 가려지지 않는다
+        if (dockedBehind()) shipX()?.let { ourShip(it, time) }
         if (Game.lighthouse) b("4", 8f, 16) {}
         if (Game.field) b("3", 40f, 24) {}
         b(if (Game.dock) "2" else "6", dockX + 13, 34) {}
@@ -828,6 +843,51 @@ class Scene {
         for (i in 0 until Game.houses) b("0", houseX[i], 18) { house(houseX[i], GROUND - 3) }
         if (Game.market) b("5", 160f, 28) {}
         for (v in people) person(v, time)
+    }
+
+    /** 배 단계마다 섬에 하나씩 늘어나는 큰 건물 (건물 뒤에 그려서 지붕 위로 솟아 보인다) */
+    private fun landmarks(time: Float) {
+        val sl = Game.shipLevel; val g = GROUND + 1
+        val wood = col("#7a4a24"); val woodD = col("#5a3418"); val stone = col("#b8b2a6"); val stoneD = col("#8a8478"); val gold = col("#ffd36a"); val goldD = col("#c8962a")
+        // 4단계: 풍차 (날개가 돈다)
+        if (sl >= 4) { val x = 30f
+            for (i in 0 until 26) { val w = 12f - i * .2f; r(x - w / 2, g - i - 1, w, 1f, if (i % 6 == 0) stoneD else stone) }
+            r(x - 2, g - 8, 4f, 7f, woodD); r(x - 4, g - 30, 8f, 4f, col("#a8442e")); r(x - 3, g - 31, 6f, 1f, col("#c85a3e"))
+            val hx = x; val hy = g - 24f; val a0 = time * 1.6f
+            for (k in 0 until 4) { val a = a0 + k * Math.PI.toFloat() / 2
+                for (j in 2 until 14) { val px = hx + Math.cos(a.toDouble()).toFloat() * j; val py = hy + Math.sin(a.toDouble()).toFloat() * j
+                    r(px.roundToInt().toFloat(), py.roundToInt().toFloat(), 1f, 1f, woodD)
+                    if (j > 5) { val qx = px + Math.cos(a + 1.57).toFloat() * 2; val qy = py + Math.sin(a + 1.57).toFloat() * 2
+                        r(qx.roundToInt().toFloat(), qy.roundToInt().toFloat(), 2f, 2f, col("#efe6cc")) } } }
+            r(hx - 1, hy - 1, 2f, 2f, goldD) }
+        // 7단계: 종탑
+        if (sl >= 7) { val x = 124f
+            r(x - 6, g - 40, 12f, 40f, stone); for (i in 0 until 8) r(x - 6, g - 40 + i * 5, 12f, 1f, stoneD)
+            r(x - 4, g - 34, 8f, 9f, col("#2a2018")); val sw = Math.round(Math.sin(time * 3.0) * 1).toFloat()
+            r(x - 2 + sw, g - 32, 4f, 5f, gold); r(x - 3 + sw, g - 28, 6f, 1f, goldD)
+            for (i in 0 until 7) r(x - 8 + i, g - 41 - i, 16f - i * 2, 1f, if (i < 2) col("#3a6ea8") else col("#4a86c8"))
+            r(x, g - 50, 1f, 3f, gold) }
+        // 10단계: 황금 동상
+        if (sl >= 10) { val x = 86f
+            r(x - 6, g - 8, 12f, 6f, stone); r(x - 7, g - 9, 14f, 1f, stoneD)
+            r(x - 2, g - 22, 4f, 14f, gold); r(x - 2, g - 26, 4f, 4f, gold); r(x - 1, g - 25, 1f, 1f, goldD)
+            r(x + 2, g - 30, 1f, 12f, goldD); r(x + 3, g - 30, 5f, 3f, col("#e2483c"))
+            r(x - 5, g - 19, 3f, 1f, gold); r(x + 2, g - 19, 1f, 1f, gold)
+            if (((time * 2).toInt() % 3) == 0) { r(x - 4, g - 27, 1f, 1f, col("#ffffff")); r(x + 1, g - 16, 1f, 1f, col("#ffffff")) } }
+        // 2단계: 섬 깃발
+        if (sl >= 2) { val x = 96f
+            r(x, g - 34, 1f, 34f, woodD); r(x - 1, g - 35, 3f, 1f, gold)
+            val wv = (time * 3).toInt() % 2
+            for (i in 0 until 6) r(x + 1, g - 33 + i, 12f - i * .5f + (if ((i + wv) % 2 == 0) 1f else 0f), 1f, if (i < 2) col("#3a9a9a") else if (i < 4) col("#efe6cc") else col("#3a9a9a")) }
+        // 8단계: 이긴 해적 깃발들
+        if (sl >= 8) for ((i, x) in listOf(54f, 60f, 66f).withIndex()) {
+            r(x, g - 28 + i * 2, 1f, 28f - i * 2, woodD)
+            r(x + 1, g - 27 + i * 2, 5f, 4f, col("#1e1e24")); r(x + 3, g - 26 + i * 2, 1f, 1f, col("#efe6cc")) }
+        // 5단계: 등불 줄 (깜빡)
+        if (sl >= 5) for (i in 0 until 7) { val x = 100f + i * 9; val sag = (3 - Math.abs(i - 3)) * 1.2f
+            r(x, g - 24 + sag, 9f, 1f, col("#4a2c16"))
+            val on = ((time * 2).toInt() + i) % 4 != 0
+            r(x + 3, g - 23 + sag, 3f, 3f, if (on) (if (i % 2 == 0) col("#ff8a5a") else gold) else goldD) }
     }
 
     private fun tree(t: Tree, base: Float) {
@@ -1012,12 +1072,12 @@ class Scene {
     private fun ourShip(x: Float, time: Float) {
         val lv = Game.shipLevel
         val y = WL + (sin(time * 1.8f) * 1.2f).roundToInt()
-        val sw = if (lv <= 6) 54 + (lv - 1) * 8 else 94 + (lv - 6) * 4
+        val sw = shipW()
         val look = Game.lookStage()
         // 장식 깃발을 달면 4번째 모양의 원래 빨간 깃발은 지우고 그린다 (겹치지 않게)
         val sb = shipCell(lv, look, sw, Game.decoOn["flag"] != null)
             ?: acell("ships", 4, 1, lv - 1, sw)
-        if (sb != null) { Art.draw(c, sb, x, y + 5); shipDeco(x, y + 5f, sw.toFloat(), lv, time); deckCrew(x, y, sw.toFloat(), time); return }
+        if (sb != null) { Art.draw(c, sb, x, y + 5); if (sw == shipW(.5f)) { shipDeco(x, y + 5f, sw.toFloat(), lv, time); deckCrew(x, y, sw.toFloat(), time) }; return }
         val len = 30f + (lv - 1) * 7f
         val hull = col("#6D513A"); val hullL = col("#A78355")
         for (i in 0 until 7) r(x - len / 2 + i, y - 4 + i, len - i * 2 + (if (i < 3) 4f else 0f), 1f, if (i < 2) hullL else hull)

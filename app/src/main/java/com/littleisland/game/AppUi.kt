@@ -44,6 +44,9 @@ class AppUi(val scene: Scene, val host: Host) {
     private val SUB = intArrayOf(0, 1, 3, 4, 5, 6, 7)
     var tab = if (Game.dock) 8 else 0
     private var backRect: Rect? = null
+    private var reveal: String? = null     // 막 승진한 선원 (새 선원! 연출)
+    private var revealAt = 0L
+    private var moreOpen = false          // 더보기: 접어 둔 칸 펼침
     private var popup: Tile? = null
     var fxAt = 0L                        // 올리기 성공 반짝임 시작 시각
     private var after: Tile? = null      // 버튼을 누른 뒤 이어서 띄울 창 (뽑기 결과)
@@ -100,12 +103,12 @@ class AppUi(val scene: Scene, val host: Host) {
     }
 
     private fun renownTile(): Tile? {
-        if (Game.shipLevel < 4 && Game.renown == 0) return null
+        if (Game.shipLevel < 2 && Game.renown == 0) return null
         val ok = Game.renownReady()
         val cap = Fleet.maxLevel(Game.shipLevel)
         return Tile("title:0", "명성 " + Game.renown, if (ok) "새 항해!" else "부품 Lv" + cap, if (ok) St.READY else if (Game.renown > 0) St.ON else St.NORMAL,
             "부품 넷을 다 최고로 올리면 새 항해를 시작할 수 있어요.\n\n내려놓는 것  부품 레벨, 금화\n남는 것  배, 선원, 이야기, 장식\n\n명성 1마다 영원히\n해적 이길 확률 +2%p (함대 힘 +200)\n판매 금화 +10%\n\n지금 명성 " + Game.renown +
-                (if (ok) "" else "\n필요: 배 5단계, 부품 모두 Lv" + cap),
+                (if (ok) "" else "\n필요: 배 " + Game.renownShip() + "단계, 부품 모두 Lv" + cap),
             null, if (ok) "새 항해 시작" else null, { Game.doRenown() }, "명성 " + (Game.renown + 1) + "!")
     }
 
@@ -141,11 +144,12 @@ class AppUi(val scene: Scene, val host: Host) {
                 val pf = Game.promoted.any { Game.ptsFree(it) > 0 }; val tr = (0 until 25).any { Game.treeOpen(it) && Game.gold >= Game.treeCost(it) }
                 l.add(go(7, if (tr) "배울 수 있음" else "항해술 나무", tr))
                 l.add(go(3, "견습·부적", false))
-                l.add(go(1, "단계·꾸미기", false))
-                l.add(go(0, "섬 짓기", false))
                 val n = Game.unread()
                 l.add(go(5, if (n > 0) "새 글 $n" else "도감·일지", n > 0))
-                l.add(go(6, "배경화면", false))
+                // 잘 안 쓰는 것은 한 칸에 접어 둔다
+                if (moreOpen) { l.add(go(1, "단계·꾸미기", false)); l.add(go(0, "섬 짓기", false)); l.add(go(6, "배경화면", false))
+                    l.add(Tile("gear", "접기", "3개 숨기기", St.NORMAL, "", go = -2)) }
+                else l.add(Tile("gear", "그 밖에", "꾸미기·설정", St.NORMAL, "", go = -2))
             }
             0 -> {
                 val h = Game.nextHouse()
@@ -224,7 +228,7 @@ class AppUi(val scene: Scene, val host: Host) {
                     val m = Fleet.missions.firstOrNull { it.crew == cr.id && it.id !in Game.missionsDone } ?: continue
                     val face = faceOf(Game.crewLevel(cr.id)) + cr.portrait
                     val port = Data.ports.firstOrNull { it.id == m.port }?.name ?: m.port
-                    val rw = listOfNotNull(m.gold.takeIf { it > 0 }?.let { "금화 $it" }, m.wood.takeIf { it > 0 }?.let { "나무 $it" },
+                    val rw = listOfNotNull(m.gold.takeIf { it > 0 }?.let { "금화 " + gold(it) }, m.wood.takeIf { it > 0 }?.let { "나무 $it" },
                         m.stone.takeIf { it > 0 }?.let { "돌 $it" }, m.maps.takeIf { it > 0 }?.let { "지도 조각 $it" }, m.xp.takeIf { it > 0 }?.let { cr.name + " 경험치 $it" })
                     val info = Fleet.short("missions", m.id, m.summary) + "\n\n가는 곳  " + port + (if (m.mustWin) "\n해적을 만나면 이겨야 성공" else "") + "\n보상  " + rw.joinToString(", ") + " + 이야기"
                     val miss = Game.missionMissing(m)
@@ -242,7 +246,7 @@ class AppUi(val scene: Scene, val host: Host) {
                     val own = all.filter { it.id in Game.decoOwned }
                     val cur = Game.decoOn[slot]?.let { Fleet.deco(it) }
                     val list = all.joinToString("\n") { dc -> (if (dc.id in Game.decoOwned) "● " else "○ ") + dc.name + " · " + dc.howText +
-                        (if (!dc.auto) " (금화 " + dc.gold + ")" else "") }
+                        (if (!dc.auto) " (금화 " + gold(dc.gold) + ")" else "") }
                     val next = if (own.isEmpty()) null else { val k = own.indexOfFirst { it.id == cur?.id }; if (k + 1 < own.size) own[k + 1] else null }
                     val info = "지금  " + (cur?.name ?: "비어 있음") + (next?.let { "\n다음  " + it.name } ?: "") + "\n\n모은 장식 " + own.size + "/" + all.size + " (모양만 바뀌어요)" +
                         (all.firstOrNull { it.id !in Game.decoOwned }?.let { "\n얻는 법 예: " + it.howText } ?: "")
@@ -252,7 +256,7 @@ class AppUi(val scene: Scene, val host: Host) {
                             if (next != null) "바꿔 달기" else "떼기",
                             { Game.setDeco(slot, next?.id) }, next?.let { it.name + "을(를) 달았어요" } ?: Fleet.slotName(slot) + " 장식을 뗐어요"))
                     for (dc in all) if (!dc.auto && dc.id !in Game.decoOwned && Game.decoReady(dc))
-                        l.add(Tile(dc.iconKey, dc.name, "금화 " + dc.gold, if (Game.gold >= dc.gold) St.READY else St.NORMAL,
+                        l.add(Tile(dc.iconKey, dc.name, "금화 " + gold(dc.gold), if (Game.gold >= dc.gold) St.READY else St.NORMAL,
                             Fleet.short("decos", dc.id, dc.desc) + "\n(모양만 바뀌어요)", Data.Cost(dc.gold, 0, 0), "사기", { Game.buyDeco(dc.id) }, dc.name + "을(를) 달았어요"))
                 }
             }
@@ -261,7 +265,7 @@ class AppUi(val scene: Scene, val host: Host) {
                     val u = Data.unlock(p.id)
                     val open = p.id == "port_haesol" || Game.has(p.id)
                     val sv = Fleet.souvenirs.filter { it.port == p.id }
-                    val info = p.name + "\n나무 " + fmt(p.buyW) + " · 돌 " + fmt(p.buyS) + "금화에 사요\n해적 " + (p.risk * 100).toInt() + "% · 거리 " + fmt(p.distance) + "\n" + p.look +
+                    val info = p.name + "\n나무 " + fmt(p.buyW * GX) + " · 돌 " + fmt(p.buyS * GX) + "금화에 사요\n해적 " + (p.risk * 100).toInt() + "% · 거리 " + fmt(p.distance) + "\n" + p.look +
                         (if (sv.isNotEmpty()) "\n\n기념품 " + sv.count { it.id in Game.souvOwned } + "/" + sv.size else "")
                     l.add(when {
                         open && Game.route == p.id -> Tile("port:" + Data.ports.indexOf(p), p.name, "지금 항로", St.ON, info)
@@ -309,7 +313,7 @@ class AppUi(val scene: Scene, val host: Host) {
                         Data.Cost(Fleet.promoteGold, 0, 0), "선원으로", { Game.promote(w.id) }, w.name + "이(가) 선원이 됐어요"))
                 }
                 if (Game.promoted.isEmpty()) l.add(Tile("part:4", "선원 되는 법", "자리 " + Game.slots() + "칸", St.NORMAL,
-                    "견습선원이 섬에서 일을 " + Fleet.promoteContracts + "번 마치면 금화 " + Fleet.promoteGold + "으로 선원이 될 수 있어요. 선원은 배에 타고 항해할 때마다 경험치를 얻어 Lv" + Fleet.maxCrewLevel + "까지 자라고, 레벨마다 새 스킬이 열려요. 짝이 맞는 둘을 같이 태우면 보너스가 더 붙어요."))
+                    "견습선원이 섬에서 일을 " + Fleet.promoteContracts + "번 마치면 금화 " + gold(Fleet.promoteGold) + "으로 선원이 될 수 있어요. 선원은 배에 타고 항해할 때마다 경험치를 얻어 Lv" + Fleet.maxCrewLevel + "까지 자라고, 레벨마다 새 스킬이 열려요. 짝이 맞는 둘을 같이 태우면 보너스가 더 붙어요."))
                 for (i in 0 until 3) {
                     val wk = Game.workers.getOrNull(i)
                     l.add(when {
@@ -336,8 +340,8 @@ class AppUi(val scene: Scene, val host: Host) {
                     l.add(Tile("chest:0", "부적 뽑기", "쪽지 " + Game.tickets + "장", if (Game.canDraw(false)) St.READY else St.NORMAL,
                         "쪽지 " + Fleet.gachaTickets + "장 = 부적 1개\n쪽지는 항해와 훈련으로 받아요.\n\n" + rates,
                         null, if (Game.canDraw(false)) "쪽지 " + Fleet.gachaTickets + "장으로 뽑기" else null, { (Game.draw(false) != null).also { if (it) after = result(false) } }))
-                    l.add(Tile("chest:2", "금화로 뽑기", "금화 " + Fleet.gachaGold, if (Game.canDraw(true)) St.NORMAL else St.LOCKED,
-                        "금화 " + Fleet.gachaGold + " = 부적 1개\n\n" + rates,
+                    l.add(Tile("chest:2", "금화로 뽑기", "금화 " + gold(Fleet.gachaGold), if (Game.canDraw(true)) St.NORMAL else St.LOCKED,
+                        "금화 " + gold(Fleet.gachaGold) + " = 부적 1개\n\n" + rates,
                         null, if (Game.canDraw(true)) "금화로 뽑기" else null, { (Game.draw(true) != null).also { if (it) after = result(true) } }))
                     Game.trainCheckDay()
                     l.add(Tile("map", "훈련 퍼즐", "오늘 " + Game.trainLeft + "번", if (Game.trainLeft > 0) St.READY else St.DONE,
@@ -357,7 +361,7 @@ class AppUi(val scene: Scene, val host: Host) {
                     }
                 }
                 l.add(Tile("auto", "자동 고용", if (Game.autoHire) "켜짐" else "꺼짐", if (Game.autoHire) St.ON else St.OFF,
-                    "고용비 " + Data.singleLimit + "금화까지, 하루 " + Data.dailyLimit + "금화, 금화 " + Data.reserveGold + "은 남겨 둬요.", null,
+                    "고용비 " + gold(Data.singleLimit) + "금화까지, 하루 " + gold(Data.dailyLimit) + "금화, 금화 " + gold(Data.reserveGold) + "은 남겨 둬요.", null,
                     if (Game.autoHire) "끄기" else "켜기", { Game.autoHire = !Game.autoHire; Game.save(); true }))
                 l.add(Tile("gold", "비싼 견습", if (Game.hireAny) "켜짐" else "꺼짐", if (Game.hireAny) St.ON else St.OFF,
                     "먼 항구의 견습선원은 고용비가 더 들지만 솜씨가 좋아요.", null, if (Game.hireAny) "끄기" else "켜기", { Game.hireAny = !Game.hireAny; Game.save(); true }))
@@ -378,14 +382,14 @@ class AppUi(val scene: Scene, val host: Host) {
                     val r = Fleet.req(id) ?: continue
                     val pn = Data.port(r.port).name
                     val need = listOfNotNull(if (r.needW > 0) "나무 " + got[0] + "/" + r.needW else null, if (r.needS > 0) "돌 " + got[1] + "/" + r.needS else null).joinToString(" · ")
-                    l.add(Tile("port:" + Data.ports.indexOfFirst { it.id == r.port }.coerceAtLeast(0), r.title, need, St.ON, r.client + " · " + pn + "\n" + r.short + "\n\n" + need + "\n보상  금화 " + r.gold + (if (r.tickets > 0) " · 쪽지 " + r.tickets else "") +
+                    l.add(Tile("port:" + Data.ports.indexOfFirst { it.id == r.port }.coerceAtLeast(0), r.title, need, St.ON, r.client + " · " + pn + "\n" + r.short + "\n\n" + need + "\n보상  금화 " + gold(r.gold) + (if (r.tickets > 0) " · 쪽지 " + r.tickets else "") +
                         "\n\n" + pn + "로 항해하면 실은 짐을 넘겨요.", null, "포기", { Game.cancelReq(id) }, "의뢰를 접었어요"))
                 }
                 for (id in Game.reqOffer.toList()) {
                     val r = Fleet.req(id) ?: continue
                     val pn = Data.port(r.port).name
                     val need = listOfNotNull(if (r.needW > 0) "나무 " + r.needW else null, if (r.needS > 0) "돌 " + r.needS else null).joinToString(" · ")
-                    l.add(Tile("port:" + Data.ports.indexOfFirst { it.id == r.port }.coerceAtLeast(0), r.title, pn, St.NORMAL, r.client + " · " + pn + "\n" + r.short + "\n\n필요  " + need + "\n보상  금화 " + r.gold + (if (r.tickets > 0) " · 쪽지 " + r.tickets else "") +
+                    l.add(Tile("port:" + Data.ports.indexOfFirst { it.id == r.port }.coerceAtLeast(0), r.title, pn, St.NORMAL, r.client + " · " + pn + "\n" + r.short + "\n\n필요  " + need + "\n보상  금화 " + gold(r.gold) + (if (r.tickets > 0) " · 쪽지 " + r.tickets else "") +
                         "\n\n받으면 " + pn + " 항해 때 짐을 넘겨요.", null, "받기", { Game.acceptReq(id) }, "의뢰를 받았어요"))
                 }
                 // 오늘의 항구 주문 3개 + 주간 상자
@@ -393,12 +397,12 @@ class AppUi(val scene: Scene, val host: Host) {
                 for (id in Game.ordIds) {
                     val o = Fleet.order(id) ?: continue
                     val done = id in Game.ordDone; val pr = Game.ordProg[id] ?: 0
-                    val rw = listOfNotNull(o.tickets.takeIf { it > 0 }?.let { "쪽지 $it" }, o.gold.takeIf { it > 0 }?.let { "금화 $it" }).joinToString(" · ")
+                    val rw = listOfNotNull(o.tickets.takeIf { it > 0 }?.let { "쪽지 $it" }, o.gold.takeIf { it > 0 }?.let { "금화 " + gold(it) }).joinToString(" · ")
                     l.add(Tile("daily:" + o.icon, o.title, if (done) "완료" else "$pr/" + o.target, if (done) St.DONE else if (pr > 0) St.ON else St.NORMAL,
                         o.short + "\n\n진행  $pr/" + o.target + "\n보상  " + rw + (if (done) "\n\n받았어요!" else "\n\n다 하면 바로 받아요. 내일 새 주문이 와요.")))
                 }
                 if (Game.ordIds.isNotEmpty()) l.add(Tile("daily:1", "주간 상자", if (Game.weekGot) "받음" else Game.weekCount.toString() + "/" + Fleet.weeklyGoal,
-                    if (Game.weekGot) St.DONE else St.NORMAL, "7일 동안 주문을 " + Fleet.weeklyGoal + "개 끝내면 열려요.\n\n보상  쪽지 " + Fleet.weeklyTickets + " · 금화 " + Fleet.weeklyGold +
+                    if (Game.weekGot) St.DONE else St.NORMAL, "7일 동안 주문을 " + Fleet.weeklyGoal + "개 끝내면 열려요.\n\n보상  쪽지 " + Fleet.weeklyTickets + " · 금화 " + gold(Fleet.weeklyGold) +
                         "\n남은 날  " + (7 - (Game.today() - Game.weekStart)).coerceIn(1, 7) + "일"))
                 val mp = Game.mapPieces
                 l.add(Tile("map", "보물 지도", "조각 $mp/" + Game.MAP_NEED, when { Game.treasurePending -> St.DONE; mp >= Game.MAP_NEED -> St.READY; else -> St.NORMAL },
@@ -426,7 +430,7 @@ class AppUi(val scene: Scene, val host: Host) {
                     val fe = Game.festNow()
                     l.add(Tile("season:" + (se.deco.firstOrNull() ?: 0), se.name + " 섬", fe?.let { if (it.second) "축제 받음" else "축제 중" } ?: "계절", if (fe != null) St.ON else St.NORMAL,
                         "“" + se.islandLine + "”\n\n" + se.festName + "  " + se.festDays.let { d -> if (d.size == 4) d[0].toString() + "/" + d[1] + "~" + d[2] + "/" + d[3] else "" } +
-                            "\n" + se.festShort + "\n보상  쪽지 " + se.festTickets + " · 금화 " + se.festGold))
+                            "\n" + se.festShort + "\n보상  쪽지 " + se.festTickets + " · 금화 " + gold(se.festGold)))
                 }
                 if (Fleet.titles.isNotEmpty()) {
                     Game.checkTitles()
@@ -452,7 +456,7 @@ class AppUi(val scene: Scene, val host: Host) {
                     val n = Game.souvOwned.size; val tot = Fleet.souvenirs.size
                     val first = Fleet.souvenirs.lastOrNull { it.id in Game.souvOwned }
                     val nm = Fleet.milestones.firstOrNull { it.id !in Game.milesDone && !it.allPorts }
-                    val ms = nm?.let { m -> "다음 보상  " + m.count + "개 → 금화 " + m.gold + (m.deco?.let { id -> " + " + (Fleet.deco(id)?.name ?: "장식") } ?: "") } ?: "개수 보상을 다 받았어요"
+                    val ms = nm?.let { m -> "다음 보상  " + m.count + "개 → 금화 " + gold(m.gold) + (m.deco?.let { id -> " + " + (Fleet.deco(id)?.name ?: "장식") } ?: "") } ?: "개수 보상을 다 받았어요"
                     val ports = "항구마다 몇 개 모았는지는 항구 칸에서 봐요."
                     l.add(Tile(first?.let { "souv:" + it.icon } ?: "book", "항해 도감", "$n/$tot", if (n > 0) St.ON else St.NORMAL,
                         "항구에 닿을 때 가끔 기념품을 얻어요.\n\n" + ms + "\n\n" + ports))
@@ -488,7 +492,7 @@ class AppUi(val scene: Scene, val host: Host) {
     fun draw() {
         snapTo?.let { t -> scrollY += (t - scrollY) * .35f; if (Math.abs(t - scrollY) < .5f) { scrollY = t; snapTo = null } }
         Pix.clean(true)
-        try { drawAll(); drawTut() } finally { Pix.clean(false) }
+        try { drawAll(); if (reveal == null) drawTut() else drawReveal() } finally { Pix.clean(false) }
     }
 
     private fun drawAll() {
@@ -512,8 +516,8 @@ class AppUi(val scene: Scene, val host: Host) {
         drawPower(top + 28)
         // 큰 금화 숫자와 초당 금화
         k.icon(c, "gold", 6f, top + 22, 1.6f)
-        k.text(c, big(Game.gold), 25f, top + 36, 16, k.GOLD, Paint.Align.LEFT, true)
-        k.text(c, (if (Game.gpsAll() > 0.05f) "초당 +" + (if (Game.gpsAll() < 10) "%.1f".format(Game.gpsAll()) else big(Game.gpsAll().toLong())) + " · " else "") + (if (Game.festLeft() > 0) "잔치! 톡톡 2배" else "바다를 톡톡 눌러요!"), 7f, top + 49, 8, k.CREAM, Paint.Align.LEFT, true)
+        k.text(c, gold(Game.gold), 25f, top + 36, 16, k.GOLD, Paint.Align.LEFT, true)
+        k.text(c, (if (Game.gpsAll() > 0.05f) "초당 +" + goldF(Game.gpsAll()) + " · " else "") + (if (Game.festLeft() > 0) "잔치! 톡톡 2배" else "바다를 톡톡 눌러요!"), 7f, top + 49, 8, k.CREAM, Paint.Align.LEFT, true)
         drawGoal(top + sceneH - 21)
         // 탭
         val ty = top + sceneH + 4
@@ -596,7 +600,7 @@ class AppUi(val scene: Scene, val host: Host) {
         // 자원 막대
         val by = H - 22f
         k.rect(c, 20f, by, W - 40f, 18f, k.INK); k.rect(c, 21f, by + 1, W - 42f, 16f, k.col("#5d3a1f")); k.rect(c, 21f, by + 1, W - 42f, 1f, k.col("#a87444"))
-        val items = listOf("wood" to big(Game.wood), "stone" to big(Game.stone), "gold" to big(Game.gold), "map" to Game.mapPieces.toString())
+        val items = listOf("wood" to big(Game.wood), "stone" to big(Game.stone), "gold" to gold(Game.gold), "map" to Game.mapPieces.toString())
         // 금화는 자리를 넓게 (5단계 배는 18만 금화라 숫자가 길다)
         val gap = floatArrayOf(44f, 44f, 62f, 0f)
         var x = 26f
@@ -606,7 +610,7 @@ class AppUi(val scene: Scene, val host: Host) {
     // ---------- 강화: 거지키우기처럼 한 줄 목록 하나 ----------
     class URow(val icon: String, val title: String, val sub: String, val cost: Data.Cost?, val can: Boolean, val label: String,
                val act: () -> Boolean, val big: Boolean = false, val btnText: String? = null, val small: Boolean = false, val head: Boolean = false,
-               val costAt: ((Int) -> Data.Cost?)? = null)
+               val costAt: ((Int) -> Data.Cost?)? = null, val stat: (() -> Float)? = null)
     /** x10·최대일 때 실제로 몇 단계를 사는지와 그 합계 */
     private fun multiCost(u: URow): Pair<Int, Data.Cost>? {
         val f = u.costAt ?: return null
@@ -625,8 +629,8 @@ class AppUi(val scene: Scene, val host: Host) {
     fun upRows(): List<URow> {
         val l = ArrayList<URow>()
         // 4시간마다 보물 상자
-        if (Game.chestReady()) l.add(URow("chest:1", "보물 상자 도착!", "금화 " + big(Game.chestGold()) + " + 쪽지 1장", null, true, "", {
-            val g = Game.openChest(); if (g > 0) { host.sound("chest"); coins(W / 2f, 300f, 24); floats.add(Float3(W / 2f, 300f, "+" + big(g), System.currentTimeMillis())) }; g > 0 }, btnText = "열기"))
+        if (Game.chestReady()) l.add(URow("chest:1", "보물 상자 도착!", "금화 " + gold(Game.chestGold()) + " + 쪽지 1장", null, true, "", {
+            val g = Game.openChest(); if (g > 0) { host.sound("chest"); coins(W / 2f, 300f, 24); floats.add(Float3(W / 2f, 300f, "+" + gold(g), System.currentTimeMillis())) }; g > 0 }, btnText = "열기"))
         else l.add(URow("chest:1", "다음 보물 상자", mmss(Game.chestLeft()) + " 뒤에 도착해요", null, false, "", { false }, btnText = "대기"))
         // 섬에 머물기 / 출항
         if (Game.dock) {
@@ -640,15 +644,15 @@ class AppUi(val scene: Scene, val host: Host) {
         // 해적 토벌 단계
         if (Game.dock) {
             val w = Game.stageWait()
-            l.add(URow("boss:0", Game.stageTitle(), if (w > 0) "쉬는 중 " + (w / 60000 + 1) + "분 남았어요" else "승률 " + pct1(Game.stageOdds()) + (if (Game.stageBoss()) " · 우두머리! 쪽지 3" else " · 금화 " + big(Game.stageGold())),
+            l.add(URow("boss:0", Game.stageTitle(), if (w > 0) "쉬는 중 " + (w / 60000 + 1) + "분 남았어요" else "승률 " + pct1(Game.stageOdds()) + (if (Game.stageBoss()) " · 우두머리! 쪽지 3" else " · 금화 " + gold(Game.stageGold())),
                 null, true, "", { if (w > 0) host.showAd { Game.skipStageCool(); fight() } else fight(); true }, btnText = if (w > 0) "광고 도전" else "도전!"))
         }
         // 명성: 다 키우면 새 항해 (영구 보너스)
         if (Game.renownReady()) l.add(URow("title:0", "다시 출항! 명성 " + (Game.renown + 1), "판매 +10% · 승률 +2%p", null, true, "", { popup = renownTile(); true }, btnText = "출항", big = false))
-        else if (Game.shipLevel >= 5 || Game.renown > 0) {
+        else if (Game.shipLevel >= Game.renownShip() - 1 || Game.renown > 0) {
             val cap = Fleet.maxLevel(Game.shipLevel); val low = Fleet.core.minOf { Game.partLevel(it.id) }
-            l.add(URow("title:0", "다시 출항 · 명성 " + Game.renown, if (Game.shipLevel < 5) "배 5단계부터 열려요" else "판매 +10% · 승률 +2%p", null, false, "", { popup = renownTile(); true },
-                btnText = if (Game.shipLevel < 5) "배 5단계" else "부품 $low/$cap"))
+            l.add(URow("title:0", "다시 출항 · 명성 " + Game.renown, if (Game.shipLevel < Game.renownShip()) "배 " + Game.renownShip() + "단계부터 열려요" else "판매 +10% · 승률 +2%p", null, false, "", { popup = renownTile(); true },
+                btnText = if (Game.shipLevel < Game.renownShip()) "배 " + Game.renownShip() + "단계" else "부품 $low/$cap"))
         }
         // 다음 배 단계
         val nx = Game.shipLevel + 1
@@ -664,18 +668,18 @@ class AppUi(val scene: Scene, val host: Host) {
         val wc = Game.prodCost(Game.woodLv); val sc = Game.prodCost(Game.stoneLv); val stc = Game.storeCost(Game.storeLv)
         fun nx(lv: Int) = (Game.prodMul(lv + 1) / Game.prodMul(lv))
         l.add(URow("wood", "나무 캐기 Lv" + Game.woodLv, "초당 " + rate(Game.woodRate()) + " → " + rate(Game.woodRate() * nx(Game.woodLv)) + (if ((Game.woodLv + 1) % 10 == 0) " 2배!" else ""),
-            wc, Game.canPay(wc), "+1", { Game.buyProd(0) }, costAt = { i -> Game.prodCost(Game.woodLv + i) }))
+            wc, Game.canPay(wc), "+1", { Game.buyProd(0) }, costAt = { i -> Game.prodCost(Game.woodLv + i) }, stat = { Game.woodRate() }))
         l.add(URow("stone", "돌 캐기 Lv" + Game.stoneLv, "초당 " + rate(Game.stoneRate()) + " → " + rate(Game.stoneRate() * nx(Game.stoneLv)) + (if ((Game.stoneLv + 1) % 10 == 0) " 2배!" else ""),
-            sc, Game.canPay(sc), "+1", { Game.buyProd(1) }, costAt = { i -> Game.prodCost(Game.stoneLv + i) }))
+            sc, Game.canPay(sc), "+1", { Game.buyProd(1) }, costAt = { i -> Game.prodCost(Game.stoneLv + i) }, stat = { Game.stoneRate() }))
         val capNow = Game.cap(); Game.storeLv++; val capNext = Game.cap(); Game.storeLv--
-        l.add(URow("store", "창고 Lv" + Game.storeLv, "보관 " + big(capNow) + " → " + big(capNext), stc, Game.canPay(stc), "+1", { Game.buyProd(2) }, costAt = { i -> Game.storeCost(Game.storeLv + i) }))
+        l.add(URow("store", "창고 Lv" + Game.storeLv, "보관 " + big(capNow) + " → " + big(capNext), stc, Game.canPay(stc), "+1", { Game.buyProd(2) }, costAt = { i -> Game.storeCost(Game.storeLv + i) }, stat = { Game.cap().toFloat() }))
         for (p in Fleet.parts) {
             val lv = Game.partLevel(p.id); val n = Game.partNext(p.id)
             val st = Game.stars(p.id); val stS = if (st > 0) " ★$st" else ""
             if (n != null) l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, if ((lv + 1) % 10 == 0) "Lv" + (lv + 1) + " 달성하면 판매 +10%" else Fleet.partText(p, Game.partValue(p.id)) + " → " + Fleet.partText(p, n.value * (1 + .1f * st)).substringAfterLast(" "),
-                n.cost, Game.canPay(n.cost), "+1", { Game.buyPart(p.id) }, costAt = { i -> Game.partCostAt(p.id, i) }))
+                n.cost, Game.canPay(n.cost), "+1", { Game.buyPart(p.id) }, costAt = { i -> Game.partCostAt(p.id, i) }, stat = { (1 + Game.partValue(p.id)) * Game.milestoneSale() }))
             else if (Game.starReady(p.id)) { val sc = Game.starCost(p.id)
-                l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, "별 " + st + "/" + Game.STAR_MAX + " · 별마다 효과 +10%", sc, Game.canPay(sc), "★+1", { Game.buyStar(p.id) })) }
+                l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, "별 " + st + "/" + Game.STAR_MAX + " · 별마다 효과 +10%", sc, Game.canPay(sc), "★+1", { Game.buyStar(p.id) }, stat = { (1 + Game.partValue(p.id)) * Game.milestoneSale() })) }
             else l.add(URow("part:" + p.icon, p.name + " Lv" + lv + stS, if (lv >= p.levels.size) "가장 높은 레벨" else "배를 키우면 더 올려요", null, false, "최고", { false }))
         }
         return l
@@ -701,7 +705,7 @@ class AppUi(val scene: Scene, val host: Host) {
                 if (lv >= Fleet.maxCrewLevel) "최고 레벨 · 판매 +" + pct(Game.crewStat(id, 3)) else if (lv >= Game.crewCap()) "배 " + (lv / 5 + 1) + "단계부터 더 올라요"
                 else Fleet.crewOf(id)?.skills?.firstOrNull { it.level == lv + 1 }?.let { _ -> "판매 +" + pct(Game.crewStat(id, 3)) + " · 다음에 새 스킬!" }
                     ?: ("판매 +" + pct(Game.crewStat(id, 3)) + " → +" + pct(Game.crewStat(id, 3, lv + 1)) + (if ((lv + 1) % 10 == 0) " ×1.35!" else "")),
-                tc?.let { Data.Cost(it, 0, 0) }, tc != null && Game.gold >= tc, "+1", { Game.teach(id) }, costAt = { i -> Game.teachCostAt(id, i) }))
+                tc?.let { Data.Cost(it, 0, 0) }, tc != null && Game.gold >= tc, "+1", { Game.teach(id) }, costAt = { i -> Game.teachCostAt(id, i) }, stat = { 1 + Game.crewStat(id, 3) }))
             if (!on && Game.aboard.size < Game.slots()) l.add(URow("ship", nm + " 배에 태우기", "자리가 비었어요", null, true, "", { Game.toggleAboard(id) }, btnText = "태우기", small = true))
         }
         return l
@@ -712,12 +716,15 @@ class AppUi(val scene: Scene, val host: Host) {
     private fun buyRow(u: URow) {
         if (!u.can) { host.toast("재료가 모자라요"); return }
         multiCost(u)?.let { (_, tc) -> if (mult == 10 && !Game.canPay(tc)) { host.toast("10번 올리기엔 모자라요"); return } }
-        val p0 = Game.myPower()
+        val p0 = Game.myPower(); val s0 = u.stat?.invoke()
+        val pr0 = Game.promoted.size
         val times = if (u.big || (u.btnText != null && u.cost == null && !u.small)) 1 else if (mult == 0) 999 else mult
         var n = 0
         while (n < times && u.act()) n++
         if (n == 0) return
         fxAt = System.currentTimeMillis(); sparkIcon = u.icon
+        // 견습선원 승진: 뽑기처럼 "새 선원!" 연출
+        if (Game.promoted.size > pr0) { reveal = Game.promoted.last(); revealAt = fxAt; host.sound("chest") }
         if (u.cost != null || u.small) host.sound("up")
         val dp = Game.myPower() - p0
         if (dp > 0) { powFx = dp; powFxAt = fxAt }
@@ -729,7 +736,11 @@ class AppUi(val scene: Scene, val host: Host) {
         // 선원 새 스킬: 뽑기처럼 크게
         if (lvBefore != null && u.icon.startsWith("face")) Fleet.crew.firstOrNull { it.name == nm }?.skills?.lastOrNull { it.level in (lvBefore + 1)..(lvBefore + n) }?.let { sk ->
             host.sound("chest"); coins(W / 2f, 180f, 20); floats.add(Float3(W / 2f, 205f, "새 스킬! 「" + sk.name + "」", fxAt)) }
-        if (u.cost != null || u.small) floats.add(Float3(W - 30f, upY[u.title] ?: 300f, if (u.big) "배가 커졌어요!" else nm + " +" + n, fxAt))
+        // 올릴 때마다 얼마나 좋아졌는지 크게: "+12%"
+        val s1 = u.stat?.invoke()
+        val gain = if (s0 != null && s1 != null && s0 > 0f) (s1 / s0 - 1) * 100 else 0f
+        if (gain >= .05f) floats.add(Float3(W - 64f, upY[u.title] ?: 300f, "+" + (if (gain >= 10) Math.round(gain).toString() else "%.1f".format(gain).removeSuffix(".0")) + "%", fxAt, 18))
+        else if (u.cost != null || u.small) floats.add(Float3(W - 30f, upY[u.title] ?: 300f, if (u.big) "배가 커졌어요!" else nm + " +" + n, fxAt))
         if (u.big) coins(W / 2f, 120f, 30)
     }
     private val upY = HashMap<String, Float>()
@@ -775,12 +786,12 @@ class AppUi(val scene: Scene, val host: Host) {
                     val cg = mc?.second ?: u.cost
                     val ok = u.can && (mc == null || Game.canPay(cg))
                     k.button(c, bxx, y + 3, bw, h - 6, "", ok)
-                    val main = if (cg.gold > 0) big(cg.gold) else if (cg.wood > 0) big(cg.wood) else big(cg.stone)
+                    val main = if (cg.gold > 0) gold(cg.gold) else if (cg.wood > 0) big(cg.wood) else big(cg.stone)
                     val ic = if (cg.gold > 0) "gold" else if (cg.wood > 0) "wood" else "stone"
                     k.icon(c, ic, bxx + 5, y + h / 2 - 9, .9f)
                     k.text(c, k.fit(main, 9, bw - 20), bxx + 16, y + h / 2 - 1, 9, if (ok) k.INK else k.col("#c8b896"), Paint.Align.LEFT)
                     fun mats(f: (Long) -> String) = listOfNotNull(if (cg.gold > 0 && cg.wood > 0) "나무" + f(cg.wood.toLong()) else null, if ((cg.gold > 0 || cg.wood > 0) && cg.stone > 0) "돌" + f(cg.stone.toLong()) else null).joinToString(" ")
-                    fun kk(n: Long) = if (n < 1000) n.toString() else if (n < 1_000_000) ("%.1f".format(n / 1000f)).removeSuffix(".0") + "K" else ("%.1f".format(n / 1e6f)).removeSuffix(".0") + "M"
+                    fun kk(n: Long) = if (n < 1000) n.toString() else if (n < 10_000) "%.0f천".format(n / 1000.0) else big(n).replace(Regex("\\.\\d"), "")
                     val plus = if (mc != null) "+" + mc.first + " " else ""
                     val m1 = mats { big(it) }; val m2 = mats { kk(it) }
                     val extra = if (m1.isBlank()) "" else listOf(plus + m1, m1, plus + m2, m2).firstOrNull { k.fits(it, 7, bw - 4) } ?: m2
@@ -807,7 +818,7 @@ class AppUi(val scene: Scene, val host: Host) {
     }
 
     // ---------- 떠오르는 +숫자 ----------
-    class Float3(val x: Float, val y: Float, val s: String, val t0: Long)
+    class Float3(val x: Float, val y: Float, val s: String, val t0: Long, val sz: Int = 11)
     private val floats = ArrayList<Float3>()
     private var combo = 0; private var lastTap = 0L
     class Coin(var x: Float, var y: Float, var vx: Float, var vy: Float, val t0: Long)
@@ -973,7 +984,7 @@ class AppUi(val scene: Scene, val host: Host) {
             if (sl >= 1f) {
                 val pop = if (e < 330) ((330 - e) / 330f * 8).toInt() else 0
                 boldText(if (b.win) "승리!" else "패배…", W / 2f, by + 22, 22 + pop, if (b.win) k.col("#ffd23f") else k.col("#ff6b5b"))
-                k.text(c, if (b.win) "금화 +" + big(b.gold) + (if (b.boss) " · 쪽지 +3" else "") else "30분 쉬거나 광고 보고 다시", W / 2f, by + 34, 9, k.CREAM, Paint.Align.CENTER, true)
+                k.text(c, if (b.win) "금화 +" + gold(b.gold) + (if (b.boss) " · 쪽지 +3" else "") else "30분 쉬거나 광고 보고 다시", W / 2f, by + 34, 9, k.CREAM, Paint.Align.CENTER, true)
             }
         }
         c.restore()
@@ -1106,19 +1117,58 @@ class AppUi(val scene: Scene, val host: Host) {
         for (cn in coinList) { if (now < cn.t0) continue
             cn.vy += 260 * dt; cn.x += cn.vx * dt; cn.y += cn.vy * dt
             Pix.icon(c, "gold", cn.x - 5, cn.y - 5, 1f) }
-        floats.removeAll { now - it.t0 > 900 }
+        floats.removeAll { now - it.t0 > (if (it.sz > 11) 1300 else 900) }
         for (f in floats.toList()) {
-            val e = (now - f.t0) / 900f
+            val e = (now - f.t0) / (if (f.sz > 11) 1300f else 900f)
             val a = (255 * (1 - e)).toInt().coerceIn(0, 255)
-            Pix.text(c, f.s, f.x, f.y - 6 - e * 22, 11, android.graphics.Color.argb(a, 255, 211, 106), Paint.Align.CENTER, true)
+            if (f.sz > 11) { val pop = if (e < .15f) .7f + e * 2 else 1f   // 톡 튀어나오며 커진다
+                Pix.bigText(c, f.s, f.x, f.y - 2 - e * 26, Math.round(f.sz * pop), android.graphics.Color.argb(a, 255, 225, 77)) }
+            else Pix.text(c, f.s, f.x, f.y - 6 - e * 22, 11, android.graphics.Color.argb(a, 255, 211, 106), Paint.Align.CENTER, true)
         }
+    }
+
+    /** 새 선원! 뽑기 연출: 빛줄기 → 카드가 튀어나오며 얼굴·이름·한마디 */
+    private fun drawReveal() {
+        val id = reveal ?: return
+        val k = Pix; val now = System.currentTimeMillis(); val t = (now - revealAt) / 1000f
+        val cr = Fleet.crewOf(id); val pi = Data.workers.indexOfFirst { it.id == id }.coerceAtLeast(0)
+        k.rect(c, 0f, 0f, W.toFloat(), H.toFloat(), android.graphics.Color.argb((225 * (t * 4).coerceAtMost(1f)).toInt(), 10, 8, 20))
+        val cx = W / 2f; val cy = H * .42f
+        // 빙글 도는 빛줄기
+        val rp = Paint().apply { isAntiAlias = true; style = Paint.Style.FILL }
+        for (i in 0 until 12) {
+            val ang = Math.toRadians((i * 30 + t * 40).toDouble()); val w2 = Math.toRadians(7.0); val r = 170f
+            val path = android.graphics.Path(); path.moveTo(cx, cy)
+            path.lineTo(cx + r * Math.cos(ang - w2).toFloat(), cy + r * Math.sin(ang - w2).toFloat())
+            path.lineTo(cx + r * Math.cos(ang + w2).toFloat(), cy + r * Math.sin(ang + w2).toFloat()); path.close()
+            rp.color = android.graphics.Color.argb((55 * (t * 3).coerceAtMost(1f)).toInt(), 255, 220, 120); c.drawPath(path, rp)
+        }
+        // 카드: 0.25초 뒤에 톡 커진다
+        val p = ((t - .25f) / .3f).coerceIn(0f, 1f)
+        if (p > 0f) {
+            val sc = if (p < 1f) p * 1.15f else 1f
+            val cw = 150f * sc; val ch = 170f * sc
+            k.panel(c, cx - cw / 2, cy - ch / 2, cw, ch)
+            if (p >= 1f) {
+                k.icon(c, "face:$pi", cx - 30f, cy - 70f, 6f)
+                k.text(c, (cr?.name ?: id), cx, cy + 12f, 14, k.CREAM, Paint.Align.CENTER, true)
+                k.text(c, k.fit(cr?.role ?: "선원", 9, 136f), cx, cy + 27f, 9, k.GOLD, Paint.Align.CENTER, true)
+                val line = cr?.line?.let { "“" + it + "”" } ?: ""
+                val ql = k.wrap(line, 8, 136f).take(2)
+                for ((i, q) in ql.withIndex()) k.text(c, k.fit(q, 8, 136f), cx, cy + 41f + i * 10, 8, k.col("#c8b896"), Paint.Align.CENTER)
+                k.text(c, "판매 +" + pct(Game.crewStat(id, 3)) + " · 배에 탔어요", cx, cy + 68f, 8, k.CREAM, Paint.Align.CENTER, true)
+            }
+        }
+        val tp = ((t - .1f) / .25f).coerceIn(0f, 1f)
+        if (tp > 0f) k.bigText(c, "새 선원!", cx, cy - 98f, Math.round(22 * (.6f + .4f * tp)), k.col("#ffe14d"))
+        if (t > 1f) k.text(c, "눌러서 닫기", cx, cy + 102f, 10, k.CREAM, Paint.Align.CENTER, true)
     }
 
     /** 돌아왔을 때 보상 창 */
     fun showReport(r: Game.Report) {
         val t = if (r.minutes >= 60) (r.minutes / 60).toString() + "시간 " + (r.minutes % 60) + "분" else r.minutes.coerceAtLeast(1).toString() + "분"
-        popup = Tile("gold", "돌아왔어요!", "금화 +" + big(r.gold), St.READY,
-            t + " 동안 섬과 배가 일했어요.\n\n금화 +" + big(r.gold) + "\n나무 +" + big(r.wood) + " · 돌 +" + big(r.stone) +
+        popup = Tile("gold", "돌아왔어요!", "금화 +" + gold(r.gold), St.READY,
+            t + " 동안 섬과 배가 일했어요.\n\n금화 +" + gold(r.gold) + "\n나무 +" + big(r.wood) + " · 돌 +" + big(r.stone) +
                 (if (r.voyages > 0) "\n항해 " + r.voyages + "번 다녀왔어요" else "") + (if (r.full) "\n창고가 가득 찼어요" else ""),
             null, "받기", { host.sound("chest"); coins(W / 2f, 200f, 20); true }, null,
             btn2 = if (Game.tickets > 0) "2배 (쪽지 1)" else null, act2 = { val ok = Game.doubleReport(r); if (ok) { host.sound("win"); coins(W / 2f, 200f, 40) }; ok }, done2 = "금화 2배!")
@@ -1241,7 +1291,7 @@ class AppUi(val scene: Scene, val host: Host) {
     private fun treeTile(i: Int): Tile {
         val n = Game.TREE[i]; val own = i in Game.treeOwned; val open = Game.treeOpen(i)
         val g = Game.treeCost(i)
-        return Tile("skill:" + n.icon, n.name + (if (n.big) " ★" else ""), if (own) "배움" else if (open) "금화 " + big(g) else "잠김",
+        return Tile("skill:" + n.icon, n.name + (if (n.big) " ★" else ""), if (own) "배움" else if (open) "금화 " + gold(g) else "잠김",
             if (own) St.DONE else if (open) St.READY else St.LOCKED,
             Game.treeKindText(n) + (if (n.big) "\n★ 큰 칸이라 효과가 커요." else "") + "\n\n" + when { own -> "이미 배웠어요."; open -> "배우면 이웃 칸이 열려요."; else -> "이어진 옆 칸을 먼저 배워요." },
             if (open) Data.Cost(g, 0, 0) else null, if (open) "배우기" else null, { Game.learn(i) }, n.name + "! " + Game.treeKindText(n))
@@ -1396,7 +1446,7 @@ class AppUi(val scene: Scene, val host: Host) {
             for ((ic, need, have) in listOf(Triple("wood", cc.wood.toLong(), Game.wood.toLong()), Triple("stone", cc.stone.toLong(), Game.stone.toLong()), Triple("gold", cc.gold.toLong(), Game.gold))) {
                 if (need <= 0) continue
                 k.icon(c, ic, x, y - 4, 1f)
-                val s = big(need)
+                val s = if (ic == "gold") gold(need) else big(need)
                 k.text(c, s, x + 12, y + 4, 10, if (have >= need) k.GREEN else k.RED)
                 x += 18 + k.width(s, 10)
             }
@@ -1420,6 +1470,7 @@ class AppUi(val scene: Scene, val host: Host) {
 
     // ---------- 누르기 ----------
     fun tap(x: Float, y: Float) {
+        if (reveal != null) { if (System.currentTimeMillis() - revealAt > 700) reveal = null; return }
         if (tutTap(x, y)) return
         battle?.let { b -> if (System.currentTimeMillis() - b.t0 > battleEnd(b) + 700) battle = null; return }
         val ix = x.toInt(); val iy = y.toInt()
@@ -1456,7 +1507,7 @@ class AppUi(val scene: Scene, val host: Host) {
             val n = Math.round(Game.tapGold() * (1 + combo * .05f))
             Game.addTapGold(n); host.sound("tap"); tutTaps++
             if (combo > 0 && combo % 10 == 0) coins(x, y, 6)
-            floats.add(Float3(x + (Math.random() * 16 - 8).toFloat(), y, "+" + big(n) + (if (combo >= 5) " x" + "%.1f".format(1 + combo * .05f) else ""), now))
+            floats.add(Float3(x + (Math.random() * 16 - 8).toFloat(), y, "+" + gold(n.toLong()) + (if (combo >= 5) " x" + "%.1f".format(1 + combo * .05f) else ""), now))
             return
         }
         backRect?.let { r -> if (r.contains(ix, iy)) { tab = 9; scrollY = 0f; return } }
@@ -1478,7 +1529,7 @@ class AppUi(val scene: Scene, val host: Host) {
             return }
         for ((r, t) in slotRects) if (r.contains(ix, iy)) { popup = t; return }
         for ((r, pg) in pageRects) if (r.contains(ix, iy)) { page = pg; return }
-        for ((r, t) in tileRects) if (r.contains(ix, iy)) { if (t.go >= 0) { tab = t.go; scrollY = 0f } else popup = t; return }
+        for ((r, t) in tileRects) if (r.contains(ix, iy)) { if (t.go == -2) moreOpen = !moreOpen else if (t.go >= 0) { tab = t.go; scrollY = 0f } else popup = t; return }
     }
 
     /** 길게 누르면 계속 올리기: 강화 줄의 버튼 위인지 */

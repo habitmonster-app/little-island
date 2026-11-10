@@ -480,7 +480,7 @@ object Game {
         if (got) return
         festGot.add(s.festId + ":" + cal().get(java.util.Calendar.YEAR))
         tickets += s.festTickets; goldC += s.festGold * 100L
-        card("계절 축제 · " + s.festName, s.festShort + "\n쪽지 +" + s.festTickets + ", 금화 +" + s.festGold)
+        card("계절 축제 · " + s.festName, s.festShort + "\n쪽지 +" + s.festTickets + ", 금화 +" + gold(s.festGold))
         save()
     }
 
@@ -518,7 +518,7 @@ object Game {
                 reqAcc.remove(id)
                 val rg = Math.round(r.gold * (1 + tideV("request_bonus", 0f)))
                 goldC += rg * 100L; tickets += r.tickets
-                card("의뢰 완료 · " + r.title, r.client + ": “" + r.thanks + "”\n금화 +" + rg + (if (r.tickets > 0) ", 쪽지 +" + r.tickets else ""))
+                card("의뢰 완료 · " + r.title, r.client + ": “" + r.thanks + "”\n금화 +" + gold(rg) + (if (r.tickets > 0) ", 쪽지 +" + r.tickets else ""))
             }
         }
         return if (dw + ds == 0) "" else "\n의뢰에 넘김" + (if (dw > 0) " 나무 $dw" else "") + (if (ds > 0) " 돌 $ds" else "")
@@ -546,7 +546,7 @@ object Game {
         }
     }
     fun resText(r: Fleet.Res) = listOfNotNull(r.wood.takeIf { it > 0 }?.let { "나무 $it" }, r.stone.takeIf { it > 0 }?.let { "돌 $it" },
-        r.gold.takeIf { it > 0 }?.let { "금화 $it" }, r.tickets.takeIf { it > 0 }?.let { "쪽지 $it" }).joinToString(", ")
+        r.gold.takeIf { it > 0 }?.let { "금화 " + gold(it) }, r.tickets.takeIf { it > 0 }?.let { "쪽지 $it" }).joinToString(", ")
     fun canTrade(): Boolean { val o = visOfferNow() ?: return false
         return !visDone && wood >= o.give.wood && stone >= o.give.stone && goldC >= o.give.gold * 100L && tickets >= o.give.tickets }
     /** 손님과 거래. 결과 글 (못 하면 이유) */
@@ -579,10 +579,10 @@ object Game {
         if (!critSeen.add(kind)) return cr.name
         seasonAdd(1)
         tickets += cr.reward.tickets; goldC += cr.reward.gold * 100L
-        card("도감 · " + cr.name, (Fleet.crewOf(cr.seenBy)?.name?.let { "$it: “" + cr.firstLine + "”\n" } ?: "") + "쪽지 +" + cr.reward.tickets + ", 금화 +" + cr.reward.gold)
+        card("도감 · " + cr.name, (Fleet.crewOf(cr.seenBy)?.name?.let { "$it: “" + cr.firstLine + "”\n" } ?: "") + "쪽지 +" + cr.reward.tickets + ", 금화 +" + gold(cr.reward.gold))
         for (m in Fleet.bookMiles) if (critSeen.size >= m.count && bookGot.add(m.count)) {
             tickets += m.reward.tickets; goldC += m.reward.gold * 100L
-            card("도감 " + m.count + "마리!", "쪽지 +" + m.reward.tickets + ", 금화 +" + m.reward.gold)
+            card("도감 " + m.count + "마리!", "쪽지 +" + m.reward.tickets + ", 금화 +" + gold(m.reward.gold))
         }
         checkTitles(); save()
         return "도감 " + critSeen.size + "/" + Fleet.creatures.size + " " + cr.name + "!"
@@ -690,7 +690,9 @@ object Game {
     fun renownWin() = renown * .02f
     fun renownSale() = renown * .1f
     /** 명성: 배 5단계 이상, 부품 넷 다 지금 최고 레벨이면 다시 시작할 수 있다 */
-    fun renownReady() = shipLevel >= 5 && Fleet.core.all { partNext(it.id) == null && partLevel(it.id) > 1 }
+    /** 첫 명성은 배 3단계에서 작게 맛보기, 그 뒤로는 5단계부터 */
+    fun renownShip() = if (renown == 0) 3 else 5
+    fun renownReady() = shipLevel >= renownShip() && Fleet.core.all { partNext(it.id) == null && partLevel(it.id) > 1 }
     @Synchronized fun doRenown(): Boolean {
         if (!renownReady()) return false
         renown++
@@ -729,7 +731,7 @@ object Game {
         val txt = if (win) {
             val g = (p.winGold[0] + p.winGold[1]) / 2
             tickets += 2; goldC += g * 100L; bump("boss_win")
-            "이겼어요! 금화 +" + g + ", 쪽지 +2"
+            "이겼어요! 금화 +" + gold(g) + ", 쪽지 +2"
         } else { tickets += 1; "졌어요. 쪽지 +1 · 내일 다시!" }
         val nm = Fleet.boss(p.id)?.name ?: p.name
         card("오늘의 우두머리 " + nm, powerLine(p, ids) + "\n" + txt)
@@ -775,7 +777,7 @@ object Game {
         val e = Fleet.crewEvent(cevId) ?: return
         cevId = null
         val got = when (e.kind) {
-            "gold" -> { goldC += e.value * 100L; "금화 +" + e.value }
+            "gold" -> { goldC += e.value * 100L; "금화 +" + gold(e.value) }
             "wood" -> { add(e.value, 0); "나무 +" + e.value }
             "stone" -> { add(0, e.value); "돌 +" + e.value }
             "crew_xp" -> { giveXp(e.crew, e.value); (Fleet.crewOf(e.crew)?.name ?: "") + " 경험치 +" + e.value }
@@ -836,10 +838,10 @@ object Game {
             ordProg[id] = min(o.target, (ordProg[id] ?: 0) + n); changed = true
             if (ordProg[id]!! >= o.target) {
                 ordDone.add(id); tickets += o.tickets; goldC += o.gold * 100L; weekCount++; seasonAdd(3)
-                card("주문 완료! " + o.title, listOfNotNull(o.tickets.takeIf { it > 0 }?.let { "쪽지 +$it" }, o.gold.takeIf { it > 0 }?.let { "금화 +$it" }).joinToString(", "))
+                card("주문 완료! " + o.title, listOfNotNull(o.tickets.takeIf { it > 0 }?.let { "쪽지 +$it" }, o.gold.takeIf { it > 0 }?.let { "금화 +" + gold(it) }).joinToString(", "))
                 if (weekCount >= Fleet.weeklyGoal && !weekGot) {
                     weekGot = true; tickets += Fleet.weeklyTickets; goldC += Fleet.weeklyGold * 100L
-                    card("주간 상자를 열었어요!", "쪽지 +" + Fleet.weeklyTickets + ", 금화 +" + Fleet.weeklyGold)
+                    card("주간 상자를 열었어요!", "쪽지 +" + Fleet.weeklyTickets + ", 금화 +" + gold(Fleet.weeklyGold))
                 }
             }
         }
@@ -1061,25 +1063,25 @@ object Game {
                     if (v.win) {
                         val g = Random.nextInt(pr.winGold[0], max(pr.winGold[0], pr.winGold[1]) + 1)
                         v.rewardC = g * 100L
-                        card("우두머리 " + boss.name + "을 물리쳤어요!", powerLine(pr, v.crew) + "\n귀항하면 금화 +$g\n" + boss.captain + ": “" + boss.loseLine + "”")
+                        card("우두머리 " + boss.name + "을 물리쳤어요!", powerLine(pr, v.crew) + "\n귀항하면 금화 +" + gold(g) + "\n" + boss.captain + ": “" + boss.loseLine + "”")
                     } else {
                         val lose = pr.lose * (1 - min(.5f, partLossCut() + cb(v.crew, "repair_after_loss")))
                         val lw = v.cw - floor(v.cw * (1 - lose)).toInt(); val ls = v.cs - floor(v.cs * (1 - lose)).toInt()
                         v.cw -= lw; v.cs -= ls
                         val pg = plunder(pr.winGold[1], .1f, v.crew)
-                        card("우두머리 " + boss.name + "에게 약탈당했어요", powerLine(pr, v.crew) + "\n빼앗긴 것  나무 -$lw 돌 -$ls 금화 -$pg\n" + boss.captain + ": “" + boss.winLine + "”")
+                        card("우두머리 " + boss.name + "에게 약탈당했어요", powerLine(pr, v.crew) + "\n빼앗긴 것  나무 -$lw 돌 -$ls 금화 -" + gold(pg) + "\n" + boss.captain + ": “" + boss.winLine + "”")
                     }
                 } else if (pr != null) {
                     if (v.win) {
                         val g = Random.nextInt(pr.winGold[0], max(pr.winGold[0], pr.winGold[1]) + 1)
                         v.rewardC = g * 100L
-                        card(pr.name + "을 물리쳤어요!", powerLine(pr, v.crew) + "\n귀항하면 금화 +$g")
+                        card(pr.name + "을 물리쳤어요!", powerLine(pr, v.crew) + "\n귀항하면 금화 +" + gold(g))
                     } else {
                         val lose = pr.lose * (1 - min(.5f, partLossCut() + cb(v.crew, "repair_after_loss")))
                         val lw = v.cw - floor(v.cw * (1 - lose)).toInt(); val ls = v.cs - floor(v.cs * (1 - lose)).toInt()
                         v.cw -= lw; v.cs -= ls
                         val pg = plunder(pr.winGold[1], .05f, v.crew)
-                        card(pr.name + "에게 약탈당했어요", powerLine(pr, v.crew) + "\n빼앗긴 것  나무 -$lw 돌 -$ls 금화 -$pg")
+                        card(pr.name + "에게 약탈당했어요", powerLine(pr, v.crew) + "\n빼앗긴 것  나무 -$lw 돌 -$ls 금화 -" + gold(pg))
                     }
                 }
             }
@@ -1095,7 +1097,7 @@ object Game {
             flag("sale_1")
             v.hire = tryHire(p, t)
             v.hire?.let { goldC -= (Data.worker(it)?.wage ?: 0) * 100L }
-            card(p.name + "에 도착했어요", "짐을 팔아 금화 +" + sale / 100 + (v.hire?.let { ", " + (Data.worker(it)?.name ?: "") + " 고용" } ?: "") + delivered)
+            card(p.name + "에 도착했어요", "짐을 팔아 금화 +" + gold(sale / 100) + (v.hire?.let { ", " + (Data.worker(it)?.name ?: "") + " 고용" } ?: "") + delivered)
             rollSouvenir(p.id)
         }
         if (v.step == 2 && f >= Data.fLeave) v.step = 3
@@ -1124,7 +1126,7 @@ object Game {
 
     private fun returnHome(v: Voyage, t: Long) {
         goldC += v.rewardC
-        var line = "판매 금화 +" + v.saleC / 100 + (if (v.rewardC > 0) ", 보물 +" + v.rewardC / 100 else "")
+        var line = "판매 금화 +" + gold(v.saleC / 100) + (if (v.rewardC > 0) ", 보물 +" + gold(v.rewardC / 100) else "")
         v.hire?.let { id ->
             val d = Data.worker(id)
             workers.add(Contract(id, t + if (!has("worker_leave_1")) HOUR / 2 else (d?.hours ?: 6) * HOUR)) // 첫 견습선원은 30분만
@@ -1136,7 +1138,7 @@ object Game {
             treasurePending = false; treasures++
             val g = 150 * shipLevel + 50 * treasures
             goldC += g * 100L; add(30, 15)
-            card("보물섬에 다녀왔어요!", "금화 +$g, 나무 +30, 돌 +15")
+            card("보물섬에 다녀왔어요!", "금화 +" + gold(g) + ", 나무 +30, 돌 +15")
         }
         val g0 = Fleet.gardenAt(voyages)
         voyages++
@@ -1154,7 +1156,7 @@ object Game {
         Fleet.boss(v.pirate)?.let { b -> if (v.encounter && v.win && bossWins.add(b.id)) {
             goldC += b.rewardGold * 100L; if (b.rewardMaps > 0) mapPieces += b.rewardMaps
             flag(b.storyId)
-            card("우두머리 첫 승리!", b.name + " · 금화 +" + b.rewardGold + (if (b.rewardMaps > 0) ", 지도 조각 +" + b.rewardMaps else ""))
+            card("우두머리 첫 승리!", b.name + " · 금화 +" + gold(b.rewardGold) + (if (b.rewardMaps > 0) ", 지도 조각 +" + b.rewardMaps else ""))
         } }
         Fleet.mission(v.mission)?.let { settleMission(it, v) }
         rollEvent(v)
@@ -1216,7 +1218,7 @@ object Game {
         if (m.maps > 0) mapPieces += m.maps
         if (m.xp > 0) giveXp(m.crew, m.xp)
         m.cosmetic?.let { if (Fleet.deco(it) != null && decoOwned.add(it) && decoOn[Fleet.deco(it)!!.slot] == null) decoOn[Fleet.deco(it)!!.slot] = it }
-        val got = listOfNotNull(m.gold.takeIf { it > 0 }?.let { "금화 +$it" }, m.wood.takeIf { it > 0 }?.let { "나무 +$it" },
+        val got = listOfNotNull(m.gold.takeIf { it > 0 }?.let { "금화 +" + gold(it) }, m.wood.takeIf { it > 0 }?.let { "나무 +$it" },
             m.stone.takeIf { it > 0 }?.let { "돌 +$it" }, m.maps.takeIf { it > 0 }?.let { "지도 조각 +$it" },
             m.xp.takeIf { it > 0 }?.let { (Fleet.crewOf(m.crew)?.name ?: "") + " 경험치 +$it" })
         card("특별 항해 성공!", m.resultCard + "\n" + got.joinToString(", "))
@@ -1385,7 +1387,7 @@ object Game {
             val ok = if (m.allPorts) portsWithSouvenir() >= ports else souvOwned.size >= m.count
             if (!ok) continue
             milesDone.add(m.id); goldC += m.gold * 100L
-            card("도감 보상", m.card + (if (m.gold > 0) "\n금화 +" + m.gold else ""))
+            card("도감 보상", m.card + (if (m.gold > 0) "\n금화 +" + gold(m.gold) else ""))
         }
         checkDeco()
     }
@@ -1523,7 +1525,7 @@ object Game {
         return listOfNotNull(
             if (c.wood > 0) "나무 " + min(wood, c.wood) + "/" + c.wood else null,
             if (c.stone > 0) "돌 " + min(stone, c.stone) + "/" + c.stone else null,
-            if (c.gold > 0) "금화 " + big(min(gold, c.gold.toLong())) + "/" + big(c.gold) else null).joinToString(" · ")
+            if (c.gold > 0) "금화 " + gold(min(gold, c.gold.toLong())) + "/" + gold(c.gold) else null).joinToString(" · ")
     }
 
     private fun autoBuildStep() {
@@ -1538,10 +1540,10 @@ object Game {
         finds++; bump("floater_pick")
         val lv = shipLevel
         val text = when (kind) {
-            1 -> { val g = Math.round((20 + kotlin.random.Random.nextInt(21)) * lv * (1 + tree("find"))); goldC += g * 100L; mapPieces++; "보물상자! 금화 +$g, 지도 조각 +1" }
+            1 -> { val g = Math.round((20 + kotlin.random.Random.nextInt(21)) * lv * (1 + tree("find"))); goldC += g * 100L; mapPieces++; "보물상자! 금화 +" + gold(g) + ", 지도 조각 +1" }
             2 -> { val w = 4 + kotlin.random.Random.nextInt(5); add(w, 0); "갈매기가 떨어뜨린 나무 +$w" }
             else -> if (kotlin.random.Random.nextFloat() < .3f) { mapPieces++; "유리병 속 지도 조각 +1" }
-                    else { val g = Math.round((3 + kotlin.random.Random.nextInt(6)) * lv * (1 + tree("find"))); goldC += g * 100L; "유리병 속 금화 +$g" }
+                    else { val g = Math.round((3 + kotlin.random.Random.nextInt(6)) * lv * (1 + tree("find"))); goldC += g * 100L; "유리병 속 금화 +" + gold(g) }
         }
         save(); return text
     }

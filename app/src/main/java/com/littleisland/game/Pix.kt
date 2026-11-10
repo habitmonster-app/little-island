@@ -433,11 +433,20 @@ object Pix {
     }
 }
 
-/** 큰 숫자를 짧게: 9,999 / 12.3K / 4.5M / 1.2B */
-fun big(n: Long): String = when {
-    n < 10_000L -> "%,d".format(n)
-    n < 1_000_000L -> "%.1fK".format(n / 1000.0).replace(".0K", "K")
-    n < 1_000_000_000L -> "%.1fM".format(n / 1_000_000.0).replace(".0M", "M")
-    else -> "%.1fB".format(n / 1_000_000_000.0).replace(".0B", "B")
+/** 큰 숫자를 짧게 (한국식): 9,999 / 12.3만 / 4.5억 / 1.2조 / 3.4경 */
+fun big(n: Long): String {
+    if (n < 0) return "-" + big(-n)
+    if (n < 10_000L) return "%,d".format(n)
+    val units = arrayOf("만", "억", "조", "경")
+    var v = n / 10_000.0; var i = 0
+    while (i < units.size - 1 && v >= 9999.95) { v /= 10_000.0; i++ }
+    val s = if (v >= 100) "%,d".format(Math.round(v)) else "%.1f".format(v).removeSuffix(".0")
+    return s + units[i]
 }
 fun big(n: Int): String = big(n.toLong())
+/** 화면에 보이는 금화는 속 값의 100배 (숫자가 크게 느껴지도록). 저장·계산은 그대로 */
+const val GX = 100L
+fun gold(n: Long): String = big(n * GX)
+fun gold(n: Int): String = gold(n.toLong())
+/** 초당 금화처럼 소수인 값 */
+fun goldF(f: Float): String = big(Math.round(f * GX.toDouble()))

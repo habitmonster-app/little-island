@@ -107,7 +107,7 @@ object Story {
     /** 숫자 자리표시자를 실제 게임 값으로 */
     fun fill(s: String): String = s
         .replace("{load_wood}", Game.LOAD_W.toString()).replace("{load_stone}", Game.LOAD_S.toString())
-        .replace("{wood_price}", "1").replace("{stone_price}", "2")
+        .replace("{wood_price}", gold(1)).replace("{stone_price}", gold(2))
         .replace("{work_hours}", (Game.WORK_MS / 3600000L).toString()).replace("{wage}", Game.WAGE.toString())
 
     fun byId(id: String) = entries.firstOrNull { it.id == id }
