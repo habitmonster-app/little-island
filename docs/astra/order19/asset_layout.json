@@ -1,0 +1,142 @@
+{
+  "coordinates": "xyxy ends exclusive; top-left origin",
+  "size": [
+    1024,
+    512
+  ],
+  "grid": [
+    1,
+    4
+  ],
+  "frame_size": [
+    1024,
+    128
+  ],
+  "frame_order": "top to bottom 0,1,2,3 then 0",
+  "frame_rects": [
+    [
+      0,
+      0,
+      1024,
+      128
+    ],
+    [
+      0,
+      128,
+      1024,
+      256
+    ],
+    [
+      0,
+      256,
+      1024,
+      384
+    ],
+    [
+      0,
+      384,
+      1024,
+      512
+    ]
+  ],
+  "horizontal_repeat_period_px": 256,
+  "wave_count_per_frame": 4,
+  "left_shift_px_per_frame": 64,
+  "frame_phase_left_px": [
+    0,
+    64,
+    128,
+    192
+  ],
+  "loop_phase_distance_px": 256,
+  "surface_y_range_in_frame": [
+    52,
+    76
+  ],
+  "surface_peak_to_trough_px": 24,
+  "surface_peak_to_trough_fraction": 0.1875,
+  "waterline_anchor_local_y": 76,
+  "waterline_anchor_rule": "기존 직선 수면에 물결의 가장 낮은 골(y76)을 맞춤. 띠의 중심(y64)을 기존 수면에 맞추지 않음.",
+  "example_for_background_1536x1024": {
+    "old_waterline_y": 512,
+    "strip_top_y": 436,
+    "strip_bottom_exclusive_y": 564,
+    "rule": "원본배경좌표1:1 기준. 실제화면에서는기존배경배율을동일하게적용."
+  },
+  "color_key": "#FF00FF",
+  "alpha_in_source": false,
+  "sampling": "nearest neighbor",
+  "suggested_frame_duration_ms": 200,
+  "suggested_loop_duration_ms": 800,
+  "palette_roles": [
+    "sky_key",
+    "surface_edge",
+    "turquoise_or_tinted_surface",
+    "middle_water",
+    "lower_water",
+    "bottom_water",
+    "foam"
+  ],
+  "files": {
+    "day": {
+      "file": "art/sea_surface.png",
+      "size": [
+        1024,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 5555,
+      "sha256": "5c967bd67c2ffea85e997324fd4a39dd6fdf5bf1778a6d61393ffbf49f2f44c5",
+      "palette": [
+        "#FF00FF",
+        "#017D9B",
+        "#02C2CF",
+        "#01AACF",
+        "#018FCB",
+        "#0174C5",
+        "#FFF4DE"
+      ]
+    },
+    "dusk": {
+      "file": "art/sea_surface_dusk.png",
+      "size": [
+        1024,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 5454,
+      "sha256": "39a79df8ee2e263ac73814deedcca54a5bc2a15246db553fca6fc4434119bc73",
+      "palette": [
+        "#FF00FF",
+        "#6E4C86",
+        "#CA86BC",
+        "#966BB0",
+        "#5E509A",
+        "#2B326B",
+        "#FFE6D5"
+      ]
+    },
+    "night": {
+      "file": "art/sea_surface_night.png",
+      "size": [
+        1024,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 5461,
+      "sha256": "d33d5d3afd5d1cadaa9229869b42c75e5245d6f53c3ad1fc4d258bbc9d55aabb",
+      "palette": [
+        "#FF00FF",
+        "#143C50",
+        "#146471",
+        "#0E485F",
+        "#0A304D",
+        "#07182E",
+        "#8EC4D1"
+      ]
+    }
+  },
+  "same_role_geometry_all_variants": true,
+  "crossfade_rule": "두 시간대의 동일 프레임·동일 위치를 사용. 마젠타키를 먼저 투명 처리한 비트맵끼리 색을 보간하고 장면 번호를 유지.",
+  "runtime_tested": false
+}

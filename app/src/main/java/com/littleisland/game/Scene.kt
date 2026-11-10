@@ -500,6 +500,8 @@ class Scene {
         birds(time)
         val io = islandOffset()
         val po = portOffset()
+        // 섬·항구가 보이면 물결은 그 뒤에 (섬 풀밭을 물이 덮지 않게), 넓은 바다에서는 배 앞에
+        landWater = (io != null || po != null) && surfInit && artSurface(time)
         if (io != null) island(time, io)
         if (po != null) port(time, po)
         drawCritter()
@@ -517,7 +519,7 @@ class Scene {
         if (wantBg) {
             c = bgC
             if (!artBackground()) { sky(time, h); farIslands(); seaBody(time) }
-            skyWeather(time); foreWater(time)
+            skyWeather(time); if (landWater) artSurface(time) else foreWater(time)
             if (dark > 0f) { p.color = Color.argb((dark * (if (Art.has("bg_sea_night")) .3f else .6f) * 255).roundToInt(), 8, 12, 40); c.drawRect(0f, 0f, W.toFloat(), H.toFloat(), p) }
             c = mainC
         }
@@ -644,6 +646,7 @@ class Scene {
             else -> 0f
         }
         val night = when { h >= 20f || h < 4f -> 1f; h in 19f..20f -> h - 19f; h in 4f..4.5f -> 1 - (h - 4f) * 2; else -> 0f }
+        bgDusk = dusk; bgNight = night
         if (dusk > 0f) bgLayer("bg_sea_dusk", (dusk * 255).toInt())
         if (night > 0f) bgLayer("bg_sea_night", (night * 255).toInt())
         if (stormy()) bgLayer("bg_storm", 230)
@@ -681,6 +684,27 @@ class Scene {
         surfC = if (!surfInit) sc else mix(surfC, sc, a / 255f); surfInit = true
     }
     private var surfC = 0
+    private var bgDusk = 0f; private var bgNight = 0f
+    private var landWater = false
+    /** 아스트라 수면 띠 (19차): 물결 4장면을 옆으로 이어 붙여 흘려 보낸다. 가장 낮은 골(띠 y76/128)이 수면 WL */
+    private fun artSurface(time: Float): Boolean {
+        if (!Art.has("sea_surface")) return false
+        val wU = 144                                   // 띠 한 장(1024px)의 화면 폭
+        val u = wU / 1024f
+        val fr = ((time * 5).toInt() % 4 + 4) % 4
+        val bottom = WL + (128 - 76) * u
+        fun layer(name: String, a: Int) {
+            if (a <= 0) return
+            val bm = acell(name, 1, 4, fr, wU) ?: acell("sea_surface", 1, 4, fr, wU) ?: return
+            var x = -((scroll * .5f) % wU)
+            while (x < W) { Art.draw(c, bm, x + wU / 2f, bottom, false, a); x += wU }
+        }
+        layer("sea_surface", 255)
+        layer("sea_surface_dusk", (bgDusk * 255).toInt())
+        layer("sea_surface_night", (bgNight * 255).toInt())
+        if (stormy()) layer("sea_surface_night", 140)
+        return true
+    }
     private var deepC = 0
     private var surfInit = false
 
@@ -796,7 +820,7 @@ class Scene {
 
     /** 배 앞쪽 물: 배가 물에 잠겨 보이게 띠를 덮는다 */
     private fun foreWater(time: Float) {
-        if (surfInit) { waveSurface(time); return }   // 그림 배경이면 물결이 수면을 맡는다
+        if (surfInit) { if (landWater) return; if (!artSurface(time)) waveSurface(time); return }   // 그림 배경이면 물결이 수면을 맡는다
         ga = .55f
         r(0f, WL + 3, W.toFloat(), 3f, sea)
         ga = .3f
