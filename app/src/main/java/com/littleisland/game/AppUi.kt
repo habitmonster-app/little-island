@@ -470,7 +470,7 @@ class AppUi(val scene: Scene, val host: Host) {
                     "톡톡, 강화, 해적 싸움 소리예요.", null, if (Game.soundOn) "끄기" else "켜기", { Game.soundOn = !Game.soundOn; Game.save(); true }))
                 l.add(Tile("auto", "자동 짓기", if (Game.autoBuild) "켜짐" else "꺼짐", if (Game.autoBuild) St.ON else St.OFF,
                     "숙소·창고·부두·밭은 재료가 모이면 알아서 지어요. 금화는 안 써요.", null, if (Game.autoBuild) "끄기" else "켜기", { Game.autoBuild = !Game.autoBuild; Game.save(); true }))
-                l.add(Tile("book", "처음 안내", "다시 보기", St.NORMAL, "이 게임이 어떻게 돌아가는지 다시 봐요.", null, "보기", { host.openTutorial(); false }))
+                l.add(Tile("book", "처음 안내", "다시 보기", St.NORMAL, "손가락으로 짚어 주는 처음 안내를 다시 봐요.", null, "보기", { Game.tut = 0; Game.tips.clear(); Game.save(); false }))
                 l.add(Tile("lighthouse", "시간대", "미리보기", St.NORMAL, "위 장면의 낮·노을·밤을 바꿔 봐요.", null, "바꾸기", { host.pickTime(); false }))
                 l.add(Tile("house", "배경화면", "설정", St.NORMAL, "홈 화면에 작은 섬을 띄워요.", null, "설정", { host.setWallpaper(); false }))
             }
@@ -488,7 +488,7 @@ class AppUi(val scene: Scene, val host: Host) {
     fun draw() {
         snapTo?.let { t -> scrollY += (t - scrollY) * .35f; if (Math.abs(t - scrollY) < .5f) { scrollY = t; snapTo = null } }
         Pix.clean(true)
-        try { drawAll() } finally { Pix.clean(false) }
+        try { drawAll(); drawTut() } finally { Pix.clean(false) }
     }
 
     private fun drawAll() {
@@ -970,6 +970,123 @@ class AppUi(val scene: Scene, val host: Host) {
         }
         c.restore()
     }
+    // ---------- 처음 안내: 화면의 진짜 버튼을 손가락으로 짚어 준다 ----------
+    private class TStep(val text: String, val target: () -> Rect?, val done: () -> Boolean, val btn: String? = null, val btn2: String? = null, val act: (() -> Unit)? = null, val extra: (() -> String)? = null)
+    private var tutTaps = 0
+    private var tutBtn: Rect? = null; private var tutBtn2: Rect? = null; private var tutSkip: Rect? = null; private var tutHole: Rect? = null; private var tutOn = false
+    private var tutStep: TStep? = null; private var tutKey: String? = null; private var tutShownAt = 0L
+    private fun rowRect(f: (URow) -> Boolean): Rect? = upRects.firstOrNull { f(it.second) }?.first
+    private fun tabRect(t: Int): Rect? = tabRects.getOrNull(order.indexOf(t))
+    private fun seaRect() = Rect(0, (top + 54).toInt(), W, (top + sceneH - 24).toInt())
+    private fun powerRect(): Rect { val w = Pix.width("함대 힘 " + "%,d".format(Game.myPower()), 10) + 10; return Rect((W - 8 - w).toInt(), (top + 16).toInt(), W - 4, (top + 33).toInt()) }
+    private fun woodCost() = Game.prodCost(Game.woodLv).gold.toLong()
+    private val mainSteps: List<TStep> by lazy { listOf(
+        TStep("어서 와요, 선장님!\n배를 키우고 해적을 이겨서\n더 먼 바다로 가는 게임이에요.", { null }, { false }, "시작!"),
+        TStep("바다를 톡톡 누르면 금화가 나와요.\n빨리 누를수록 더 많이 나와요!", { seaRect() }, { tutTaps >= 8 }, extra = { "톡톡 " + tutTaps + " / 8" }),
+        TStep("먼저 [강화] 탭을 눌러요.\n여기서 거의 모든 걸 키워요.", { tabRect(8) }, { tab == 8 }),
+        TStep("보물 상자가 와 있어요!\n[열기]를 눌러 금화를 받아요.", { rowRect { it.icon.startsWith("chest") && it.can } }, { !Game.chestReady() }),
+        TStep("[나무 캐기]를 올려요.\n섬이 저절로 버는 돈이 늘어요.", { rowRect { it.icon == "wood" } }, { Game.woodLv > 0 }),
+        TStep("앱을 꺼도 섬과 배는 일해요.\n다시 오면 모인 금화를 받아요.", { null }, { false }, "알겠어요"),
+        TStep("이제 해적 토벌!\n[도전!]을 눌러 싸워 봐요.", { rowRect { it.icon.startsWith("boss") && it.can } }, { battle != null || Game.pStage > 0 || Game.stageWait() > 0 }),
+        TStep("[함대 힘]이 해적보다 세면\n잘 이겨요! 배·부품·선원을\n키워서 힘을 올려요.", { powerRect() }, { false }, "알겠어요"),
+        TStep("홈 화면 배경으로 두면\n바탕화면에서 섬이 움직여요.", { null }, { false }, "배경화면 설정", "나중에", { host.setWallpaper() }))
+    }
+    /** 처음 안내가 끝난 뒤, 처음 그 순간이 오면 한 번씩 */
+    private fun tipFor(key: String): TStep? = when (key) {
+        "promote" -> TStep("견습선원이 선원이 될 수 있어요!\n선원은 키울수록 돈을 더 벌어요.",
+            { if (tab != 10) tabRect(10) else rowRect { it.label == "승진" } }, { Data.workers.none { Game.canPromote(it.id) } })
+        "crew" -> TStep("선원 레벨을 올려 봐요.\n10레벨마다 판매가 크게 뛰어요!",
+            { if (tab != 10) tabRect(10) else rowRect { it.icon.startsWith("face") && it.label == "+1" && it.can } }, { Game.promoted.any { Game.crewLevel(it) > 1 } })
+        "ship" -> TStep("배를 키울 수 있어요!\n배가 커지면 힘도 판매도 크게 올라요.",
+            { if (tab != 8) tabRect(8) else rowRect { it.icon == "ship" && it.can } }, { upRows().none { it.icon == "ship" && it.can } })
+        else -> null
+    }
+    private fun nextTip(): String? = when {
+        "promote" !in Game.tips && Data.workers.any { Game.canPromote(it.id) } -> "promote"
+        "crew" !in Game.tips && Game.promoted.isNotEmpty() && Game.promoted.any { Game.crewLevel(it) == 1 && (Game.teachLong(it) ?: Long.MAX_VALUE) <= Game.gold } -> "crew"
+        "ship" !in Game.tips && Game.shipLevel < 4 && upRows().any { it.icon == "ship" && it.can } -> "ship"
+        else -> null
+    }
+    private fun tutAdvance() {
+        val k = tutKey
+        if (k == null) Game.tut++ else Game.tips.add(k)
+        if (Game.tut >= mainSteps.size) Game.tut = 99
+        tutStep = null; tutKey = null; Game.save()
+    }
+    private fun drawTut() {
+        tutOn = false; tutBtn = null; tutBtn2 = null; tutSkip = null; tutHole = null
+        if (battle != null || popup != null) return
+        if (tutStep == null) {
+            if (Game.tut < mainSteps.size) { tutStep = mainSteps[Game.tut]; tutKey = null }
+            else { val t = nextTip() ?: return; tutStep = tipFor(t); tutKey = t }
+            tutShownAt = System.currentTimeMillis()
+        }
+        val st = tutStep ?: return
+        if (st.done()) { tutAdvance(); return }
+        val hole = st.target()
+        if (hole == null && st.btn == null) { if (scrollY > 0f) scrollY = 0f; return }
+        tutOn = true; tutHole = hole
+        val k = Pix; val now = System.currentTimeMillis()
+        val dim = android.graphics.Color.argb(150, 0, 0, 0)
+        if (hole == null) k.rect(c, 0f, 0f, W.toFloat(), H.toFloat(), dim)
+        else {
+            val l = hole.left - 2f; val t = hole.top - 2f; val r = hole.right + 2f; val b = hole.bottom + 2f
+            k.rect(c, 0f, 0f, W.toFloat(), t, dim); k.rect(c, 0f, b, W.toFloat(), H - b, dim)
+            k.rect(c, 0f, t, l, b - t, dim); k.rect(c, r, t, W - r, b - t, dim)
+            val pulse = if ((now / 300) % 2 == 0L) k.GOLD else k.col("#fff2c0")
+            k.rect(c, l, t, r - l, 2f, pulse); k.rect(c, l, b - 2, r - l, 2f, pulse); k.rect(c, l, t, 2f, b - t, pulse); k.rect(c, r - 2, t, 2f, b - t, pulse)
+        }
+        // 말풍선: 짚는 곳이 아래면 위에, 위면 아래에
+        val raw = st.text.split("\n") + listOfNotNull(st.extra?.invoke())
+        val tw = W - 16f - 46
+        val ts = if (raw.all { Pix.fits(it, 10, tw) }) 10 else 9
+        val lines = raw.flatMap { if (Pix.fits(it, ts, tw)) listOf(it) else Pix.wrap(it, ts, tw) }
+        val bh = 16f + lines.size * 13f + (if (st.btn != null) 24f else 0f)
+        val below = hole != null && ((hole.top + hole.bottom) / 2) < H * .45f
+        val by = when { hole == null -> (H - bh) / 2f; below -> hole.bottom + 26f; else -> hole.top - 26f - bh }.coerceIn(4f, H - bh - 4)
+        val bx = 8f; val bw = W - 16f
+        k.rect(c, bx - 1, by - 1, bw + 2, bh + 2, k.INK); k.rect(c, bx, by, bw, bh, k.col("#f3e2b8")); k.rect(c, bx, by, bw, 2f, k.col("#fff8e0"))
+        k.rect(c, bx + 5, by + 6, 26f, 26f, k.INK); k.icon(c, "face:0", bx + 6, by + 7, 2.4f)
+        for ((i, ln) in lines.withIndex()) k.text(c, k.fit(ln, ts, bw - 46), bx + 37, by + 17 + i * 13, ts, k.INK)
+        if (st.btn != null) {
+            val yb = by + bh - 22
+            if (st.btn2 != null) {
+                val w1 = (bw - 46) / 2 - 3
+                k.button(c, bx + 37, yb, w1, 17f, st.btn, true); tutBtn = Rect((bx + 37).toInt(), yb.toInt() - 2, (bx + 37 + w1).toInt(), (yb + 19).toInt())
+                k.button(c, bx + 43 + w1, yb, w1, 17f, st.btn2, false); tutBtn2 = Rect((bx + 43 + w1).toInt(), yb.toInt() - 2, (bx + 43 + 2 * w1).toInt(), (yb + 19).toInt())
+            } else { k.button(c, bx + 37, yb, bw - 46, 17f, st.btn, true); tutBtn = Rect((bx + 37).toInt(), yb.toInt() - 2, (bx + bw - 9).toInt(), (yb + 19).toInt()) }
+        }
+        // 손가락 대신 통통 튀는 화살표
+        if (hole != null) {
+            val ax = ((hole.left + hole.right) / 2f); val bob = ((now / 120) % 6).let { if (it < 3) it else 6 - it }.toFloat() * 1.5f
+            // 끝이 뾰족한 금색 화살표 (테두리 포함)
+            fun arrow(ay: Float, dir: Int) {
+                for (i in 0 until 8) { val hw = i.toFloat(); val yy = ay + dir * i * 1.6f
+                    k.rect(c, ax - hw - 1, yy - 1, hw * 2 + 3, 2.6f, k.INK) }
+                for (i in 0 until 8) { val hw = i.toFloat(); val yy = ay + dir * i * 1.6f; k.rect(c, ax - hw, yy, hw * 2 + 1, 1.6f, k.GOLD) }
+                val sy0 = ay + dir * 12.8f; val sy1 = sy0 + dir * 6f
+                k.rect(c, ax - 4, minOf(sy0, sy1) - 1, 9f, 8f, k.INK); k.rect(c, ax - 3, minOf(sy0, sy1), 7f, 6f, k.GOLD) }
+            if (below) arrow(hole.bottom + 3f + bob, 1) else arrow(hole.top - 3f - bob, -1)
+        }
+        // 건너뛰기 (처음 안내만)
+        if (tutKey == null && Game.tut > 0) {
+            val sy = if (below || hole == null) by + bh + 4 else by - 14
+            k.rect(c, W - 72f, sy - 1, 64f, 13f, android.graphics.Color.argb(200, 20, 12, 6))
+            k.text(c, "안내 건너뛰기", W - 12f, sy + 9, 8, k.col("#e8d8b0"), Paint.Align.RIGHT, true)
+            tutSkip = Rect(W - 80, sy.toInt() - 4, W - 4, (sy + 14).toInt())
+        }
+    }
+    private fun tutTap(x: Float, y: Float): Boolean {
+        if (!tutOn) return false
+        val ix = x.toInt(); val iy = y.toInt()
+        tutSkip?.let { if (it.contains(ix, iy)) { Game.tut = 99; Game.tips.addAll(listOf("promote", "crew", "ship")); tutStep = null; Game.save(); return true } }
+        tutBtn?.let { if (it.contains(ix, iy)) { tutStep?.act?.invoke(); tutAdvance(); return true } }
+        tutBtn2?.let { if (it.contains(ix, iy)) { tutAdvance(); return true } }
+        if (System.currentTimeMillis() - tutShownAt < 250) return true
+        val h = tutHole ?: return true
+        return !Rect(h.left - 3, h.top - 3, h.right + 3, h.bottom + 3).contains(ix, iy)
+    }
+
     private fun drawFloats() {
         drawBattle()
         val now = System.currentTimeMillis()
@@ -1295,6 +1412,7 @@ class AppUi(val scene: Scene, val host: Host) {
 
     // ---------- 누르기 ----------
     fun tap(x: Float, y: Float) {
+        if (tutTap(x, y)) return
         battle?.let { b -> if (System.currentTimeMillis() - b.t0 > battleEnd(b) + 700) battle = null; return }
         val ix = x.toInt(); val iy = y.toInt()
         val pop = popup
@@ -1328,7 +1446,7 @@ class AppUi(val scene: Scene, val host: Host) {
             val now = System.currentTimeMillis()
             combo = if (now - lastTap < 600) (combo + 1).coerceAtMost(20) else 0; lastTap = now
             val n = Math.round(Game.tapGold() * (1 + combo * .05f))
-            Game.addTapGold(n); host.sound("tap")
+            Game.addTapGold(n); host.sound("tap"); tutTaps++
             if (combo > 0 && combo % 10 == 0) coins(x, y, 6)
             floats.add(Float3(x + (Math.random() * 16 - 8).toFloat(), y, "+" + big(n) + (if (combo >= 5) " x" + "%.1f".format(1 + combo * .05f) else ""), now))
             return

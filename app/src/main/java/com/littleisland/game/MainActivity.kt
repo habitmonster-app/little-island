@@ -217,7 +217,6 @@ class MainActivity : Activity(), AppUi.Host {
     override fun onResume() {
         super.onResume()
         val sp = getSharedPreferences("island", Context.MODE_PRIVATE)
-        if (!sp.getBoolean("tutorialSeen", false)) { sp.edit().putBoolean("tutorialSeen", true).apply(); showTutorial(0) }
         Game.catchUp()
         Game.report?.let { r ->
             Game.report = null

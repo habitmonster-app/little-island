@@ -52,6 +52,8 @@ object Game {
 
     // ---------- 해적 토벌: 1-1, 1-2 … 단계마다 해적이 세진다 ----------
     var pStage = 0                       // 깬 단계 수
+    var tut = 0                          // 처음 안내 몇 번째 단계 (99 = 끝)
+    val tips = HashSet<String>()         // 한 번 보여 준 도움말
     var stageCool = 0L                   // 지면 잠깐 쉬어야 다시 도전
     const val STAGE_COOL_MS = 30 * 60 * 1000L
     /** 광고를 보면 쉬는 시간 없이 바로 다시 도전 */
@@ -320,7 +322,7 @@ object Game {
         pearlUntil = sp.getLong("pearlUntil", 0L); pearlNext = sp.getLong("pearlNext", 0L)
         crewPts.clear(); sp.getString("crewPts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewPts[k] = v.split(".").map { x -> x.toIntOrNull() ?: 0 }.plus(listOf(0, 0, 0, 0)).take(4).toIntArray() }
         treeOwned.clear(); sp.getString("tree", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { treeOwned.add(it) }
-        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); stageCool = sp.getLong("stageCool", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
+        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); tut = if (sp.contains("tut")) sp.getInt("tut", 0) else if (voyages > 3) 99 else 0; tips.clear(); sp.getString("tips", "")!!.split(",").filter { it.isNotEmpty() }.forEach { tips.add(it) }; stageCool = sp.getLong("stageCool", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
         dbDay = sp.getLong("dbDay", -1L); seasonKey = sp.getString("seasonKey", "") ?: ""; seasonPts = sp.getInt("seasonPts", 0); seasonGot = sp.getInt("seasonGot", 0)
         visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
         set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
@@ -386,7 +388,7 @@ object Game {
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
             putLong("pearlUntil", pearlUntil); putLong("pearlNext", pearlNext)
-            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putLong("stageCool", stageCool); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
+            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putInt("tut", tut); putString("tips", tips.joinToString(",")); putLong("stageCool", stageCool); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
             putString("seasonKey", seasonKey); putInt("seasonPts", seasonPts); putInt("seasonGot", seasonGot)
             putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
