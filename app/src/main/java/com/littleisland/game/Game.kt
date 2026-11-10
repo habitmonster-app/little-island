@@ -346,7 +346,7 @@ object Game {
         pearlUntil = sp.getLong("pearlUntil", 0L); pearlNext = sp.getLong("pearlNext", 0L)
         crewPts.clear(); sp.getString("crewPts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewPts[k] = v.split(".").map { x -> x.toIntOrNull() ?: 0 }.plus(listOf(0, 0, 0, 0)).take(4).toIntArray() }
         treeOwned.clear(); sp.getString("tree", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { treeOwned.add(it) }
-        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); festUntil = sp.getLong("festUntil", 0L); stayHome = sp.getBoolean("stayHome", false); tut = if (sp.contains("tut")) sp.getInt("tut", 0) else if (voyages > 3) 99 else 0; tips.clear(); sp.getString("tips", "")!!.split(",").filter { it.isNotEmpty() }.forEach { tips.add(it) }; stageCool = sp.getLong("stageCool", 0L); storyAt = sp.getLong("storyAt", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
+        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); festUntil = sp.getLong("festUntil", 0L); stayHome = sp.getBoolean("stayHome", false); tut = if (sp.contains("tut")) sp.getInt("tut", 0) else if (voyages > 3) 99 else 0; tips.clear(); sp.getString("tips", "")!!.split(",").filter { it.isNotEmpty() }.forEach { tips.add(it) }; stageCool = sp.getLong("stageCool", 0L); refits.clear(); sp.getString("refits", "")!!.split(",").filter { ":" in it }.forEach { refits[it.substringBefore(":").toInt()] = it.substringAfter(":").toInt() }; storyAt = sp.getLong("storyAt", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
         dbDay = sp.getLong("dbDay", -1L); seasonKey = sp.getString("seasonKey", "") ?: ""; seasonPts = sp.getInt("seasonPts", 0); seasonGot = sp.getInt("seasonGot", 0)
         visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
         set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
@@ -412,7 +412,7 @@ object Game {
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
             putLong("pearlUntil", pearlUntil); putLong("pearlNext", pearlNext)
-            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putInt("tut", tut); putLong("festUntil", festUntil); putBoolean("stayHome", stayHome); putString("tips", tips.joinToString(",")); putLong("stageCool", stageCool); putLong("storyAt", storyAt); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
+            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putInt("tut", tut); putLong("festUntil", festUntil); putBoolean("stayHome", stayHome); putString("tips", tips.joinToString(",")); putLong("stageCool", stageCool); putString("refits", refits.entries.joinToString(",") { it.key.toString() + ":" + it.value }); putLong("storyAt", storyAt); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
             putString("seasonKey", seasonKey); putInt("seasonPts", seasonPts); putInt("seasonGot", seasonGot)
             putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
@@ -702,6 +702,36 @@ object Game {
     /** 명성: 배 5단계 이상, 부품 넷 다 지금 최고 레벨이면 다시 시작할 수 있다 */
     /** 첫 명성은 배 3단계에서 작게 맛보기, 그 뒤로는 5단계부터 */
     fun renownShip() = if (renown == 0) 3 else 5
+    // ---------- 배 개조: 배 단계마다 2번, 부품을 다 올린 뒤 다음 배를 기다리는 동안의 중간 목표 ----------
+    val refits = HashMap<Int, Int>()
+    const val REFIT_MAX = 2
+    const val REFIT_SALE = .15f
+    fun refitN(lv: Int = shipLevel) = refits[lv] ?: 0
+    fun refitTotal() = refits.values.sum()
+    fun refitSale() = refitTotal() * REFIT_SALE
+    /** 부품을 이 배 단계의 최고까지 올렸는가 */
+    fun partsCapped() = Fleet.core.all { partNext(it.id) == null }
+    fun refitReady() = dock && shipLevel >= 2 && refitN() < REFIT_MAX && partsCapped()
+    /** 다음 배 값의 30% / 60% (10단계는 10단계 배 값 기준) */
+    fun refitCost(): Int {
+        val base = (Data.unlock("ship_" + (shipLevel + 1))?.cost?.gold ?: ((Data.unlock("ship_10")?.cost?.gold ?: 1_000_000) * 3 / 2)).toLong()
+        return (base * (if (refitN() == 0) 3 else 6) / 10).coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
+    }
+    private val REFIT_SLOTS = listOf("sail", "flag", "figurehead", "deck")
+    /** 개조하고 새 장식 하나를 단다. 단 장식을 돌려준다 (못 하면 null) */
+    @Synchronized fun doRefit(): Fleet.Deco? {
+        if (!refitReady()) return null
+        val c = refitCost()
+        if (goldC < c * 100L) return null
+        goldC -= c * 100L
+        refits[shipLevel] = refitN() + 1
+        val slot = REFIT_SLOTS[(refitTotal() - 1) % REFIT_SLOTS.size]
+        val d = Fleet.decos.firstOrNull { it.slot == slot && it.id !in decoOwned } ?: Fleet.decos.firstOrNull { it.id !in decoOwned }
+        d?.let { decoOwned.add(it.id); decoOn[it.slot] = it.id }
+        card("배 개조!", (d?.name?.let { "$it 을(를) 달았어요 · " } ?: "") + "판매 +" + Math.round(REFIT_SALE * 100) + "%")
+        save(); return d ?: Fleet.decos.firstOrNull()
+    }
+
     fun renownReady() = shipLevel >= renownShip() && Fleet.core.all { partNext(it.id) == null && partLevel(it.id) > 1 }
     @Synchronized fun doRenown(): Boolean {
         if (!renownReady()) return false
@@ -1099,7 +1129,7 @@ object Game {
         if (v.step == 1 && f >= Data.fArrive) {
             v.step = 2
             val delivered = deliverReqs(v)
-            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f) + cb(v.crew, "sale_bonus") + renownSale() + tree("sale") + cs(v.crew, 3)
+            val mul = 1f + (if (market) Data.marketMul - 1f else 0f) + workerSaleBonus() + (if (packed) PACK_BONUS else 0f) + cb(v.crew, "sale_bonus") + renownSale() + refitSale() + tree("sale") + cs(v.crew, 3)
             packed = false
             val sale = floor((v.cw * p.buyW * (1 + cb(v.crew, "wood_price_bonus")) + v.cs * p.buyS * (1 + cb(v.crew, "stone_price_bonus"))) * mul * milestoneSale() * 100).toLong()
             goldC += sale; v.saleC = sale

@@ -654,13 +654,22 @@ class AppUi(val scene: Scene, val host: Host) {
             l.add(URow("title:0", "다시 출항 · 명성 " + Game.renown, if (Game.shipLevel < Game.renownShip()) "배 " + Game.renownShip() + "단계부터 열려요" else "판매 +10% · 승률 +2%p", null, false, "", { popup = renownTile(); true },
                 btnText = if (Game.shipLevel < Game.renownShip()) "배 " + Game.renownShip() + "단계" else "부품 $low/$cap"))
         }
+        // 배 개조 (배 단계마다 2번): 부품을 다 올리면 열린다
+        if (Game.dock && Game.shipLevel >= 2 && Game.refitN() < Game.REFIT_MAX) {
+            val n = Game.refitN() + 1
+            if (Game.partsCapped()) { val rc = Data.Cost(Game.refitCost(), 0, 0)
+                l.add(URow("deco:0", "배 개조 $n/" + Game.REFIT_MAX, "새 장식 + 판매 +" + Math.round(Game.REFIT_SALE * 100) + "%", rc, Game.canPay(rc), "개조",
+                    { Game.doRefit()?.let { d -> refitShow(d, n) } != null }, big = true)) }
+            else { val cap = Fleet.maxLevel(Game.shipLevel); val low = Fleet.core.minOf { Game.partLevel(it.id) }
+                l.add(URow("deco:0", "배 개조 $n/" + Game.REFIT_MAX, "부품 전부 Lv$cap 필요", null, false, "", { false }, btnText = "Lv$low/$cap")) }
+        }
         // 다음 배 단계
         val nx = Game.shipLevel + 1
         Data.unlock("ship_$nx")?.takeIf { !Game.has(it.key) && Data.ships.any { s -> s.level == nx } }?.let { u ->
             val need = Fleet.needForShip(nx); val minP = Game.minPart()
             val ready = Game.unlockReady(u)
             val capLow = u.cost != null && (u.cost.wood > Game.cap() || u.cost.stone > Game.cap())
-            l.add(URow("ship", "배 " + nx + "단계로 키우기", if (minP < need) "모든 부품 Lv$minP → $need" else if (capLow) "창고를 넓혀야 재료를 담아요" else Data.ship(nx).name.substringAfter("· "),
+            l.add(URow("ship", "배 " + nx + "단계로 키우기", if (minP < need) "모든 부품 Lv$minP → $need" else if (capLow) "창고를 먼저 넓혀요" else Data.ship(nx).name.substringAfter("· "),
                 u.cost, ready && Game.canPay(u.cost), "키우기", { Game.buyUnlock(u.key) }, big = true))
         }
         // 섬 생산: 배가 커지는 만큼 섬도 같이
@@ -740,8 +749,8 @@ class AppUi(val scene: Scene, val host: Host) {
         val s1 = u.stat?.invoke()
         val gain = if (s0 != null && s1 != null && s0 > 0f) (s1 / s0 - 1) * 100 else 0f
         if (gain >= .05f) floats.add(Float3(W - 64f, upY[u.title] ?: 300f, "+" + (if (gain >= 10) Math.round(gain).toString() else "%.1f".format(gain).removeSuffix(".0")) + "%", fxAt, 18))
-        else if (u.cost != null || u.small) floats.add(Float3(W - 30f, upY[u.title] ?: 300f, if (u.big) "배가 커졌어요!" else nm + " +" + n, fxAt))
-        if (u.big) coins(W / 2f, 120f, 30)
+        else if ((u.cost != null || u.small) && u.icon != "deco:0") floats.add(Float3(W - 30f, upY[u.title] ?: 300f, if (u.big) "배가 커졌어요!" else nm + " +" + n, fxAt))
+        if (u.big && u.icon != "deco:0") coins(W / 2f, 120f, 30)
     }
     private val upY = HashMap<String, Float>()
 
@@ -1130,6 +1139,15 @@ class AppUi(val scene: Scene, val host: Host) {
                 Pix.bigText(c, f.s, f.x, f.y - 2 - e * 26, Math.round(f.sz * pop), android.graphics.Color.argb(a, 255, 225, 77)) }
             else Pix.text(c, f.s, f.x, f.y - 6 - e * 22, 11, android.graphics.Color.argb(a, 255, 211, 106), Paint.Align.CENTER, true)
         }
+    }
+
+    /** 배 개조 결과 창: 단 장식 그림과 늘어난 판매 */
+    private fun refitShow(d: Fleet.Deco, n: Int) {
+        host.sound("win"); coins(W / 2f, 200f, 30)
+        floats.add(Float3(W / 2f, 230f, "배 개조 $n/" + Game.REFIT_MAX + "!", System.currentTimeMillis(), 16))
+        popup = Tile(d.iconKey, "배 개조 $n/" + Game.REFIT_MAX, d.name, St.READY,
+            "새 장식  " + d.name + "\n배에 바로 달았어요. 바다에 나가면 보여요.\n\n판매 +" + Math.round(Game.REFIT_SALE * 100) + "%\n개조 합계 판매 +" + Math.round(Game.refitSale() * 100) + "%",
+            null, "좋아요", { true }, null)
     }
 
     /** 그림 시트의 한 칸을 (x, y)부터 폭 w로 그린다. 그림이 없으면 false */
