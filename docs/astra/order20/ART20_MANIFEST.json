@@ -1,0 +1,30 @@
+{
+  "package": "little-island-order20",
+  "source_order": "ASTRA_ORDER_20.md",
+  "sprite_count": 48,
+  "sheet_count": 4,
+  "game_code_modified": false,
+  "runtime_tested": false,
+  "files": [
+    {
+      "path": "art/deco_deck.png",
+      "bytes": 299436,
+      "sha256": "0945b94f373165357ecb77d0a60f3756054bc16723bc5c5c64e933de10af8d71"
+    },
+    {
+      "path": "art/deco_figureheads.png",
+      "bytes": 356262,
+      "sha256": "3e7513cfc5eb220c7c41c852d9344d2004fc9204eac163321dcf65629533c651"
+    },
+    {
+      "path": "art/deco_flags.png",
+      "bytes": 422027,
+      "sha256": "3a4271ee37a968e9650b608f83cd9571e40adbc2012c22b1dad9dcc65415e8ae"
+    },
+    {
+      "path": "art/deco_sails.png",
+      "bytes": 207927,
+      "sha256": "e6842309033a71e9fbc2adda9c065af617688f142472b74493048c9d0d63379f"
+    }
+  ]
+}

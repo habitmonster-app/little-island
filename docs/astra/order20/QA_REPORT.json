@@ -1,0 +1,2576 @@
+{
+  "schema_version": 1,
+  "order": 20,
+  "reviewer": "independent artifact QA agent",
+  "status": "passed_with_documented_scope_limits",
+  "verdict_ko": "전달용 PNG 4장과 48개 문양의 파일 규격·배치·정체성·순서 검수 통과. 실제 게임 부착과 실행은 미검증.",
+  "scope": {
+    "request": "ASTRA_ORDER_20.md",
+    "files_reviewed": 4,
+    "logical_motifs_reviewed": 48,
+    "all_full_resolution_files_visually_inspected": true,
+    "game_code_changed_by_reviewer": false,
+    "build_88_runtime_tested": false,
+    "device_tested": false,
+    "latest_refit_screenshot_available": false,
+    "current_512x128_ship_reference_available": false
+  },
+  "static_verification": {
+    "status": "passed",
+    "request": "ASTRA_ORDER_20.md",
+    "scope": "Final-file format, per-cell bounding boxes, geometric anchors and color key measurements. Semantic/visual checks are recorded separately.",
+    "files": {
+      "deco_flags.png": {
+        "path": "art/deco_flags.png",
+        "sha256": "3a4271ee37a968e9650b608f83cd9571e40adbc2012c22b1dad9dcc65415e8ae",
+        "bytes": 422027,
+        "dimensions": [
+          1024,
+          768
+        ],
+        "mode": "RGB",
+        "alpha_range": [
+          255,
+          255
+        ],
+        "exact_key_pixel_count": 456649,
+        "cells": [
+          {
+            "index": 0,
+            "expected_subject": "붉은 깃발",
+            "cell_rect_xyxy": [
+              0,
+              0,
+              256,
+              256
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 23750,
+            "bbox_local_xyxy": [
+              0,
+              54,
+              205,
+              196
+            ],
+            "bbox_width": 205,
+            "bbox_height": 142,
+            "bbox_center": [
+              102.5,
+              125.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 67,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              67,
+              188
+            ],
+            "left_edge_attachment_mid_y": 127.5
+          },
+          {
+            "index": 1,
+            "expected_subject": "파란 깃발",
+            "cell_rect_xyxy": [
+              256,
+              0,
+              512,
+              256
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 23731,
+            "bbox_local_xyxy": [
+              0,
+              54,
+              205,
+              196
+            ],
+            "bbox_width": 205,
+            "bbox_height": 142,
+            "bbox_center": [
+              102.5,
+              125.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 67,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              68,
+              188
+            ],
+            "left_edge_attachment_mid_y": 128.0
+          },
+          {
+            "index": 2,
+            "expected_subject": "노란 바탕 파란 물결",
+            "cell_rect_xyxy": [
+              512,
+              0,
+              768,
+              256
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 24853,
+            "bbox_local_xyxy": [
+              0,
+              54,
+              205,
+              198
+            ],
+            "bbox_width": 205,
+            "bbox_height": 144,
+            "bbox_center": [
+              102.5,
+              126.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 67,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              69,
+              188
+            ],
+            "left_edge_attachment_mid_y": 128.5
+          },
+          {
+            "index": 3,
+            "expected_subject": "초록 바탕 마름모",
+            "cell_rect_xyxy": [
+              768,
+              0,
+              1024,
+              256
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 24513,
+            "bbox_local_xyxy": [
+              0,
+              52,
+              205,
+              195
+            ],
+            "bbox_width": 205,
+            "bbox_height": 143,
+            "bbox_center": [
+              102.5,
+              123.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 68,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              68,
+              188
+            ],
+            "left_edge_attachment_mid_y": 128.0
+          },
+          {
+            "index": 4,
+            "expected_subject": "남색 은빛 갈고리",
+            "cell_rect_xyxy": [
+              0,
+              256,
+              256,
+              512
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 28442,
+            "bbox_local_xyxy": [
+              0,
+              44,
+              205,
+              207
+            ],
+            "bbox_width": 205,
+            "bbox_height": 163,
+            "bbox_center": [
+              102.5,
+              125.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 56,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              57,
+              200
+            ],
+            "left_edge_attachment_mid_y": 128.5
+          },
+          {
+            "index": 5,
+            "expected_subject": "하양 붉은 게 집게",
+            "cell_rect_xyxy": [
+              256,
+              256,
+              512,
+              512
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 29236,
+            "bbox_local_xyxy": [
+              0,
+              44,
+              205,
+              209
+            ],
+            "bbox_width": 205,
+            "bbox_height": 165,
+            "bbox_center": [
+              102.5,
+              126.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 55,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              57,
+              200
+            ],
+            "left_edge_attachment_mid_y": 128.5
+          },
+          {
+            "index": 6,
+            "expected_subject": "조각보 깃발",
+            "cell_rect_xyxy": [
+              512,
+              256,
+              768,
+              512
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 28908,
+            "bbox_local_xyxy": [
+              0,
+              43,
+              205,
+              209
+            ],
+            "bbox_width": 205,
+            "bbox_height": 166,
+            "bbox_center": [
+              102.5,
+              126.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 57,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              57,
+              199
+            ],
+            "left_edge_attachment_mid_y": 128.0
+          },
+          {
+            "index": 7,
+            "expected_subject": "남색 금빛 닻과 술",
+            "cell_rect_xyxy": [
+              768,
+              256,
+              1024,
+              512
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 31772,
+            "bbox_local_xyxy": [
+              0,
+              44,
+              205,
+              225
+            ],
+            "bbox_width": 205,
+            "bbox_height": 181,
+            "bbox_center": [
+              102.5,
+              134.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 57,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              57,
+              198
+            ],
+            "left_edge_attachment_mid_y": 127.5
+          },
+          {
+            "index": 8,
+            "expected_subject": "산호빛 해마",
+            "cell_rect_xyxy": [
+              0,
+              512,
+              256,
+              768
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 29331,
+            "bbox_local_xyxy": [
+              0,
+              42,
+              205,
+              211
+            ],
+            "bbox_width": 205,
+            "bbox_height": 169,
+            "bbox_center": [
+              102.5,
+              126.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 56,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              57,
+              200
+            ],
+            "left_edge_attachment_mid_y": 128.5
+          },
+          {
+            "index": 9,
+            "expected_subject": "하늘색 돌아오는 물길",
+            "cell_rect_xyxy": [
+              256,
+              512,
+              512,
+              768
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 28701,
+            "bbox_local_xyxy": [
+              0,
+              44,
+              205,
+              208
+            ],
+            "bbox_width": 205,
+            "bbox_height": 164,
+            "bbox_center": [
+              102.5,
+              126.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 56,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              57,
+              199
+            ],
+            "left_edge_attachment_mid_y": 128.0
+          },
+          {
+            "index": 10,
+            "expected_subject": "분홍·금빛 아침놀 비단",
+            "cell_rect_xyxy": [
+              512,
+              512,
+              768,
+              768
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 28525,
+            "bbox_local_xyxy": [
+              0,
+              45,
+              205,
+              209
+            ],
+            "bbox_width": 205,
+            "bbox_height": 164,
+            "bbox_center": [
+              102.5,
+              127.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 57,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              58,
+              198
+            ],
+            "left_edge_attachment_mid_y": 128.0
+          },
+          {
+            "index": 11,
+            "expected_subject": "연두 갈대 세 줄기",
+            "cell_rect_xyxy": [
+              768,
+              512,
+              1024,
+              768
+            ],
+            "target_anchor": [
+              0,
+              128
+            ],
+            "foreground_pixel_count": 28021,
+            "bbox_local_xyxy": [
+              0,
+              46,
+              205,
+              208
+            ],
+            "bbox_width": 205,
+            "bbox_height": 162,
+            "bbox_center": [
+              102.5,
+              127.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 58,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": true,
+            "opaque_at_cell_bottom_mid": false,
+            "left_edge_occupied_y_span": [
+              59,
+              197
+            ],
+            "left_edge_attachment_mid_y": 128.0
+          }
+        ],
+        "near_magenta_nonkey_pixels": 0
+      },
+      "deco_figureheads.png": {
+        "path": "art/deco_figureheads.png",
+        "sha256": "3e7513cfc5eb220c7c41c852d9344d2004fc9204eac163321dcf65629533c651",
+        "bytes": 356262,
+        "dimensions": [
+          1024,
+          768
+        ],
+        "mode": "RGB",
+        "alpha_range": [
+          255,
+          255
+        ],
+        "exact_key_pixel_count": 596852,
+        "cells": [
+          {
+            "index": 0,
+            "expected_subject": "웃는 갈매기",
+            "cell_rect_xyxy": [
+              0,
+              0,
+              256,
+              256
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 13620,
+            "bbox_local_xyxy": [
+              0,
+              107,
+              179,
+              256
+            ],
+            "bbox_width": 179,
+            "bbox_height": 149,
+            "bbox_center": [
+              89.5,
+              181.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 1,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 1,
+            "expected_subject": "주홍 물고기",
+            "cell_rect_xyxy": [
+              256,
+              0,
+              512,
+              256
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 15416,
+            "bbox_local_xyxy": [
+              0,
+              110,
+              179,
+              256
+            ],
+            "bbox_width": 179,
+            "bbox_height": 146,
+            "bbox_center": [
+              89.5,
+              183.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 1,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 2,
+            "expected_subject": "금빛 보물별",
+            "cell_rect_xyxy": [
+              512,
+              0,
+              768,
+              256
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 15122,
+            "bbox_local_xyxy": [
+              0,
+              90,
+              179,
+              256
+            ],
+            "bbox_width": 179,
+            "bbox_height": 166,
+            "bbox_center": [
+              89.5,
+              173.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 1,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 3,
+            "expected_subject": "작은 등불",
+            "cell_rect_xyxy": [
+              768,
+              0,
+              1024,
+              256
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 12894,
+            "bbox_local_xyxy": [
+              0,
+              77,
+              149,
+              256
+            ],
+            "bbox_width": 149,
+            "bbox_height": 179,
+            "bbox_center": [
+              74.5,
+              166.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 1,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 4,
+            "expected_subject": "청록 문어",
+            "cell_rect_xyxy": [
+              0,
+              256,
+              256,
+              512
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 18069,
+            "bbox_local_xyxy": [
+              0,
+              94,
+              179,
+              256
+            ],
+            "bbox_width": 179,
+            "bbox_height": 162,
+            "bbox_center": [
+              89.5,
+              175.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 2,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 5,
+            "expected_subject": "번개를 품은 둥근 구름",
+            "cell_rect_xyxy": [
+              256,
+              256,
+              512,
+              512
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 17692,
+            "bbox_local_xyxy": [
+              0,
+              89,
+              179,
+              256
+            ],
+            "bbox_width": 179,
+            "bbox_height": 167,
+            "bbox_center": [
+              89.5,
+              172.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 2,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 6,
+            "expected_subject": "청록 리본 조개 꽃다발",
+            "cell_rect_xyxy": [
+              512,
+              256,
+              768,
+              512
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 21636,
+            "bbox_local_xyxy": [
+              0,
+              83,
+              179,
+              256
+            ],
+            "bbox_width": 179,
+            "bbox_height": 173,
+            "bbox_center": [
+              89.5,
+              169.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 3,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 7,
+            "expected_subject": "뛰어오르는 금빛 돌고래",
+            "cell_rect_xyxy": [
+              768,
+              256,
+              1024,
+              512
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 13011,
+            "bbox_local_xyxy": [
+              0,
+              94,
+              179,
+              256
+            ],
+            "bbox_width": 179,
+            "bbox_height": 162,
+            "bbox_center": [
+              89.5,
+              175.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 2,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 8,
+            "expected_subject": "지느러미 편 날치",
+            "cell_rect_xyxy": [
+              0,
+              512,
+              256,
+              768
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 15512,
+            "bbox_local_xyxy": [
+              0,
+              83,
+              179,
+              256
+            ],
+            "bbox_width": 179,
+            "bbox_height": 173,
+            "bbox_center": [
+              89.5,
+              169.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 1,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 9,
+            "expected_subject": "날개 편 갈매기",
+            "cell_rect_xyxy": [
+              256,
+              512,
+              512,
+              768
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 15534,
+            "bbox_local_xyxy": [
+              0,
+              96,
+              179,
+              256
+            ],
+            "bbox_width": 179,
+            "bbox_height": 160,
+            "bbox_center": [
+              89.5,
+              176.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 2,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 10,
+            "expected_subject": "진주빛 돌고래",
+            "cell_rect_xyxy": [
+              512,
+              512,
+              768,
+              768
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 13024,
+            "bbox_local_xyxy": [
+              0,
+              95,
+              179,
+              256
+            ],
+            "bbox_width": 179,
+            "bbox_height": 161,
+            "bbox_center": [
+              89.5,
+              175.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 1,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 11,
+            "expected_subject": "분홍 소라",
+            "cell_rect_xyxy": [
+              768,
+              512,
+              1024,
+              768
+            ],
+            "target_anchor": [
+              0,
+              256
+            ],
+            "foreground_pixel_count": 18050,
+            "bbox_local_xyxy": [
+              0,
+              88,
+              179,
+              256
+            ],
+            "bbox_width": 179,
+            "bbox_height": 168,
+            "bbox_center": [
+              89.5,
+              172.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 2,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          }
+        ],
+        "near_magenta_nonkey_pixels": 0
+      },
+      "deco_sails.png": {
+        "path": "art/deco_sails.png",
+        "sha256": "e6842309033a71e9fbc2adda9c065af617688f142472b74493048c9d0d63379f",
+        "bytes": 207927,
+        "dimensions": [
+          1024,
+          768
+        ],
+        "mode": "RGB",
+        "alpha_range": [
+          255,
+          255
+        ],
+        "exact_key_pixel_count": 644597,
+        "cells": [
+          {
+            "index": 0,
+            "expected_subject": "가로 파란 띠",
+            "cell_rect_xyxy": [
+              0,
+              0,
+              256,
+              256
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 6547,
+            "bbox_local_xyxy": [
+              51,
+              106,
+              205,
+              150
+            ],
+            "bbox_width": 154,
+            "bbox_height": 44,
+            "bbox_center": [
+              128.0,
+              128.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 161,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 1,
+            "expected_subject": "붉은 해",
+            "cell_rect_xyxy": [
+              256,
+              0,
+              512,
+              256
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 12659,
+            "bbox_local_xyxy": [
+              51,
+              53,
+              205,
+              203
+            ],
+            "bbox_width": 154,
+            "bbox_height": 150,
+            "bbox_center": [
+              128.0,
+              128.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 142,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 2,
+            "expected_subject": "초록 잎새",
+            "cell_rect_xyxy": [
+              512,
+              0,
+              768,
+              256
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 15085,
+            "bbox_local_xyxy": [
+              51,
+              52,
+              205,
+              204
+            ],
+            "bbox_width": 154,
+            "bbox_height": 152,
+            "bbox_center": [
+              128.0,
+              128.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 109,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 3,
+            "expected_subject": "금빛 물결",
+            "cell_rect_xyxy": [
+              768,
+              0,
+              1024,
+              256
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 12854,
+            "bbox_local_xyxy": [
+              51,
+              74,
+              205,
+              182
+            ],
+            "bbox_width": 154,
+            "bbox_height": 108,
+            "bbox_center": [
+              128.0,
+              128.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 131,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 4,
+            "expected_subject": "금빛 동전",
+            "cell_rect_xyxy": [
+              0,
+              256,
+              256,
+              512
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 18558,
+            "bbox_local_xyxy": [
+              52,
+              51,
+              203,
+              205
+            ],
+            "bbox_width": 151,
+            "bbox_height": 154,
+            "bbox_center": [
+              127.5,
+              128.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 143,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 5,
+            "expected_subject": "구릿빛 물결과 암초",
+            "cell_rect_xyxy": [
+              256,
+              256,
+              512,
+              512
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 13362,
+            "bbox_local_xyxy": [
+              51,
+              65,
+              205,
+              190
+            ],
+            "bbox_width": 154,
+            "bbox_height": 125,
+            "bbox_center": [
+              128.0,
+              127.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 125,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 6,
+            "expected_subject": "여덟 방향 나침반 별",
+            "cell_rect_xyxy": [
+              512,
+              256,
+              768,
+              512
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 9715,
+            "bbox_local_xyxy": [
+              51,
+              53,
+              205,
+              203
+            ],
+            "bbox_width": 154,
+            "bbox_height": 150,
+            "bbox_center": [
+              128.0,
+              128.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 159,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 7,
+            "expected_subject": "금빛 선으로 이은 별자리",
+            "cell_rect_xyxy": [
+              768,
+              256,
+              1024,
+              512
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 8779,
+            "bbox_local_xyxy": [
+              51,
+              63,
+              205,
+              193
+            ],
+            "bbox_width": 154,
+            "bbox_height": 130,
+            "bbox_center": [
+              128.0,
+              128.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 119,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 8,
+            "expected_subject": "저녁 등불",
+            "cell_rect_xyxy": [
+              0,
+              512,
+              256,
+              768
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 10440,
+            "bbox_local_xyxy": [
+              77,
+              51,
+              178,
+              205
+            ],
+            "bbox_width": 101,
+            "bbox_height": 154,
+            "bbox_center": [
+              127.5,
+              128.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 151,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 9,
+            "expected_subject": "별과 작은 열쇠",
+            "cell_rect_xyxy": [
+              256,
+              512,
+              512,
+              768
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 10016,
+            "bbox_local_xyxy": [
+              51,
+              55,
+              205,
+              201
+            ],
+            "bbox_width": 154,
+            "bbox_height": 146,
+            "bbox_center": [
+              128.0,
+              128.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 144,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 10,
+            "expected_subject": "물결 위 금빛 해",
+            "cell_rect_xyxy": [
+              512,
+              512,
+              768,
+              768
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 14311,
+            "bbox_local_xyxy": [
+              51,
+              52,
+              205,
+              203
+            ],
+            "bbox_width": 154,
+            "bbox_height": 151,
+            "bbox_center": [
+              128.0,
+              127.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 113,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 11,
+            "expected_subject": "종이새",
+            "cell_rect_xyxy": [
+              768,
+              512,
+              1024,
+              768
+            ],
+            "target_anchor": [
+              128,
+              128
+            ],
+            "foreground_pixel_count": 9509,
+            "bbox_local_xyxy": [
+              51,
+              68,
+              205,
+              187
+            ],
+            "bbox_width": 154,
+            "bbox_height": 119,
+            "bbox_center": [
+              128.0,
+              127.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 157,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          }
+        ],
+        "near_magenta_nonkey_pixels": 0
+      },
+      "deco_deck.png": {
+        "path": "art/deco_deck.png",
+        "sha256": "0945b94f373165357ecb77d0a60f3756054bc16723bc5c5c64e933de10af8d71",
+        "bytes": 299436,
+        "dimensions": [
+          1024,
+          768
+        ],
+        "mode": "RGB",
+        "alpha_range": [
+          255,
+          255
+        ],
+        "exact_key_pixel_count": 627936,
+        "cells": [
+          {
+            "index": 0,
+            "expected_subject": "나무 걸이 작은 종",
+            "cell_rect_xyxy": [
+              0,
+              0,
+              256,
+              256
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 12292,
+            "bbox_local_xyxy": [
+              62,
+              102,
+              194,
+              256
+            ],
+            "bbox_width": 132,
+            "bbox_height": 154,
+            "bbox_center": [
+              128.0,
+              179.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 64,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 1,
+            "expected_subject": "노란 불빛 등잔",
+            "cell_rect_xyxy": [
+              256,
+              0,
+              512,
+              256
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 11857,
+            "bbox_local_xyxy": [
+              77,
+              102,
+              178,
+              256
+            ],
+            "bbox_width": 101,
+            "bbox_height": 154,
+            "bbox_center": [
+              127.5,
+              179.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 84,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": true
+          },
+          {
+            "index": 2,
+            "expected_subject": "꽃 세 송이 화분",
+            "cell_rect_xyxy": [
+              512,
+              0,
+              768,
+              256
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 14967,
+            "bbox_local_xyxy": [
+              58,
+              102,
+              197,
+              256
+            ],
+            "bbox_width": 139,
+            "bbox_height": 154,
+            "bbox_center": [
+              127.5,
+              179.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 91,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": true
+          },
+          {
+            "index": 3,
+            "expected_subject": "받침 위 망원경",
+            "cell_rect_xyxy": [
+              768,
+              0,
+              1024,
+              256
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 12418,
+            "bbox_local_xyxy": [
+              51,
+              113,
+              205,
+              256
+            ],
+            "bbox_width": 154,
+            "bbox_height": 143,
+            "bbox_center": [
+              128.0,
+              184.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 72,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": true
+          },
+          {
+            "index": 4,
+            "expected_subject": "초승달 매단 남색 등불",
+            "cell_rect_xyxy": [
+              0,
+              256,
+              256,
+              512
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 11194,
+            "bbox_local_xyxy": [
+              78,
+              102,
+              177,
+              256
+            ],
+            "bbox_width": 99,
+            "bbox_height": 154,
+            "bbox_center": [
+              127.5,
+              179.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 88,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": true
+          },
+          {
+            "index": 5,
+            "expected_subject": "바다뱀 두른 초록 상자",
+            "cell_rect_xyxy": [
+              256,
+              256,
+              512,
+              512
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 17153,
+            "bbox_local_xyxy": [
+              51,
+              113,
+              205,
+              256
+            ],
+            "bbox_width": 154,
+            "bbox_height": 143,
+            "bbox_center": [
+              128.0,
+              184.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 69,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 6,
+            "expected_subject": "작은 지구본",
+            "cell_rect_xyxy": [
+              512,
+              256,
+              768,
+              512
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 12806,
+            "bbox_local_xyxy": [
+              60,
+              102,
+              196,
+              256
+            ],
+            "bbox_width": 136,
+            "bbox_height": 154,
+            "bbox_center": [
+              128.0,
+              179.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 88,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": true
+          },
+          {
+            "index": 7,
+            "expected_subject": "금빛 선장 시계",
+            "cell_rect_xyxy": [
+              768,
+              256,
+              1024,
+              512
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 14495,
+            "bbox_local_xyxy": [
+              56,
+              102,
+              199,
+              256
+            ],
+            "bbox_width": 143,
+            "bbox_height": 154,
+            "bbox_center": [
+              127.5,
+              179.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 80,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 8,
+            "expected_subject": "웃는 민트 거북 장식",
+            "cell_rect_xyxy": [
+              0,
+              512,
+              256,
+              768
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 11666,
+            "bbox_local_xyxy": [
+              51,
+              155,
+              205,
+              256
+            ],
+            "bbox_width": 154,
+            "bbox_height": 101,
+            "bbox_center": [
+              128.0,
+              205.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 65,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          },
+          {
+            "index": 9,
+            "expected_subject": "찻주전자",
+            "cell_rect_xyxy": [
+              256,
+              512,
+              512,
+              768
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 10935,
+            "bbox_local_xyxy": [
+              51,
+              135,
+              205,
+              256
+            ],
+            "bbox_width": 154,
+            "bbox_height": 121,
+            "bbox_center": [
+              128.0,
+              195.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 94,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": true
+          },
+          {
+            "index": 10,
+            "expected_subject": "황동 천문환",
+            "cell_rect_xyxy": [
+              512,
+              512,
+              768,
+              768
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 11806,
+            "bbox_local_xyxy": [
+              57,
+              102,
+              199,
+              256
+            ],
+            "bbox_width": 142,
+            "bbox_height": 154,
+            "bbox_center": [
+              128.0,
+              179.0
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 96,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": true
+          },
+          {
+            "index": 11,
+            "expected_subject": "지도 상자",
+            "cell_rect_xyxy": [
+              768,
+              512,
+              1024,
+              768
+            ],
+            "target_anchor": [
+              128,
+              256
+            ],
+            "foreground_pixel_count": 16907,
+            "bbox_local_xyxy": [
+              51,
+              121,
+              205,
+              256
+            ],
+            "bbox_width": 154,
+            "bbox_height": 135,
+            "bbox_center": [
+              128.0,
+              188.5
+            ],
+            "nearest_opaque_manhattan_distance_from_lower_left_px": 62,
+            "opaque_at_cell_lower_left": false,
+            "opaque_at_cell_left_mid": false,
+            "opaque_at_cell_bottom_mid": false
+          }
+        ],
+        "near_magenta_nonkey_pixels": 0
+      }
+    },
+    "checks": {
+      "deco_flags.png.png": true,
+      "deco_flags.png.dimensions": true,
+      "deco_flags.png.rgb_or_rgba": true,
+      "deco_flags.png.opaque": true,
+      "deco_flags.png.has_color_key": true,
+      "deco_flags.png.no_near_magenta_noise": true,
+      "deco_flags.png.cell00.nonempty": true,
+      "deco_flags.png.cell00.right_cell_edge_clear": true,
+      "deco_flags.png.cell00.top_cell_edge_clear": true,
+      "deco_flags.png.cell00.width_about80percent": true,
+      "deco_flags.png.cell00.left_edge_anchor": true,
+      "deco_flags.png.cell00.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell00.bottom_cell_edge_clear": true,
+      "deco_flags.png.cell01.nonempty": true,
+      "deco_flags.png.cell01.right_cell_edge_clear": true,
+      "deco_flags.png.cell01.top_cell_edge_clear": true,
+      "deco_flags.png.cell01.width_about80percent": true,
+      "deco_flags.png.cell01.left_edge_anchor": true,
+      "deco_flags.png.cell01.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell01.bottom_cell_edge_clear": true,
+      "deco_flags.png.cell02.nonempty": true,
+      "deco_flags.png.cell02.right_cell_edge_clear": true,
+      "deco_flags.png.cell02.top_cell_edge_clear": true,
+      "deco_flags.png.cell02.width_about80percent": true,
+      "deco_flags.png.cell02.left_edge_anchor": true,
+      "deco_flags.png.cell02.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell02.bottom_cell_edge_clear": true,
+      "deco_flags.png.cell03.nonempty": true,
+      "deco_flags.png.cell03.right_cell_edge_clear": true,
+      "deco_flags.png.cell03.top_cell_edge_clear": true,
+      "deco_flags.png.cell03.width_about80percent": true,
+      "deco_flags.png.cell03.left_edge_anchor": true,
+      "deco_flags.png.cell03.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell03.bottom_cell_edge_clear": true,
+      "deco_flags.png.cell04.nonempty": true,
+      "deco_flags.png.cell04.right_cell_edge_clear": true,
+      "deco_flags.png.cell04.top_cell_edge_clear": true,
+      "deco_flags.png.cell04.width_about80percent": true,
+      "deco_flags.png.cell04.left_edge_anchor": true,
+      "deco_flags.png.cell04.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell04.bottom_cell_edge_clear": true,
+      "deco_flags.png.cell05.nonempty": true,
+      "deco_flags.png.cell05.right_cell_edge_clear": true,
+      "deco_flags.png.cell05.top_cell_edge_clear": true,
+      "deco_flags.png.cell05.width_about80percent": true,
+      "deco_flags.png.cell05.left_edge_anchor": true,
+      "deco_flags.png.cell05.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell05.bottom_cell_edge_clear": true,
+      "deco_flags.png.cell06.nonempty": true,
+      "deco_flags.png.cell06.right_cell_edge_clear": true,
+      "deco_flags.png.cell06.top_cell_edge_clear": true,
+      "deco_flags.png.cell06.width_about80percent": true,
+      "deco_flags.png.cell06.left_edge_anchor": true,
+      "deco_flags.png.cell06.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell06.bottom_cell_edge_clear": true,
+      "deco_flags.png.cell07.nonempty": true,
+      "deco_flags.png.cell07.right_cell_edge_clear": true,
+      "deco_flags.png.cell07.top_cell_edge_clear": true,
+      "deco_flags.png.cell07.width_about80percent": true,
+      "deco_flags.png.cell07.left_edge_anchor": true,
+      "deco_flags.png.cell07.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell07.bottom_cell_edge_clear": true,
+      "deco_flags.png.cell08.nonempty": true,
+      "deco_flags.png.cell08.right_cell_edge_clear": true,
+      "deco_flags.png.cell08.top_cell_edge_clear": true,
+      "deco_flags.png.cell08.width_about80percent": true,
+      "deco_flags.png.cell08.left_edge_anchor": true,
+      "deco_flags.png.cell08.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell08.bottom_cell_edge_clear": true,
+      "deco_flags.png.cell09.nonempty": true,
+      "deco_flags.png.cell09.right_cell_edge_clear": true,
+      "deco_flags.png.cell09.top_cell_edge_clear": true,
+      "deco_flags.png.cell09.width_about80percent": true,
+      "deco_flags.png.cell09.left_edge_anchor": true,
+      "deco_flags.png.cell09.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell09.bottom_cell_edge_clear": true,
+      "deco_flags.png.cell10.nonempty": true,
+      "deco_flags.png.cell10.right_cell_edge_clear": true,
+      "deco_flags.png.cell10.top_cell_edge_clear": true,
+      "deco_flags.png.cell10.width_about80percent": true,
+      "deco_flags.png.cell10.left_edge_anchor": true,
+      "deco_flags.png.cell10.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell10.bottom_cell_edge_clear": true,
+      "deco_flags.png.cell11.nonempty": true,
+      "deco_flags.png.cell11.right_cell_edge_clear": true,
+      "deco_flags.png.cell11.top_cell_edge_clear": true,
+      "deco_flags.png.cell11.width_about80percent": true,
+      "deco_flags.png.cell11.left_edge_anchor": true,
+      "deco_flags.png.cell11.left_cloth_attachment_vertical_center": true,
+      "deco_flags.png.cell11.bottom_cell_edge_clear": true,
+      "deco_figureheads.png.png": true,
+      "deco_figureheads.png.dimensions": true,
+      "deco_figureheads.png.rgb_or_rgba": true,
+      "deco_figureheads.png.opaque": true,
+      "deco_figureheads.png.has_color_key": true,
+      "deco_figureheads.png.no_near_magenta_noise": true,
+      "deco_figureheads.png.cell00.nonempty": true,
+      "deco_figureheads.png.cell00.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell00.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell00.size_about70percent": true,
+      "deco_figureheads.png.cell00.bbox_lower_left_anchor": true,
+      "deco_figureheads.png.cell01.nonempty": true,
+      "deco_figureheads.png.cell01.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell01.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell01.size_about70percent": true,
+      "deco_figureheads.png.cell01.bbox_lower_left_anchor": true,
+      "deco_figureheads.png.cell02.nonempty": true,
+      "deco_figureheads.png.cell02.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell02.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell02.size_about70percent": true,
+      "deco_figureheads.png.cell02.bbox_lower_left_anchor": true,
+      "deco_figureheads.png.cell03.nonempty": true,
+      "deco_figureheads.png.cell03.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell03.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell03.size_about70percent": true,
+      "deco_figureheads.png.cell03.bbox_lower_left_anchor": true,
+      "deco_figureheads.png.cell04.nonempty": true,
+      "deco_figureheads.png.cell04.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell04.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell04.size_about70percent": true,
+      "deco_figureheads.png.cell04.bbox_lower_left_anchor": true,
+      "deco_figureheads.png.cell05.nonempty": true,
+      "deco_figureheads.png.cell05.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell05.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell05.size_about70percent": true,
+      "deco_figureheads.png.cell05.bbox_lower_left_anchor": true,
+      "deco_figureheads.png.cell06.nonempty": true,
+      "deco_figureheads.png.cell06.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell06.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell06.size_about70percent": true,
+      "deco_figureheads.png.cell06.bbox_lower_left_anchor": true,
+      "deco_figureheads.png.cell07.nonempty": true,
+      "deco_figureheads.png.cell07.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell07.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell07.size_about70percent": true,
+      "deco_figureheads.png.cell07.bbox_lower_left_anchor": true,
+      "deco_figureheads.png.cell08.nonempty": true,
+      "deco_figureheads.png.cell08.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell08.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell08.size_about70percent": true,
+      "deco_figureheads.png.cell08.bbox_lower_left_anchor": true,
+      "deco_figureheads.png.cell09.nonempty": true,
+      "deco_figureheads.png.cell09.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell09.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell09.size_about70percent": true,
+      "deco_figureheads.png.cell09.bbox_lower_left_anchor": true,
+      "deco_figureheads.png.cell10.nonempty": true,
+      "deco_figureheads.png.cell10.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell10.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell10.size_about70percent": true,
+      "deco_figureheads.png.cell10.bbox_lower_left_anchor": true,
+      "deco_figureheads.png.cell11.nonempty": true,
+      "deco_figureheads.png.cell11.right_cell_edge_clear": true,
+      "deco_figureheads.png.cell11.top_cell_edge_clear": true,
+      "deco_figureheads.png.cell11.size_about70percent": true,
+      "deco_figureheads.png.cell11.bbox_lower_left_anchor": true,
+      "deco_sails.png.png": true,
+      "deco_sails.png.dimensions": true,
+      "deco_sails.png.rgb_or_rgba": true,
+      "deco_sails.png.opaque": true,
+      "deco_sails.png.has_color_key": true,
+      "deco_sails.png.no_near_magenta_noise": true,
+      "deco_sails.png.cell00.nonempty": true,
+      "deco_sails.png.cell00.right_cell_edge_clear": true,
+      "deco_sails.png.cell00.top_cell_edge_clear": true,
+      "deco_sails.png.cell00.size_about60percent": true,
+      "deco_sails.png.cell00.centered": true,
+      "deco_sails.png.cell00.left_cell_edge_clear": true,
+      "deco_sails.png.cell00.bottom_cell_edge_clear": true,
+      "deco_sails.png.cell01.nonempty": true,
+      "deco_sails.png.cell01.right_cell_edge_clear": true,
+      "deco_sails.png.cell01.top_cell_edge_clear": true,
+      "deco_sails.png.cell01.size_about60percent": true,
+      "deco_sails.png.cell01.centered": true,
+      "deco_sails.png.cell01.left_cell_edge_clear": true,
+      "deco_sails.png.cell01.bottom_cell_edge_clear": true,
+      "deco_sails.png.cell02.nonempty": true,
+      "deco_sails.png.cell02.right_cell_edge_clear": true,
+      "deco_sails.png.cell02.top_cell_edge_clear": true,
+      "deco_sails.png.cell02.size_about60percent": true,
+      "deco_sails.png.cell02.centered": true,
+      "deco_sails.png.cell02.left_cell_edge_clear": true,
+      "deco_sails.png.cell02.bottom_cell_edge_clear": true,
+      "deco_sails.png.cell03.nonempty": true,
+      "deco_sails.png.cell03.right_cell_edge_clear": true,
+      "deco_sails.png.cell03.top_cell_edge_clear": true,
+      "deco_sails.png.cell03.size_about60percent": true,
+      "deco_sails.png.cell03.centered": true,
+      "deco_sails.png.cell03.left_cell_edge_clear": true,
+      "deco_sails.png.cell03.bottom_cell_edge_clear": true,
+      "deco_sails.png.cell04.nonempty": true,
+      "deco_sails.png.cell04.right_cell_edge_clear": true,
+      "deco_sails.png.cell04.top_cell_edge_clear": true,
+      "deco_sails.png.cell04.size_about60percent": true,
+      "deco_sails.png.cell04.centered": true,
+      "deco_sails.png.cell04.left_cell_edge_clear": true,
+      "deco_sails.png.cell04.bottom_cell_edge_clear": true,
+      "deco_sails.png.cell05.nonempty": true,
+      "deco_sails.png.cell05.right_cell_edge_clear": true,
+      "deco_sails.png.cell05.top_cell_edge_clear": true,
+      "deco_sails.png.cell05.size_about60percent": true,
+      "deco_sails.png.cell05.centered": true,
+      "deco_sails.png.cell05.left_cell_edge_clear": true,
+      "deco_sails.png.cell05.bottom_cell_edge_clear": true,
+      "deco_sails.png.cell06.nonempty": true,
+      "deco_sails.png.cell06.right_cell_edge_clear": true,
+      "deco_sails.png.cell06.top_cell_edge_clear": true,
+      "deco_sails.png.cell06.size_about60percent": true,
+      "deco_sails.png.cell06.centered": true,
+      "deco_sails.png.cell06.left_cell_edge_clear": true,
+      "deco_sails.png.cell06.bottom_cell_edge_clear": true,
+      "deco_sails.png.cell07.nonempty": true,
+      "deco_sails.png.cell07.right_cell_edge_clear": true,
+      "deco_sails.png.cell07.top_cell_edge_clear": true,
+      "deco_sails.png.cell07.size_about60percent": true,
+      "deco_sails.png.cell07.centered": true,
+      "deco_sails.png.cell07.left_cell_edge_clear": true,
+      "deco_sails.png.cell07.bottom_cell_edge_clear": true,
+      "deco_sails.png.cell08.nonempty": true,
+      "deco_sails.png.cell08.right_cell_edge_clear": true,
+      "deco_sails.png.cell08.top_cell_edge_clear": true,
+      "deco_sails.png.cell08.size_about60percent": true,
+      "deco_sails.png.cell08.centered": true,
+      "deco_sails.png.cell08.left_cell_edge_clear": true,
+      "deco_sails.png.cell08.bottom_cell_edge_clear": true,
+      "deco_sails.png.cell09.nonempty": true,
+      "deco_sails.png.cell09.right_cell_edge_clear": true,
+      "deco_sails.png.cell09.top_cell_edge_clear": true,
+      "deco_sails.png.cell09.size_about60percent": true,
+      "deco_sails.png.cell09.centered": true,
+      "deco_sails.png.cell09.left_cell_edge_clear": true,
+      "deco_sails.png.cell09.bottom_cell_edge_clear": true,
+      "deco_sails.png.cell10.nonempty": true,
+      "deco_sails.png.cell10.right_cell_edge_clear": true,
+      "deco_sails.png.cell10.top_cell_edge_clear": true,
+      "deco_sails.png.cell10.size_about60percent": true,
+      "deco_sails.png.cell10.centered": true,
+      "deco_sails.png.cell10.left_cell_edge_clear": true,
+      "deco_sails.png.cell10.bottom_cell_edge_clear": true,
+      "deco_sails.png.cell11.nonempty": true,
+      "deco_sails.png.cell11.right_cell_edge_clear": true,
+      "deco_sails.png.cell11.top_cell_edge_clear": true,
+      "deco_sails.png.cell11.size_about60percent": true,
+      "deco_sails.png.cell11.centered": true,
+      "deco_sails.png.cell11.left_cell_edge_clear": true,
+      "deco_sails.png.cell11.bottom_cell_edge_clear": true,
+      "deco_deck.png.png": true,
+      "deco_deck.png.dimensions": true,
+      "deco_deck.png.rgb_or_rgba": true,
+      "deco_deck.png.opaque": true,
+      "deco_deck.png.has_color_key": true,
+      "deco_deck.png.no_near_magenta_noise": true,
+      "deco_deck.png.cell00.nonempty": true,
+      "deco_deck.png.cell00.right_cell_edge_clear": true,
+      "deco_deck.png.cell00.top_cell_edge_clear": true,
+      "deco_deck.png.cell00.size_about60percent": true,
+      "deco_deck.png.cell00.bottom_anchor": true,
+      "deco_deck.png.cell00.horizontal_center": true,
+      "deco_deck.png.cell00.left_cell_edge_clear": true,
+      "deco_deck.png.cell01.nonempty": true,
+      "deco_deck.png.cell01.right_cell_edge_clear": true,
+      "deco_deck.png.cell01.top_cell_edge_clear": true,
+      "deco_deck.png.cell01.size_about60percent": true,
+      "deco_deck.png.cell01.bottom_anchor": true,
+      "deco_deck.png.cell01.horizontal_center": true,
+      "deco_deck.png.cell01.left_cell_edge_clear": true,
+      "deco_deck.png.cell02.nonempty": true,
+      "deco_deck.png.cell02.right_cell_edge_clear": true,
+      "deco_deck.png.cell02.top_cell_edge_clear": true,
+      "deco_deck.png.cell02.size_about60percent": true,
+      "deco_deck.png.cell02.bottom_anchor": true,
+      "deco_deck.png.cell02.horizontal_center": true,
+      "deco_deck.png.cell02.left_cell_edge_clear": true,
+      "deco_deck.png.cell03.nonempty": true,
+      "deco_deck.png.cell03.right_cell_edge_clear": true,
+      "deco_deck.png.cell03.top_cell_edge_clear": true,
+      "deco_deck.png.cell03.size_about60percent": true,
+      "deco_deck.png.cell03.bottom_anchor": true,
+      "deco_deck.png.cell03.horizontal_center": true,
+      "deco_deck.png.cell03.left_cell_edge_clear": true,
+      "deco_deck.png.cell04.nonempty": true,
+      "deco_deck.png.cell04.right_cell_edge_clear": true,
+      "deco_deck.png.cell04.top_cell_edge_clear": true,
+      "deco_deck.png.cell04.size_about60percent": true,
+      "deco_deck.png.cell04.bottom_anchor": true,
+      "deco_deck.png.cell04.horizontal_center": true,
+      "deco_deck.png.cell04.left_cell_edge_clear": true,
+      "deco_deck.png.cell05.nonempty": true,
+      "deco_deck.png.cell05.right_cell_edge_clear": true,
+      "deco_deck.png.cell05.top_cell_edge_clear": true,
+      "deco_deck.png.cell05.size_about60percent": true,
+      "deco_deck.png.cell05.bottom_anchor": true,
+      "deco_deck.png.cell05.horizontal_center": true,
+      "deco_deck.png.cell05.left_cell_edge_clear": true,
+      "deco_deck.png.cell06.nonempty": true,
+      "deco_deck.png.cell06.right_cell_edge_clear": true,
+      "deco_deck.png.cell06.top_cell_edge_clear": true,
+      "deco_deck.png.cell06.size_about60percent": true,
+      "deco_deck.png.cell06.bottom_anchor": true,
+      "deco_deck.png.cell06.horizontal_center": true,
+      "deco_deck.png.cell06.left_cell_edge_clear": true,
+      "deco_deck.png.cell07.nonempty": true,
+      "deco_deck.png.cell07.right_cell_edge_clear": true,
+      "deco_deck.png.cell07.top_cell_edge_clear": true,
+      "deco_deck.png.cell07.size_about60percent": true,
+      "deco_deck.png.cell07.bottom_anchor": true,
+      "deco_deck.png.cell07.horizontal_center": true,
+      "deco_deck.png.cell07.left_cell_edge_clear": true,
+      "deco_deck.png.cell08.nonempty": true,
+      "deco_deck.png.cell08.right_cell_edge_clear": true,
+      "deco_deck.png.cell08.top_cell_edge_clear": true,
+      "deco_deck.png.cell08.size_about60percent": true,
+      "deco_deck.png.cell08.bottom_anchor": true,
+      "deco_deck.png.cell08.horizontal_center": true,
+      "deco_deck.png.cell08.left_cell_edge_clear": true,
+      "deco_deck.png.cell09.nonempty": true,
+      "deco_deck.png.cell09.right_cell_edge_clear": true,
+      "deco_deck.png.cell09.top_cell_edge_clear": true,
+      "deco_deck.png.cell09.size_about60percent": true,
+      "deco_deck.png.cell09.bottom_anchor": true,
+      "deco_deck.png.cell09.horizontal_center": true,
+      "deco_deck.png.cell09.left_cell_edge_clear": true,
+      "deco_deck.png.cell10.nonempty": true,
+      "deco_deck.png.cell10.right_cell_edge_clear": true,
+      "deco_deck.png.cell10.top_cell_edge_clear": true,
+      "deco_deck.png.cell10.size_about60percent": true,
+      "deco_deck.png.cell10.bottom_anchor": true,
+      "deco_deck.png.cell10.horizontal_center": true,
+      "deco_deck.png.cell10.left_cell_edge_clear": true,
+      "deco_deck.png.cell11.nonempty": true,
+      "deco_deck.png.cell11.right_cell_edge_clear": true,
+      "deco_deck.png.cell11.top_cell_edge_clear": true,
+      "deco_deck.png.cell11.size_about60percent": true,
+      "deco_deck.png.cell11.bottom_anchor": true,
+      "deco_deck.png.cell11.horizontal_center": true,
+      "deco_deck.png.cell11.left_cell_edge_clear": true,
+      "mapping.four_sheets": true,
+      "mapping.exact_art_paths": true,
+      "mapping.48_total_cells": true,
+      "deco_flags.png.mapping_anchor": true,
+      "deco_flags.png.mapping_12_cells": true,
+      "deco_flags.png.mapping_cell00.index": true,
+      "deco_flags.png.mapping_cell00.rect": true,
+      "deco_flags.png.mapping_cell00.rowcol": true,
+      "deco_flags.png.mapping_cell01.index": true,
+      "deco_flags.png.mapping_cell01.rect": true,
+      "deco_flags.png.mapping_cell01.rowcol": true,
+      "deco_flags.png.mapping_cell02.index": true,
+      "deco_flags.png.mapping_cell02.rect": true,
+      "deco_flags.png.mapping_cell02.rowcol": true,
+      "deco_flags.png.mapping_cell03.index": true,
+      "deco_flags.png.mapping_cell03.rect": true,
+      "deco_flags.png.mapping_cell03.rowcol": true,
+      "deco_flags.png.mapping_cell04.index": true,
+      "deco_flags.png.mapping_cell04.rect": true,
+      "deco_flags.png.mapping_cell04.rowcol": true,
+      "deco_flags.png.mapping_cell05.index": true,
+      "deco_flags.png.mapping_cell05.rect": true,
+      "deco_flags.png.mapping_cell05.rowcol": true,
+      "deco_flags.png.mapping_cell06.index": true,
+      "deco_flags.png.mapping_cell06.rect": true,
+      "deco_flags.png.mapping_cell06.rowcol": true,
+      "deco_flags.png.mapping_cell07.index": true,
+      "deco_flags.png.mapping_cell07.rect": true,
+      "deco_flags.png.mapping_cell07.rowcol": true,
+      "deco_flags.png.mapping_cell08.index": true,
+      "deco_flags.png.mapping_cell08.rect": true,
+      "deco_flags.png.mapping_cell08.rowcol": true,
+      "deco_flags.png.mapping_cell09.index": true,
+      "deco_flags.png.mapping_cell09.rect": true,
+      "deco_flags.png.mapping_cell09.rowcol": true,
+      "deco_flags.png.mapping_cell10.index": true,
+      "deco_flags.png.mapping_cell10.rect": true,
+      "deco_flags.png.mapping_cell10.rowcol": true,
+      "deco_flags.png.mapping_cell11.index": true,
+      "deco_flags.png.mapping_cell11.rect": true,
+      "deco_flags.png.mapping_cell11.rowcol": true,
+      "deco_figureheads.png.mapping_anchor": true,
+      "deco_figureheads.png.mapping_12_cells": true,
+      "deco_figureheads.png.mapping_cell00.index": true,
+      "deco_figureheads.png.mapping_cell00.rect": true,
+      "deco_figureheads.png.mapping_cell00.rowcol": true,
+      "deco_figureheads.png.mapping_cell01.index": true,
+      "deco_figureheads.png.mapping_cell01.rect": true,
+      "deco_figureheads.png.mapping_cell01.rowcol": true,
+      "deco_figureheads.png.mapping_cell02.index": true,
+      "deco_figureheads.png.mapping_cell02.rect": true,
+      "deco_figureheads.png.mapping_cell02.rowcol": true,
+      "deco_figureheads.png.mapping_cell03.index": true,
+      "deco_figureheads.png.mapping_cell03.rect": true,
+      "deco_figureheads.png.mapping_cell03.rowcol": true,
+      "deco_figureheads.png.mapping_cell04.index": true,
+      "deco_figureheads.png.mapping_cell04.rect": true,
+      "deco_figureheads.png.mapping_cell04.rowcol": true,
+      "deco_figureheads.png.mapping_cell05.index": true,
+      "deco_figureheads.png.mapping_cell05.rect": true,
+      "deco_figureheads.png.mapping_cell05.rowcol": true,
+      "deco_figureheads.png.mapping_cell06.index": true,
+      "deco_figureheads.png.mapping_cell06.rect": true,
+      "deco_figureheads.png.mapping_cell06.rowcol": true,
+      "deco_figureheads.png.mapping_cell07.index": true,
+      "deco_figureheads.png.mapping_cell07.rect": true,
+      "deco_figureheads.png.mapping_cell07.rowcol": true,
+      "deco_figureheads.png.mapping_cell08.index": true,
+      "deco_figureheads.png.mapping_cell08.rect": true,
+      "deco_figureheads.png.mapping_cell08.rowcol": true,
+      "deco_figureheads.png.mapping_cell09.index": true,
+      "deco_figureheads.png.mapping_cell09.rect": true,
+      "deco_figureheads.png.mapping_cell09.rowcol": true,
+      "deco_figureheads.png.mapping_cell10.index": true,
+      "deco_figureheads.png.mapping_cell10.rect": true,
+      "deco_figureheads.png.mapping_cell10.rowcol": true,
+      "deco_figureheads.png.mapping_cell11.index": true,
+      "deco_figureheads.png.mapping_cell11.rect": true,
+      "deco_figureheads.png.mapping_cell11.rowcol": true,
+      "deco_sails.png.mapping_anchor": true,
+      "deco_sails.png.mapping_12_cells": true,
+      "deco_sails.png.mapping_cell00.index": true,
+      "deco_sails.png.mapping_cell00.rect": true,
+      "deco_sails.png.mapping_cell00.rowcol": true,
+      "deco_sails.png.mapping_cell01.index": true,
+      "deco_sails.png.mapping_cell01.rect": true,
+      "deco_sails.png.mapping_cell01.rowcol": true,
+      "deco_sails.png.mapping_cell02.index": true,
+      "deco_sails.png.mapping_cell02.rect": true,
+      "deco_sails.png.mapping_cell02.rowcol": true,
+      "deco_sails.png.mapping_cell03.index": true,
+      "deco_sails.png.mapping_cell03.rect": true,
+      "deco_sails.png.mapping_cell03.rowcol": true,
+      "deco_sails.png.mapping_cell04.index": true,
+      "deco_sails.png.mapping_cell04.rect": true,
+      "deco_sails.png.mapping_cell04.rowcol": true,
+      "deco_sails.png.mapping_cell05.index": true,
+      "deco_sails.png.mapping_cell05.rect": true,
+      "deco_sails.png.mapping_cell05.rowcol": true,
+      "deco_sails.png.mapping_cell06.index": true,
+      "deco_sails.png.mapping_cell06.rect": true,
+      "deco_sails.png.mapping_cell06.rowcol": true,
+      "deco_sails.png.mapping_cell07.index": true,
+      "deco_sails.png.mapping_cell07.rect": true,
+      "deco_sails.png.mapping_cell07.rowcol": true,
+      "deco_sails.png.mapping_cell08.index": true,
+      "deco_sails.png.mapping_cell08.rect": true,
+      "deco_sails.png.mapping_cell08.rowcol": true,
+      "deco_sails.png.mapping_cell09.index": true,
+      "deco_sails.png.mapping_cell09.rect": true,
+      "deco_sails.png.mapping_cell09.rowcol": true,
+      "deco_sails.png.mapping_cell10.index": true,
+      "deco_sails.png.mapping_cell10.rect": true,
+      "deco_sails.png.mapping_cell10.rowcol": true,
+      "deco_sails.png.mapping_cell11.index": true,
+      "deco_sails.png.mapping_cell11.rect": true,
+      "deco_sails.png.mapping_cell11.rowcol": true,
+      "deco_deck.png.mapping_anchor": true,
+      "deco_deck.png.mapping_12_cells": true,
+      "deco_deck.png.mapping_cell00.index": true,
+      "deco_deck.png.mapping_cell00.rect": true,
+      "deco_deck.png.mapping_cell00.rowcol": true,
+      "deco_deck.png.mapping_cell01.index": true,
+      "deco_deck.png.mapping_cell01.rect": true,
+      "deco_deck.png.mapping_cell01.rowcol": true,
+      "deco_deck.png.mapping_cell02.index": true,
+      "deco_deck.png.mapping_cell02.rect": true,
+      "deco_deck.png.mapping_cell02.rowcol": true,
+      "deco_deck.png.mapping_cell03.index": true,
+      "deco_deck.png.mapping_cell03.rect": true,
+      "deco_deck.png.mapping_cell03.rowcol": true,
+      "deco_deck.png.mapping_cell04.index": true,
+      "deco_deck.png.mapping_cell04.rect": true,
+      "deco_deck.png.mapping_cell04.rowcol": true,
+      "deco_deck.png.mapping_cell05.index": true,
+      "deco_deck.png.mapping_cell05.rect": true,
+      "deco_deck.png.mapping_cell05.rowcol": true,
+      "deco_deck.png.mapping_cell06.index": true,
+      "deco_deck.png.mapping_cell06.rect": true,
+      "deco_deck.png.mapping_cell06.rowcol": true,
+      "deco_deck.png.mapping_cell07.index": true,
+      "deco_deck.png.mapping_cell07.rect": true,
+      "deco_deck.png.mapping_cell07.rowcol": true,
+      "deco_deck.png.mapping_cell08.index": true,
+      "deco_deck.png.mapping_cell08.rect": true,
+      "deco_deck.png.mapping_cell08.rowcol": true,
+      "deco_deck.png.mapping_cell09.index": true,
+      "deco_deck.png.mapping_cell09.rect": true,
+      "deco_deck.png.mapping_cell09.rowcol": true,
+      "deco_deck.png.mapping_cell10.index": true,
+      "deco_deck.png.mapping_cell10.rect": true,
+      "deco_deck.png.mapping_cell10.rowcol": true,
+      "deco_deck.png.mapping_cell11.index": true,
+      "deco_deck.png.mapping_cell11.rect": true,
+      "deco_deck.png.mapping_cell11.rowcol": true
+    },
+    "missing": [],
+    "runtime_tested": false,
+    "device_tested": false,
+    "check_count": 491,
+    "failed_checks": []
+  },
+  "visual_checks": {
+    "all_48_requested_identities_and_row_major_order": "passed",
+    "strong_dark_outlines_and_warm_cozy_pixel_style": "passed",
+    "rightward_direction_for_directional_motifs": "passed",
+    "flags_cloth_only_no_poles": "passed",
+    "figureheads_have_integral_mounts_without_ship_hulls": "passed",
+    "sails_emblems_only_no_sail_cloth": "passed",
+    "sails_flat_graphic_treatment_no_3d_reef_facets_or_cast_shadows": "passed",
+    "no_visible_text_letters_numbers_watermarks_or_unrequested_logos": "passed",
+    "no_ground_planes_cast_shadows_or_ship_bodies": "passed",
+    "flag12_three_reeds": "passed",
+    "deck3_three_flowers": "passed",
+    "sail7_eight_compass_points_without_letters": "passed",
+    "deck8_clock_has_ticks_but_no_numerals": "passed",
+    "deck12_charts_have_routes_but_no_letters": "passed"
+  },
+  "visual_observations": [
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 0,
+      "display_number": 1,
+      "expected_subject": "붉은 깃발",
+      "identity_and_order": "passed",
+      "observation_ko": "붉은 단색 천, 오른쪽 펄럭임"
+    },
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 1,
+      "display_number": 2,
+      "expected_subject": "파란 깃발",
+      "identity_and_order": "passed",
+      "observation_ko": "파란 단색 천, 오른쪽 펄럭임"
+    },
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 2,
+      "display_number": 3,
+      "expected_subject": "노란 바탕 파란 물결",
+      "identity_and_order": "passed",
+      "observation_ko": "노란 천과 파란 물결 띠"
+    },
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 3,
+      "display_number": 4,
+      "expected_subject": "초록 바탕 마름모",
+      "identity_and_order": "passed",
+      "observation_ko": "초록 천과 밝은 마름모"
+    },
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 4,
+      "display_number": 5,
+      "expected_subject": "남색 은빛 갈고리",
+      "identity_and_order": "passed",
+      "observation_ko": "남색 천과 은빛 갈고리"
+    },
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 5,
+      "display_number": 6,
+      "expected_subject": "하양 붉은 게 집게",
+      "identity_and_order": "passed",
+      "observation_ko": "흰 천에 붉은 게 집게, 게 전체 아님"
+    },
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 6,
+      "display_number": 7,
+      "expected_subject": "조각보 깃발",
+      "identity_and_order": "passed",
+      "observation_ko": "여러 색 천 조각과 바느질 연결"
+    },
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 7,
+      "display_number": 8,
+      "expected_subject": "남색 금빛 닻과 술",
+      "identity_and_order": "passed",
+      "observation_ko": "남색 천에 금빛 닻, 아래 술"
+    },
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 8,
+      "display_number": 9,
+      "expected_subject": "산호빛 해마",
+      "identity_and_order": "passed",
+      "observation_ko": "산호빛 천에 해마"
+    },
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 9,
+      "display_number": 10,
+      "expected_subject": "하늘색 돌아오는 물길",
+      "identity_and_order": "passed",
+      "observation_ko": "하늘색 천에 돌아오는 파도"
+    },
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 10,
+      "display_number": 11,
+      "expected_subject": "분홍·금빛 아침놀 비단",
+      "identity_and_order": "passed",
+      "observation_ko": "분홍 바탕 금빛 해와 아침놀 띠"
+    },
+    {
+      "file": "art/deco_flags.png",
+      "index_0based": 11,
+      "display_number": 12,
+      "expected_subject": "연두 갈대 세 줄기",
+      "identity_and_order": "passed",
+      "observation_ko": "연두 천과 갈대 정확히 세 줄기"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 0,
+      "display_number": 1,
+      "expected_subject": "웃는 갈매기",
+      "identity_and_order": "passed",
+      "observation_ko": "웃는 흰 갈매기, 오른쪽 부리"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 1,
+      "display_number": 2,
+      "expected_subject": "주홍 물고기",
+      "identity_and_order": "passed",
+      "observation_ko": "주홍·금빛 물고기, 오른쪽 얼굴"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 2,
+      "display_number": 3,
+      "expected_subject": "금빛 보물별",
+      "identity_and_order": "passed",
+      "observation_ko": "웃는 금빛 보물별"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 3,
+      "display_number": 4,
+      "expected_subject": "작은 등불",
+      "identity_and_order": "passed",
+      "observation_ko": "작은 금빛 등불과 따뜻한 불꽃"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 4,
+      "display_number": 5,
+      "expected_subject": "청록 문어",
+      "identity_and_order": "passed",
+      "observation_ko": "청록 문어와 말린 다리"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 5,
+      "display_number": 6,
+      "expected_subject": "번개를 품은 둥근 구름",
+      "identity_and_order": "passed",
+      "observation_ko": "둥근 푸른 구름과 작은 번개"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 6,
+      "display_number": 7,
+      "expected_subject": "청록 리본 조개 꽃다발",
+      "identity_and_order": "passed",
+      "observation_ko": "부채꼴 조개 꽃다발과 청록 리본"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 7,
+      "display_number": 8,
+      "expected_subject": "뛰어오르는 금빛 돌고래",
+      "identity_and_order": "passed",
+      "observation_ko": "오른쪽으로 뛰는 금빛 돌고래"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 8,
+      "display_number": 9,
+      "expected_subject": "지느러미 편 날치",
+      "identity_and_order": "passed",
+      "observation_ko": "넓은 지느러미를 편 오른쪽 날치"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 9,
+      "display_number": 10,
+      "expected_subject": "날개 편 갈매기",
+      "identity_and_order": "passed",
+      "observation_ko": "날개를 펼친 오른쪽 갈매기"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 10,
+      "display_number": 11,
+      "expected_subject": "진주빛 돌고래",
+      "identity_and_order": "passed",
+      "observation_ko": "오른쪽 진주빛 돌고래"
+    },
+    {
+      "file": "art/deco_figureheads.png",
+      "index_0based": 11,
+      "display_number": 12,
+      "expected_subject": "분홍 소라",
+      "identity_and_order": "passed",
+      "observation_ko": "분홍 소라와 오른쪽으로 뻗은 나선"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 0,
+      "display_number": 1,
+      "expected_subject": "가로 파란 띠",
+      "identity_and_order": "passed",
+      "observation_ko": "가로 파란 띠"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 1,
+      "display_number": 2,
+      "expected_subject": "붉은 해",
+      "identity_and_order": "passed",
+      "observation_ko": "붉은 해와 방사선"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 2,
+      "display_number": 3,
+      "expected_subject": "초록 잎새",
+      "identity_and_order": "passed",
+      "observation_ko": "초록 잎과 밝은 잎맥"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 3,
+      "display_number": 4,
+      "expected_subject": "금빛 물결",
+      "identity_and_order": "passed",
+      "observation_ko": "금빛 물결 세 줄"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 4,
+      "display_number": 5,
+      "expected_subject": "금빛 동전",
+      "identity_and_order": "passed",
+      "observation_ko": "속이 채워진 금빛 동전, 빈 고리 아님"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 5,
+      "display_number": 6,
+      "expected_subject": "구릿빛 물결과 암초",
+      "identity_and_order": "passed",
+      "observation_ko": "구릿빛 물결과 평면 회색 암초"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 6,
+      "display_number": 7,
+      "expected_subject": "여덟 방향 나침반 별",
+      "identity_and_order": "passed",
+      "observation_ko": "여덟 방향 나침반 별, 영문 없음"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 7,
+      "display_number": 8,
+      "expected_subject": "금빛 선으로 이은 별자리",
+      "identity_and_order": "passed",
+      "observation_ko": "금빛 별을 선으로 연결한 별자리"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 8,
+      "display_number": 9,
+      "expected_subject": "저녁 등불",
+      "identity_and_order": "passed",
+      "observation_ko": "단순한 저녁 등불"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 9,
+      "display_number": 10,
+      "expected_subject": "별과 작은 열쇠",
+      "identity_and_order": "passed",
+      "observation_ko": "큰 별과 작은 열쇠"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 10,
+      "display_number": 11,
+      "expected_subject": "물결 위 금빛 해",
+      "identity_and_order": "passed",
+      "observation_ko": "금빛 해와 아래 물결"
+    },
+    {
+      "file": "art/deco_sails.png",
+      "index_0based": 11,
+      "display_number": 12,
+      "expected_subject": "종이새",
+      "identity_and_order": "passed",
+      "observation_ko": "오른쪽을 향하는 접은 종이새"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 0,
+      "display_number": 1,
+      "expected_subject": "나무 걸이 작은 종",
+      "identity_and_order": "passed",
+      "observation_ko": "나무 걸이에 매단 작은 종"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 1,
+      "display_number": 2,
+      "expected_subject": "노란 불빛 등잔",
+      "identity_and_order": "passed",
+      "observation_ko": "노란 불빛의 등잔"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 2,
+      "display_number": 3,
+      "expected_subject": "꽃 세 송이 화분",
+      "identity_and_order": "passed",
+      "observation_ko": "꽃 정확히 세 송이가 든 화분"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 3,
+      "display_number": 4,
+      "expected_subject": "받침 위 망원경",
+      "identity_and_order": "passed",
+      "observation_ko": "받침 위 오른쪽 망원경"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 4,
+      "display_number": 5,
+      "expected_subject": "초승달 매단 남색 등불",
+      "identity_and_order": "passed",
+      "observation_ko": "은빛 초승달이 달린 남색 등불"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 5,
+      "display_number": 6,
+      "expected_subject": "바다뱀 두른 초록 상자",
+      "identity_and_order": "passed",
+      "observation_ko": "흰 바다뱀이 두른 초록 상자"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 6,
+      "display_number": 7,
+      "expected_subject": "작은 지구본",
+      "identity_and_order": "passed",
+      "observation_ko": "받침 있는 작은 지구본"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 7,
+      "display_number": 8,
+      "expected_subject": "금빛 선장 시계",
+      "identity_and_order": "passed",
+      "observation_ko": "금빛 시계, 숫자와 로마 숫자 없이 눈금만"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 8,
+      "display_number": 9,
+      "expected_subject": "웃는 민트 거북 장식",
+      "identity_and_order": "passed",
+      "observation_ko": "웃는 민트색 거북, 오른쪽 얼굴"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 9,
+      "display_number": 10,
+      "expected_subject": "찻주전자",
+      "identity_and_order": "passed",
+      "observation_ko": "둥근 찻주전자"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 10,
+      "display_number": 11,
+      "expected_subject": "황동 천문환",
+      "identity_and_order": "passed",
+      "observation_ko": "황동 천문환과 작은 푸른 천구"
+    },
+    {
+      "file": "art/deco_deck.png",
+      "index_0based": 11,
+      "display_number": 12,
+      "expected_subject": "지도 상자",
+      "identity_and_order": "passed",
+      "observation_ko": "접힌 해도가 담긴 상자, 지도에 문자 없음"
+    }
+  ],
+  "small_scale_review": {
+    "method": "각 최종 셀의 불투명 도형 bbox를 최근접 보간으로 긴 변32px와48px로 축소하고 크림색 단색 위에서 직접 확인. 원본 파일 변경 없음.",
+    "object_longest_side_px": [
+      32,
+      48
+    ],
+    "48px_result": "48개 주요 실루엣·문양·색 구분 유지.",
+    "32px_result": "48개 주요 식별 형태 유지. 바느질·눈금·지도 선 등 부차적 세부는 축소되어 보이므로 게임 배율별 가독성을 별도로 확인해야 함.",
+    "actual_game_compositing_or_runtime_test": false
+  },
+  "anchor_notes": [
+    "깃발12개 모두 왼쪽x0과y128 픽셀에 실제 천이 있다. 왼쪽 점유 범위 중간은127.5~128.5px. 8번 아래 술 때문에 전체 bbox의 세로 중심을 접점으로 삼지 않는다.",
+    "뱃머리12개 모두 bbox left=0, bottom=256. 논리적 부착점은(0,256). 둥근 부착대 윤곽 때문에 실제 픽셀(0,255)은12개 모두 마젠타이며, 가장 가까운 불투명 픽셀까지 맨해튼 거리1~3px다. 이는 bbox 정렬과 구별하여 기록했다.",
+    "돛은 bbox 중심(128,128)에서 정수 반올림오차0.5px 이내. 갑판은bbox bottom=256 및 가로중심128에서0.5px 이내.",
+    "256은 셀의 논리적 바깥 가장자리이며 마지막 픽셀 인덱스는255다. 전체256px 셀을 유지해야 명시된 부착점이 보존된다."
+  ],
+  "reference_review": {
+    "visually_reviewed_recovered_files": [
+      "ship_stage6.png",
+      "ship_deco_on.png",
+      "ship_deco_on_2.png",
+      "ship_deco_on_3.png"
+    ],
+    "source": "과거13차 배와6·7·11차 장식 패키지에서 회수한 참조.",
+    "qualification": "현재 저장소 및build-88 화면과 동일하다고 검증하지 않았으며, 참조와 최신 주문의 색·문양 차이는 ASTRA_ORDER_20.md를 우선함."
+  },
+  "limitations": [
+    "실제build-88 스크린샷, 실행 앱, 게임 내 합성, 개조 메뉴, 설치, 휴대폰 실기 검수는 수행하지 않았다.",
+    "돛 무늬는 시각적으로 평면 그래픽으로 검수했다. RGB 파일의 각 내부 영역이 수학적으로 단 하나의 색이거나 고정된 제한색 팔레트임을 보증하는 검사는 아니다.",
+    "각 논리적 장식에는 여러 요소가 포함될 수 있으므로48개 문양 수는 행/열과 의미 대조로 확인했다. 연결된 픽셀 덩어리가 정확히48개라는 뜻은 아니다."
+  ]
+}

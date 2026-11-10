@@ -1,0 +1,784 @@
+{
+  "schema_version": 1,
+  "order": 20,
+  "language": "ko",
+  "sheet_size_px": [
+    1024,
+    768
+  ],
+  "grid": {
+    "columns": 4,
+    "rows": 3,
+    "cell_width": 256,
+    "cell_height": 256
+  },
+  "indexing": {
+    "index_0based": "각 파일별 왼쪽 위부터 오른쪽으로, 다음 행으로 진행; 0~11 고정",
+    "display_number": "각 파일별 1~12 고정",
+    "rect": "x,y는 시트의 왼쪽 위 기준; width,height는 픽셀 수"
+  },
+  "background": {
+    "color_hex": "#FF00FF",
+    "rgb": [
+      255,
+      0,
+      255
+    ],
+    "opaque": true,
+    "runtime_rule": "정확히 RGB(255,0,255)인 픽셀만 투명 처리. 나머지 픽셀은 불투명 유지."
+  },
+  "sampling": "nearest-neighbor",
+  "anchor_convention": {
+    "units": "원본 256×256 셀의 논리적 가장자리 좌표",
+    "range": "0~256; 픽셀 인덱스는0~255. y=256은 마지막 픽셀255 아래의 가장자리.",
+    "draw_x": "attachX - anchorX * scale",
+    "draw_y": "attachY - anchorY * scale",
+    "draw_width": "256 * scale",
+    "draw_height": "256 * scale",
+    "note": "부착점 계산은 잘라낸 전체 256×256 셀 기준. 자동 트리밍으로 좌표를 변경하지 말 것."
+  },
+  "sheets": [
+    {
+      "category": "flags",
+      "category_ko": "깃발",
+      "file": "art/deco_flags.png",
+      "anchor_px": {
+        "x": 0,
+        "y": 128
+      },
+      "export_occupied_size_px": {
+        "width": 205
+      },
+      "alignment_note": "왼쪽 천 부착점; 술을 포함한 전체 바운딩 박스 중심이 아니라 논리적 천의 왼쪽 가운데",
+      "cells": [
+        {
+          "id": "flags_01",
+          "index_0based": 0,
+          "display_number": 1,
+          "row_0based": 0,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "붉은 깃발 (첫 출항)"
+        },
+        {
+          "id": "flags_02",
+          "index_0based": 1,
+          "display_number": 2,
+          "row_0based": 0,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "파란 깃발"
+        },
+        {
+          "id": "flags_03",
+          "index_0based": 2,
+          "display_number": 3,
+          "row_0based": 0,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "노란 바탕에 파란 물결"
+        },
+        {
+          "id": "flags_04",
+          "index_0based": 3,
+          "display_number": 4,
+          "row_0based": 0,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "초록 바탕에 마름모"
+        },
+        {
+          "id": "flags_05",
+          "index_0based": 4,
+          "display_number": 5,
+          "row_0based": 1,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "남색 천에 은빛 갈고리"
+        },
+        {
+          "id": "flags_06",
+          "index_0based": 5,
+          "display_number": 6,
+          "row_0based": 1,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "하얀 천에 붉은 게 집게"
+        },
+        {
+          "id": "flags_07",
+          "index_0based": 6,
+          "display_number": 7,
+          "row_0based": 1,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "색색 조각을 이은 깃발"
+        },
+        {
+          "id": "flags_08",
+          "index_0based": 7,
+          "display_number": 8,
+          "row_0based": 1,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "남색 천에 금빛 닻과 술"
+        },
+        {
+          "id": "flags_09",
+          "index_0based": 8,
+          "display_number": 9,
+          "row_0based": 2,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "산호빛 천에 해마"
+        },
+        {
+          "id": "flags_10",
+          "index_0based": 9,
+          "display_number": 10,
+          "row_0based": 2,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "하늘색 천에 돌아오는 물길 무늬"
+        },
+        {
+          "id": "flags_11",
+          "index_0based": 10,
+          "display_number": 11,
+          "row_0based": 2,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "분홍·금빛 아침놀 비단"
+        },
+        {
+          "id": "flags_12",
+          "index_0based": 11,
+          "display_number": 12,
+          "row_0based": 2,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "연두 천에 갈대 세 줄기"
+        }
+      ]
+    },
+    {
+      "category": "figureheads",
+      "category_ko": "뱃머리 장식",
+      "file": "art/deco_figureheads.png",
+      "anchor_px": {
+        "x": 0,
+        "y": 256
+      },
+      "export_occupied_size_px": {
+        "max_width": 179,
+        "max_height": 179
+      },
+      "alignment_note": "논리적 왼쪽 아래; 바운딩 박스 left=0, bottom=256",
+      "cells": [
+        {
+          "id": "figureheads_01",
+          "index_0based": 0,
+          "display_number": 1,
+          "row_0based": 0,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "웃는 갈매기"
+        },
+        {
+          "id": "figureheads_02",
+          "index_0based": 1,
+          "display_number": 2,
+          "row_0based": 0,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "주홍 물고기"
+        },
+        {
+          "id": "figureheads_03",
+          "index_0based": 2,
+          "display_number": 3,
+          "row_0based": 0,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "금빛 보물별"
+        },
+        {
+          "id": "figureheads_04",
+          "index_0based": 3,
+          "display_number": 4,
+          "row_0based": 0,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "작은 등불"
+        },
+        {
+          "id": "figureheads_05",
+          "index_0based": 4,
+          "display_number": 5,
+          "row_0based": 1,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "청록 문어"
+        },
+        {
+          "id": "figureheads_06",
+          "index_0based": 5,
+          "display_number": 6,
+          "row_0based": 1,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "번개를 품은 둥근 구름"
+        },
+        {
+          "id": "figureheads_07",
+          "index_0based": 6,
+          "display_number": 7,
+          "row_0based": 1,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "청록 리본으로 묶은 조개 꽃다발"
+        },
+        {
+          "id": "figureheads_08",
+          "index_0based": 7,
+          "display_number": 8,
+          "row_0based": 1,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "뛰어오르는 금빛 돌고래"
+        },
+        {
+          "id": "figureheads_09",
+          "index_0based": 8,
+          "display_number": 9,
+          "row_0based": 2,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "지느러미를 편 날치"
+        },
+        {
+          "id": "figureheads_10",
+          "index_0based": 9,
+          "display_number": 10,
+          "row_0based": 2,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "날개를 편 갈매기"
+        },
+        {
+          "id": "figureheads_11",
+          "index_0based": 10,
+          "display_number": 11,
+          "row_0based": 2,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "진주빛 돌고래"
+        },
+        {
+          "id": "figureheads_12",
+          "index_0based": 11,
+          "display_number": 12,
+          "row_0based": 2,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "분홍 소라"
+        }
+      ]
+    },
+    {
+      "category": "sails",
+      "category_ko": "돛 무늬",
+      "file": "art/deco_sails.png",
+      "anchor_px": {
+        "x": 128,
+        "y": 128
+      },
+      "export_occupied_size_px": {
+        "max_width": 154,
+        "max_height": 154
+      },
+      "alignment_note": "칸 중심 (128,128); 돛 없이 평면 무늬만",
+      "cells": [
+        {
+          "id": "sails_01",
+          "index_0based": 0,
+          "display_number": 1,
+          "row_0based": 0,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "가로 파란 띠"
+        },
+        {
+          "id": "sails_02",
+          "index_0based": 1,
+          "display_number": 2,
+          "row_0based": 0,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "붉은 해"
+        },
+        {
+          "id": "sails_03",
+          "index_0based": 2,
+          "display_number": 3,
+          "row_0based": 0,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "초록 잎새"
+        },
+        {
+          "id": "sails_04",
+          "index_0based": 3,
+          "display_number": 4,
+          "row_0based": 0,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "금빛 물결"
+        },
+        {
+          "id": "sails_05",
+          "index_0based": 4,
+          "display_number": 5,
+          "row_0based": 1,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "금빛 동전"
+        },
+        {
+          "id": "sails_06",
+          "index_0based": 5,
+          "display_number": 6,
+          "row_0based": 1,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "구릿빛 물결과 암초"
+        },
+        {
+          "id": "sails_07",
+          "index_0based": 6,
+          "display_number": 7,
+          "row_0based": 1,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "여덟 방향 나침반 별"
+        },
+        {
+          "id": "sails_08",
+          "index_0based": 7,
+          "display_number": 8,
+          "row_0based": 1,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "금빛 선으로 이은 별자리"
+        },
+        {
+          "id": "sails_09",
+          "index_0based": 8,
+          "display_number": 9,
+          "row_0based": 2,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "저녁 등불"
+        },
+        {
+          "id": "sails_10",
+          "index_0based": 9,
+          "display_number": 10,
+          "row_0based": 2,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "별과 작은 열쇠"
+        },
+        {
+          "id": "sails_11",
+          "index_0based": 10,
+          "display_number": 11,
+          "row_0based": 2,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "물결 위 금빛 해"
+        },
+        {
+          "id": "sails_12",
+          "index_0based": 11,
+          "display_number": 12,
+          "row_0based": 2,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "종이새"
+        }
+      ]
+    },
+    {
+      "category": "deck",
+      "category_ko": "갑판 물건",
+      "file": "art/deco_deck.png",
+      "anchor_px": {
+        "x": 128,
+        "y": 256
+      },
+      "export_occupied_size_px": {
+        "max_width": 154,
+        "max_height": 154
+      },
+      "alignment_note": "논리적 아래쪽 가운데; 바운딩 박스 bottom=256",
+      "cells": [
+        {
+          "id": "deck_01",
+          "index_0based": 0,
+          "display_number": 1,
+          "row_0based": 0,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "나무 걸이에 단 작은 종"
+        },
+        {
+          "id": "deck_02",
+          "index_0based": 1,
+          "display_number": 2,
+          "row_0based": 0,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "노란 불빛 등잔"
+        },
+        {
+          "id": "deck_03",
+          "index_0based": 2,
+          "display_number": 3,
+          "row_0based": 0,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "꽃 세 송이 화분"
+        },
+        {
+          "id": "deck_04",
+          "index_0based": 3,
+          "display_number": 4,
+          "row_0based": 0,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "받침 위 망원경"
+        },
+        {
+          "id": "deck_05",
+          "index_0based": 4,
+          "display_number": 5,
+          "row_0based": 1,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "초승달 매단 남색 등불"
+        },
+        {
+          "id": "deck_06",
+          "index_0based": 5,
+          "display_number": 6,
+          "row_0based": 1,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "바다뱀이 두른 초록 상자"
+        },
+        {
+          "id": "deck_07",
+          "index_0based": 6,
+          "display_number": 7,
+          "row_0based": 1,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "작은 지구본"
+        },
+        {
+          "id": "deck_08",
+          "index_0based": 7,
+          "display_number": 8,
+          "row_0based": 1,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "금빛 선장 시계"
+        },
+        {
+          "id": "deck_09",
+          "index_0based": 8,
+          "display_number": 9,
+          "row_0based": 2,
+          "column_0based": 0,
+          "rect_px": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "웃는 민트 거북 장식"
+        },
+        {
+          "id": "deck_10",
+          "index_0based": 9,
+          "display_number": 10,
+          "row_0based": 2,
+          "column_0based": 1,
+          "rect_px": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "찻주전자"
+        },
+        {
+          "id": "deck_11",
+          "index_0based": 10,
+          "display_number": 11,
+          "row_0based": 2,
+          "column_0based": 2,
+          "rect_px": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "황동 천문환"
+        },
+        {
+          "id": "deck_12",
+          "index_0based": 11,
+          "display_number": 12,
+          "row_0based": 2,
+          "column_0based": 3,
+          "rect_px": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "motif_ko": "지도 상자"
+        }
+      ]
+    }
+  ],
+  "scope": {
+    "game_code_changed": false,
+    "latest_build88_screenshot_checked": false,
+    "current_ship_512x128_found": false,
+    "ship_reference": "과거13차 ship_stage6.png(1024×256) 참고; 현재512×128과의 일치 미검증.",
+    "delivery_excludes": "이전 차수 패키지 및 과거 참고 그림"
+  }
+}

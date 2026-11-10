@@ -42,6 +42,9 @@ object Fleet {
         val iconKey get() = (when (sheet) { 2 -> "deco2:"; 3 -> "deco3:"; else -> "deco:" }) + icon
         val onSheet get() = when (sheet) { 2 -> "ship_deco_on_2"; 3 -> "ship_deco_on_3"; else -> "ship_deco_on" }
         val iconSheet get() = when (sheet) { 2 -> "ship_deco_2"; 3 -> "ship_deco_3"; else -> "ship_deco" }
+        /** 20차 큰 장식 시트 (deco_flags 등, 종류별 4×3)에서의 칸 번호 */
+        val bigIdx get() = (sheet.coerceIn(1, 3) - 1) * 4 + icon % 4
+        val bigSheet get() = when (slot) { "flag" -> "deco_flags"; "figurehead" -> "deco_figureheads"; "sail" -> "deco_sails"; else -> "deco_deck" }
     }
     val decos = ArrayList<Deco>()
     /** 23_crew_missions.json: 선원 특별 항해 (선원마다 2개) */
