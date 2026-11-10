@@ -67,10 +67,21 @@ object Game {
     /** 광고를 보면 쉬는 시간 없이 바로 다시 도전 */
     fun skipStageCool() { stageCool = 0L; save() }
     fun stageName(n: Int = pStage) = (n / 10 + 1).toString() + "-" + (n % 10 + 1)
+    /** 해적 토벌 10단계마다 바뀌는 해적단. 10번째 단계엔 그 해적단 선장이 우두머리 배로 나온다 (그림: 우두머리 배 12척) */
+    class Gang(val name: String, val captain: String, val sprite: Int)
+    val GANGS = listOf(
+        Gang("갈고리별 해적단", "갈고리 선장", 0), Gang("꽃게 해적단", "집게발 선장", 1), Gang("먹물문어 해적단", "먹물 선장", 2),
+        Gang("천둥구름 해적단", "천둥 선장", 3), Gang("금화주머니 해적단", "금니 선장", 4), Gang("돌여울 해적단", "바위 선장", 5),
+        Gang("초승달 해적단", "그믐 선장", 6), Gang("바다뱀 해적단", "뱀눈 선장", 7), Gang("해마 해적단", "산호갈기 선장", 100),
+        Gang("날치 해적단", "날개 선장", 101), Gang("등불 해적단", "등불 선장", 102), Gang("느림보거북 해적단", "느림보 선장", 103))
+    fun gang(n: Int = pStage) = GANGS[(n / 10) % GANGS.size]
+    fun stageBoss(n: Int = pStage) = (n + 1) % 10 == 0
+    /** 목록·싸움 화면에 쓰는 이름: "꽃게 해적단 2-3", 10번째는 "집게발 선장 2-10" */
+    fun stageTitle(n: Int = pStage) = (if (stageBoss(n)) gang(n).captain else gang(n).name) + " " + stageName(n)
     fun stageGold(n: Int = pStage) = Math.round(40 * Math.pow(1.16, n.toDouble())).toInt() + 20 * shipLevel
     fun stagePirate(n: Int = pStage): Data.Pirate {
         val base = Data.pirate("hook_minor")
-        return Data.Pirate("stage_$n", (base?.name ?: "해적") + " " + stageName(n), "start", emptyList(), emptyList(), false, null, 0,
+        return Data.Pirate("stage_$n", stageTitle(n), "start", emptyList(), emptyList(), false, null, 0,
             1f + n * .07f, intArrayOf(stageGold(n), stageGold(n)), 0f, base?.colors ?: emptyList())
     }
     fun stageOdds(n: Int = pStage) = winChance(stagePirate(n), aboard.filter { it in promoted }.take(slots()))

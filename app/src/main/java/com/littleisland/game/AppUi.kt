@@ -640,7 +640,7 @@ class AppUi(val scene: Scene, val host: Host) {
         // 해적 토벌 단계
         if (Game.dock) {
             val w = Game.stageWait()
-            l.add(URow("boss:0", "해적 토벌 " + Game.stageName(), if (w > 0) "쉬는 중 " + (w / 60000 + 1) + "분 남았어요" else "승률 " + pct1(Game.stageOdds()) + " · 금화 " + big(Game.stageGold()) + (if ((Game.pStage + 1) % 10 == 0) " · 쪽지 3" else ""),
+            l.add(URow("boss:0", Game.stageTitle(), if (w > 0) "쉬는 중 " + (w / 60000 + 1) + "분 남았어요" else "승률 " + pct1(Game.stageOdds()) + (if (Game.stageBoss()) " · 우두머리! 쪽지 3" else " · 금화 " + big(Game.stageGold())),
                 null, true, "", { if (w > 0) host.showAd { Game.skipStageCool(); fight() } else fight(); true }, btnText = if (w > 0) "광고 도전" else "도전!"))
         }
         // 명성: 다 키우면 새 항해 (영구 보너스)
@@ -830,7 +830,7 @@ class AppUi(val scene: Scene, val host: Host) {
     private fun battleEnd(b: Battle) = INTRO_MS + (b.hits.size - 1) * SHOT_MS + FLY_MS + 250L
     private fun fight() {
         if (battle != null) return
-        val n = Game.pStage; val title = Game.stageName(n); val boss = (n + 1) % 10 == 0
+        val n = Game.pStage; val title = Game.stageTitle(n); val boss = Game.stageBoss(n)
         val my = Game.myPower(); val en = Game.enemyPower(Game.stagePirate(n)); val gold = Game.stageGold(n).toLong()
         val res = Game.challengeStage()
         if (res == 0) return
@@ -840,7 +840,7 @@ class AppUi(val scene: Scene, val host: Host) {
         val theirs = split(if (win) (my * (.25 + Math.random() * .45)).toInt() else my)
         val hits = ArrayList<Triple<Boolean, Int, Boolean>>()
         for (i in 0 until 4) { hits.add(Triple(true, mine[i], mine[i] > en * .3f)); if (win && i == 3) break; hits.add(Triple(false, theirs[i], theirs[i] > my * .3f)) }
-        battle = Battle(System.currentTimeMillis(), win, my, en, title, boss, gold, n % 8, hits); battleShot = -1
+        battle = Battle(System.currentTimeMillis(), win, my, en, title, boss, gold, if (boss) Game.gang(n).sprite else n % 8, hits); battleShot = -1
     }
     /** 굵은 테두리 글자 (피해 숫자가 배경에 묻히지 않게) */
     private fun boldText(s: String, x: Float, y: Float, size: Int, col: Int, align: Paint.Align = Paint.Align.CENTER) {
@@ -898,7 +898,7 @@ class AppUi(val scene: Scene, val host: Host) {
             c.restore()
         }
         scene.shipArt(86)?.let { drawShip(it, myX, 86f, true) }
-        (if (b.boss) Art.cell("pirate_bosses", 4, 2, b.sprite, 84 * hr) else Art.cell("pirates_all", 4, 2, b.sprite, 80 * hr))?.let { drawShip(it, enX, if (b.boss) 84f else 80f, false) }
+        (if (b.boss) (if (b.sprite >= 100) Art.cell("pirate_bosses_2", 4, 1, b.sprite - 100, 84 * hr) else Art.cell("pirate_bosses", 4, 2, b.sprite, 84 * hr)) else Art.cell("pirates_all", 4, 2, b.sprite, 80 * hr))?.let { drawShip(it, enX, if (b.boss) 84f else 80f, false) }
         // 배 아랫부분을 물이 덮는다 + 뱃머리 물거품
         k.rect(c, -4f, wl + 4, W + 8f, top + sceneH - wl, if (b.boss) android.graphics.Color.argb(140, 60, 110, 140) else android.graphics.Color.argb(140, 20, 100, 180))
         for (x0 in listOf(myX, enX)) for (j in 0 until 5) { val fx = x0 - 34 + j * 17 + ((now / 160 + j) % 3).toFloat(); k.rect(c, fx, wl + 4, 7f, 1.5f, android.graphics.Color.argb(200, 235, 250, 255)) }
@@ -949,8 +949,10 @@ class AppUi(val scene: Scene, val host: Host) {
         c.restore()
         // 위: 이름표와 HP 막대
         c.save(); c.clipRect(0f, top, W.toFloat(), top + sceneH)
-        k.rect(c, W / 2f - 52, top + 2, 104f, 15f, k.INK); k.rect(c, W / 2f - 51, top + 3, 102f, 13f, if (b.boss) k.col("#7a2a3a") else k.col("#3a2a1e"))
-        k.text(c, (if (b.boss) "우두머리 " else "토벌 ") + b.title, W / 2f, top + 13.5f, 10, if (b.boss) k.col("#ffb0a0") else k.GOLD, Paint.Align.CENTER, true)
+        val tsz = listOf(10, 9, 8).firstOrNull { k.fits(b.title, it, 140f) } ?: 8
+        val tw = (k.width(b.title, tsz) * 1.1f + 14).coerceIn(104f, 150f)
+        k.rect(c, W / 2f - tw / 2 - 1, top + 2, tw + 2, 15f, k.INK); k.rect(c, W / 2f - tw / 2, top + 3, tw, 13f, if (b.boss) k.col("#7a2a3a") else k.col("#3a2a1e"))
+        k.text(c, k.fit(b.title, tsz, tw - 4), W / 2f, top + 13.5f, tsz, if (b.boss) k.col("#ffb0a0") else k.GOLD, Paint.Align.CENTER, true)
         fun bar(x: Float, f: Float, lag: Float, col: Int, label: String, right: Boolean) {
             val bw = 98f; val y = top + 20
             k.rect(c, x, y, bw, 10f, k.INK); k.rect(c, x + 1, y + 1, bw - 2, 8f, k.col("#3b2a22"))
@@ -959,10 +961,12 @@ class AppUi(val scene: Scene, val host: Host) {
             fill(f, col); k.rect(c, x + 1, y + 1, bw - 2, 2f, android.graphics.Color.argb(70, 255, 255, 255))
             boldText(label, if (right) x + bw else x, y + 19, 8, k.CREAM, if (right) Paint.Align.RIGHT else Paint.Align.LEFT) }
         bar(6f, myHp / b.my, myLag / b.my, k.col("#58c35a"), "내 함대 " + big(myHp.toLong()), false)
-        bar(W - 104f, enHp / b.en, enLag / b.en, k.col("#e2483c"), (if (b.boss) "우두머리 " else "해적 ") + big(enHp.toLong()), true)
+        bar(W - 104f, enHp / b.en, enLag / b.en, k.col("#e2483c"), (if (b.boss) "선장 " else "해적 ") + big(enHp.toLong()), true)
         // 시작: 전투 시작!
         if (t < INTRO_MS - 60) { val e = t / INTRO_MS.toFloat(); val sz = (30 - 8 * e).toInt()
-            boldText(if (b.boss) "우두머리 등장!" else "전투 시작!", W / 2f, top + 84, sz, if (b.boss) k.col("#ff8a7a") else k.col("#fff2c0")) }
+            val itx = if (b.boss) b.title.substringBeforeLast(" ") + " 등장!" else "전투 시작!"
+            val isz = generateSequence(sz) { it - 1 }.take(16).firstOrNull { k.fits(itx, it, W - 16f) } ?: 14
+            boldText(itx, W / 2f, top + 84, isz, if (b.boss) k.col("#ff8a7a") else k.col("#fff2c0")) }
         // 끝: 승리 / 패배
         if (t > end + 500) {
             val e = t - end - 500
