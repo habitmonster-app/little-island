@@ -1063,7 +1063,12 @@ class Scene {
     /** 이 단계 배 그림 한 칸 (5단계는 따로 된 시트) */
     /** 앱의 배 화면에 그릴 지금 배 그림 */
     fun shipArt(w: Int): android.graphics.Bitmap? = shipCell(Game.shipLevel, Game.lookStage(), w, false)
+    /** 배 개조 그림 (21차): 그 단계에서 개조한 만큼 장식이 붙은 배를 통째로. 없으면 null */
+    private fun refitSheet(lv: Int): String? = "ship_refit_$lv".takeIf { Game.refitN(lv) > 0 && Art.has(it) }
+    /** 개조 그림이 있는 단계는 배 위에 장식을 따로 얹지 않는다 (그림체가 따로 놀아서) */
+    private fun refitArt(lv: Int) = Art.has("ship_refit_$lv")
     private fun shipCell(lv: Int, look: Int, sw: Int, cutFlag: Boolean): android.graphics.Bitmap? {
+        refitSheet(lv)?.let { rs -> acell(rs, 2, 1, (Game.refitN(lv) - 1).coerceIn(0, 1), sw)?.let { return it } }
         val five = lv >= 5
         // 7~10단계는 새 그림(ship_stage7..10)이 오기 전까지 6단계 그림을 쓴다
         val sheet = if (lv >= 7 && Art.has("ship_stage$lv")) "ship_stage$lv" else if (lv >= 6 && Art.has("ship_stage6")) "ship_stage6" else if (five) "ship_stage5" else "ship_stages"
@@ -1156,9 +1161,9 @@ class Scene {
         val sw = shipW()
         val look = Game.lookStage()
         // 장식 깃발을 달면 4번째 모양의 원래 빨간 깃발은 지우고 그린다 (겹치지 않게)
-        val sb = shipCell(lv, look, sw, Game.decoOn["flag"] != null)
+        val sb = shipCell(lv, look, sw, Game.decoOn["flag"] != null && !refitArt(lv))
             ?: acell("ships", 4, 1, lv - 1, sw)
-        if (sb != null) { Art.draw(c, sb, x, y + 5); if (sw == shipW(.5f)) { shipDeco(x, y + 5f, sw.toFloat(), lv, time); deckCrew(x, y, sw.toFloat(), time) }; return }
+        if (sb != null) { Art.draw(c, sb, x, y + 5); if (sw == shipW(.5f)) { if (!refitArt(lv)) shipDeco(x, y + 5f, sw.toFloat(), lv, time); deckCrew(x, y, sw.toFloat(), time) }; return }
         val len = 30f + (lv - 1) * 7f
         val hull = col("#6D513A"); val hullL = col("#A78355")
         for (i in 0 until 7) r(x - len / 2 + i, y - 4 + i, len - i * 2 + (if (i < 3) 4f else 0f), 1f, if (i < 2) hullL else hull)
