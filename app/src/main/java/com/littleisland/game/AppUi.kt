@@ -18,6 +18,10 @@ class AppUi(val scene: Scene, val host: Host) {
         fun sound(name: String) {}
         /** 보상 광고: 끝까지 보면 onReward (앱이 아닌 곳에서는 바로 준다) */
         fun showAd(onReward: () -> Unit) { onReward() }
+        /** 저장 코드 복사 / 붙여 넣어 불러오기 (기기 옮기기) */
+        fun copySave() {}
+        fun music(on: Boolean) {}
+        fun pasteSave() {}
     }
 
     /** 좌표는 가로 200도트 그대로 쓰고, 실제 그림은 SC배 크기로 그려서 글자·아이콘이 또렷하게 */
@@ -472,9 +476,13 @@ class AppUi(val scene: Scene, val host: Host) {
             6 -> {
                 l.add(Tile("chest:1", "효과음", if (Game.soundOn) "켜짐" else "꺼짐", if (Game.soundOn) St.ON else St.OFF,
                     "톡톡, 강화, 해적 싸움 소리예요.", null, if (Game.soundOn) "끄기" else "켜기", { Game.soundOn = !Game.soundOn; Game.save(); true }))
+                l.add(Tile("chest:1", "배경음악", if (Game.musicOn) "켜짐" else "꺼짐", if (Game.musicOn) St.ON else St.OFF,
+                    "앱 화면에서만 잔잔한 바다 노래가 나와요.", null, if (Game.musicOn) "끄기" else "켜기", { Game.musicOn = !Game.musicOn; Game.save(); host.music(Game.musicOn); true }))
                 l.add(Tile("auto", "자동 짓기", if (Game.autoBuild) "켜짐" else "꺼짐", if (Game.autoBuild) St.ON else St.OFF,
                     "숙소·창고·부두·밭은 재료가 모이면 알아서 지어요. 금화는 안 써요.", null, if (Game.autoBuild) "끄기" else "켜기", { Game.autoBuild = !Game.autoBuild; Game.save(); true }))
                 l.add(Tile("book", "처음 안내", "다시 보기", St.NORMAL, "손가락으로 짚어 주는 처음 안내를 다시 봐요.", null, "보기", { Game.tut = 0; Game.tips.clear(); Game.save(); false }))
+                l.add(Tile("chest:1", "저장 복사", "새 폰으로", St.NORMAL, "새 폰으로 옮길 때 써요. 복사한 코드를 카톡 나에게 보내기 등에 붙여 두세요.", null, "복사", { host.copySave(); false }))
+                l.add(Tile("chest:1", "저장 넣기", "옛 폰에서", St.NORMAL, "복사해 둔 저장 코드로 진행을 바꿔요. 지금 진행은 지워져요.", null, "불러오기", { host.pasteSave(); false }))
                 l.add(Tile("lighthouse", "시간대", "미리보기", St.NORMAL, "위 장면의 낮·노을·밤을 바꿔 봐요.", null, "바꾸기", { host.pickTime(); false }))
                 l.add(Tile("house", "배경화면", "설정", St.NORMAL, "홈 화면에 작은 섬을 띄워요.", null, "설정", { host.setWallpaper(); false }))
             }
@@ -628,6 +636,9 @@ class AppUi(val scene: Scene, val host: Host) {
     private var mult = 1                       // 1, 10, 0(최대)
     fun upRows(): List<URow> {
         val l = ArrayList<URow>()
+        // 12시간 넘게 비운 몫 (광고로 받기). 돌아왔을 때 못 받았으면 여기 남는다
+        if (Game.extraPending > 0) l.add(URow("gold", "비운 시간 금화", "광고 보고 +" + gold(Game.extraPending), null, true, "", {
+            host.showAd { val g = Game.claimExtra(); if (g > 0) { host.sound("win"); coins(W / 2f, 300f, 30); floats.add(Float3(W / 2f, 300f, "+" + gold(g), System.currentTimeMillis())) } }; true }, btnText = "광고 받기"))
         // 4시간마다 보물 상자
         if (Game.chestReady()) l.add(URow("chest:1", "보물 상자 도착!", "금화 " + gold(Game.chestGold()) + " + 쪽지 1장", null, true, "", {
             val g = Game.openChest(); if (g > 0) { host.sound("chest"); coins(W / 2f, 300f, 24); floats.add(Float3(W / 2f, 300f, "+" + gold(g), System.currentTimeMillis())) }; g > 0 }, btnText = "열기"))
@@ -781,6 +792,7 @@ class AppUi(val scene: Scene, val host: Host) {
         for ((m, lb) in ms) { k.button(c, bx, py + 4, 32f, 16f, lb, mult == m); multRects.add(Rect(bx.toInt(), (py + 1).toInt(), (bx + 32).toInt(), (py + 23).toInt()) to m); bx += 34f }
         val rows = if (tab == 10) crewRows() else upRows()
         val areaTop = py + 24; val areaBot = py + ph - 4
+        upTop = areaTop; upBot = areaBot
         val rh = 34f
         fun hOf(u: URow) = if (u.head) 14f else if (u.big) rh + 8 else if (u.small) rh - 8 else rh - 2
         val contentH = rows.sumOf { (hOf(it) + 4).toDouble() }.toFloat()
@@ -1046,7 +1058,7 @@ class AppUi(val scene: Scene, val host: Host) {
         TStep("먼저 [강화] 탭을 눌러요.\n여기서 거의 모든 걸 키워요.", { tabRect(8) }, { tab == 8 }),
         TStep("보물 상자가 와 있어요!\n[열기]를 눌러 금화를 받아요.", { rowRect { it.icon.startsWith("chest") && it.can } }, { !Game.chestReady() }),
         TStep("[나무 캐기]를 올려요.\n섬이 저절로 버는 돈이 늘어요.", { rowRect { it.icon == "wood" } }, { Game.woodLv > 0 }),
-        TStep("앱을 꺼도 섬과 배는 일해요.\n다시 오면 모인 금화를 받아요.", { null }, { false }, "알겠어요"),
+        TStep("앱을 꺼도 섬과 배는 일해요.\n12시간까지 금화가 모이고\n다시 오면 받을 수 있어요.", { null }, { false }, "알겠어요"),
         TStep("이제 해적 토벌!\n[도전!]을 눌러 싸워 봐요.", { rowRect { it.icon.startsWith("boss") && it.can } }, { battle != null || Game.pStage > 0 || Game.stageWait() > 0 }),
         TStep("[함대 힘]이 해적보다 세면\n잘 이겨요! 배·부품·선원을\n키워서 힘을 올려요.", { powerRect() }, { false }, "알겠어요"),
         TStep("홈 화면 배경으로 두면\n바탕화면에서 섬이 움직여요.", { null }, { false }, "배경화면 설정", "나중에", { host.setWallpaper() }))
@@ -1059,12 +1071,18 @@ class AppUi(val scene: Scene, val host: Host) {
             { if (tab != 10) tabRect(10) else rowRect { it.icon.startsWith("face") && it.label == "+1" && it.can } }, { Game.promoted.any { Game.crewLevel(it) > 1 } })
         "ship" -> TStep("배를 키울 수 있어요!\n배가 커지면 힘도 판매도 크게 올라요.",
             { if (tab != 8) tabRect(8) else rowRect { it.icon == "ship" && it.can } }, { upRows().none { it.icon == "ship" && it.can } })
+        "refit" -> TStep("배를 개조할 수 있어요!\n새 장식이 달리고 판매도 올라요.",
+            { if (tab != 8) tabRect(8) else rowRect { it.icon == "deco:0" && it.can } }, { upRows().none { it.icon == "deco:0" && it.can } })
+        "bounty" -> TStep("현상금 우두머리가 나타났어요!\n이기면 큰 금화와 트로피를 받아요.",
+            { if (tab != 8) tabRect(8) else rowRect { it.icon.startsWith("boss:") && it.title.startsWith("현상금") } }, { Game.bountyWon.isNotEmpty() || Game.bountyCool > System.currentTimeMillis() })
         else -> null
     }
     private fun nextTip(): String? = when {
         "promote" !in Game.tips && Data.workers.any { Game.canPromote(it.id) } -> "promote"
         "crew" !in Game.tips && Game.promoted.isNotEmpty() && Game.promoted.any { Game.crewLevel(it) == 1 && (Game.teachLong(it) ?: Long.MAX_VALUE) <= Game.gold } -> "crew"
         "ship" !in Game.tips && Game.shipLevel < 4 && upRows().any { it.icon == "ship" && it.can } -> "ship"
+        "refit" !in Game.tips && Game.refits.isEmpty() && upRows().any { it.icon == "deco:0" && it.can } -> "refit"
+        "bounty" !in Game.tips && Game.bountyWon.isEmpty() && upRows().any { it.icon.startsWith("boss:") && it.title.startsWith("현상금") && it.can } -> "bounty"
         else -> null
     }
     private fun tutAdvance() {
@@ -1084,6 +1102,11 @@ class AppUi(val scene: Scene, val host: Host) {
         val st = tutStep ?: return
         if (st.done()) { tutAdvance(); return }
         val hole = st.target()
+        // 짚는 줄이 목록 밖에 있으면 보이게 굴린다
+        if (hole != null && (tab == 8 || tab == 10) && upBot > 0f && hole.top >= upTop - 1) {
+            // 줄 사각형은 목록 끝에서 잘려 있으니, 잘린 만큼(줄 높이 34 기준) 더 굴린다
+            if (hole.bottom >= upBot - 1 && hole.height() < 30) scrollY = (scrollY + maxOf(0, hole.top - hole.bottom) + 40 - hole.height()).coerceAtMost(maxScroll)
+        }
         if (hole == null && st.btn == null) { if (scrollY > 0f) scrollY = 0f; return }
         tutOn = true; tutHole = hole
         val k = Pix; val now = System.currentTimeMillis()
@@ -1244,9 +1267,13 @@ class AppUi(val scene: Scene, val host: Host) {
         val t = if (r.minutes >= 60) (r.minutes / 60).toString() + "시간 " + (r.minutes % 60) + "분" else r.minutes.coerceAtLeast(1).toString() + "분"
         popup = Tile("gold", "돌아왔어요!", "금화 +" + gold(r.gold), St.READY,
             t + " 동안 섬과 배가 일했어요.\n\n금화 +" + gold(r.gold) + "\n나무 +" + big(r.wood) + " · 돌 +" + big(r.stone) +
-                (if (r.voyages > 0) "\n항해 " + r.voyages + "번 다녀왔어요" else "") + (if (r.full) "\n창고가 가득 찼어요" else ""),
+                (if (r.voyages > 0) "\n항해 " + r.voyages + "번 다녀왔어요" else "") + (if (r.full) "\n창고가 가득 찼어요" else "") +
+                (if (r.extraGold > 0) "\n\n광고를 보면 " + (r.extraMin / 60) + "시간 몫\n금화 +" + gold(r.extraGold) + " 더 받아요" else ""),
             null, "받기", { host.sound("chest"); coins(W / 2f, 200f, 20); true }, null,
-            btn2 = if (Game.tickets > 0) "2배 (쪽지 1)" else null, act2 = { val ok = Game.doubleReport(r); if (ok) { host.sound("win"); coins(W / 2f, 200f, 40) }; ok }, done2 = "금화 2배!")
+            btn2 = if (r.extraGold > 0) "광고 +" + (r.extraMin / 60) + "시간" else if (Game.tickets > 0) "2배 (쪽지 1)" else null,
+            act2 = { if (r.extraGold > 0) { host.showAd { val g = Game.claimExtra(); if (g > 0) { host.sound("win"); coins(W / 2f, 200f, 40); floats.add(Float3(W / 2f, 200f, "+" + gold(g), System.currentTimeMillis())) } }; true }
+                     else { val ok = Game.doubleReport(r); if (ok) { host.sound("win"); coins(W / 2f, 200f, 40) }; ok } },
+            done2 = if (r.extraGold > 0) "더 받았어요!" else "금화 2배!")
     }
 
     // ---------- 배 화면: 가운데 배, 양옆에 부품 넷 ----------
@@ -1455,7 +1482,7 @@ class AppUi(val scene: Scene, val host: Host) {
         t?.let { tl -> if (!tl.icon.startsWith("part:")) scrollTo = tl; popup = tl }
     }
     private var perPageNow = 6
-    var scrollY = 0f; private var maxScroll = 0f
+    var scrollY = 0f; private var maxScroll = 0f; private var upTop = 0f; private var upBot = 0f
     private var scrollTo: Tile? = null
     /** 손가락으로 끌기 (dy: 화면 좌표, 아래로 끌면 +) */
     fun scrollBy(dy: Float) { if (popup != null) return; snapTo = null; scrollY = (scrollY - dy).coerceIn(0f, maxScroll) }

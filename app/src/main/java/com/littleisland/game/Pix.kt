@@ -366,11 +366,11 @@ object Pix {
                 "face50" -> Art.cell("crew_portraits_50", 4, 3, idx, px) ?: Art.cell("crew_portraits_15", 4, 3, idx, px)
                 "fx" -> Art.cell("upgrade_fx", 4, 1, idx, px)
                 "daily" -> Art.cell("daily_icons", 4, 3, idx, px)
-                "deco" -> Art.cell("ship_deco", 4, 4, idx, px)
-                "deco2" -> Art.cell("ship_deco_2", 4, 4, idx, px)
+                "deco" -> bigDeco(1, idx, px) ?: Art.cell("ship_deco", 4, 4, idx, px)
+                "deco2" -> bigDeco(2, idx, px) ?: Art.cell("ship_deco_2", 4, 4, idx, px)
                 "souv" -> Art.cell("souvenir_icons", 6, 6, idx, px)
                 "charm" -> if (idx >= 100) Art.cell("charm_icons_2", 4, 3, idx - 100, px) else Art.cell("charm_icons", 6, 4, idx, px)
-                "deco3" -> Art.cell("ship_deco_3", 4, 4, idx, px)
+                "deco3" -> bigDeco(3, idx, px) ?: Art.cell("ship_deco_3", 4, 4, idx, px)
                 "title" -> Art.cell("title_badges", 4, 6, idx, px)
                 "weather" -> Art.cell("weather_sky", 4, 4, 4 + idx, px)
                 "visitor" -> Art.cell("visitor_faces", 4, 2, idx, px)
@@ -437,6 +437,12 @@ object Pix {
 }
 
 /** 큰 숫자를 짧게 (한국식): 9,999 / 12.3만 / 4.5억 / 1.2조 / 3.4경 */
+/** 장식 아이콘: 20차 큰 장식 그림(종류별 4×3)에서. 예전 시트 번호(0~3 깃발, 4~7 뱃머리, 8~11 돛, 12~15 갑판)를 바꿔 찾는다 */
+private fun bigDeco(sheet: Int, idx: Int, px: Int): android.graphics.Bitmap? {
+    val name = when (idx / 4) { 0 -> "deco_flags"; 1 -> "deco_figureheads"; 2 -> "deco_sails"; else -> "deco_deck" }
+    return Art.cell(name, 4, 3, (sheet - 1) * 4 + idx % 4, px)
+}
+
 fun big(n: Long): String {
     if (n < 0) return "-" + big(-n)
     if (n < 10_000L) return "%,d".format(n)

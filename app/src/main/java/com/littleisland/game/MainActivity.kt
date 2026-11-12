@@ -57,10 +57,31 @@ class MainActivity : Activity(), AppUi.Host {
             requestPermissions(arrayOf("android.permission.POST_NOTIFICATIONS"), 3)
     }
     private var sp: android.media.SoundPool? = null
+    // 배경음악: 앱 화면에서만 (배경화면에서는 절대 안 튼다)
+    private var bgm: android.media.MediaPlayer? = null
+    override fun music(on: Boolean) {
+        if (on && Game.musicOn) {
+            if (bgm == null) bgm = try { android.media.MediaPlayer.create(this, resources.getIdentifier("bgm_island", "raw", packageName))?.apply { isLooping = true; setVolume(.35f, .35f) } } catch (e: Exception) { null }
+            if (bgm?.isPlaying == false) bgm?.start()
+        } else bgm?.let { if (it.isPlaying) it.pause() }
+    }
     private val sfx = HashMap<String, Int>()
     override fun sound(name: String) { if (Game.soundOn) sfx[name]?.let { sp?.play(it, if (name == "tap") .5f else .8f, if (name == "tap") .5f else .8f, 1, 0, 1f) } }
 
     override fun toast(s: String) = Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
+    override fun copySave() {
+        val cm = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        cm.setPrimaryClip(android.content.ClipData.newPlainText("리틀아일랜드 저장 코드", Game.exportSave()))
+        toast("저장 코드를 복사했어요. 새 폰에서 [저장 넣기]를 누르세요")
+    }
+    override fun pasteSave() {
+        val cm = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        val code = cm.primaryClip?.takeIf { it.itemCount > 0 }?.getItemAt(0)?.coerceToText(this)?.toString()?.trim().orEmpty()
+        if (!code.startsWith("LI1:")) { toast("먼저 저장 코드를 복사해 주세요"); return }
+        AlertDialog.Builder(this).setTitle("저장 코드 불러오기").setMessage("지금 진행이 저장 코드의 진행으로 바뀌어요. 되돌릴 수 없어요.")
+            .setPositiveButton("불러오기") { _, _ -> if (Game.importSave(code)) { toast("불러왔어요!"); view.invalidate() } else toast("저장 코드가 올바르지 않아요") }
+            .setNegativeButton("취소", null).show()
+    }
     override fun showAd(onReward: () -> Unit) { if (!Ads.showReward(this) { ui.post { onReward(); view.invalidate() } }) toast("광고를 불러오는 중이에요. 잠시 뒤에 다시 눌러 주세요") }
     override fun openJournal() = openJournalList()
     override fun openMap() = openMapPuzzle()
@@ -79,7 +100,7 @@ class MainActivity : Activity(), AppUi.Host {
             "섬이 알아서 자라요" to "재료가 모이면 숙소·창고·부두를 자동으로 지어요. 직접 고르고 싶으면 앱에서 짓기를 눌러요.",
             "배가 알아서 다녀와요" to "부두가 생기면 배가 짐을 싣고 항구로 떠나 금화를 벌어 와요. 해적은 자동으로 싸워요.",
             "금화로 더 멀리" to "모은 금화로 배를 고치고 새 항구를 열어요. 바다에 반짝이는 유리병이나 보물상자가 떠오면 홈 화면에서 톡 쳐서 주워요.",
-            "소식은 기다려 줘요" to "비운 동안의 보상은 최대 8시간까지 모여요. 이야기는 항해일지에 쌓이고, 읽지 않아도 섬은 계속 움직여요.")
+            "소식은 기다려 줘요" to "비운 동안의 보상은 12시간까지 모이고, 광고를 보면 24시간까지 받아요. 이야기는 항해일지에 쌓이고, 읽지 않아도 섬은 계속 움직여요.")
         if (i >= sc.size) return
         AlertDialog.Builder(this).setTitle((i + 1).toString() + "/" + sc.size + "  " + sc[i].first).setMessage(sc[i].second)
             .setPositiveButton(if (i == sc.size - 1) "섬으로 가기" else "다음") { _, _ -> showTutorial(i + 1) }
@@ -223,10 +244,11 @@ class MainActivity : Activity(), AppUi.Host {
             val t = if (r.minutes >= 60) (r.minutes / 60).toString() + "시간 " + (r.minutes % 60) + "분" else r.minutes.coerceAtLeast(1).toString() + "분"
             if (t.isNotEmpty()) view.showReport(r)
         }
-        view.running = true; view.invalidate()
+        view.running = true; view.invalidate(); music(true)
     }
 
-    override fun onPause() { super.onPause(); view.running = false; Game.save(); ChestReceiver.schedule(this) }
+    override fun onDestroy() { bgm?.release(); bgm = null; super.onDestroy() }
+    override fun onPause() { super.onPause(); music(false); view.running = false; Game.save(); ChestReceiver.schedule(this) }
 
     /** 도트 화면을 그리고 키워서 보여준다 */
     class GameView(ctx: Context, host: AppUi.Host) : View(ctx) {

@@ -14,7 +14,8 @@ import kotlin.random.Random
  */
 object Game {
     const val RESIDENTS = 3
-    private const val OFFLINE_MAX_MS = 8 * 3600 * 1000L
+    private const val OFFLINE_MAX_MS = 12 * 3600 * 1000L        // 그냥 받는 시간
+    private const val EXTRA_MAX_MS = 12 * 3600 * 1000L          // 광고를 보면 더 받는 시간 (합 24시간)
     private const val STEP_MS = 10_000L
     private const val HOUR = 3600_000L
 
@@ -38,6 +39,7 @@ object Game {
     @Synchronized fun addTapGold(n: Int) { goldC += n * 100L; tapsDone++ }
     var tapsDone = 0
     var soundOn = true
+    var musicOn = true
 
     // ---------- 4시간마다 보물 상자 ----------
     const val CHEST_MS = 4 * 3600 * 1000L
@@ -266,7 +268,10 @@ object Game {
     private var storyDirty = true
 
     // ---------- 카드 ----------
-    class Report(val minutes: Int, val wood: Int, val stone: Int, val gold: Int, val voyages: Int, val full: Boolean)
+    class Report(val minutes: Int, val wood: Int, val stone: Int, val gold: Int, val voyages: Int, val full: Boolean, val extraMin: Int = 0, val extraGold: Long = 0L)
+    /** 12시간을 넘긴 몫: 광고를 보면 받는다 (한 번만) */
+    var extraPending = 0L; private set
+    @Synchronized fun claimExtra(): Long { val g = extraPending; if (g <= 0) return 0; goldC += g * 100L; extraPending = 0L; save(); return g }
     var report: Report? = null
     val cards = ArrayDeque<Pair<String, String>>()
     val log = ArrayList<String>()
@@ -286,8 +291,37 @@ object Game {
     private var saveT = 0f
 
     // =====================================================================
+    private var appCtx: Context? = null
+    /** 저장 코드: 기기를 바꿀 때 옮기는 글자 한 줄 ("LI1:" + base64(JSON)) */
+    @Synchronized fun exportSave(): String {
+        save()
+        val o = org.json.JSONObject()
+        for ((k, v) in prefs?.all ?: emptyMap<String, Any?>()) {
+            val t = when (v) { is Int -> "i"; is Long -> "l"; is Float -> "f"; is Boolean -> "b"; is String -> "s"; else -> null } ?: continue
+            o.put(k, org.json.JSONArray().put(t).put(v.toString()))
+        }
+        return "LI1:" + java.util.Base64.getEncoder().encodeToString(o.toString().toByteArray(Charsets.UTF_8))
+    }
+    /** 저장 코드를 넣으면 지금 진행을 그 코드로 바꾼다. 실패하면 false (지금 진행은 그대로) */
+    @Synchronized fun importSave(code: String): Boolean {
+        val c = appCtx ?: return false
+        val txt = code.trim()
+        if (!txt.startsWith("LI1:")) return false
+        val o = try { org.json.JSONObject(String(java.util.Base64.getDecoder().decode(txt.substring(4)), Charsets.UTF_8)) } catch (e: Exception) { return false }
+        if (!o.has("goldC") && !o.has("shipLevel")) return false
+        val ed = prefs?.edit() ?: return false
+        ed.clear()
+        for (k in o.keys()) { val a = o.getJSONArray(k); val v = a.getString(1)
+            try { when (a.getString(0)) { "i" -> ed.putInt(k, v.toInt()); "l" -> ed.putLong(k, v.toLong()); "f" -> ed.putFloat(k, v.toFloat()); "b" -> ed.putBoolean(k, v.toBoolean()); else -> ed.putString(k, v) } } catch (e: Exception) {} }
+        ed.putLong("last", System.currentTimeMillis())
+        ed.commit()
+        prefs = null; voy = null
+        init(c)
+        return true
+    }
     fun init(c: Context) {
         if (prefs != null) return
+        appCtx = c.applicationContext ?: c
         Data.load(c); Story.load(c); Art.init(c); Fleet.load(c)
         val sp = c.applicationContext.getSharedPreferences("island", Context.MODE_PRIVATE)
         prefs = sp
@@ -346,7 +380,7 @@ object Game {
         pearlUntil = sp.getLong("pearlUntil", 0L); pearlNext = sp.getLong("pearlNext", 0L)
         crewPts.clear(); sp.getString("crewPts", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); crewPts[k] = v.split(".").map { x -> x.toIntOrNull() ?: 0 }.plus(listOf(0, 0, 0, 0)).take(4).toIntArray() }
         treeOwned.clear(); sp.getString("tree", "")!!.split(",").mapNotNull { it.toIntOrNull() }.forEach { treeOwned.add(it) }
-        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); festUntil = sp.getLong("festUntil", 0L); stayHome = sp.getBoolean("stayHome", false); tut = if (sp.contains("tut")) sp.getInt("tut", 0) else if (voyages > 3) 99 else 0; tips.clear(); sp.getString("tips", "")!!.split(",").filter { it.isNotEmpty() }.forEach { tips.add(it) }; stageCool = sp.getLong("stageCool", 0L); refits.clear(); sp.getString("refits", "")!!.split(",").filter { ":" in it }.forEach { refits[it.substringBefore(":").toInt()] = it.substringAfter(":").toInt() }; storyAt = sp.getLong("storyAt", 0L); bountyWon.clear(); sp.getString("bountyWon", "")!!.split(",").filter { it.isNotEmpty() }.forEach { bountyWon.add(it.toInt()) }; bountyCool = sp.getLong("bountyCool", 0L); bigDone.clear(); sp.getString("bigDone", "")!!.split(",").filter { it.isNotEmpty() }.forEach { bigDone.add(it.toInt()) }; bigPort = sp.getString("bigPort", "")!!; bigLv = sp.getInt("bigLv", 0); bigTarget = sp.getLong("bigTarget", 0L); bigProg = sp.getLong("bigProg", 0L); bigUntil = sp.getLong("bigUntil", 0L); soundOn = sp.getBoolean("sound", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
+        renown = sp.getInt("renown", 0); woodLv = sp.getInt("woodLv", 0); stoneLv = sp.getInt("stoneLv", 0); storeLv = sp.getInt("storeLv", 0); chestAt = sp.getLong("chestAt", 0L); pStage = sp.getInt("pStage", 0); festUntil = sp.getLong("festUntil", 0L); stayHome = sp.getBoolean("stayHome", false); tut = if (sp.contains("tut")) sp.getInt("tut", 0) else if (voyages > 3) 99 else 0; tips.clear(); sp.getString("tips", "")!!.split(",").filter { it.isNotEmpty() }.forEach { tips.add(it) }; stageCool = sp.getLong("stageCool", 0L); refits.clear(); sp.getString("refits", "")!!.split(",").filter { ":" in it }.forEach { refits[it.substringBefore(":").toInt()] = it.substringAfter(":").toInt() }; storyAt = sp.getLong("storyAt", 0L); bountyWon.clear(); sp.getString("bountyWon", "")!!.split(",").filter { it.isNotEmpty() }.forEach { bountyWon.add(it.toInt()) }; bountyCool = sp.getLong("bountyCool", 0L); extraPending = sp.getLong("extraPending", 0L); bigDone.clear(); sp.getString("bigDone", "")!!.split(",").filter { it.isNotEmpty() }.forEach { bigDone.add(it.toInt()) }; bigPort = sp.getString("bigPort", "")!!; bigLv = sp.getInt("bigLv", 0); bigTarget = sp.getLong("bigTarget", 0L); bigProg = sp.getLong("bigProg", 0L); bigUntil = sp.getLong("bigUntil", 0L); soundOn = sp.getBoolean("sound", true); musicOn = sp.getBoolean("music", true); attDay = sp.getLong("attDay", -1L); attIdx = sp.getInt("attIdx", 0)
         dbDay = sp.getLong("dbDay", -1L); seasonKey = sp.getString("seasonKey", "") ?: ""; seasonPts = sp.getInt("seasonPts", 0); seasonGot = sp.getInt("seasonGot", 0)
         visTrades.clear(); sp.getString("visTrades", "")!!.split(",").filter { ":" in it }.forEach { val (k, v) = it.split(":"); visTrades[k] = v.toIntOrNull() ?: 0 }
         set("titlesGot", titlesGot); titleOn = sp.getString("titleOn", null)?.takeIf { it in titlesGot }
@@ -412,7 +446,7 @@ object Game {
             putString("visId", visId); putInt("visOffer", visOffer); putLong("visUntil", visUntil); putBoolean("visDone", visDone); putLong("visNext", visNext)
             putString("v_weather", weatherId)
             putLong("pearlUntil", pearlUntil); putLong("pearlNext", pearlNext)
-            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putInt("tut", tut); putLong("festUntil", festUntil); putBoolean("stayHome", stayHome); putString("tips", tips.joinToString(",")); putLong("stageCool", stageCool); putString("refits", refits.entries.joinToString(",") { it.key.toString() + ":" + it.value }); putLong("storyAt", storyAt); putString("bountyWon", bountyWon.joinToString(",")); putLong("bountyCool", bountyCool); putString("bigDone", bigDone.joinToString(",")); putString("bigPort", bigPort); putInt("bigLv", bigLv); putLong("bigTarget", bigTarget); putLong("bigProg", bigProg); putLong("bigUntil", bigUntil); putBoolean("sound", soundOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
+            putString("tree", treeOwned.joinToString(",")); putString("crewPts", crewPts.entries.joinToString(",") { it.key + ":" + it.value.joinToString(".") }); putInt("renown", renown); putInt("woodLv", woodLv); putInt("stoneLv", stoneLv); putInt("storeLv", storeLv); putLong("chestAt", chestAt); putInt("pStage", pStage); putInt("tut", tut); putLong("festUntil", festUntil); putBoolean("stayHome", stayHome); putString("tips", tips.joinToString(",")); putLong("stageCool", stageCool); putString("refits", refits.entries.joinToString(",") { it.key.toString() + ":" + it.value }); putLong("storyAt", storyAt); putString("bountyWon", bountyWon.joinToString(",")); putLong("bountyCool", bountyCool); putLong("extraPending", extraPending); putString("bigDone", bigDone.joinToString(",")); putString("bigPort", bigPort); putInt("bigLv", bigLv); putLong("bigTarget", bigTarget); putLong("bigProg", bigProg); putLong("bigUntil", bigUntil); putBoolean("sound", soundOn); putBoolean("music", musicOn); putLong("attDay", attDay); putInt("attIdx", attIdx); putLong("dbDay", dbDay)
             putString("seasonKey", seasonKey); putInt("seasonPts", seasonPts); putInt("seasonGot", seasonGot)
             putString("critSeen", critSeen.joinToString(",")); putString("bookGot", bookGot.joinToString(",")); putString("visTrades", visTrades.entries.joinToString(",") { it.key + ":" + it.value })
             putLong("voyStart", 0L)
@@ -968,7 +1002,7 @@ object Game {
         if (saveT > 10f) save()
     }
 
-    /** 다시 보이기 시작할 때. 안 보던 시간(최대 8시간)을 시간 순서대로 계산하고 결과 카드를 만든다. */
+    /** 다시 보이기 시작할 때. 안 보던 시간(최대 12시간, 광고로 24시간)을 시간 순서대로 계산하고 결과 카드를 만든다. */
     @Synchronized fun catchUp() {
         val now = System.currentTimeMillis()
         val gap = now - last
@@ -977,7 +1011,11 @@ object Game {
         val credited = min(gap, OFFLINE_MAX_MS)
         advance(now)
         val full = wood >= cap() || stone >= cap()
-        report = Report((credited / 60000L).toInt(), max(0, wood - w0), max(0, stone - s0), max(0L, gold - g0).coerceAtMost(Int.MAX_VALUE.toLong()).toInt(), voyages - v0, full)
+        val extraMs = min(max(0L, gap - OFFLINE_MAX_MS), EXTRA_MAX_MS)
+        val earned = max(0L, gold - g0)
+        val extraGold = if (extraMs > 0 && credited > 0) (earned.toDouble() * extraMs / credited).toLong() else 0L
+        if (extraGold > 0) extraPending = extraGold
+        report = Report((credited / 60000L).toInt(), max(0, wood - w0), max(0, stone - s0), earned.coerceAtMost(Int.MAX_VALUE.toLong()).toInt(), voyages - v0, full, (extraMs / 60000L).toInt(), extraGold)
         save()
     }
 
@@ -985,7 +1023,7 @@ object Game {
         if (now <= last) return
         val gap = now - last
         if (gap > OFFLINE_MAX_MS) {
-            // 8시간을 넘는 부분은 계산하지 않고 건너뛴다. 항해는 그동안 멈춰 있던 것으로 본다.
+            // 12시간을 넘는 부분은 계산하지 않고 건너뛴다 (그 몫은 catchUp에서 광고 보상으로). 항해는 그동안 멈춰 있던 것으로 본다.
             val skip = gap - OFFLINE_MAX_MS
             voy?.let { it.start += skip }
             last += skip
